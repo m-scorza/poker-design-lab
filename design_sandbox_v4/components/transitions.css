@@ -1,0 +1,34 @@
+     PAGE WRAPPER AND 3D SKEW STATES
+     ========================================================= */
+  .page {
+    display: none;
+    opacity: 0;
+    transform: translate(0, 0);
+    will-change: transform, opacity;
+    position: relative;
+    z-index: 2;
+  }
+  .page.active {
+    display: block;
+    opacity: 1;
+  }
+
+  /* Card Primitives (Glassmorphism & Tilt) */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    transition: background 0.3s, border-color 0.3s;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+  .card:hover {
+    border-color: var(--border-strong);
+    background: var(--bg-card-hover);
+  }
+
+  /* =========================================================

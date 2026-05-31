@@ -1,0 +1,3872 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1480, initial-scale=1" />
+<title>Editorial Obsidian Sandbox — Poker Analyzer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Include GSAP Local Downloaded Script -->
+<script src="gsap.min.js"></script>
+<style>
+  /* Compiled CSS Modules */
+
+/* --- MODULE: theme-system.css --- */
+/* =========================================================
+   CSS VARIABLES & DESIGN SYSTEM (Theme Attribute Mapping)
+   ========================================================= */
+
+/* DEFAULT VARIABLES (Obsidian Color Theme + Geometric Fonts) */
+:root {
+  /* Colors (Refined Obsidian / Glacier Cyan / Emerald Mint) */
+  --bg: #050608;          /* Refined dark charcoal-graphite background */
+  --bg-2: #0b0d12;        /* Polished slate container backing */
+  --bg-card: rgba(13, 17, 25, 0.65); /* High-end dark glassmorphism card */
+  --bg-card-hover: rgba(20, 26, 38, 0.75);
+  --bg-input: #0f121a;
+  --border: rgba(255, 255, 255, 0.05);
+  --border-strong: rgba(255, 255, 255, 0.15);
+  
+  --accent: #00F0FF;      /* Glacier Cyan - clean and precise */
+  --accent-2: #00FF87;    /* Mint Emerald - vibrant and modern */
+  --accent-soft: rgba(0, 240, 255, 0.06);
+  --accent-glow: rgba(0, 240, 255, 0.25);
+  --accent-line: rgba(0, 240, 255, 0.35);
+  
+  --loss: #FF3B6B;        /* Vibrant Coral Pink / Red */
+  --loss-soft: rgba(255, 59, 107, 0.08);
+  --loss-line: rgba(255, 59, 107, 0.35);
+  
+  --c-indigo: #8B7CFF;
+  --c-chip-1: #8B7CFF;
+  --c-chip-2: #00FF87;
+  --c-chip-3: #FF3B6B;
+  
+  --fg: #f3f4f6;
+  --fg-muted: #8892b0;
+  --fg-dim: #3a3f50;
+  
+  /* Fonts (Geometric default) */
+  --sans: 'Inter', -apple-system, sans-serif;
+  --display: 'Outfit', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  
+  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* --- COLOR THEME: ULTRAVIOLET OVERRIDES --- */
+body[data-color="ultraviolet"] {
+  --bg: #07050d;          /* Deep royal orchid */
+  --bg-2: #0e0a1b;        /* Midnight amethyst */
+  --bg-card: rgba(18, 14, 32, 0.65); /* Eggplant glassmorphism */
+  --bg-card-hover: rgba(26, 20, 44, 0.75);
+  --bg-input: #150f28;
+  --border: rgba(155, 81, 224, 0.15);
+  --border-strong: rgba(155, 81, 224, 0.30);
+  
+  --accent: #9B51E0;      /* Electric Violet Orchid */
+  --accent-2: #10F294;    /* Spring Green highlight */
+  --accent-soft: rgba(155, 81, 224, 0.10);
+  --accent-glow: rgba(155, 81, 224, 0.30);
+  --accent-line: rgba(155, 81, 224, 0.45);
+  
+  --loss: #FF4B72;        /* Glowing Rose Crimson */
+  --loss-soft: rgba(255, 75, 114, 0.12);
+  --loss-line: rgba(255, 75, 114, 0.40);
+  
+  --c-chip-1: #6A3FD6;
+  --c-chip-2: #9B51E0;
+  --c-chip-3: #FF4B72;
+}
+
+/* --- TYPOGRAPHY THEME: EDITORIAL OVERRIDES --- */
+body[data-font="editorial"] {
+  --sans: 'Hanken Grotesk', system-ui, sans-serif;
+  --display: 'Space Grotesk', system-ui, sans-serif; /* Replaced Bricolage with premium Space Grotesk */
+  --mono: 'Space Mono', ui-monospace, monospace;
+}
+
+/* --- MODULE: layout.css --- */
+/* =========================================================
+   CORE LAYOUT & RESET (Background Overlays and Canvas)
+   ========================================================= */
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  cursor: default;
+  transition: background 0.5s ease, color 0.3s ease;
+}
+
+/* Waving 3D math grid canvas background */
+#fluid-canvas {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.85;
+}
+
+/* Background Grid overlay */
+.bg-grid {
+  position: fixed; inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.007) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.007) 1px, transparent 1px);
+  background-size: 64px 64px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Background deep glow orbs */
+.glow-orb {
+  position: fixed;
+  width: 800px; height: 800px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(95px);
+  opacity: 0.5;
+  transition: background 0.6s ease;
+  will-change: background;
+}
+.orb-1 {
+  top: -300px; left: -250px;
+  background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+}
+.orb-2 {
+  bottom: -300px; right: -250px;
+  background: radial-gradient(circle, var(--loss-soft) 0%, transparent 70%);
+}
+
+.sheet {
+  max-width: 1560px;
+  margin: 0 auto;
+  padding: 0 46px 90px;
+  position: relative;
+  z-index: 2;
+}
+
+/* mono eyebrow label style */
+.kick {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.kick.accent { color: var(--accent); }
+.kick.loss { color: var(--loss); }
+
+/* --- MODULE: masthead.css --- */
+     MASTHEAD HEADER (Horizontal Navigation bar)
+     ========================================================= */
+  .masthead {
+    padding: 26px 0 0;
+    border-bottom: none;
+    position: relative;
+    z-index: 10;
+  }
+  .mast-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-bottom: 18px;
+  }
+  .logo {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .logo .glyph {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    background: var(--accent);
+    color: var(--bg);
+    padding: 3px 8px 4px;
+    border-radius: 3px;
+    line-height: 1;
+    align-self: center;
+    transition: background 0.3s, color 0.3s;
+  }
+  .logo h1 {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 30px;
+    letter-spacing: -0.03em;
+    line-height: 0.9;
+    color: var(--fg);
+    transition: color 0.3s;
+  }
+  .logo .sub {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin-left: 4px;
+  }
+
+  .mast-nav {
+    display: flex;
+    gap: 4px;
+  }
+  .mast-nav a {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    padding: 7px 13px;
+    border-radius: 4px;
+    transition: color .14s, background .14s;
+    cursor: pointer;
+  }
+  .mast-nav a:hover {
+    color: var(--fg);
+    background: rgba(255, 255, 255, 0.03);
+  }
+  .mast-nav a.on {
+    color: var(--fg);
+    background: var(--accent-soft);
+    border: 1px solid var(--border);
+  }
+
+  .dateline {
+    border-top: 1px solid var(--border-strong);
+    border-bottom: 1px solid var(--border);
+    padding: 9px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+  .dateline span {
+    padding: 0 16px;
+    border-right: 1px solid var(--border);
+  }
+  .dateline span:first-child { padding-left: 0; }
+  .dateline span:last-child { border-right: 0; }
+  .dateline b {
+    color: var(--fg);
+    font-weight: 700;
+  }
+  .dateline .live {
+    color: var(--accent);
+  }
+  .dateline .live::before {
+    content: '● ';
+    font-size: 8px;
+    vertical-align: 2px;
+  }
+
+  /* =========================================================
+
+/* --- MODULE: ticker.css --- */
+     THE WIRE (Horizontal Continuous Ticker Tape)
+     ========================================================= */
+  .wire {
+    display: grid;
+    grid-template-columns: 168px 1fr;
+    align-items: stretch;
+    border-bottom: 1px solid var(--border-strong);
+    background: rgba(0,0,0,0.2);
+    margin-bottom: 24px;
+  }
+  .wire-badge {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 13px 18px 13px 0;
+    border-right: 1px solid var(--border);
+    background: var(--bg-2);
+  }
+  .wire-badge .pulse {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 0 var(--accent-glow);
+    animation: wp 2s ease-out infinite;
+  }
+  @keyframes wp {
+    0% { box-shadow: 0 0 0 0 var(--accent-glow); }
+    70% { box-shadow: 0 0 0 8px rgba(255,255,255,0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+  }
+  .wire-badge .t {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg);
+  }
+  .wire-badge .t b {
+    display: block;
+    color: var(--accent);
+  }
+  .wire-tape {
+    overflow: hidden;
+    padding-left: 22px;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  .wire-track {
+    display: inline-flex;
+    white-space: nowrap;
+    animation: wire-drift 32s linear infinite;
+  }
+  .wire-track:hover {
+    animation-play-state: paused;
+  }
+  .wire-track span {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    color: var(--fg-muted);
+    margin-right: 30px;
+    display: inline-flex;
+    gap: 9px;
+    align-items: center;
+  }
+  .wire-track span::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .wire-track span b {
+    color: var(--fg);
+    font-weight: 700;
+  }
+  .wire-track span.loss::before { background: var(--loss); }
+  .wire-track span.loss b { color: var(--loss); }
+  
+  @keyframes wire-drift {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* Sweeping Line Loader on Nav Swaps */
+  #slide-loader {
+    position: fixed;
+    top: 0; left: -100%;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent), var(--accent-2), transparent);
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+  /* =========================================================
+
+/* --- MODULE: transitions.css --- */
+     PAGE WRAPPER AND 3D SKEW STATES
+     ========================================================= */
+  .page {
+    display: none;
+    opacity: 0;
+    transform: translate(0, 0);
+    will-change: transform, opacity;
+    position: relative;
+    z-index: 2;
+  }
+  .page.active {
+    display: block;
+    opacity: 1;
+  }
+
+  /* Card Primitives (Glassmorphism & Tilt) */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    transition: background 0.3s, border-color 0.3s;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+  .card:hover {
+    border-color: var(--border-strong);
+    background: var(--bg-card-hover);
+  }
+
+  /* =========================================================
+
+/* --- MODULE: desk.css --- */
+     PAGE 1: DESK (Overview Dashboard)
+     ========================================================= */
+  .desk-grid {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 24px;
+  }
+  .desk-left {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .monument {
+    padding: 38px 40px;
+    background: linear-gradient(160deg, var(--bg-2) 0%, rgba(0,0,0,0.6) 100%);
+  }
+  .mon-number {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(66px, 7vw, 110px);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    color: var(--fg);
+    margin: 12px 0 0 -3px;
+    text-shadow: 0 0 44px var(--accent-glow);
+  }
+  .mon-number .cents {
+    color: var(--accent-2);
+    font-size: 0.55em;
+  }
+  .mon-number .sign {
+    color: var(--accent);
+    margin-right: -4px;
+  }
+  
+  .mon-verdict {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    margin-top: 14px;
+    text-wrap: balance;
+  }
+  .mon-verdict em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  /* Concentric HUD Telemetry */
+  .hud-block {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 24px;
+    align-items: center;
+  }
+  .hud-circle-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 200px;
+  }
+  .hud-circle-wrap {
+    position: relative;
+    width: 200px; height: 200px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hud-circle-wrap svg {
+    position: absolute;
+    width: 100%; height: 100%;
+    transform: rotate(-90deg);
+    overflow: visible;
+  }
+  .circle-glow {
+    position: absolute;
+    width: 90px; height: 90px;
+    background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 1;
+    filter: blur(12px);
+  }
+  .hud-center-label {
+    z-index: 2;
+    text-align: center;
+    font-family: var(--mono);
+  }
+  .hud-center-lbl {
+    font-size: 8px;
+    color: var(--fg-muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .hud-center-val {
+    font-family: var(--display);
+    font-size: 28px;
+    font-weight: 900;
+    color: #fff;
+    margin-top: 2px;
+  }
+  .hud-ring {
+    transform-origin: 50% 50%;
+    transition: stroke 0.3s;
+  }
+
+  .hud-stats-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .stat-trigger {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.005);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .stat-trigger:hover {
+    background: rgba(255, 255, 255, 0.02);
+    border-color: var(--border-strong);
+  }
+  .stat-trigger.active {
+    background: var(--accent-soft);
+    border-color: var(--accent-line);
+  }
+  .stat-trigger .st-l {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--fg);
+  }
+  .stat-trigger .st-value {
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--fg-muted);
+  }
+  .stat-trigger.active .st-value {
+    color: var(--accent);
+  }
+
+  .blocker-leak-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .leak-kpi-cell {
+    border-left: 2px solid var(--accent);
+    padding-left: 12px;
+  }
+  .leak-kpi-cell.loss {
+    border-left-color: var(--loss);
+  }
+  .leak-kpi-val {
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+  .leak-kpi-val.loss { color: var(--loss); }
+
+  /* Stack depth bands styles */
+  .stack-band-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .stack-band-row {
+    display: grid;
+    grid-template-columns: 78px 1fr 50px;
+    gap: 12px;
+    align-items: center;
+    font-size: 12px;
+    font-family: var(--mono);
+  }
+  .stack-band-lbl {
+    color: var(--fg-muted);
+    font-size: 11px;
+  }
+  .stack-band-bar-outer {
+    height: 6px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+  }
+  .stack-band-bar-fill {
+    display: block;
+    height: 100%;
+    border-radius: 3px;
+    background: var(--accent);
+  }
+  .stack-band-bar-fill.loss {
+    background: var(--loss);
+  }
+  .stack-band-val {
+    text-align: right;
+    font-weight: 700;
+    color: var(--fg);
+  }
+
+  /* Tactile Bottom Marquee Tags */
+  .marquee-wrap {
+    overflow: hidden;
+    padding: 12px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    cursor: pointer;
+    background: rgba(0,0,0,0.15);
+  }
+  .marquee-inner {
+    display: flex;
+    gap: 12px;
+    white-space: nowrap;
+    will-change: transform;
+  }
+  .marquee-tag {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    border-radius: 9999px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .marquee-tag::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .marquee-tag.critical::before { background: var(--loss); }
+  
+  .marquee-wrap.expanded {
+    height: auto;
+    padding: 18px 22px;
+  }
+  .marquee-wrap.expanded .marquee-inner {
+    display: flex;
+    flex-wrap: wrap;
+    white-space: normal;
+    animation: none !important;
+    transform: none !important;
+    gap: 10px;
+  }
+  .marquee-wrap.expanded .marquee-inner .duplicate {
+    display: none !important;
+  }
+
+  /* =========================================================
+
+/* --- MODULE: career.css --- */
+     PAGE 2: CAREER (Career Arc & Progression milestones)
+     ========================================================= */
+  .career-top-kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .chart-card {
+    padding: 30px;
+    margin-bottom: 24px;
+  }
+  .arc-chart-container {
+    height: 250px;
+    border-top: 1px solid var(--border-strong);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    margin-top: 18px;
+  }
+  .arc-chart-container svg {
+    width: 100%; height: 100%;
+    display: block;
+    overflow: visible;
+  }
+  .chart-node {
+    fill: var(--fg);
+    stroke: var(--accent);
+    stroke-width: 2px;
+    cursor: pointer;
+    transition: stroke-width 0.2s, r 0.2s, fill 0.2s;
+  }
+  .chart-node:hover {
+    fill: var(--accent);
+    stroke-width: 4px;
+  }
+  .chart-tooltip {
+    position: absolute;
+    display: none;
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    z-index: 100;
+    pointer-events: none;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+  .chart-tooltip b {
+    color: var(--accent);
+    display: block;
+  }
+
+  .career-bottom-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 24px;
+  }
+  
+  /* Timeline Achievement list */
+  .timeline-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    align-items: center;
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.005);
+    border-radius: 10px;
+    transition: background 0.2s;
+  }
+  .timeline-item:hover {
+    background: rgba(255,255,255,0.015);
+  }
+  .timeline-item .t-date {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-muted);
+  }
+  .timeline-item .t-title {
+    font-weight: 600;
+    font-size: 13.5px;
+  }
+  .timeline-item .t-val {
+    font-family: var(--mono);
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .timeline-item .t-val.loss {
+    color: var(--loss);
+  }
+
+  /* =========================================================
+
+/* --- MODULE: sessions.css --- */
+     PAGE 3: SESSIONS (Volume Timeline & predators)
+     ========================================================= */
+  .timeline-row-editorial {
+    display: grid;
+    grid-template-columns: 110px 1fr 100px 100px 100px;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s ease;
+    align-items: center;
+    position: relative;
+  }
+  .timeline-row-editorial:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+  .timeline-date-block {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .timeline-date-sub {
+    font-size: 10px;
+    color: var(--fg-muted);
+    font-weight: 400;
+    margin-top: 3px;
+  }
+  .timeline-title-block .editorial-title {
+    font-family: var(--display);
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .timeline-title-block .editorial-desc {
+    font-size: 11.5px;
+    color: var(--fg-muted);
+    margin-top: 4px;
+  }
+  .timeline-val-block {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .timeline-val-block.pos { color: var(--accent); }
+  .timeline-val-block.neg { color: var(--loss); }
+
+  /* Expanding sessions drawer */
+  .editorial-expand-panel {
+    display: none;
+    height: 0;
+    overflow: hidden;
+    background: rgba(0,0,0,0.15);
+    border-bottom: 1px solid var(--border);
+    box-shadow: inset 0 2px 14px rgba(0,0,0,0.4);
+  }
+  .expanded-card-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 1.2fr;
+    gap: 24px;
+    padding: 24px;
+  }
+  .session-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+    border-radius: 12px;
+  }
+  .session-card h4 {
+    margin: 0 0 14px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  
+  /* Progress stats bars inside sessions */
+  .session-bar-row {
+    margin-bottom: 12px;
+  }
+  .session-bar-lbl {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin-bottom: 5px;
+  }
+  .session-bar-track {
+    height: 4px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .session-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--accent);
+  }
+  .session-bar-fill.blue { background: var(--accent-2); }
+  .session-bar-fill.amber { background: #ffaa00; }
+
+  /* =========================================================
+
+/* --- MODULE: hands.css --- */
+     PAGE 4: HANDS (Archive & simulated filter database)
+     ========================================================= */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 12px 16px;
+    border-radius: 12px;
+    align-items: center;
+  }
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .filter-group label {
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+  .filter-bar select, .filter-bar input {
+    background: var(--bg-input);
+    border: 1px solid var(--border-strong);
+    color: var(--fg);
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    outline: none;
+  }
+  .filter-bar select:focus, .filter-bar input:focus {
+    border-color: var(--accent);
+  }
+  .btn-reset-db {
+    margin-left: auto;
+    background: rgba(255, 92, 138, 0.08);
+    border: 1px solid rgba(255, 92, 138, 0.25);
+    color: var(--loss);
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .btn-reset-db:hover {
+    background: rgba(255, 92, 138, 0.18);
+    border-color: var(--loss);
+  }
+
+  .hands-table-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .hands-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .hands-table th, .hands-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .hands-table th {
+    background: rgba(0,0,0,0.2);
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    font-weight: 600;
+  }
+  .hands-table tr {
+    transition: background 0.12s;
+  }
+  .hands-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.015);
+  }
+  .hands-table .card-pair {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+  }
+  .suit-s { color: var(--fg); }
+  .suit-h { color: var(--loss); }
+  .suit-d { color: var(--accent-2); }
+  .suit-c { color: var(--accent); }
+  
+  .compliance-badge {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+  .compliance-badge.ok {
+    background: rgba(193, 255, 18, 0.08);
+    border: 1px solid rgba(193, 255, 18, 0.2);
+    color: var(--accent);
+  }
+  .compliance-badge.dev {
+    background: rgba(255, 92, 138, 0.08);
+    border: 1px solid rgba(255, 92, 138, 0.2);
+    color: var(--loss);
+  }
+
+  .btn-replay {
+    background: var(--accent-soft);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    font-family: var(--mono);
+    font-size: 10.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-replay:hover {
+    border-color: var(--accent);
+    background: rgba(255,255,255,0.03);
+  }
+
+  /* Hands replayer Modal felt */
+  .replay-modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 10000;
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center; justify-content: center;
+  }
+  .replay-modal {
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    width: 680px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.8);
+    position: relative;
+  }
+  .replay-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .replay-modal-close {
+    background: none; border: 0;
+    color: var(--fg-muted);
+    font-size: 24px; cursor: pointer;
+  }
+  .replay-modal-close:hover { color: var(--fg); }
+  
+  .mini-felt-arena {
+    height: 280px;
+    background: #11141a;
+    position: relative;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mini-felt-surface {
+    position: absolute;
+    width: 440px; height: 180px;
+    border-radius: 90px;
+    border: 8px solid #222a36;
+    background: #19202a;
+    box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
+  }
+  .mini-felt-cards {
+    position: absolute;
+    display: flex;
+    gap: 8px;
+    z-index: 50;
+  }
+  
+  /* Mini dealing cards */
+  .poker-card-micro {
+    width: 45px; height: 65px;
+    background: #fff;
+    border-radius: 4px;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+    padding: 4px 6px;
+    color: #000;
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 13px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    opacity: 0;
+    transform: scale(0) rotate(90deg);
+  }
+  .poker-card-micro.red { color: #e11d48; }
+  .poker-card-micro .suit-symbol { align-self: flex-end; font-size: 15px; line-height: 1; }
+
+  .replay-modal-stats {
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    background: var(--bg-2);
+  }
+
+  /* =========================================================
+
+/* --- MODULE: leaks.css --- */
+     PAGE 5: LEAKS (Leaks prioritized index & ledger swaps)
+     ========================================================= */
+  .incident-swap-wrap {
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .inc-grid {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 36px;
+    align-items: center;
+  }
+  .inc-headline-text {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(38px, 5vw, 62px);
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+    color: var(--fg);
+    margin: 0;
+  }
+  .inc-headline-text span.leak-highlight {
+    color: var(--loss);
+    text-shadow: 0 0 20px rgba(255, 92, 138, 0.2);
+  }
+  .inc-desc {
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.45;
+    color: var(--fg-muted);
+    margin-top: 18px;
+    text-wrap: pretty;
+  }
+  .inc-desc b { color: var(--fg); }
+  
+  .inc-stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-top: 24px;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+  }
+  .inc-stat-item .l {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+  .inc-stat-item .v {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 24px;
+    margin-top: 4px;
+  }
+  .inc-stat-item .v.loss { color: var(--loss); }
+  .inc-stat-item .v.accent { color: var(--accent); }
+
+  /* 13x13 preflop range matrix rules */
+  .matrix-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  .matrix-grid-cell-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--fg-muted);
+  }
+  .matrix-grid-cell-label .spot-pos {
+    color: var(--accent);
+  }
+  .matrix-grid-box {
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);
+    gap: 2.2px;
+    aspect-ratio: 1;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--border);
+    padding: 4px;
+    border-radius: 8px;
+  }
+  .matrix-cell-node {
+    aspect-ratio: 1;
+    background: rgba(255, 255, 255, 0.015);
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono);
+    font-size: 7.5px;
+    color: var(--fg-dim);
+    line-height: 1;
+    letter-spacing: -0.05em;
+    cursor: pointer;
+    transition: background 0.25s, color 0.2s, transform 0.12s;
+  }
+  .matrix-cell-node:hover {
+    transform: scale(1.18);
+    z-index: 10;
+  }
+  .matrix-cell-node.open-range {
+    background: var(--accent-soft);
+    color: var(--accent-2);
+  }
+  .matrix-cell-node.fold-range {
+    background: var(--loss-soft);
+    color: var(--loss);
+    outline: 1px solid rgba(255, 92, 138, 0.15);
+  }
+  
+  .leak-index-cols {
+    display: grid;
+    grid-template-columns: 34px 1fr 120px 100px 100px;
+    gap: 16px;
+    padding: 10px 18px;
+    border-top: 1px solid var(--border-strong);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+  }
+  .leak-index-row {
+    display: grid;
+    grid-template-columns: 34px 1fr 120px 100px 100px;
+    gap: 16px;
+    align-items: center;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    position: relative;
+    transition: background 0.12s;
+  }
+  .leak-index-row:hover {
+    background: rgba(255, 255, 255, 0.015);
+  }
+  .leak-index-row.active {
+    background: var(--accent-soft);
+  }
+  .leak-index-row.active::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent-glow);
+  }
+  .leak-index-row.active.crit::before {
+    background: var(--loss);
+  }
+  .leak-rank {
+    font-family: var(--mono);
+    font-weight: 700;
+    color: var(--fg-dim);
+  }
+  .leak-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 16px;
+  }
+  .leak-sev-badge {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .leak-sev-badge::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+  }
+  .leak-sev-badge.crit { color: var(--loss); }
+  .leak-sev-badge.crit::before { background: var(--loss); }
+  .leak-sev-badge.high { color: #ffaa00; }
+  .leak-sev-badge.high::before { background: #ffaa00; }
+  .leak-sev-badge.med { color: var(--fg-muted); }
+  .leak-sev-badge.med::before { background: var(--fg-muted); }
+  
+  .leak-spot-lbl {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-muted);
+  }
+  .leak-cost-lbl {
+    font-family: var(--mono);
+    font-weight: 700;
+    color: var(--loss);
+    font-size: 14px;
+  }
+
+  /* =========================================================
+
+/* --- MODULE: ranges.css --- */
+     PAGE 6: RANGES (Preflop workspace, chips & solver deltas)
+     ========================================================= */
+  .ranges-tab-menu {
+    display: flex;
+    gap: 3px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 3px;
+    border-radius: 8px;
+  }
+  .ranges-tab-btn {
+    background: none; border: 0;
+    color: var(--fg-muted);
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .ranges-tab-btn.active {
+    background: var(--bg-2);
+    color: var(--fg);
+    border: 1px solid var(--border);
+  }
+
+  .ranges-main-layout {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 24px;
+    margin-top: 18px;
+  }
+  
+  .position-select-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 4px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+  }
+  .pos-select-btn {
+    background: none; border: 0;
+    color: var(--fg-muted);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .pos-select-btn.active {
+    background: #fff;
+    color: #000;
+  }
+
+  .ranges-control-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
+    margin-top: 14px;
+  }
+  .ranges-swatch-info {
+    display: flex;
+    gap: 14px;
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+  .ranges-swatch-info i {
+    display: inline-block; width: 10px; height: 10px;
+    border-radius: 2px; margin-right: 4px;
+    vertical-align: -1px;
+  }
+  .ranges-swatch-info i.play { background: rgba(193,255,18,0.15); border: 1px solid var(--accent); }
+  .ranges-swatch-info i.dev { background: rgba(255,92,138,0.15); border: 1px solid var(--loss); }
+
+  .solver-delta-card {
+    background: rgba(0,0,0,0.15);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .solver-delta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12.5px;
+  }
+  .solver-delta-row:last-child { border-bottom: 0; }
+  .solver-delta-row .pos-lbl {
+    font-family: var(--mono);
+    font-weight: 700;
+  }
+  .solver-delta-row .val-group {
+    font-family: var(--mono);
+    display: flex; gap: 8px;
+  }
+  .solver-delta-row .val-group span.ours { color: var(--accent); font-weight: 700; }
+  .solver-delta-row .val-group span.solver { color: var(--fg-muted); }
+  .solver-delta-row .delta-lbl {
+    font-weight: 700;
+  }
+  .solver-delta-row .delta-lbl.wider { color: var(--accent); }
+  .solver-delta-row .delta-lbl.tighter { color: var(--loss); }
+
+  /* =========================================================
+
+/* --- MODULE: villains.css --- */
+     PAGE 7: VILLAINS (Opponents obsidian dossiers grid)
+     ========================================================= */
+  .opponent-search-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .opponent-search-bar input {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--fg);
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 10px 16px;
+    width: 280px;
+    outline: none;
+  }
+  .opponent-search-bar input:focus { border-color: var(--accent); }
+  
+  .opponents-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .opponent-dossier-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    position: relative;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .opponent-dossier-card:hover {
+    border-color: var(--accent-line);
+    transform: translateY(-2px);
+  }
+  .opp-dossier-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+  }
+  .opp-dossier-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 18px;
+  }
+  .opp-dossier-hands {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-muted);
+  }
+  .opp-arch-badge {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 3px;
+  }
+  .opp-arch-badge.lag { background: rgba(255, 170, 0, 0.1); border: 1px solid rgba(255, 170, 0, 0.3); color: #ffaa00; }
+  .opp-arch-badge.passive { background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.3); color: var(--accent-2); }
+  .opp-arch-badge.reg { background: rgba(193, 255, 18, 0.1); border: 1px solid rgba(193, 255, 18, 0.3); color: var(--accent); }
+  
+  .opp-stats-inline {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    margin-top: 12px;
+  }
+  .opp-stat-cell {
+    text-align: center;
+    background: rgba(0,0,0,0.15);
+    padding: 6px;
+    border-radius: 6px;
+  }
+  .opp-stat-cell .v { font-weight: 700; color: #fff; margin-top: 2px; }
+  .opp-stat-cell .l { font-size: 8.5px; color: var(--fg-muted); }
+
+  /* Villain Hover dossier exploit cards */
+  .exploit-overlay-card {
+    position: absolute;
+    inset: 0;
+    background: var(--bg-card-hover);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.95);
+    transition: opacity 0.25s, transform 0.25s;
+    z-index: 50;
+    border: 1px solid var(--accent);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.8);
+  }
+  .opponent-dossier-card:hover .exploit-overlay-card {
+    opacity: 1;
+    pointer-events: all;
+    transform: scale(1);
+  }
+  .exploit-card-title {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .exploit-card-body {
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--fg);
+  }
+
+  /* =========================================================
+
+/* --- MODULE: arena.css --- */
+     PAGE 8: ARENA (Simulated GTO trainer, 3D felt)
+     ========================================================= */
+  .arena-grid {
+    display: grid;
+    grid-template-columns: 1fr 240px;
+    gap: 24px;
+    height: 520px;
+  }
+  .hologram-viewport {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  /* 3D Tilted felt surface */
+  .hologram-stage-3d {
+    flex-1;
+    position: relative;
+    perspective: 1200px;
+    display: flex; align-items: center; justify-content: center;
+    height: 100%;
+  }
+  .hologram-felt-3d {
+    position: absolute;
+    width: 620px; height: 260px;
+    border-radius: 130px;
+    border: 14px solid #202633;
+    background: #151b26;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.7), inset 0 0 60px rgba(0,0,0,0.5);
+    transform: rotateX(32deg);
+    transform-style: preserve-3d;
+  }
+  
+  /* Seats overlay */
+  .hologram-seat {
+    position: absolute;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    color: var(--fg);
+    padding: 8px 14px;
+    border-radius: 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+    z-index: 10;
+  }
+  .hologram-seat:hover {
+    border-color: var(--accent);
+    transform: scale(1.05);
+  }
+  .hologram-seat.hero {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .hologram-seat .name { font-weight: 700; display: block; }
+  .hologram-seat .chips { font-size: 9px; color: var(--fg-muted); display: block; margin-top: 2px; }
+  
+  /* Precise absolute coordinates for seats */
+  .seat-1 { top: 15%; left: 15%; }
+  .seat-2 { top: 8%; left: 50%; transform: translateX(-50%); }
+  .seat-3 { top: 15%; right: 15%; }
+  .seat-4 { bottom: 15%; right: 15%; }
+  .seat-5 { bottom: 8%; left: 50%; transform: translateX(-50%); }
+  .seat-6 { bottom: 15%; left: 15%; }
+  
+  .center-pot-box {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+    opacity: 0.55;
+  }
+  .center-pot-box .l { font-family: var(--mono); font-size: 8px; text-transform: uppercase; color: var(--fg-muted); }
+  .center-pot-box .v { font-family: var(--mono); font-size: 20px; font-weight: 700; color: #fff; }
+
+  /* Hologram path vectors canvas */
+  #arena-felt-canvas {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  /* Floating simulated chip packet */
+  .sim-chip {
+    position: absolute;
+    width: 12px; height: 12px;
+    background: radial-gradient(circle, #fff 15%, var(--accent) 55%, transparent 75%);
+    border-radius: 50%;
+    z-index: 60;
+    pointer-events: none;
+  }
+
+  /* Dealing cards animation shapes */
+  .hologram-deal-card {
+    position: absolute;
+    width: 48px; height: 68px;
+    background: #fff;
+    border-radius: 5px;
+    color: #000;
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 14px;
+    padding: 5px 7px;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    z-index: 40;
+    pointer-events: none;
+  }
+  .hologram-deal-card.red { color: #f43f5e; }
+  .hologram-deal-card .suit { align-self: flex-end; font-size: 16px; }
+
+  .trainer-actions-wrap {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    z-index: 50;
+    position: relative;
+    padding-bottom: 12px;
+  }
+  .btn-trainer-act {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-strong);
+    color: var(--fg);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 12px 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+  }
+  .btn-trainer-act:hover {
+    border-color: var(--accent);
+    background: rgba(255,255,255,0.03);
+    box-shadow: 0 0 15px var(--accent-glow);
+  }
+  
+  /* Trainer feedback overlay bubble */
+  .trainer-feedback-overlay {
+    position: absolute;
+    top: 25%; left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 100;
+    background: rgba(8, 10, 15, 0.9);
+    border: 1px solid var(--border-strong);
+    padding: 16px 28px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 15px 45px rgba(0,0,0,0.8);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .trainer-feedback-overlay.active {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  .trainer-feedback-overlay.correct { border-color: var(--accent); }
+  .trainer-feedback-overlay.incorrect { border-color: var(--loss); }
+  .trainer-feedback-overlay h4 { margin: 0 0 6px; font-size: 15px; }
+  .trainer-feedback-overlay p { margin: 0; font-size: 12px; color: var(--fg-muted); }
+
+  /* =========================================================
+     FLOATING THEME CONTROLS DOCK PANEL
+     ========================================================= */
+  .theme-dock {
+    position: fixed;
+    right: 24px; bottom: 24px;
+    background: rgba(8, 10, 15, 0.82);
+    backdrop-filter: blur(16px);
+    border: 1.5px solid var(--border-strong);
+    border-radius: 12px;
+    padding: 12px 16px;
+    z-index: 9999;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 210px;
+    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    transform-origin: right bottom;
+  }
+  .theme-dock:hover {
+    transform: scale(1.03);
+  }
+  .dock-header {
+    font-family: var(--mono);
+    font-size: 8.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 6px;
+  }
+  .dock-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 10px;
+  }
+  .dock-btn {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    color: var(--fg-muted);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 9px;
+    font-family: var(--mono);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .dock-btn:hover {
+    color: #fff;
+    border-color: var(--border-strong);
+  }
+  .dock-btn.active {
+    background: var(--accent-soft);
+    color: var(--fg);
+    border-color: var(--accent);
+  }
+
+  /* Midwam loader styles */
+  .loader {
+    position: fixed; inset: 0;
+    z-index: 200000;
+    background: #010103;
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity .8s cubic-bezier(.4,0,.1,1), visibility .8s;
+  }
+  .loader.done { opacity: 0; visibility: hidden; }
+  .loader-inner { width: min(440px, 80vw); }
+  .loader-eye {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--fg-muted); display: flex; justify-content: space-between; margin-bottom: 12px;
+  }
+  .loader-eye b { color: var(--accent); }
+  .loader-pct {
+    font-family: var(--display); font-weight: 800; font-size: 96px; letter-spacing: -0.05em; line-height: 0.86; color: var(--fg);
+  }
+  .loader-bar { margin-top: 18px; height: 2px; background: rgba(255,255,255,0.04); position: relative; overflow: hidden; }
+  .loader-bar span { position: absolute; inset: 0 auto 0 0; width: 0%; background: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+  .loader-status { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--fg-muted); margin-top: 12px; }
+
+
+
+/* --- MODULE: theme-dock.css --- */
+
+
+/* --- MODULE: loader.css --- */
+
+
+/* --- MODULE: glow-borders.css --- */
+/* =========================================================
+   GLOW BORDERS (Card outlines drawing on hover)
+   ========================================================= */
+
+.card::after, .opponent-dossier-card::after {
+  content: '';
+  position: absolute; inset: -1.5px;
+  border-radius: 16px;
+  padding: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--accent), var(--loss), transparent);
+  background-size: 200% 200%;
+  -webkit-mask: 
+     linear-gradient(#fff 0 0) content-box, 
+     linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 5;
+}
+
+.opponent-dossier-card::after {
+  border-radius: 14px; /* match villain cards */
+}
+
+.card:hover::after, .opponent-dossier-card:hover::after {
+  opacity: 1;
+  animation: border-glow-cycle 4s linear infinite;
+}
+
+@keyframes border-glow-cycle {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+/* --- MODULE: button-glows.css --- */
+/* =========================================================
+   BUTTON GLOWS (Premium hover blooms)
+   ========================================================= */
+
+.dock-btn:hover, .btn-replay:hover, .ranges-tab-btn:hover, .btn-reset-db:hover, .btn-trainer-act:hover {
+  box-shadow: 0 0 15px var(--accent-glow);
+  border-color: var(--accent);
+  text-shadow: 0 0 8px var(--accent-glow);
+  transition: border-color 0.2s, box-shadow 0.2s, text-shadow 0.2s;
+}
+
+.btn-reset-db:hover {
+  border-color: var(--loss) !important;
+  box-shadow: 0 0 15px rgba(255, 59, 107, 0.35) !important;
+  text-shadow: 0 0 8px rgba(255, 59, 107, 0.40) !important;
+}
+
+.pos-select-btn:hover {
+  box-shadow: 0 0 12px var(--accent-glow);
+  background: var(--accent-soft);
+  color: var(--fg);
+}
+
+
+/* --- MODULE: cursor-follower.css --- */
+/* =========================================================
+   CURSOR FOLLOWER (Ambient Halo follower styles)
+   ========================================================= */
+
+.cursor-follower {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  border: 1.5px solid var(--accent-line);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: screen;
+  will-change: transform, width, height;
+  transition: width 0.3s cubic-bezier(0.19, 1, 0.22, 1), 
+              height 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+
+</style>
+</head>
+<body data-color="obsidian" data-font="geometric">
+
+  <canvas id="fluid-canvas"></canvas>
+  <div class="bg-grid"></div>
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+  <div id="cursor-follower" class="cursor-follower"></div>
+  <div id="slide-loader"></div>
+
+  <!-- ===================== MIDWAM LOADER ===================== -->
+  <div class="loader" id="loader">
+    <div class="loader-inner">
+      <div class="loader-eye"><span>Poker Analyzer</span><span>Local Edition <b>·</b> scorza23</span></div>
+      <div class="loader-pct" id="loader-pct">00</div>
+      <div class="loader-bar"><span id="loader-fill"></span></div>
+      <div class="loader-status" id="loader-status">Initialising telemetry</div>
+    </div>
+  </div>
+
+  <div class="sheet">
+
+    <!-- ===================== MASTHEAD NAVIGATION ===================== -->
+    <header class="masthead">
+      <div class="mast-top">
+        <div class="logo">
+          <span class="glyph">PA</span>
+          <h1 id="logo-title">THE LEDGER</h1>
+          <span class="sub">Poker Analyzer</span>
+        </div>
+        <nav class="mast-nav">
+          <a class="on" data-tab="overview">Desk</a>
+          <a data-tab="career">Career</a>
+          <a data-tab="sessions">Sessions</a>
+          <a data-tab="hands">Hands</a>
+          <a data-tab="leaks">Leaks</a>
+          <a data-tab="ranges">Ranges</a>
+          <a data-tab="villains">Villains</a>
+          <a data-tab="arena">Arena</a>
+        </nav>
+      </div>
+      <div class="dateline">
+        <span>No. <b>250</b></span>
+        <span>scorza23</span>
+        <span><b>$1.10</b> ABI</span>
+        <span><b>8</b> months</span>
+        <span><b>10,716</b> hands</span>
+        <span><b>37</b> sessions</span>
+        <span class="live">Reading — last import 2m ago</span>
+      </div>
+    </header>
+
+    <!-- ===================== THE WIRE TICKER ===================== -->
+    <section class="wire">
+      <div class="wire-badge">
+        <span class="pulse"></span>
+        <span class="t">The Wire<b>Live Feed</b></span>
+      </div>
+      <div class="wire-tape">
+        <div class="wire-track" id="wire-ticker">
+          <span>● CASHOUT: <b>+$22.50</b> in Tournament #250</span>
+          <span class="loss">● LEAK ALERT: <b>BTN Open range too wide (+8%)</b></span>
+          <span>● PREY TRACKER: Won <b>+42.3 bb</b> from <i>fish_player_99</i></span>
+          <span>● FORM UPGRADE: Compliance hit <b>94.2%</b> in Session #37</span>
+          <!-- Double to loop -->
+          <span>● CASHOUT: <b>+$22.50</b> in Tournament #250</span>
+          <span class="loss">● LEAK ALERT: <b>BTN Open range too wide (+8%)</b></span>
+          <span>● PREY TRACKER: Won <b>+42.3 bb</b> from <i>fish_player_99</i></span>
+          <span>● FORM UPGRADE: Compliance hit <b>94.2%</b> in Session #37</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         PAGE 1: DESK (Overview Dashboard)
+         ========================================================= -->
+    <div class="desk-grid">
+        <div class="desk-left">
+          
+          <!-- Lifetime Winnings Card (The Monument) -->
+          <div class="card monument">
+            <span class="kick accent">Lifetime net profit · 250 tournaments</span>
+            <div class="mon-number"><span class="sign">+</span>$388<span class="cents">.85</span></div>
+            <div class="mon-verdict" id="mon-verdict">You're cash positive. <em>One button deviation</em> is the whole story.</div>
+          </div>
+          
+          <!-- Concentric Ring HUD Telemetry -->
+          <div class="card hud-block">
+            <div class="hud-circle-container">
+              <div class="circle-glow"></div>
+              <div class="hud-circle-wrap">
+                <svg viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.015)" stroke-width="2.5" />
+                  <circle class="hud-ring" id="ring-vpip" cx="50" cy="50" r="42" 
+                          stroke="var(--accent)" stroke-width="2.8" fill="none"
+                          stroke-dasharray="263.8" stroke-dashoffset="263.8" stroke-linecap="round" />
+                  
+                  <circle cx="50" cy="50" r="34" fill="none" stroke="rgba(255,255,255,0.015)" stroke-width="2.5" />
+                  <circle class="hud-ring" id="ring-pfr" cx="50" cy="50" r="34" 
+                          stroke="var(--accent-2)" stroke-width="2.8" fill="none"
+                          stroke-dasharray="213.6" stroke-dashoffset="213.6" stroke-linecap="round" />
+                  
+                  <circle cx="50" cy="50" r="26" fill="none" stroke="rgba(255,255,255,0.015)" stroke-width="2.5" />
+                  <circle class="hud-ring" id="ring-3bet" cx="50" cy="50" r="26" 
+                          stroke="var(--loss)" stroke-width="2.8" fill="none"
+                          stroke-dasharray="163.3" stroke-dashoffset="163.3" stroke-linecap="round" />
+                  
+                  <g id="radar-sweep">
+                    <line x1="50" y1="50" x2="50" y2="8" stroke="var(--border-strong)" stroke-width="0.75" />
+                  </g>
+                </svg>
+                <div class="hud-center-label">
+                  <div class="hud-center-lbl" id="center-lbl">vpip</div>
+                  <div class="hud-center-val" id="center-val">21.8%</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="hud-stats-list">
+              <button class="stat-trigger active" data-stat="vpip">
+                <span class="st-l">VPIP (Vol. Put in Pot)</span>
+                <span class="st-value">21.8%</span>
+              </button>
+              <button class="stat-trigger" data-stat="pfr">
+                <span class="st-l">PFR (Preflop Raise)</span>
+                <span class="st-value">17.2%</span>
+              </button>
+              <button class="stat-trigger" data-stat="3bet">
+                <span class="st-l">3-Bet Frequency</span>
+                <span class="st-value">8.4%</span>
+              </button>
+            </div>
+          </div>
+          
+        </div>
+        
+        <div class="desk-left">
+          
+          <!-- Volume & Chips Stack -->
+          <div class="card" style="display: grid; grid-template-columns: 1fr auto; gap: 20px;">
+            <div>
+              <span class="kick">Volume & Chips Performance</span>
+              <div class="mon-number" style="font-size: 38px; margin-top: 8px;">+324,580 <span class="cents" style="font-size: 20px;">chips</span></div>
+              <div class="kick" style="margin-top: 8px; color:var(--accent);">+8.24 bb/100 win rate</div>
+            </div>
+            <!-- SVG Chips Stack -->
+            <div style="display: flex; align-items: center; justify-content: center;">
+              <svg width="100" height="90" viewBox="0 0 100 90" style="overflow: visible;">
+                <g transform="translate(20, 15)">
+                  <ellipse cx="20" cy="50" rx="18" ry="6" fill="#030407" stroke="var(--border-strong)" stroke-width="1" />
+                  <path d="M 2 50 A 18 6 0 0 0 38 50 L 38 56 A 18 6 0 0 1 2 56 Z" fill="var(--c-chip-1)" opacity="0.8" stroke="var(--border-strong)" stroke-width="1"/>
+                  <ellipse cx="20" cy="44" rx="18" ry="6" fill="#030407" stroke="var(--border-strong)" stroke-width="1" />
+                  <path d="M 2 44 A 18 6 0 0 0 38 44 L 38 50 A 18 6 0 0 1 2 50 Z" fill="var(--c-chip-1)" opacity="0.9" stroke="var(--border-strong)" stroke-width="1"/>
+                  <ellipse cx="20" cy="38" rx="18" ry="6" fill="var(--c-chip-1)" stroke="#fff" stroke-width="0.75" />
+                </g>
+                <g transform="translate(40, 5)">
+                  <ellipse cx="20" cy="50" rx="18" ry="6" fill="#030407" stroke="var(--border-strong)" stroke-width="1" />
+                  <path d="M 2 50 A 18 6 0 0 0 38 50 L 38 56 A 18 6 0 0 1 2 56 Z" fill="var(--c-chip-2)" opacity="0.8" stroke="var(--border-strong)" stroke-width="1"/>
+                  <ellipse cx="20" cy="44" rx="18" ry="6" fill="#030407" stroke="var(--border-strong)" stroke-width="1" />
+                  <path d="M 2 44 A 18 6 0 0 0 38 44 L 38 50 A 18 6 0 0 1 2 50 Z" fill="var(--c-chip-2)" opacity="0.85" stroke="var(--border-strong)" stroke-width="1"/>
+                  <ellipse cx="20" cy="38" rx="18" ry="6" fill="#030407" stroke="var(--border-strong)" stroke-width="1" />
+                  <path d="M 2 38 A 18 6 0 0 0 38 38 L 38 44 A 18 6 0 0 1 2 44 Z" fill="var(--c-chip-2)" opacity="0.9" stroke="var(--border-strong)" stroke-width="1"/>
+                  <ellipse cx="20" cy="32" rx="18" ry="6" fill="var(--c-chip-2)" stroke="#fff" stroke-width="0.75" />
+                </g>
+                <g transform="translate(60, 20)">
+                  <ellipse cx="20" cy="50" rx="18" ry="6" fill="#030407" stroke="var(--border-strong)" stroke-width="1" />
+                  <path d="M 2 50 A 18 6 0 0 0 38 50 L 38 56 A 18 6 0 0 1 2 56 Z" fill="var(--c-chip-3)" opacity="0.8" stroke="var(--border-strong)" stroke-width="1"/>
+                  <ellipse cx="20" cy="44" rx="18" ry="6" fill="var(--c-chip-3)" stroke="#fff" stroke-width="0.75" />
+                </g>
+              </svg>
+            </div>
+          </div>
+          
+          <!-- Stack Depth Bands & Blocker -->
+          <div class="card">
+            <span class="kick">Stack Depth bands & top blockers</span>
+            <div class="blocker-leak-grid" style="margin-top: 14px;">
+              <div class="leak-kpi-cell loss">
+                <span class="kick loss">Top Leak spot</span>
+                <div class="leak-kpi-val loss">BTN Open</div>
+                <span class="kick" style="font-size:9.5px;">-28bb/100 impact</span>
+              </div>
+              <div class="leak-kpi-cell">
+                <span class="kick">GTO Compliance</span>
+                <div class="leak-kpi-val">87.5%</div>
+                <span class="kick" style="font-size:9.5px; color:var(--accent);">Target &ge; 85%</span>
+              </div>
+            </div>
+            
+            <div class="stack-band-list">
+              <div class="stack-band-row">
+                <span class="stack-band-lbl">&lt;10bb (push)</span>
+                <div class="stack-band-bar-outer"><span class="stack-band-bar-fill loss" style="width: 14%;"></span></div>
+                <span class="stack-band-val">-4,230</span>
+              </div>
+              <div class="stack-band-row">
+                <span class="stack-band-lbl">10-17bb (crit)</span>
+                <div class="stack-band-bar-outer"><span class="stack-band-bar-fill loss" style="width: 22%;"></span></div>
+                <span class="stack-band-val">-8,120</span>
+              </div>
+              <div class="stack-band-row">
+                <span class="stack-band-lbl">17-25bb (warn)</span>
+                <div class="stack-band-bar-outer"><span class="stack-band-bar-fill" style="width: 65%;"></span></div>
+                <span class="stack-band-val">+24,100</span>
+              </div>
+              <div class="stack-band-row">
+                <span class="stack-band-lbl">25-40bb (mid)</span>
+                <div class="stack-band-bar-outer"><span class="stack-band-bar-fill" style="width: 48%;"></span></div>
+                <span class="stack-band-val">+18,400</span>
+              </div>
+              <div class="stack-band-row">
+                <span class="stack-band-lbl">40bb+ (deep)</span>
+                <div class="stack-band-bar-outer"><span class="stack-band-bar-fill" style="width: 88%;"></span></div>
+                <span class="stack-band-val">+112,450</span>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      
+      <!-- Tactile Bottom Marquee Carousel -->
+      <div class="marquee-wrap" id="stats-marquee">
+        <div class="marquee-inner" id="marquee-track-1">
+          <span class="marquee-tag">VPIP: 21.8%</span>
+          <span class="marquee-tag">PFR: 17.2%</span>
+          <span class="marquee-tag">3-Bet: 8.4%</span>
+          <span class="marquee-tag">GTO Compliance: 87.5%</span>
+          <span class="marquee-tag critical">BTN Open: 58% (bleed)</span>
+          <span class="marquee-tag">C-Bet: 68.2%</span>
+          <span class="marquee-tag">C-Bet HU: 98.4%</span>
+          <span class="marquee-tag">AF: 3.1</span>
+          <!-- Duplicate to drift -->
+          <span class="marquee-tag duplicate">VPIP: 21.8%</span>
+          <span class="marquee-tag duplicate">PFR: 17.2%</span>
+          <span class="marquee-tag duplicate">3-Bet: 8.4%</span>
+          <span class="marquee-tag duplicate">GTO Compliance: 87.5%</span>
+          <span class="marquee-tag critical duplicate">BTN Open: 58% (bleed)</span>
+          <span class="marquee-tag duplicate">C-Bet: 68.2%</span>
+          <span class="marquee-tag duplicate">C-Bet HU: 98.4%</span>
+          <span class="marquee-tag duplicate">AF: 3.1</span>
+        </div>
+      </div>
+
+    <!-- =========================================================
+         PAGE 2: CAREER (Career Arc & Progression milestones)
+         ========================================================= -->
+    <div class="career-top-kpis">
+        <div class="card">
+          <span class="kick">Total tournaments</span>
+          <div class="mon-number" style="font-size:36px; margin-top:6px;">250</div>
+        </div>
+        <div class="card">
+          <span class="kick">Average Buy-In</span>
+          <div class="mon-number" style="font-size:36px; margin-top:6px;">$1.10</div>
+        </div>
+        <div class="card">
+          <span class="kick">ROI Total</span>
+          <div class="mon-number" style="font-size:36px; margin-top:6px; color:var(--accent);">141.4%</div>
+        </div>
+        <div class="card">
+          <span class="kick">ITM Cashes</span>
+          <div class="mon-number" style="font-size:36px; margin-top:6px;">89 <span class="cents" style="font-size:16px;">(35.6%)</span></div>
+        </div>
+      </div>
+      
+      <!-- Cumulative winnings chart (The Arc) -->
+      <div class="card chart-card">
+        <span class="kick accent">The Arc · cumulative progression</span>
+        <div class="arc-chart-container" id="career-arc-container">
+          <div class="chart-tooltip" id="chart-tooltip"></div>
+          <svg viewBox="0 0 1000 250" preserveAspectRatio="none">
+            <line x1="0" y1="50" x2="1000" y2="50" stroke="rgba(255,255,255,0.02)"/>
+            <line x1="0" y1="100" x2="1000" y2="100" stroke="rgba(255,255,255,0.02)"/>
+            <line x1="0" y1="150" x2="1000" y2="150" stroke="rgba(255,255,255,0.02)"/>
+            <line x1="0" y1="200" x2="1000" y2="200" stroke="rgba(255,255,255,0.02)"/>
+            <!-- Trend path line -->
+            <path d="M0 240 L100 230 L200 235 L300 210 L400 215 L500 180 L600 190 L700 140 L800 150 L900 80 L1000 50" fill="none" stroke="var(--accent)" stroke-width="2.5" />
+            <!-- Milestones nodes -->
+            <circle class="chart-node" cx="300" cy="210" r="5" data-info="<b>First cash</b> Tournament #45 (+$22.50) · 32% ITM" />
+            <circle class="chart-node" cx="500" cy="180" r="5" data-info="<b>Break-even cashed</b> Tournament #112 (+$48.00)" />
+            <circle class="chart-node" cx="700" cy="140" r="5" data-info="<b>Biggest win cashed</b> Tournament #188 (+$112.50) bounty run" />
+            <circle class="chart-node" cx="900" cy="80" r="5" data-info="<b>ABI Evolution Kashed</b> Tier Cashed $2.20 opens" />
+          </svg>
+        </div>
+      </div>
+      
+      <div class="career-bottom-grid">
+        <!-- Milestones list feed -->
+        <div>
+          <h3 class="kick accent" style="margin-bottom:14px;">Achievement feed</h3>
+          <div class="timeline-feed">
+            <div class="timeline-item">
+              <span class="t-date">May 2026</span>
+              <span class="t-title">Casher cashed $22.50 in $1.10 deepstack</span>
+              <span class="t-val">+$22.50</span>
+            </div>
+            <div class="timeline-item">
+              <span class="t-date">Apr 2026</span>
+              <span class="t-title">Cashed 4th place in Bounty Knockout</span>
+              <span class="t-val">+$48.00</span>
+            </div>
+            <div class="timeline-item">
+              <span class="t-date">Feb 2026</span>
+              <span class="t-title">Milestone: first cashed podium cashout</span>
+              <span class="t-val">+$112.50</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Day / Hour heatmap static widget -->
+        <div class="card">
+          <span class="kick">Data Health & ABI evolve</span>
+          <p style="font-size:12.5px; line-height:1.6; color:var(--fg-muted); margin: 12px 0 0;">
+            Import runs indicate high consistency. Cumulative bankroll trends stable. ROI is currently 141.4% (field average ~16%). ITM Cashes total 89. Keep preflop open compliance targets above 85% to evolve stakes.
+          </p>
+        </div>
+      </div>
+
+    <!-- =========================================================
+         PAGE 3: SESSIONS (Volume Timeline & predators)
+         ========================================================= -->
+    <div class="card" style="padding:0; overflow:hidden;">
+        <div class="timeline-row-editorial" style="background:rgba(0,0,0,0.2); font-family:var(--mono); font-size:10px; text-transform:uppercase; color:var(--fg-muted); cursor:default; border-bottom-width:2px;">
+          <span>Date</span><span>Session details</span><span>Buy-ins</span><span>bb/100</span><span>GTO comp</span>
+        </div>
+        
+        <!-- Row 1 -->
+        <div class="timeline-row-editorial" data-drawer="drawer-1" data-month="May 30">
+          <div class="timeline-date-block">30/05/2026<div class="timeline-date-sub">18:42 - 21:12</div></div>
+          <div class="timeline-title-block"><div class="editorial-title">Session #37</div><div class="editorial-desc">420 hands · 3 tournaments</div></div>
+          <div class="timeline-val-block">$3.30</div>
+          <div class="timeline-val-block pos">+12.4</div>
+          <div class="timeline-val-block pos">88.5%</div>
+        </div>
+        <!-- Drawer 1 -->
+        <div class="editorial-expand-panel" id="drawer-1">
+          <div class="expanded-card-grid">
+            <div class="session-card">
+              <h4>Session Nemesis</h4>
+              <p class="mon-number" style="font-size:22px; margin:0;">villain_crusher</p>
+              <p style="font-size:11.5px; color:var(--fg-muted); margin:8px 0 0;">Took <span style="color:var(--loss); font-weight:700;">-32bb</span> from you on blinds battles.</p>
+            </div>
+            <div class="session-card">
+              <h4>Consistency ratios</h4>
+              <div class="session-bar-row">
+                <div class="session-bar-lbl"><span>C-Bet Total</span><span>65.0%</span></div>
+                <div class="session-bar-track"><span class="session-bar-fill" style="width: 65%;"></span></div>
+              </div>
+              <div class="session-bar-row">
+                <div class="session-bar-lbl"><span>C-Bet HU</span><span>95.0%</span></div>
+                <div class="session-bar-track"><span class="session-bar-fill blue" style="width: 95%;"></span></div>
+              </div>
+              <div class="session-bar-row">
+                <div class="session-bar-lbl"><span>WTSD</span><span>24.0%</span></div>
+                <div class="session-bar-track"><span class="session-bar-fill amber" style="width: 24%;"></span></div>
+              </div>
+            </div>
+            <div class="session-card">
+              <h4>Session Intelligence</h4>
+              <p style="font-size:12px; line-height:1.5; color:var(--fg-muted); margin:0;">
+                <span style="color:var(--accent); font-weight:700;">Elite discipline.</span> You maintained GTO open compliance at 88.5%. Turn actions were stable, but check blind defenses against late opens.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="timeline-row-editorial" data-drawer="drawer-2" data-month="May 28">
+          <div class="timeline-date-block">28/05/2026<div class="timeline-date-sub">19:15 - 23:45</div></div>
+          <div class="timeline-title-block"><div class="editorial-title">Session #36</div><div class="editorial-desc">1,120 hands · 6 tournaments</div></div>
+          <div class="timeline-val-block">$6.60</div>
+          <div class="timeline-val-block neg">-4.8</div>
+          <div class="timeline-val-block" style="color:#ffaa00;">81.2%</div>
+        </div>
+        <!-- Drawer 2 -->
+        <div class="editorial-expand-panel" id="drawer-2">
+          <div class="expanded-card-grid">
+            <div class="session-card">
+              <h4>Session Nemesis</h4>
+              <p class="mon-number" style="font-size:22px; margin:0;">fish_king_22</p>
+              <p style="font-size:11.5px; color:var(--fg-muted); margin:8px 0 0;">Took <span style="color:var(--loss); font-weight:700;">-78bb</span> from you with showdown calls.</p>
+            </div>
+            <div class="session-card">
+              <h4>Consistency ratios</h4>
+              <div class="session-bar-row">
+                <div class="session-bar-lbl"><span>C-Bet Total</span><span>58.0%</span></div>
+                <div class="session-bar-track"><span class="session-bar-fill" style="width: 58%;"></span></div>
+              </div>
+              <div class="session-bar-row">
+                <div class="session-bar-lbl"><span>C-Bet HU</span><span>82.0%</span></div>
+                <div class="session-bar-track"><span class="session-bar-fill blue" style="width: 82%;"></span></div>
+              </div>
+              <div class="session-bar-row">
+                <div class="session-bar-lbl"><span>WTSD</span><span>32.0%</span></div>
+                <div class="session-bar-track"><span class="session-bar-fill amber" style="width: 32%;"></span></div>
+              </div>
+            </div>
+            <div class="session-card">
+              <h4>Session Intelligence</h4>
+              <p style="font-size:12px; line-height:1.5; color:var(--fg-muted); margin:0;">
+                <span style="color:var(--loss); font-weight:700;">Low compliance.</span> Blinds defense was too wide vs HJ/CO openers. Re-evaluate SB fold criteria.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    <!-- =========================================================
+         PAGE 4: HANDS (Archive & simulated filter database)
+         ========================================================= -->
+    <!-- Filter Tool Strip -->
+      <div class="filter-bar">
+        <div class="filter-group">
+          <label>Position</label>
+          <select id="filter-position">
+            <option value="">All positions</option>
+            <option value="BTN">BTN</option>
+            <option value="SB">SB</option>
+            <option value="BB">BB</option>
+            <option value="UTG">UTG</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Compliance</label>
+          <select id="filter-compliance">
+            <option value="">All hands</option>
+            <option value="ok">Compliant</option>
+            <option value="dev">Deviations</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Scenario</label>
+          <select id="filter-scenario">
+            <option value="">All scenarios</option>
+            <option value="RFI">RFI</option>
+            <option value="VS_OPEN">Facing Raise</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Search card</label>
+          <input type="text" id="filter-search" placeholder="e.g. AA, KQs..." style="width:120px;"/>
+        </div>
+        <button class="btn-reset-db" id="btn-reset-db">Reset Database</button>
+      </div>
+
+      <!-- Hands Archive Table -->
+      <div class="hands-table-wrap">
+        <table class="hands-table" id="hands-archive-table">
+          <thead>
+            <tr>
+              <th>Cards</th>
+              <th>Position</th>
+              <th>Scenario</th>
+              <th>Stack</th>
+              <th>Action</th>
+              <th>Net PnL</th>
+              <th>Compliance</th>
+              <th style="text-align:right;">Telemetry</th>
+            </tr>
+          </thead>
+          <tbody id="hands-table-body">
+            <!-- Simulated rows generated in JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Replayer Modal Backdrop -->
+      <div class="replay-modal-backdrop" id="replay-backdrop">
+        <div class="replay-modal">
+          <div class="replay-modal-header">
+            <span class="kick accent" id="replay-title">Replaying Hand #12,854</span>
+            <button class="replay-modal-close" id="btn-close-replay">&times;</button>
+          </div>
+          <!-- 3D Felt screen representation -->
+          <div class="mini-felt-arena">
+            <div class="mini-felt-surface"></div>
+            <div class="mini-felt-cards">
+              <div class="poker-card-micro" id="card-1">
+                <span>A</span>
+                <span class="suit-symbol">♠</span>
+              </div>
+              <div class="poker-card-micro" id="card-2">
+                <span>K</span>
+                <span class="suit-symbol">♠</span>
+              </div>
+            </div>
+            <div class="center-pot-box" style="opacity: 0.85;">
+              <span class="kick">Pot</span>
+              <div class="mon-number" style="font-size:24px; margin-top:2px;">12.4bb</div>
+            </div>
+          </div>
+          <!-- Hand summary statistics -->
+          <div class="replay-modal-stats">
+            <div>
+              <span class="kick">Position</span>
+              <div style="font-size:15px; font-weight:700; margin-top:2px;" id="replay-pos">BTN</div>
+            </div>
+            <div>
+              <span class="kick">GTO Action</span>
+              <div style="font-size:15px; font-weight:700; color:var(--accent); margin-top:2px;" id="replay-gto">RAISE</div>
+            </div>
+            <div>
+              <span class="kick">Hand Profit</span>
+              <div style="font-size:15px; font-weight:700; color:var(--accent); margin-top:2px;" id="replay-profit">+8.5 bb</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- =========================================================
+         PAGE 5: LEAKS (Leaks prioritized index & ledger swaps)
+         ========================================================= -->
+    <!-- Incident swap display -->
+      <div class="card incident-swap-wrap" style="margin-bottom: 24px;">
+        <div class="inc-grid" id="incident-grid-box">
+          <div>
+            <div style="display:flex; gap:12px; align-items:center; margin-bottom:14px;">
+              <span class="compliance-badge dev" id="leak-severity-badge">Critical</span>
+              <span class="kick" id="leak-meta">Top leak · 1 of 3 · BTN · 100bb</span>
+            </div>
+            <h2 class="inc-headline-text" id="leak-headline">The button is <span class="leak-highlight">bleeding.</span></h2>
+            <p class="inc-desc" id="leak-description">
+              You're opening <b>58%</b> on the button where the solver wants <b>48–52%</b>. The bottom 6% of that range — <i>K8s K7s Q6s Q5s J7s T7s</i> — gets punished hardest by late-position three-bets.
+            </p>
+            
+            <div class="inc-stats-row">
+              <div class="inc-stat-item"><span class="l">Deviation</span><div class="v loss" id="leak-stat-dev">+8.0%</div></div>
+              <div class="inc-stat-item"><span class="l">Cost</span><div class="v loss" id="leak-stat-cost">-28bb/100</div></div>
+              <div class="inc-stat-item"><span class="l">Per Tourney</span><div class="v loss" id="leak-stat-tourney">-$0.62</div></div>
+              <div class="inc-stat-item"><span class="l">Recover</span><div class="v accent" id="leak-stat-recover">+$60</div></div>
+            </div>
+          </div>
+          
+          <div class="matrix-wrapper">
+            <div class="matrix-grid-cell-label">
+              <span>RFI Range Map</span>
+              <span class="spot-pos" id="leak-matrix-pos">BTN OPEN</span>
+            </div>
+            <div class="matrix-grid-box" id="leak-matrix-grid">
+              <!-- Grid generated via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Ranked index ledger -->
+      <div class="card" style="padding:0; overflow:hidden;">
+        <div class="leak-index-cols">
+          <span>#</span><span>Leak Spot</span><span>Severity</span><span>Stakes</span><span style="text-align:right;">Cost</span>
+        </div>
+        
+        <div class="leak-index-row active crit" data-leak="btn">
+          <span class="leak-rank">#1</span>
+          <span class="leak-name">BTN RFI Range Wide Deviation<div style="font-size:10.5px; color:var(--fg-muted); margin-top:2px;">Over-opening hands vs late 3-bets</div></span>
+          <span><span class="leak-sev-badge crit">Critical</span></span>
+          <span class="leak-spot-lbl">100bb</span>
+          <span class="leak-cost-lbl" style="text-align:right;">-$0.62/T</span>
+        </div>
+        <div class="leak-index-row med" data-leak="bb">
+          <span class="leak-rank">#2</span>
+          <span class="leak-name">BB Fold vs late BTN open<div style="font-size:10.5px; color:var(--fg-muted); margin-top:2px;">Overfolding BB vs BTN opens</div></span>
+          <span><span class="leak-sev-badge high">High</span></span>
+          <span class="leak-spot-lbl">25bb</span>
+          <span class="leak-cost-lbl" style="text-align:right; color:#ffaa00;">-$0.38/T</span>
+        </div>
+        <div class="leak-index-row med" data-leak="sb">
+          <span class="leak-rank">#3</span>
+          <span class="leak-name">SB Over-calling vs UTG/MP open<div style="font-size:10.5px; color:var(--fg-muted); margin-top:2px;">Flatting out of SB with weak offsuit aces</div></span>
+          <span><span class="leak-sev-badge med">Medium</span></span>
+          <span class="leak-spot-lbl">40bb</span>
+          <span class="leak-cost-lbl" style="text-align:right; color:var(--fg-muted);">-$0.15/T</span>
+        </div>
+      </div>
+
+    <!-- =========================================================
+         PAGE 6: RANGES (Preflop matrix & solver validation)
+         ========================================================= -->
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2 class="kick accent" style="margin:0;">Range compliance lab</h2>
+        <div class="ranges-tab-menu">
+          <button class="ranges-tab-btn active" data-mode="compliance">Compliance</button>
+          <button class="ranges-tab-btn" data-mode="edit">Edit Range</button>
+        </div>
+      </div>
+      
+      <div class="ranges-main-layout">
+        <!-- Range Matrix workspace -->
+        <div class="card">
+          <div class="position-select-grid" id="ranges-pos-selector">
+            <!-- Programmatic button triggers UTG to BB -->
+          </div>
+          
+          <div class="matrix-grid-box" id="ranges-matrix-grid" style="max-width: 440px; margin: 0 auto;">
+            <!-- Grid generated programmatically -->
+          </div>
+          
+          <div class="ranges-control-footer">
+            <div class="ranges-swatch-info">
+              <span><i class="play"></i>Played correctly</span>
+              <span><i class="dev"></i>Deviation spots</span>
+            </div>
+            <span class="kick" id="ranges-combos-lbl">169 combos</span>
+          </div>
+        </div>
+        
+        <!-- Solver delta comparison list -->
+        <div class="card solver-delta-card">
+          <span class="kick accent">Solver Delta Validation</span>
+          <div style="margin-top:14px;">
+            <div class="solver-delta-row">
+              <span class="pos-lbl">UTG Open</span>
+              <div class="val-group"><span class="ours">15.2%</span><span class="solver">15.0%</span></div>
+              <span class="delta-lbl wider">+0.2% OK</span>
+            </div>
+            <div class="solver-delta-row">
+              <span class="pos-lbl">CO Open</span>
+              <div class="val-group"><span class="ours">28.4%</span><span class="solver">26.0%</span></div>
+              <span class="delta-lbl wider">+2.4% Wide</span>
+            </div>
+            <div class="solver-delta-row">
+              <span class="pos-lbl">BTN Open</span>
+              <div class="val-group"><span class="ours">58.0%</span><span class="solver">48.0%</span></div>
+              <span class="delta-lbl tighter">+10.0% Wide</span>
+            </div>
+            <div class="solver-delta-row">
+              <span class="pos-lbl">SB Open</span>
+              <div class="val-group"><span class="ours">38.0%</span><span class="solver">40.0%</span></div>
+              <span class="delta-lbl tighter">-2.0% Tight</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- =========================================================
+         PAGE 7: VILLAINS (Opponents obsidian dossiers grid)
+         ========================================================= -->
+    <div class="opponent-search-bar">
+        <input type="text" id="villains-search-input" placeholder="Search opponent by name..." />
+        <div class="ranges-tab-menu" id="villains-filter-dock">
+          <button class="ranges-tab-btn active" data-filter="all">All type</button>
+          <button class="ranges-tab-btn" data-filter="lag">LAG</button>
+          <button class="ranges-tab-btn" data-filter="passive">Passive</button>
+          <button class="ranges-tab-btn" data-filter="reg">Solid Reg</button>
+        </div>
+      </div>
+      
+      <div class="opponents-cards-grid" id="villains-grid">
+        <!-- Cards generated programmatically in JS -->
+      </div>
+
+    <!-- =========================================================
+         PAGE 8: ARENA (Simulated GTO trainer, 3D felt)
+         ========================================================= -->
+    <div class="arena-grid">
+        <div class="hologram-viewport" id="arena-stage">
+          
+          <!-- Trainer status banner -->
+          <div style="display:flex; justify-content:space-between; align-items:center; z-index: 10;">
+            <span class="kick accent">Trainer Drill: Fault Fixer</span>
+            <div class="kick">Score: <b style="color:var(--accent);" id="arena-score">0 / 0</b></div>
+          </div>
+          
+          <!-- 3D Felt Arena -->
+          <div class="hologram-stage-3d">
+            <div class="hologram-felt-3d" id="arena-felt"></div>
+            <canvas id="arena-felt-canvas"></canvas>
+            
+            <!-- Dynamic feedback popup -->
+            <div class="trainer-feedback-overlay" id="trainer-feedback">
+              <h4 id="feedback-title">CORRECT</h4>
+              <p id="feedback-desc">Standard preflop open.</p>
+            </div>
+            
+            <button class="hologram-seat seat-1" data-seat="1"><span class="name">UTG (Seat 1)</span><span class="chips">100bb</span></button>
+            <button class="hologram-seat seat-2" data-seat="2"><span class="name">MP (Seat 2)</span><span class="chips">78bb</span></button>
+            <button class="hologram-seat seat-3" data-seat="3"><span class="name">CO (Seat 3)</span><span class="chips">52bb</span></button>
+            <button class="hologram-seat hero seat-4" data-seat="4"><span class="name">BTN (Hero)</span><span class="chips">100bb</span></button>
+            <button class="hologram-seat seat-5" data-seat="5"><span class="name">SB (Seat 5)</span><span class="chips">32bb</span></button>
+            <button class="hologram-seat seat-6" data-seat="6"><span class="name">BB (Seat 6)</span><span class="chips">40bb</span></button>
+            
+            <div class="center-pot-box">
+              <span class="l">Pot</span>
+              <div class="v">1.5bb</div>
+            </div>
+          </div>
+          
+          <!-- Action Buttons -->
+          <div class="trainer-actions-wrap">
+            <button class="btn-trainer-act" data-act="fold">Fold</button>
+            <button class="btn-trainer-act" data-act="call">Call</button>
+            <button class="btn-trainer-act" data-act="raise">Raise</button>
+          </div>
+          
+        </div>
+        
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <span class="kick accent">Training telemetry</span>
+            <h3 style="font-family:var(--display); margin:12px 0 6px;">Fault Fixer</h3>
+            <p style="font-size:12px; line-height:1.55; color:var(--fg-muted); margin:0;">
+              This drill presents spots from your imported hands where you previously made GTO deviations. Master them to fix leaks.
+            </p>
+          </div>
+          
+          <div style="border-top:1px solid var(--border); padding-top:14px;">
+            <span class="kick">Drill state</span>
+            <div style="font-family:var(--mono); font-size:11.5px; margin-top:6px; line-height:1.6;">
+              Current spot: <b style="color:var(--accent);">BTN RFI</b><br>
+              Hand dealt: <b id="trainer-current-hand">AA</b>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  </div>
+
+  <!-- ===================== FLOATING THEME DOCK PANEL ===================== -->
+  <div class="theme-dock" id="theme-dock">
+    <div class="dock-header">Showcase Controls</div>
+    <div class="dock-row">
+      <span>Color:</span>
+      <div style="display:flex; gap:3px;">
+        <button class="dock-btn active" id="btn-color-obsidian">Obsidian</button>
+        <button class="dock-btn" id="btn-color-ultraviolet">Ultraviolet</button>
+      </div>
+    </div>
+    <div class="dock-row">
+      <span>Font:</span>
+      <div style="display:flex; gap:3px;">
+        <button class="dock-btn active" id="btn-font-geometric">Geometric</button>
+        <button class="dock-btn" id="btn-font-editorial">Editorial</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== THREE JS & GSAP ===================== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    // Safe mock fallbacks for GSAP if local or remote resources are offline
+    if (typeof gsap === 'undefined') {
+      window.gsap = {
+        to: (target, vars) => {
+          const els = typeof target === 'string' ? document.querySelectorAll(target) : [target];
+          els.forEach(el => {
+            if (!el) return;
+            if (vars.opacity !== undefined) el.style.opacity = vars.opacity;
+            if (vars.x !== undefined || vars.y !== undefined) {
+              const x = vars.x || 0; const y = vars.y || 0;
+              el.style.transform = `translate(${x}px, ${y}px)`;
+            }
+            if (vars.strokeDashoffset !== undefined) el.style.strokeDashoffset = vars.strokeDashoffset;
+          });
+        },
+        fromTo: (target, fromVars, toVars) => {
+          const els = typeof target === 'string' ? document.querySelectorAll(target) : [target];
+          els.forEach(el => {
+            if (!el) return;
+            if (toVars.left !== undefined) el.style.left = toVars.left;
+            if (toVars.opacity !== undefined) el.style.opacity = toVars.opacity;
+          });
+        },
+        set: (target, vars) => {
+          const els = typeof target === 'string' ? document.querySelectorAll(target) : [target];
+          els.forEach(el => {
+            if (vars.x !== undefined) el.style.transform = `translate(${vars.x}px, ${vars.y}px)`;
+          });
+        },
+        killTweensOf: () => {},
+        ticker: { add: () => {} }
+      };
+    }
+  </script>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    
+    // Compiled JSON Datasets
+    const handsMockData = [
+  {
+    "id": "12854",
+    "cards": "As Ks",
+    "pos": "BTN",
+    "scenario": "RFI",
+    "stack": "100bb",
+    "action": "raise",
+    "net": "+8.5bb",
+    "compliant": true,
+    "suits": [
+      "♠",
+      "♠"
+    ]
+  },
+  {
+    "id": "12853",
+    "cards": "Kh Qs",
+    "pos": "CO",
+    "scenario": "RFI",
+    "stack": "45bb",
+    "action": "fold",
+    "net": "0.0bb",
+    "compliant": true,
+    "suits": [
+      "♥",
+      "♠"
+    ]
+  },
+  {
+    "id": "12852",
+    "cards": "7d 6d",
+    "pos": "BB",
+    "scenario": "VS_OPEN",
+    "stack": "25bb",
+    "action": "call",
+    "net": "-1.0bb",
+    "compliant": true,
+    "suits": [
+      "♦",
+      "♦"
+    ]
+  },
+  {
+    "id": "12851",
+    "cards": "Qc Jc",
+    "pos": "BTN",
+    "scenario": "RFI",
+    "stack": "50bb",
+    "action": "raise",
+    "net": "+14.2bb",
+    "compliant": true,
+    "suits": [
+      "♣",
+      "♣"
+    ]
+  },
+  {
+    "id": "12850",
+    "cards": "Ad 5o",
+    "pos": "SB",
+    "scenario": "VS_OPEN",
+    "stack": "32bb",
+    "action": "call",
+    "net": "-3.5bb",
+    "compliant": false,
+    "suits": [
+      "♦",
+      "♥"
+    ]
+  }
+];
+    const tickerData = [
+  "SESSION RECORD: BTN is bleeding 8.4bb/100 to RFI 3-Bet squeeze. Review Villain 'reggie_spew' exploitation tactics.",
+  "PREFLOP EXPLOIT ALERT: Opponent 'nitty_nora' folds 74% to Flop C-bets. Execute single-barrel bluffs on dry, low-card textures.",
+  "COMPLIANCE TELEMETRY: 92% Solver compliance maintained over last 250 played Hands. Deviation detected on Hand #12850.",
+  "ARENA PRACTICE GOAL: Drill 15 Hands of BB vs SB open squeeze defense on the holographic felt table."
+];
+    const villainsMock = [
+  {
+    "name": "fish_player_99",
+    "hands": 142,
+    "vpip": 38,
+    "pfr": 12,
+    "af": 1.1,
+    "gap": 26,
+    "arch": "lag",
+    "label": "Fish",
+    "advice": "Stations river calls. Bluff rarely; value bet thin pairs heavily."
+  },
+  {
+    "name": "nit_reg_37",
+    "hands": 842,
+    "vpip": 14,
+    "pfr": 11,
+    "af": 3.5,
+    "gap": 3,
+    "arch": "passive",
+    "label": "Nit",
+    "advice": "Folds to 3-bets at 80% rate. Attack their opens in late position constantly."
+  },
+  {
+    "name": "solid_pro_scorza",
+    "hands": 2200,
+    "vpip": 24,
+    "pfr": 20,
+    "af": 2.8,
+    "gap": 4,
+    "arch": "reg",
+    "label": "Solid Reg",
+    "advice": "Maintains GTO open baselines. Exploit via blind defense adjustments."
+  }
+];
+    const trainerDrills = [
+  {
+    "hand": "AA",
+    "correct": "raise",
+    "note": "Standard value open from BTN."
+  },
+  {
+    "hand": "T7o",
+    "correct": "fold",
+    "note": "Fold weak offsuit connectors preflop."
+  },
+  {
+    "hand": "KQs",
+    "correct": "raise",
+    "note": "Standard premium broadway raise."
+  },
+  {
+    "hand": "A2o",
+    "correct": "fold",
+    "note": "Weak offsuit aces fold in BTN vs HJ/CO."
+  }
+];
+
+    // --- MODULE: theme-dock.js ---
+      // 1. DYNAMIC THEME TOGGLES LOGIC (Color & Fonts switching)
+      // =========================================================
+      const btnObsidian = document.getElementById('btn-color-obsidian');
+      const btnUltraviolet = document.getElementById('btn-color-ultraviolet');
+      const btnGeometric = document.getElementById('btn-font-geometric');
+      const btnEditorial = document.getElementById('btn-font-editorial');
+      
+      const logoTitle = document.getElementById('logo-title');
+
+      btnObsidian.addEventListener('click', () => {
+        btnObsidian.classList.add('active');
+        btnUltraviolet.classList.remove('active');
+        document.body.setAttribute('data-color', 'obsidian');
+        targetGridColor = '0, 240, 255'; // Cyan morph
+      });
+
+      btnUltraviolet.addEventListener('click', () => {
+        btnUltraviolet.classList.add('active');
+        btnObsidian.classList.remove('active');
+        document.body.setAttribute('data-color', 'ultraviolet');
+        targetGridColor = '139, 108, 255'; // Violet morph
+      });
+
+      btnGeometric.addEventListener('click', () => {
+        btnGeometric.classList.add('active');
+        btnEditorial.classList.remove('active');
+        document.body.setAttribute('data-font', 'geometric');
+      });
+
+      btnEditorial.addEventListener('click', () => {
+        btnEditorial.classList.add('active');
+        btnGeometric.classList.remove('active');
+        document.body.setAttribute('data-font', 'editorial');
+      });
+
+
+      // =========================================================
+
+    // --- MODULE: scramble.js ---
+      // 2. TEXT SCRAMBLE ANGLE GRAPH (Tactile header triggers)
+      // =========================================================
+      function scrambleText(elementId, finalString, duration = 0.8) {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+        const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$#@+-./";
+        const length = finalString.length;
+        let frame = 0;
+        const totalFrames = duration * 60;
+        
+        const interval = setInterval(() => {
+          let currentString = "";
+          for (let i = 0; i < length; i++) {
+            if (Math.random() < frame / totalFrames) {
+              currentString += finalString[i];
+            } else {
+              currentString += chars[Math.floor(Math.random() * chars.length)];
+            }
+          }
+          el.innerText = currentString;
+          frame++;
+          if (frame >= totalFrames) {
+            clearInterval(interval);
+            el.innerText = finalString;
+          }
+        }, 1000 / 60);
+      }
+
+
+      // =========================================================
+
+    // --- MODULE: transitions.js ---
+      // 3. HORIZONTAL NAV PAGE SWITCHING ANIMATION
+      // =========================================================
+      const navLinks = document.querySelectorAll('.mast-nav a');
+      const pages = document.querySelectorAll('.page');
+      const slideLoader = document.getElementById('slide-loader');
+
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          if (link.classList.contains('on')) return;
+          
+          const targetTab = link.getAttribute('data-tab');
+          const activePage = document.querySelector('.page.active');
+          const targetPage = document.getElementById(`page-${targetTab}`);
+          
+          if (!targetPage || !activePage) return;
+
+          // Update active links
+          navLinks.forEach(l => l.classList.remove('on'));
+          link.classList.add('on');
+          
+          // Color sweep loader line
+          gsap.fromTo(slideLoader, { left: '-100%' }, {
+            left: '100%',
+            duration: 0.7,
+            ease: "power2.inOut",
+            onStart: () => {
+              // Animate active page out with skew slide
+              gsap.to(activePage, {
+                x: -120,
+                skewX: 8,
+                opacity: 0,
+                duration: 0.35,
+                ease: "power2.in",
+                onComplete: () => {
+                  activePage.classList.remove('active');
+                  activePage.style.display = 'none';
+                  
+                  targetPage.style.display = 'block';
+                  targetPage.classList.add('active');
+                  
+                  // Animate target page in with reverse skew slide
+                  gsap.fromTo(targetPage, 
+                    { x: 120, skewX: -8, opacity: 0 },
+                    { x: 0, skewX: 0, opacity: 1, duration: 0.45, ease: "power2.out" }
+                  );
+                  
+                  // Scramble headers
+                  const headerTitle = targetPage.querySelector('h1, h2.kick, span.kick');
+                  if (headerTitle) {
+                    scrambleText(headerTitle.id || '', headerTitle.innerText, 0.5);
+                  }
+
+                  // Page-specific calibrations
+                  if (targetTab === 'ranges') {
+                    animateRangeGridFades();
+                  } else if (targetTab === 'arena') {
+                    resizeFeltCanvas();
+                  }
+                }
+              });
+            }
+          });
+        });
+      });
+
+
+      // =========================================================
+
+    // --- MODULE: background.js ---
+      // 4. WAITING ORGANIC GRID BACKGROUND WAVE MESH RENDER
+      // =========================================================
+      const canvas = document.getElementById('fluid-canvas');
+      const ctx = canvas.getContext('2d');
+      
+      let mouse = { x: -1000, y: -1000 };
+      let ripples = [];
+      let currentGridColor = '0, 240, 255'; // default cyan/lime morph
+      window.targetGridColor = '0, 240, 255';
+      
+      document.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      });
+
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('.mast-nav') || e.target.closest('#theme-dock')) return;
+        ripples.push({
+          x: e.clientX,
+          y: e.clientY,
+          radius: 0,
+          maxRadius: Math.max(window.innerWidth, window.innerHeight) * 0.4,
+          force: 25,
+          speed: 12,
+          alpha: 1
+        });
+      });
+
+      window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      });
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      let time = 0;
+      const gridSpacing = 64;
+
+      function animateMesh() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        if (currentGridColor !== targetGridColor) {
+          const curr = currentGridColor.split(',').map(Number);
+          const targ = targetGridColor.split(',').map(Number);
+          const next = curr.map((v, i) => Math.round(v + (targ[i] - v) * 0.08));
+          currentGridColor = next.join(',');
+        }
+        
+        ripples.forEach(rip => {
+          rip.radius += rip.speed;
+          rip.alpha = 1 - (rip.radius / rip.maxRadius);
+        });
+        ripples = ripples.filter(rip => rip.radius < rip.maxRadius);
+        
+        const cols = Math.ceil(canvas.width / gridSpacing) + 1;
+        const rows = Math.ceil(canvas.height / gridSpacing) + 1;
+        
+        let points = [];
+        for (let c = 0; c < cols; c++) {
+          points[c] = [];
+          for (let r = 0; r < rows; r++) {
+            const baseX = c * gridSpacing;
+            const baseY = r * gridSpacing;
+            
+            const wave1 = Math.sin(c * 0.15 + time * 0.02) * 8;
+            const wave2 = Math.cos(r * 0.15 + time * 0.025) * 8;
+            let x = baseX + wave2;
+            let y = baseY + wave1;
+            
+            const dx = x - mouse.x;
+            const dy = y - mouse.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 260) {
+              const force = (260 - dist) / 260;
+              x += (dx / dist) * force * 18;
+              y += (dy / dist) * force * 18;
+            }
+            
+            ripples.forEach(rip => {
+              const rdx = x - rip.x;
+              const rdy = y - rip.y;
+              const rdist = Math.sqrt(rdx * rdx + rdy * rdy);
+              const delta = Math.abs(rdist - rip.radius);
+              if (delta < 80) {
+                const ringForce = (80 - delta) / 80;
+                const push = ringForce * rip.force * rip.alpha;
+                x += (rdx / rdist) * push;
+                y += (rdy / rdist) * push;
+              }
+            });
+            
+            points[c][r] = { x, y, alpha: Math.max(0.015, 0.12 - dist/1600) };
+          }
+        }
+        
+        ctx.lineWidth = 0.8;
+        for (let c = 0; c < cols; c++) {
+          for (let r = 0; r < rows; r++) {
+            if (c < cols - 1) {
+              ctx.beginPath();
+              ctx.strokeStyle = `rgba(${currentGridColor}, ${Math.min(points[c][r].alpha, points[c+1][r].alpha)})`;
+              ctx.moveTo(points[c][r].x, points[c][r].y);
+              ctx.lineTo(points[c+1][r].x, points[c+1][r].y);
+              ctx.stroke();
+            }
+            if (r < rows - 1) {
+              ctx.beginPath();
+              ctx.strokeStyle = `rgba(${currentGridColor}, ${Math.min(points[c][r].alpha, points[c][r+1].alpha)})`;
+              ctx.moveTo(points[c][r].x, points[c][r].y);
+              ctx.lineTo(points[c][r+1].x, points[c][r+1].y);
+              ctx.stroke();
+            }
+          }
+        }
+        time++;
+        requestAnimationFrame(animateMesh);
+      }
+      animateMesh();
+
+
+      // =========================================================
+
+    // --- MODULE: loader.js ---
+      // 5. CINEMATIC LOADER SCREEN (Midwam system calibration)
+      // =========================================================
+      const loader = document.getElementById('loader');
+      const loaderPct = document.getElementById('loader-pct');
+      const loaderFill = document.getElementById('loader-fill');
+      const loaderStatus = document.getElementById('loader-status');
+
+      let pctObj = { val: 0 };
+      gsap.to(pctObj, {
+        val: 100,
+        duration: 1.8,
+        ease: "power2.out",
+        onUpdate: () => {
+          const formatted = Math.floor(pctObj.val).toString().padStart(2, '0');
+          loaderPct.innerText = formatted;
+          loaderFill.style.width = `${pctObj.val}%`;
+          
+          if (pctObj.val > 30) loaderStatus.innerText = "PARSING HAND HISTORY";
+          if (pctObj.val > 70) loaderStatus.innerText = "CALCULATING SOLVER DELTAS";
+        },
+        onComplete: () => {
+          loaderStatus.innerText = "READY";
+          gsap.to(loader, {
+            opacity: 0,
+            pointerEvents: "none",
+            duration: 0.5,
+            delay: 0.2,
+            onComplete: () => {
+              loader.classList.add('done');
+              // Initialize HUD Rings
+              initHUDRings();
+            }
+          });
+        }
+      });
+
+
+      // =========================================================
+
+    // --- MODULE: radar.js ---
+      // 6. DETAILED HUD CONCENTRIC STAT CIRCLE TRIGGERS
+      // =========================================================
+      const circles = {
+        vpip: { el: document.getElementById('ring-vpip'), max: 263.8, val: 21.8 },
+        pfr: { el: document.getElementById('ring-pfr'), max: 213.6, val: 17.2 },
+        '3bet': { el: document.getElementById('ring-3bet'), max: 163.3, val: 8.4 }
+      };
+
+      const statTriggers = document.querySelectorAll('.stat-trigger');
+      
+      function initHUDRings() {
+        Object.keys(circles).forEach(stat => {
+          const data = circles[stat];
+          if (!data.el) return;
+          const offset = data.max - (data.val / 100 * data.max);
+          gsap.to(data.el, {
+            strokeDashoffset: offset,
+            duration: 1.2,
+            ease: "power2.out"
+          });
+        });
+      }
+
+      const radarSweep = document.getElementById('radar-sweep');
+      if (radarSweep) {
+        gsap.to(radarSweep, {
+          rotation: 360,
+          transformOrigin: '50% 50%',
+          repeat: -1,
+          duration: 3.5,
+          ease: "none"
+        });
+      }
+
+      statTriggers.forEach(trig => {
+        trig.addEventListener('click', () => {
+          statTriggers.forEach(t => t.classList.remove('active'));
+          trig.classList.add('active');
+
+          const stat = trig.getAttribute('data-stat');
+          const valueText = trig.querySelector('.st-value').innerText;
+          
+          document.getElementById('center-lbl').innerText = stat.toUpperCase();
+          document.getElementById('center-val').innerText = valueText;
+          
+          // Flash ring animation
+          if (circles[stat] && circles[stat].el) {
+            gsap.fromTo(circles[stat].el, { strokeWidth: 4 }, { strokeWidth: 2.8, duration: 0.4 });
+          }
+        });
+      });
+
+
+      // =========================================================
+
+    // --- MODULE: sessions.js ---
+      // 7. SESSIONS TIMELINE ROW EXPANSION DRAWER
+      // =========================================================
+      const sessionRows = document.querySelectorAll('.timeline-row-editorial');
+      sessionRows.forEach(row => {
+        row.addEventListener('click', () => {
+          const drawerId = row.getAttribute('data-drawer');
+          if (!drawerId) return;
+          const drawer = document.getElementById(drawerId);
+          if (!drawer) return;
+
+          const isActive = drawer.classList.contains('active');
+
+          // Close other active drawers
+          document.querySelectorAll('.editorial-expand-panel').forEach(d => {
+            if (d !== drawer && d.classList.contains('active')) {
+              gsap.to(d, {
+                height: 0, opacity: 0, duration: 0.3, onComplete: () => {
+                  d.classList.remove('active');
+                  d.style.display = 'none';
+                }
+              });
+            }
+          });
+
+          if (!isActive) {
+            drawer.style.display = 'block';
+            gsap.fromTo(drawer, { height: 0, opacity: 0 }, {
+              height: 'auto', opacity: 1, duration: 0.4, ease: "power2.out",
+              onStart: () => drawer.classList.add('active')
+            });
+          } else {
+            gsap.to(drawer, {
+              height: 0, opacity: 0, duration: 0.3, onComplete: () => {
+                drawer.classList.remove('active');
+                drawer.style.display = 'none';
+              }
+            });
+          }
+        });
+      });
+
+
+      // =========================================================
+
+    // --- MODULE: hands.js ---
+      // 8. SIMULATED HANDS DATABASE & REPLAYER SEQUENCER
+      // =========================================================
+      // handsMockData is compiled globally from hands.json
+
+      const handsTableBody = document.getElementById('hands-table-body');
+      const filterPos = document.getElementById('filter-position');
+      const filterComp = document.getElementById('filter-compliance');
+      const filterScen = document.getElementById('filter-scenario');
+      const filterSearch = document.getElementById('filter-search');
+
+      function renderHandsTable() {
+        if (!handsTableBody) return;
+        handsTableBody.innerHTML = '';
+        
+        const fPosition = filterPos.value;
+        const fCompliance = filterComp.value;
+        const fScenario = filterScen.value;
+        const fSearch = filterSearch.value.toLowerCase();
+
+        const filtered = handsMockData.filter(h => {
+          if (fPosition && h.pos !== fPosition) return false;
+          if (fCompliance === 'ok' && !h.compliant) return false;
+          if (fCompliance === 'dev' && h.compliant) return false;
+          if (fScenario && h.scenario !== fScenario) return false;
+          if (fSearch && !h.cards.toLowerCase().includes(fSearch)) return false;
+          return true;
+        });
+
+        filtered.forEach(h => {
+          const tr = document.createElement('tr');
+          
+          // Card suites markup styling
+          const cardsSplit = h.cards.split(' ');
+          const suitsMarkup = cardsSplit.map((c, i) => {
+            const suit = h.suits[i];
+            let sClass = 'suit-s';
+            if (suit === '♥') sClass = 'suit-h';
+            if (suit === '♦') sClass = 'suit-d';
+            if (suit === '♣') sClass = 'suit-c';
+            return `<span class="${sClass}">${c[0]}${suit}</span>`;
+          }).join(' ');
+
+          tr.innerHTML = `
+            <td class="card-pair">${suitsMarkup}</td>
+            <td style="font-family:var(--mono);">${h.pos}</td>
+            <td style="font-family:var(--mono); color:var(--fg-muted);">${h.scenario.replace('_',' ')}</td>
+            <td style="font-family:var(--mono);">${h.stack}</td>
+            <td style="font-family:var(--mono); text-transform:uppercase; font-weight:700;">${h.action}</td>
+            <td style="font-family:var(--mono);" class="${h.net.includes('+') ? 'suit-c' : 'suit-h'}">${h.net}</td>
+            <td><span class="compliance-badge ${h.compliant ? 'ok' : 'dev'}">${h.compliant ? 'ok' : 'deviation'}</span></td>
+            <td style="text-align:right;"><button class="btn-replay" data-id="${h.id}">Replay</button></td>
+          `;
+          handsTableBody.appendChild(tr);
+        });
+
+        // Attach replay triggers
+        document.querySelectorAll('.btn-replay').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const handId = btn.getAttribute('data-id');
+            openReplayModal(handId);
+          });
+        });
+      }
+
+      // Filter events
+      if (filterPos) {
+        filterPos.addEventListener('change', renderHandsTable);
+        filterComp.addEventListener('change', renderHandsTable);
+        filterScen.addEventListener('change', renderHandsTable);
+        filterSearch.addEventListener('input', renderHandsTable);
+      }
+      renderHandsTable();
+
+      // Hand Replayer logic
+      const replayBackdrop = document.getElementById('replay-backdrop');
+      const btnCloseReplay = document.getElementById('btn-close-replay');
+      const card1 = document.getElementById('card-1');
+      const card2 = document.getElementById('card-2');
+
+      function openReplayModal(id) {
+        const hand = handsMockData.find(h => h.id === id);
+        if (!hand || !replayBackdrop) return;
+
+        document.getElementById('replay-title').innerText = `Replaying Hand #${id}`;
+        document.getElementById('replay-pos').innerText = hand.pos;
+        document.getElementById('replay-gto').innerText = hand.compliant ? hand.action.toUpperCase() : "FOLD";
+        document.getElementById('replay-profit').innerText = hand.net;
+        document.getElementById('replay-profit').className = hand.net.includes('+') ? 'suit-c' : 'suit-h';
+
+        // Set card faces
+        const parts = hand.cards.split(' ');
+        card1.innerHTML = `<span>${parts[0][0]}</span><span class="suit-symbol">${hand.suits[0]}</span>`;
+        card2.innerHTML = `<span>${parts[1][0]}</span><span class="suit-symbol">${hand.suits[1]}</span>`;
+        
+        card1.className = `poker-card-micro ${['♥','♦'].includes(hand.suits[0]) ? 'red' : ''}`;
+        card2.className = `poker-card-micro ${['♥','♦'].includes(hand.suits[1]) ? 'red' : ''}`;
+
+        replayBackdrop.style.display = 'flex';
+        
+        // Stagger Deal Animation
+        gsap.set([card1, card2], { scale: 0, rotation: 90, opacity: 0 });
+        gsap.to(card1, { scale: 1, rotation: 0, opacity: 1, duration: 0.5, delay: 0.2, ease: "power2.out" });
+        gsap.to(card2, { scale: 1, rotation: 0, opacity: 1, duration: 0.5, delay: 0.35, ease: "power2.out" });
+      }
+
+      if (btnCloseReplay) {
+        btnCloseReplay.addEventListener('click', () => {
+          replayBackdrop.style.display = 'none';
+        });
+      }
+
+
+
+    // --- MODULE: leaks.js ---
+      // =========================================================
+      // 9. LEAKS LEDGER SWAPS AND MATRIX RENDER
+      // =========================================================
+      const leakMatrixContainer = document.getElementById('leak-matrix-grid');
+      const leakIndexRows = document.querySelectorAll('.leak-index-row');
+      
+      const leaksData = {
+        btn: {
+          sev: 'Critical',
+          meta: 'Top leak · 1 of 3 · BTN · 100bb',
+          head: 'The button is <span class="leak-highlight">bleeding.</span>',
+          desc: "You're opening <b>58%</b> on the button where the solver wants <b>48–52%</b>. The bottom 6% of that range — <i>K8s K7s Q6s Q5s J7s T7s</i> — gets punished hardest by late-position three-bets.",
+          dev: '+8.0%', cost: '-28bb/100', tourney: '-$0.62', recover: '+$60',
+          pos: 'BTN OPEN', activeCombos: ['K8s', 'K7s', 'Q6s', 'Q5s', 'J7s', 'T7s', 'K9s', 'QTs', 'J9s', 'T8s']
+        },
+        bb: {
+          sev: 'High',
+          meta: 'High priority · 2 of 3 · BB · 25bb',
+          head: 'Overfolding the <span class="leak-highlight">big blind.</span>',
+          desc: "You fold <b>68%</b> versus late-position button opens where optimal ranges defend <b>52-56%</b>. You are folding profitable defenses like <i>T8o 97o Q6s J7s</i>.",
+          dev: '-12.0%', cost: '-18bb/100', tourney: '-$0.38', recover: '+$35',
+          pos: 'BB DEFENSE', activeCombos: ['T8o', '97o', 'Q6s', 'J7s', '86s', 'T7s', 'J6s']
+        },
+        sb: {
+          sev: 'Medium',
+          meta: 'Medium priority · 3 of 3 · SB · 40bb',
+          head: 'Flatting weak <span class="leak-highlight">offsuit aces.</span>',
+          desc: "Calling folds out of the Small Blind versus early-position opens. Hands like <i>A8o A7o KJo</i> are massive net negative flats.",
+          dev: '+6.4%', cost: '-11bb/100', tourney: '-$0.15', recover: '+$18',
+          pos: 'SB FLAT VS UTG', activeCombos: ['A8o', 'A7o', 'KJo', 'QTo', 'JTo']
+        }
+      };
+
+      function generateLeakMatrix(combos = []) {
+        if (!leakMatrixContainer) return;
+        leakMatrixContainer.innerHTML = '';
+        const matrixRanks = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'];
+        
+        for (let r = 0; r < 13; r++) {
+          for (let c = 0; c < 13; c++) {
+            const cell = document.createElement('div');
+            cell.className = 'matrix-cell-node';
+            
+            let hand = '';
+            if (r === c) hand = matrixRanks[r] + matrixRanks[c];
+            else if (r < c) hand = matrixRanks[r] + matrixRanks[c] + 's';
+            else hand = matrixRanks[c] + matrixRanks[r] + 'o';
+            
+            cell.innerText = hand;
+            
+            // Randomly paint RFI background
+            const isOffending = combos.includes(hand);
+            const isBaseRange = (r + c) < 9;
+            
+            if (isOffending) {
+              cell.classList.add('fold-range');
+            } else if (isBaseRange) {
+              cell.classList.add('open-range');
+            }
+            
+            leakMatrixContainer.appendChild(cell);
+          }
+        }
+      }
+
+      // Initialize
+      generateLeakMatrix(leaksData.btn.activeCombos);
+
+      leakIndexRows.forEach(row => {
+        row.addEventListener('click', () => {
+          leakIndexRows.forEach(r => r.classList.remove('active'));
+          row.classList.add('active');
+          
+          const type = row.getAttribute('data-leak');
+          const data = leaksData[type];
+          if (!data) return;
+
+          // Transition Content Swap
+          const gridBox = document.getElementById('incident-grid-box');
+          gsap.to(gridBox, {
+            opacity: 0, y: -10, duration: 0.25, onComplete: () => {
+              document.getElementById('leak-severity-badge').innerText = data.sev;
+              document.getElementById('leak-severity-badge').className = `compliance-badge ${data.sev === 'Critical' ? 'dev' : 'ok'}`;
+              document.getElementById('leak-meta').innerText = data.meta;
+              document.getElementById('leak-headline').innerHTML = data.head;
+              document.getElementById('leak-description').innerHTML = data.desc;
+              
+              document.getElementById('leak-stat-dev').innerText = data.dev;
+              document.getElementById('leak-stat-cost').innerText = data.cost;
+              document.getElementById('leak-stat-tourney').innerText = data.tourney;
+              document.getElementById('leak-stat-recover').innerText = data.recover;
+              document.getElementById('leak-matrix-pos').innerText = data.pos;
+
+              generateLeakMatrix(data.activeCombos);
+
+              gsap.fromTo(gridBox, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.35 });
+            }
+          });
+        });
+      });
+
+
+
+    // --- MODULE: ranges.js ---
+      // =========================================================
+      // 10. RANGES LAB MATRIX & POSITION CHIPS
+      // =========================================================
+      const rangesPosSelector = document.getElementById('ranges-pos-selector');
+      const rangesGridContainer = document.getElementById('ranges-matrix-grid');
+      const RFI_POSITIONS = ['UTG', 'HJ', 'CO', 'BTN', 'SB', 'BB'];
+      
+      const rangesPct = { UTG: 15, HJ: 20, CO: 26, BTN: 48, SB: 38, BB: 12 };
+
+      if (rangesPosSelector) {
+        RFI_POSITIONS.forEach(pos => {
+          const btn = document.createElement('button');
+          btn.className = `pos-select-btn ${pos === 'UTG' ? 'active' : ''}`;
+          btn.innerText = pos;
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('.pos-select-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            updateRangesGrid(rangesPct[pos]);
+          });
+          rangesPosSelector.appendChild(btn);
+        });
+      }
+
+      function updateRangesGrid(pctVal) {
+        if (!rangesGridContainer) return;
+        rangesGridContainer.innerHTML = '';
+        const matrixRanks = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'];
+        let combos = 0;
+
+        for (let r = 0; r < 13; r++) {
+          for (let c = 0; c < 13; c++) {
+            const cell = document.createElement('div');
+            cell.className = 'matrix-cell-node';
+            
+            let hand = '';
+            if (r === c) hand = matrixRanks[r] + matrixRanks[c];
+            else if (r < c) hand = matrixRanks[r] + matrixRanks[c] + 's';
+            else hand = matrixRanks[c] + matrixRanks[r] + 'o';
+            
+            cell.innerText = hand;
+            
+            // Programmatically draw range based on pct
+            const val = 169 - (r * 13 + c);
+            const rankPct = (val / 169) * 100;
+            
+            if (rankPct >= (100 - pctVal)) {
+              cell.classList.add('open-range');
+              combos++;
+            } else if (rankPct >= (100 - pctVal - 6)) {
+              cell.classList.add('fold-range');
+            }
+
+            rangesGridContainer.appendChild(cell);
+          }
+        }
+        document.getElementById('ranges-combos-lbl').innerText = `${combos} / 169 combos`;
+      }
+
+      function animateRangeGridFades() {
+        const cells = document.querySelectorAll('#ranges-matrix-grid .matrix-cell-node');
+        gsap.fromTo(cells, { scale: 0.6, opacity: 0 }, {
+          scale: 1, opacity: 1, stagger: 0.002, duration: 0.5, ease: "power2.out"
+        });
+      }
+      updateRangesGrid(15);
+
+
+
+    // --- MODULE: villains.js ---
+      // =========================================================
+      // 11. VILLAINS DOSSIERS GRID GENERATOR & EXPLOITAdvice
+      // =========================================================
+      // villainsMock is compiled globally from villains.json
+
+      const villainsGrid = document.getElementById('villains-grid');
+      const villainsSearch = document.getElementById('villains-search-input');
+      const villainsFilters = document.querySelectorAll('#villains-filter-dock button');
+
+      function renderVillains() {
+        if (!villainsGrid) return;
+        villainsGrid.innerHTML = '';
+
+        const searchQ = villainsSearch.value.toLowerCase();
+        const activeFilter = document.querySelector('#villains-filter-dock button.active');
+        const filterVal = activeFilter ? activeFilter.getAttribute('data-filter') : 'all';
+
+        const filtered = villainsMock.filter(v => {
+          if (searchQ && !v.name.toLowerCase().includes(searchQ)) return false;
+          if (filterVal !== 'all' && v.arch !== filterVal) return false;
+          return true;
+        });
+
+        filtered.forEach(v => {
+          const card = document.createElement('div');
+          card.className = 'opponent-dossier-card';
+          card.innerHTML = `
+            <div class="opp-dossier-header">
+              <span class="opp-dossier-name">${v.name}</span>
+              <span class="opp-dossier-hands">${v.hands} hands</span>
+            </div>
+            <span class="opp-arch-badge ${v.arch}">${v.label}</span>
+            <div class="opp-stats-inline">
+              <div class="opp-stat-cell"><div class="l">VPIP</div><div class="v">${v.vpip}%</div></div>
+              <div class="opp-stat-cell"><div class="l">PFR</div><div class="v">${v.pfr}%</div></div>
+              <div class="opp-stat-cell"><div class="l">AF</div><div class="v">${v.af}</div></div>
+              <div class="opp-stat-cell"><div class="l">Gap</div><div class="v">${v.gap}</div></div>
+            </div>
+            
+            <!-- Floating Exploit Overlay -->
+            <div class="exploit-overlay-card">
+              <div class="exploit-card-title">Exploit advice</div>
+              <div class="exploit-card-body">${v.advice}</div>
+            </div>
+          `;
+          villainsGrid.appendChild(card);
+        });
+      }
+
+      if (villainsSearch) {
+        villainsSearch.addEventListener('input', renderVillains);
+        villainsFilters.forEach(btn => {
+          btn.addEventListener('click', () => {
+            villainsFilters.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderVillains();
+          });
+        });
+      }
+      renderVillains();
+
+
+
+    // --- MODULE: arena.js ---
+      // =========================================================
+      // 12. 3D FELT ARENA GTO DRILLS GAMEPLAY
+      // =========================================================
+      const arenaStage = document.getElementById('arena-stage');
+      const arenaFelt = document.getElementById('arena-felt');
+      const trainerFeedback = document.getElementById('trainer-feedback');
+      const arenaScore = document.getElementById('arena-score');
+      const trainerHandNode = document.getElementById('trainer-current-hand');
+      
+      const feltCanvas = document.getElementById('arena-felt-canvas');
+      const fctx = feltCanvas.getContext('2d');
+      let activeVectors = [];
+
+      function resizeFeltCanvas() {
+        if (!feltCanvas) return;
+        feltCanvas.width = feltCanvas.parentElement.clientWidth;
+        feltCanvas.height = feltCanvas.parentElement.clientHeight;
+      }
+      window.addEventListener('resize', resizeFeltCanvas);
+
+      // Calmed Mousemove felt tilt
+      if (arenaStage && arenaFelt) {
+        arenaStage.addEventListener('mousemove', (e) => {
+          const rect = arenaStage.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          
+          const angleX = 32 - (y / rect.height) * 3.5;
+          const angleY = (x / rect.width) * 4.5;
+          
+          gsap.to(arenaFelt, { rotateX: angleX, rotateY: angleY, duration: 0.4 });
+        });
+        
+        arenaStage.addEventListener('mouseleave', () => {
+          gsap.to(arenaFelt, { rotateX: 32, rotateY: 0, duration: 0.8 });
+        });
+      }
+
+      // Drills database
+      // trainerDrills is compiled globally from arena-drills.json
+
+      let scoreCorrect = 0;
+      let scoreTotal = 0;
+      let currentDrillIndex = 0;
+
+      const actButtons = document.querySelectorAll('.btn-trainer-act');
+      actButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const chosenAct = btn.getAttribute('data-act');
+          const drill = trainerDrills[currentDrillIndex];
+          const isCorrect = chosenAct === drill.correct;
+
+          if (isCorrect) scoreCorrect++;
+          scoreTotal++;
+          arenaScore.innerText = `${scoreCorrect} / ${scoreTotal}`;
+
+          // Deal hologram card visuals on correct action
+          if (isCorrect && chosenAct === 'raise') {
+            dealHologramCard(4, feltCanvas.width / 2, feltCanvas.height / 2);
+          }
+
+          // Trigger feedback HUD
+          trainerFeedback.className = `trainer-feedback-overlay ${isCorrect ? 'correct' : 'incorrect'}`;
+          document.getElementById('feedback-title').innerText = isCorrect ? 'CORRECT' : 'DEVIATION';
+          document.getElementById('feedback-desc').innerText = drill.note;
+          trainerFeedback.classList.add('active');
+
+          setTimeout(() => {
+            trainerFeedback.classList.remove('active');
+            advanceDrill();
+          }, 1800);
+        });
+      });
+
+      function advanceDrill() {
+        currentDrillIndex = (currentDrillIndex + 1) % trainerDrills.length;
+        const nextDrill = trainerDrills[currentDrillIndex];
+        trainerHandNode.innerText = nextDrill.hand;
+      }
+
+      function dealHologramCard(seatNum, tx, ty) {
+        const card = document.createElement('div');
+        card.className = 'hologram-deal-card';
+        card.innerHTML = `<span>A</span><span class="suit">♠</span>`;
+        card.style.left = '50%'; card.style.top = '50%';
+        card.style.transform = 'translate(-50%, -50%) scale(0) rotate(180deg)';
+        arenaStage.appendChild(card);
+
+        gsap.to(card, {
+          left: tx - 10, top: ty - 40, scale: 1, rotation: 0, duration: 0.6,
+          onComplete: () => {
+            setTimeout(() => {
+              gsap.to(card, { opacity: 0, scale: 0.4, duration: 0.4, onComplete: () => card.remove() });
+            }, 1200);
+          }
+        });
+      }
+
+
+      // =========================================================
+      // 13. NOOMO MAGNETIC BUTTON HOVERS
+      // =========================================================
+      function setupMagnetic(elemId, hoverSelector) {
+        const elem = document.getElementById(elemId);
+        if (!elem) return;
+        elem.addEventListener('mousemove', (e) => {
+          const rect = elem.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          gsap.to(elem, { x: x * 0.25, y: y * 0.25, duration: 0.3 });
+        });
+        elem.addEventListener('mouseleave', () => {
+          gsap.to(elem, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
+        });
+      }
+      setupMagnetic('btn-reset-db');
+
+
+      // =========================================================
+      // 14. DYNAMIC MARQUEE DRIFT VELOCITIES
+      // =========================================================
+      const statsMarquee = document.getElementById('stats-marquee');
+      const track1 = document.getElementById('marquee-track-1');
+
+      if (statsMarquee && track1) {
+        let isHovered = false;
+        let isExpanded = false;
+        let mousePct = 0.5;
+        let xOffset = 0;
+
+        statsMarquee.addEventListener('mouseenter', () => isHovered = true);
+        statsMarquee.addEventListener('mouseleave', () => {
+          isHovered = false;
+          mousePct = 0.5;
+        });
+        statsMarquee.addEventListener('mousemove', (e) => {
+          const rect = statsMarquee.getBoundingClientRect();
+          mousePct = (e.clientX - rect.left) / rect.width;
+        });
+
+        statsMarquee.addEventListener('click', () => {
+          isExpanded = !isExpanded;
+          if (isExpanded) {
+            statsMarquee.classList.add('expanded');
+            track1.style.transform = 'none';
+          } else {
+            statsMarquee.classList.remove('expanded');
+          }
+        });
+
+        function marqueeTick() {
+          if (isExpanded) {
+            requestAnimationFrame(marqueeTick);
+            return;
+          }
+
+          let speed = -0.4; // default scroll speed
+          
+          if (isHovered) {
+            if (mousePct < 0.3) {
+              speed = -((0.3 - mousePct) / 0.3) * 1.6;
+            } else if (mousePct > 0.7) {
+              speed = ((mousePct - 0.7) / 0.3) * 1.6;
+            } else {
+              speed = 0; // pause in middle
+            }
+          }
+
+          xOffset += speed;
+          const halfWidth = track1.scrollWidth / 2;
+          if (halfWidth > 0) {
+            if (xOffset <= -halfWidth) xOffset += halfWidth;
+            if (xOffset >= 0) xOffset -= halfWidth;
+            track1.style.transform = `translateX(${xOffset}px)`;
+          }
+
+          requestAnimationFrame(marqueeTick);
+        }
+        marqueeTick();
+      }
+
+
+    // --- MODULE: 3d-tilt.js ---
+// =========================================================
+// 3D PERSPECTIVE TILT MODULE (GSAP card tilt effect)
+// =========================================================
+
+(function() {
+  function initCardTilt() {
+    const cards = document.querySelectorAll('.card, .opponent-dossier-card');
+    
+    cards.forEach(card => {
+      // Remove previous listener tags if re-initializing
+      card.removeEventListener('mousemove', onMouseMove);
+      card.removeEventListener('mouseleave', onMouseLeave);
+
+      card.addEventListener('mousemove', onMouseMove);
+      card.addEventListener('mouseleave', onMouseLeave);
+    });
+  }
+
+  function onMouseMove(e) {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // Midpoints
+    const xc = rect.width / 2;
+    const yc = rect.height / 2;
+    
+    // Choose sensitivity based on card density (higher divisor = subtler tilt)
+    const divisor = card.classList.contains('opponent-dossier-card') ? 120 : 60;
+    
+    const angleX = (yc - y) / divisor; 
+    const angleY = (x - xc) / divisor;
+    
+    gsap.to(card, {
+      rotationX: angleX,
+      rotationY: angleY,
+      transformPerspective: 1200,
+      ease: "power2.out",
+      duration: 0.3
+    });
+  }
+
+  function onMouseLeave(e) {
+    const card = e.currentTarget;
+    gsap.to(card, {
+      rotationX: 0,
+      rotationY: 0,
+      ease: "power2.out",
+      duration: 0.5
+    });
+  }
+
+  // Initial call
+  initCardTilt();
+
+  // Expose function globally for page swaps
+  window.initCardTilt = initCardTilt;
+})();
+
+
+    // --- MODULE: cursor-follower.js ---
+// =========================================================
+// CURSOR FOLLOWER JS (Lerping Mouse Tracker)
+// =========================================================
+
+(function() {
+  const follower = document.getElementById('cursor-follower');
+  if (!follower) return;
+
+  let mX = -100, mY = -100;
+  let fX = -100, fY = -100;
+
+  document.addEventListener('mousemove', (e) => {
+    mX = e.clientX;
+    mY = e.clientY;
+  });
+
+  gsap.ticker.add(() => {
+    // Smoothened linear interpolation
+    fX += (mX - fX) * 0.15;
+    fY += (mY - fY) * 0.15;
+    gsap.set(follower, { x: fX, y: fY });
+  });
+
+  // Attach hover triggers dynamically
+  function updateFollowerTriggers() {
+    const hoverElements = document.querySelectorAll('.mast-nav a, .stat-trigger, .timeline-row-editorial, .matrix-cell-node, .ix-name, .pos-select-btn, .btn-replay, .btn-trainer-act, button, a');
+    hoverElements.forEach(el => {
+      // Remove any existing event listeners to prevent duplicate triggers
+      el.removeEventListener('mouseenter', onEnter);
+      el.removeEventListener('mouseleave', onLeave);
+      
+      el.addEventListener('mouseenter', onEnter);
+      el.addEventListener('mouseleave', onLeave);
+    });
+  }
+
+  function onEnter() {
+    gsap.to(follower, { width: 44, height: 44, duration: 0.3 });
+  }
+
+  function onLeave() {
+    gsap.to(follower, { width: 20, height: 20, duration: 0.3 });
+  }
+
+  // Initial call
+  updateFollowerTriggers();
+
+  // Expose function globally so shell navigation updates can re-trigger it
+  window.updateFollowerTriggers = updateFollowerTriggers;
+})();
+
+
+    // --- MODULE: global-interactive.js ---
+      // Cursor follower magnet updates
+      document.querySelectorAll('.mast-nav a, .stat-trigger, .timeline-row-editorial, .matrix-cell-node, button, a').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          gsap.to(follower, { width: 44, height: 44, duration: 0.3 });
+        });
+        el.addEventListener('mouseleave', () => {
+          gsap.to(follower, { width: 20, height: 20, duration: 0.3 });
+        });
+      });
+
+  });
+</script>
+</body>
+</html>

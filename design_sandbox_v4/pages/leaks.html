@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Modular Prototyping - Leaks</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="../gsap.min.js"></script>
+  <style>
+    /* Injected layout CSS for standalone testing */
+    :root {
+      --bg: #06070a;
+      --bg-2: #0b0c10;
+      --bg-card: rgba(13, 16, 23, 0.65);
+      --bg-card-hover: rgba(20, 24, 33, 0.75);
+      --bg-input: #12131a;
+      --border: rgba(255, 255, 255, 0.05);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --accent-2: #00FF87;
+      --accent-soft: rgba(0, 240, 255, 0.06);
+      --accent-glow: rgba(0, 240, 255, 0.25);
+      --accent-line: rgba(0, 240, 255, 0.35);
+      --loss: #FF3B6B;
+      --loss-soft: rgba(255, 92, 138, 0.08);
+      --loss-line: rgba(255, 92, 138, 0.35);
+      --fg: #f3f4f6;
+      --fg-muted: #8892b0;
+      --fg-dim: #3a3f50;
+      --sans: 'Inter', -apple-system, sans-serif;
+      --display: 'Outfit', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.5);
+    }
+    body {
+      margin: 0; padding: 40px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+    }
+    /* Embed actual extracted styles below */
+    /* STYLES_INJECT_PLACEHOLDER */
+  </style>
+</head>
+<body>
+  <div style="max-width: 1480px; margin: 0 auto;">
+    <section class="page active" id="page-leaks">
+      
+      <!-- Incident swap display -->
+      <div class="card incident-swap-wrap" style="margin-bottom: 24px;">
+        <div class="inc-grid" id="incident-grid-box">
+          <div>
+            <div style="display:flex; gap:12px; align-items:center; margin-bottom:14px;">
+              <span class="compliance-badge dev" id="leak-severity-badge">Critical</span>
+              <span class="kick" id="leak-meta">Top leak · 1 of 3 · BTN · 100bb</span>
+            </div>
+            <h2 class="inc-headline-text" id="leak-headline">The button is <span class="leak-highlight">bleeding.</span></h2>
+            <p class="inc-desc" id="leak-description">
+              You're opening <b>58%</b> on the button where the solver wants <b>48–52%</b>. The bottom 6% of that range — <i>K8s K7s Q6s Q5s J7s T7s</i> — gets punished hardest by late-position three-bets.
+            </p>
+            
+            <div class="inc-stats-row">
+              <div class="inc-stat-item"><span class="l">Deviation</span><div class="v loss" id="leak-stat-dev">+8.0%</div></div>
+              <div class="inc-stat-item"><span class="l">Cost</span><div class="v loss" id="leak-stat-cost">-28bb/100</div></div>
+              <div class="inc-stat-item"><span class="l">Per Tourney</span><div class="v loss" id="leak-stat-tourney">-$0.62</div></div>
+              <div class="inc-stat-item"><span class="l">Recover</span><div class="v accent" id="leak-stat-recover">+$60</div></div>
+            </div>
+          </div>
+          
+          <div class="matrix-wrapper">
+            <div class="matrix-grid-cell-label">
+              <span>RFI Range Map</span>
+              <span class="spot-pos" id="leak-matrix-pos">BTN OPEN</span>
+            </div>
+            <div class="matrix-grid-box" id="leak-matrix-grid">
+              <!-- Grid generated via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Ranked index ledger -->
+      <div class="card" style="padding:0; overflow:hidden;">
+        <div class="leak-index-cols">
+          <span>#</span><span>Leak Spot</span><span>Severity</span><span>Stakes</span><span style="text-align:right;">Cost</span>
+        </div>
+        
+        <div class="leak-index-row active crit" data-leak="btn">
+          <span class="leak-rank">#1</span>
+          <span class="leak-name">BTN RFI Range Wide Deviation<div style="font-size:10.5px; color:var(--fg-muted); margin-top:2px;">Over-opening hands vs late 3-bets</div></span>
+          <span><span class="leak-sev-badge crit">Critical</span></span>
+          <span class="leak-spot-lbl">100bb</span>
+          <span class="leak-cost-lbl" style="text-align:right;">-$0.62/T</span>
+        </div>
+        <div class="leak-index-row med" data-leak="bb">
+          <span class="leak-rank">#2</span>
+          <span class="leak-name">BB Fold vs late BTN open<div style="font-size:10.5px; color:var(--fg-muted); margin-top:2px;">Overfolding BB vs BTN opens</div></span>
+          <span><span class="leak-sev-badge high">High</span></span>
+          <span class="leak-spot-lbl">25bb</span>
+          <span class="leak-cost-lbl" style="text-align:right; color:#ffaa00;">-$0.38/T</span>
+        </div>
+        <div class="leak-index-row med" data-leak="sb">
+          <span class="leak-rank">#3</span>
+          <span class="leak-name">SB Over-calling vs UTG/MP open<div style="font-size:10.5px; color:var(--fg-muted); margin-top:2px;">Flatting out of SB with weak offsuit aces</div></span>
+          <span><span class="leak-sev-badge med">Medium</span></span>
+          <span class="leak-spot-lbl">40bb</span>
+          <span class="leak-cost-lbl" style="text-align:right; color:var(--fg-muted);">-$0.15/T</span>
+        </div>
+      </div>
+    
+    </section>
+  </div>
+  
+  <script>
+    // Local script placeholder for standalone pages
+    /* SCRIPTS_INJECT_PLACEHOLDER */
+  </script>
+</body>
+</html>

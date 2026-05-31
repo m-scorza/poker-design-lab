@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Background Mesh & Glow Orbs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="../gsap.min.js"></script>
+  <style>
+    :root {
+      --bg: #050608;
+      --bg-2: #0b0d12;
+      --bg-card: rgba(13, 17, 25, 0.65);
+      --bg-card-hover: rgba(20, 26, 38, 0.75);
+      --border: rgba(255, 255, 255, 0.05);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --accent-2: #00FF87;
+      --accent-soft: rgba(0, 240, 255, 0.06);
+      --accent-glow: rgba(0, 240, 255, 0.25);
+      --accent-line: rgba(0, 240, 255, 0.35);
+      --loss: #FF3B6B;
+      --loss-soft: rgba(255, 59, 107, 0.08);
+      --fg: #f3f4f6;
+      --fg-muted: #8892b0;
+      --fg-dim: #3a3f50;
+      --sans: 'Inter', -apple-system, sans-serif;
+      --display: 'Outfit', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      overflow-x: hidden;
+    }
+    .container { max-width: 800px; width: 100%; text-align: center; z-index: 10; }
+    h1 { font-family: var(--display); font-weight: 700; margin-bottom: 30px; letter-spacing: -0.02em; }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-muted); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    
+  #fluid-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+  .bg-grid { position: fixed; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.007) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.007) 1px, transparent 1px); background-size: 64px 64px; pointer-events: none; z-index: 0; }
+  .glow-orb { position: fixed; width: 800px; height: 800px; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(95px); opacity: 0.5; }
+  .orb-1 { top: -300px; left: -250px; background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%); }
+  .orb-2 { bottom: -300px; right: -250px; background: radial-gradient(circle, var(--loss-soft) 0%, transparent 70%); }
+  .theme-btn { padding: 10px 20px; background: var(--bg-2); border: 1px solid var(--border-strong); color: var(--fg); font-family: var(--mono); cursor: pointer; border-radius: 6px; margin: 5px; }
+  .theme-btn:hover { border-color: var(--accent); }
+  
+  </style>
+</head>
+<body>
+  <a href="../elements_showcase.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Background Mesh & Glow Orbs</h1>
+    
+  <canvas id="fluid-canvas"></canvas>
+  <div class="bg-grid"></div>
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+  <p style="color: var(--fg-muted);">Move your cursor to deform the network mesh grid. Click to emit visual wave pulses.</p>
+  
+  </div>
+  <script>
+    
+  // 4. WAITING ORGANIC GRID BACKGROUND WAVE MESH RENDER
+      // =========================================================
+      const canvas = document.getElementById('fluid-canvas');
+      const ctx = canvas.getContext('2d');
+      
+      let mouse = { x: -1000, y: -1000 };
+      let ripples = [];
+      let currentGridColor = '0, 240, 255'; // default cyan/lime morph
+      window.targetGridColor = '0, 240, 255';
+      
+      document.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      });
+
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('.mast-nav') || e.target.closest('#theme-dock')) return;
+        ripples.push({
+          x: e.clientX,
+          y: e.clientY,
+          radius: 0,
+          maxRadius: Math.max(window.innerWidth, window.innerHeight) * 0.4,
+          force: 25,
+          speed: 12,
+          alpha: 1
+        });
+      });
+
+      window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      });
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      let time = 0;
+      const gridSpacing = 64;
+
+      function animateMesh() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        if (currentGridColor !== targetGridColor) {
+          const curr = currentGridColor.split(',').map(Number);
+          const targ = targetGridColor.split(',').map(Number);
+          const next = curr.map((v, i) => Math.round(v + (targ[i] - v) * 0.08));
+          currentGridColor = next.join(',');
+        }
+        
+        ripples.forEach(rip => {
+          rip.radius += rip.speed;
+          rip.alpha = 1 - (rip.radius / rip.maxRadius);
+        });
+        ripples = ripples.filter(rip => rip.radius < rip.maxRadius);
+        
+        const cols = Math.ceil(canvas.width / gridSpacing) + 1;
+        const rows = Math.ceil(canvas.height / gridSpacing) + 1;
+        
+        let points = [];
+        for (let c = 0; c < cols; c++) {
+          points[c] = [];
+          for (let r = 0; r < rows; r++) {
+            const baseX = c * gridSpacing;
+            const baseY = r * gridSpacing;
+            
+            const wave1 = Math.sin(c * 0.15 + time * 0.02) * 8;
+            const wave2 = Math.cos(r * 0.15 + time * 0.025) * 8;
+            let x = baseX + wave2;
+            let y = baseY + wave1;
+            
+            const dx = x - mouse.x;
+            const dy = y - mouse.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 260) {
+              const force = (260 - dist) / 260;
+              x += (dx / dist) * force * 18;
+              y += (dy / dist) * force * 18;
+            }
+            
+            ripples.forEach(rip => {
+              const rdx = x - rip.x;
+              const rdy = y - rip.y;
+              const rdist = Math.sqrt(rdx * rdx + rdy * rdy);
+              const delta = Math.abs(rdist - rip.radius);
+              if (delta < 80) {
+                const ringForce = (80 - delta) / 80;
+                const push = ringForce * rip.force * rip.alpha;
+                x += (rdx / rdist) * push;
+                y += (rdy / rdist) * push;
+              }
+            });
+            
+            points[c][r] = { x, y, alpha: Math.max(0.015, 0.12 - dist/1600) };
+          }
+        }
+        
+        ctx.lineWidth = 0.8;
+        for (let c = 0; c < cols; c++) {
+          for (let r = 0; r < rows; r++) {
+            if (c < cols - 1) {
+              ctx.beginPath();
+              ctx.strokeStyle = `rgba(${currentGridColor}, ${Math.min(points[c][r].alpha, points[c+1][r].alpha)})`;
+              ctx.moveTo(points[c][r].x, points[c][r].y);
+              ctx.lineTo(points[c+1][r].x, points[c+1][r].y);
+              ctx.stroke();
+            }
+            if (r < rows - 1) {
+              ctx.beginPath();
+              ctx.strokeStyle = `rgba(${currentGridColor}, ${Math.min(points[c][r].alpha, points[c][r+1].alpha)})`;
+              ctx.moveTo(points[c][r].x, points[c][r].y);
+              ctx.lineTo(points[c][r+1].x, points[c][r+1].y);
+              ctx.stroke();
+            }
+          }
+        }
+        time++;
+        requestAnimationFrame(animateMesh);
+      }
+      animateMesh();
+
+
+      // =========================================================
+  // Note: Actual mesh code will be dynamically injected or run here
+  
+  </script>
+</body>
+</html>

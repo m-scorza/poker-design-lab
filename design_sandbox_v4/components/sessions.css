@@ -1,0 +1,101 @@
+     PAGE 3: SESSIONS (Volume Timeline & predators)
+     ========================================================= */
+  .timeline-row-editorial {
+    display: grid;
+    grid-template-columns: 110px 1fr 100px 100px 100px;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s ease;
+    align-items: center;
+    position: relative;
+  }
+  .timeline-row-editorial:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+  .timeline-date-block {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .timeline-date-sub {
+    font-size: 10px;
+    color: var(--fg-muted);
+    font-weight: 400;
+    margin-top: 3px;
+  }
+  .timeline-title-block .editorial-title {
+    font-family: var(--display);
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .timeline-title-block .editorial-desc {
+    font-size: 11.5px;
+    color: var(--fg-muted);
+    margin-top: 4px;
+  }
+  .timeline-val-block {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .timeline-val-block.pos { color: var(--accent); }
+  .timeline-val-block.neg { color: var(--loss); }
+
+  /* Expanding sessions drawer */
+  .editorial-expand-panel {
+    display: none;
+    height: 0;
+    overflow: hidden;
+    background: rgba(0,0,0,0.15);
+    border-bottom: 1px solid var(--border);
+    box-shadow: inset 0 2px 14px rgba(0,0,0,0.4);
+  }
+  .expanded-card-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 1.2fr;
+    gap: 24px;
+    padding: 24px;
+  }
+  .session-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+    border-radius: 12px;
+  }
+  .session-card h4 {
+    margin: 0 0 14px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  
+  /* Progress stats bars inside sessions */
+  .session-bar-row {
+    margin-bottom: 12px;
+  }
+  .session-bar-lbl {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin-bottom: 5px;
+  }
+  .session-bar-track {
+    height: 4px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .session-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--accent);
+  }
+  .session-bar-fill.blue { background: var(--accent-2); }
+  .session-bar-fill.amber { background: #ffaa00; }
+
+  /* =========================================================

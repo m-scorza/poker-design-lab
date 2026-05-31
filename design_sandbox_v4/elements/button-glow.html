@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Button Hover Micro-Glows</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="../gsap.min.js"></script>
+  <style>
+    :root {
+      --bg: #050608;
+      --bg-2: #0b0d12;
+      --bg-card: rgba(13, 17, 25, 0.65);
+      --bg-card-hover: rgba(20, 26, 38, 0.75);
+      --border: rgba(255, 255, 255, 0.05);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --accent-2: #00FF87;
+      --accent-soft: rgba(0, 240, 255, 0.06);
+      --accent-glow: rgba(0, 240, 255, 0.25);
+      --accent-line: rgba(0, 240, 255, 0.35);
+      --loss: #FF3B6B;
+      --loss-soft: rgba(255, 59, 107, 0.08);
+      --fg: #f3f4f6;
+      --fg-muted: #8892b0;
+      --fg-dim: #3a3f50;
+      --sans: 'Inter', -apple-system, sans-serif;
+      --display: 'Outfit', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      overflow-x: hidden;
+    }
+    .container { max-width: 800px; width: 100%; text-align: center; z-index: 10; }
+    h1 { font-family: var(--display); font-weight: 700; margin-bottom: 30px; letter-spacing: -0.02em; }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-muted); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    
+  .btn-deck { display: flex; gap: 20px; justify-content: center; margin-top: 40px; }
+  .show-btn { background: var(--bg-card); border: 1.5px solid var(--border-strong); color: var(--fg); font-family: var(--mono); font-size: 12px; padding: 14px 28px; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.1em; transition: border-color 0.2s, box-shadow 0.2s, text-shadow 0.2s; }
+  .show-btn:hover { box-shadow: 0 0 15px var(--accent-glow); border-color: var(--accent); text-shadow: 0 0 8px var(--accent-glow); }
+  .show-btn.loss-btn:hover { border-color: var(--loss); box-shadow: 0 0 15px rgba(255, 59, 107, 0.35); text-shadow: 0 0 8px rgba(255, 59, 107, 0.4); }
+  
+  </style>
+</head>
+<body>
+  <a href="../elements_showcase.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Button Hover Micro-Glows</h1>
+    
+  <p style="color: var(--fg-muted);">Premium UI buttons expand a soft glowing box-shadow bloom on hover.</p>
+  <div class="btn-deck">
+    <button class="show-btn">Standard Action</button>
+    <button class="show-btn loss-btn">Reset Database</button>
+  </div>
+  
+  </div>
+  <script>
+    // Button glows are styled in pure CSS
+  </script>
+</body>
+</html>

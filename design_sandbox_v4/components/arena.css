@@ -1,0 +1,257 @@
+     PAGE 8: ARENA (Simulated GTO trainer, 3D felt)
+     ========================================================= */
+  .arena-grid {
+    display: grid;
+    grid-template-columns: 1fr 240px;
+    gap: 24px;
+    height: 520px;
+  }
+  .hologram-viewport {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  /* 3D Tilted felt surface */
+  .hologram-stage-3d {
+    flex-1;
+    position: relative;
+    perspective: 1200px;
+    display: flex; align-items: center; justify-content: center;
+    height: 100%;
+  }
+  .hologram-felt-3d {
+    position: absolute;
+    width: 620px; height: 260px;
+    border-radius: 130px;
+    border: 14px solid #202633;
+    background: #151b26;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.7), inset 0 0 60px rgba(0,0,0,0.5);
+    transform: rotateX(32deg);
+    transform-style: preserve-3d;
+  }
+  
+  /* Seats overlay */
+  .hologram-seat {
+    position: absolute;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    color: var(--fg);
+    padding: 8px 14px;
+    border-radius: 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+    z-index: 10;
+  }
+  .hologram-seat:hover {
+    border-color: var(--accent);
+    transform: scale(1.05);
+  }
+  .hologram-seat.hero {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .hologram-seat .name { font-weight: 700; display: block; }
+  .hologram-seat .chips { font-size: 9px; color: var(--fg-muted); display: block; margin-top: 2px; }
+  
+  /* Precise absolute coordinates for seats */
+  .seat-1 { top: 15%; left: 15%; }
+  .seat-2 { top: 8%; left: 50%; transform: translateX(-50%); }
+  .seat-3 { top: 15%; right: 15%; }
+  .seat-4 { bottom: 15%; right: 15%; }
+  .seat-5 { bottom: 8%; left: 50%; transform: translateX(-50%); }
+  .seat-6 { bottom: 15%; left: 15%; }
+  
+  .center-pot-box {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+    opacity: 0.55;
+  }
+  .center-pot-box .l { font-family: var(--mono); font-size: 8px; text-transform: uppercase; color: var(--fg-muted); }
+  .center-pot-box .v { font-family: var(--mono); font-size: 20px; font-weight: 700; color: #fff; }
+
+  /* Hologram path vectors canvas */
+  #arena-felt-canvas {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  /* Floating simulated chip packet */
+  .sim-chip {
+    position: absolute;
+    width: 12px; height: 12px;
+    background: radial-gradient(circle, #fff 15%, var(--accent) 55%, transparent 75%);
+    border-radius: 50%;
+    z-index: 60;
+    pointer-events: none;
+  }
+
+  /* Dealing cards animation shapes */
+  .hologram-deal-card {
+    position: absolute;
+    width: 48px; height: 68px;
+    background: #fff;
+    border-radius: 5px;
+    color: #000;
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 14px;
+    padding: 5px 7px;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    z-index: 40;
+    pointer-events: none;
+  }
+  .hologram-deal-card.red { color: #f43f5e; }
+  .hologram-deal-card .suit { align-self: flex-end; font-size: 16px; }
+
+  .trainer-actions-wrap {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    z-index: 50;
+    position: relative;
+    padding-bottom: 12px;
+  }
+  .btn-trainer-act {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-strong);
+    color: var(--fg);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 12px 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+  }
+  .btn-trainer-act:hover {
+    border-color: var(--accent);
+    background: rgba(255,255,255,0.03);
+    box-shadow: 0 0 15px var(--accent-glow);
+  }
+  
+  /* Trainer feedback overlay bubble */
+  .trainer-feedback-overlay {
+    position: absolute;
+    top: 25%; left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 100;
+    background: rgba(8, 10, 15, 0.9);
+    border: 1px solid var(--border-strong);
+    padding: 16px 28px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 15px 45px rgba(0,0,0,0.8);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .trainer-feedback-overlay.active {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  .trainer-feedback-overlay.correct { border-color: var(--accent); }
+  .trainer-feedback-overlay.incorrect { border-color: var(--loss); }
+  .trainer-feedback-overlay h4 { margin: 0 0 6px; font-size: 15px; }
+  .trainer-feedback-overlay p { margin: 0; font-size: 12px; color: var(--fg-muted); }
+
+  /* =========================================================
+     FLOATING THEME CONTROLS DOCK PANEL
+     ========================================================= */
+  .theme-dock {
+    position: fixed;
+    right: 24px; bottom: 24px;
+    background: rgba(8, 10, 15, 0.82);
+    backdrop-filter: blur(16px);
+    border: 1.5px solid var(--border-strong);
+    border-radius: 12px;
+    padding: 12px 16px;
+    z-index: 9999;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 210px;
+    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    transform-origin: right bottom;
+  }
+  .theme-dock:hover {
+    transform: scale(1.03);
+  }
+  .dock-header {
+    font-family: var(--mono);
+    font-size: 8.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 6px;
+  }
+  .dock-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 10px;
+  }
+  .dock-btn {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    color: var(--fg-muted);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 9px;
+    font-family: var(--mono);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .dock-btn:hover {
+    color: #fff;
+    border-color: var(--border-strong);
+  }
+  .dock-btn.active {
+    background: var(--accent-soft);
+    color: var(--fg);
+    border-color: var(--accent);
+  }
+
+  /* Midwam loader styles */
+  .loader {
+    position: fixed; inset: 0;
+    z-index: 200000;
+    background: #010103;
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity .8s cubic-bezier(.4,0,.1,1), visibility .8s;
+  }
+  .loader.done { opacity: 0; visibility: hidden; }
+  .loader-inner { width: min(440px, 80vw); }
+  .loader-eye {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--fg-muted); display: flex; justify-content: space-between; margin-bottom: 12px;
+  }
+  .loader-eye b { color: var(--accent); }
+  .loader-pct {
+    font-family: var(--display); font-weight: 800; font-size: 96px; letter-spacing: -0.05em; line-height: 0.86; color: var(--fg);
+  }
+  .loader-bar { margin-top: 18px; height: 2px; background: rgba(255,255,255,0.04); position: relative; overflow: hidden; }
+  .loader-bar span { position: absolute; inset: 0 auto 0 0; width: 0%; background: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+  .loader-status { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--fg-muted); margin-top: 12px; }
+

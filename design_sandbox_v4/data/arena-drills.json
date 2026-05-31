@@ -1,0 +1,22 @@
+[
+  {
+    "hand": "AA",
+    "correct": "raise",
+    "note": "Standard value open from BTN."
+  },
+  {
+    "hand": "T7o",
+    "correct": "fold",
+    "note": "Fold weak offsuit connectors preflop."
+  },
+  {
+    "hand": "KQs",
+    "correct": "raise",
+    "note": "Standard premium broadway raise."
+  },
+  {
+    "hand": "A2o",
+    "correct": "fold",
+    "note": "Weak offsuit aces fold in BTN vs HJ/CO."
+  }
+]

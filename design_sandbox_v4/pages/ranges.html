@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Modular Prototyping - Ranges</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="../gsap.min.js"></script>
+  <style>
+    /* Injected layout CSS for standalone testing */
+    :root {
+      --bg: #06070a;
+      --bg-2: #0b0c10;
+      --bg-card: rgba(13, 16, 23, 0.65);
+      --bg-card-hover: rgba(20, 24, 33, 0.75);
+      --bg-input: #12131a;
+      --border: rgba(255, 255, 255, 0.05);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --accent-2: #00FF87;
+      --accent-soft: rgba(0, 240, 255, 0.06);
+      --accent-glow: rgba(0, 240, 255, 0.25);
+      --accent-line: rgba(0, 240, 255, 0.35);
+      --loss: #FF3B6B;
+      --loss-soft: rgba(255, 92, 138, 0.08);
+      --loss-line: rgba(255, 92, 138, 0.35);
+      --fg: #f3f4f6;
+      --fg-muted: #8892b0;
+      --fg-dim: #3a3f50;
+      --sans: 'Inter', -apple-system, sans-serif;
+      --display: 'Outfit', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.5);
+    }
+    body {
+      margin: 0; padding: 40px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+    }
+    /* Embed actual extracted styles below */
+    /* STYLES_INJECT_PLACEHOLDER */
+  </style>
+</head>
+<body>
+  <div style="max-width: 1480px; margin: 0 auto;">
+    <section class="page active" id="page-ranges">
+      
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2 class="kick accent" style="margin:0;">Range compliance lab</h2>
+        <div class="ranges-tab-menu">
+          <button class="ranges-tab-btn active" data-mode="compliance">Compliance</button>
+          <button class="ranges-tab-btn" data-mode="edit">Edit Range</button>
+        </div>
+      </div>
+      
+      <div class="ranges-main-layout">
+        <!-- Range Matrix workspace -->
+        <div class="card">
+          <div class="position-select-grid" id="ranges-pos-selector">
+            <!-- Programmatic button triggers UTG to BB -->
+          </div>
+          
+          <div class="matrix-grid-box" id="ranges-matrix-grid" style="max-width: 440px; margin: 0 auto;">
+            <!-- Grid generated programmatically -->
+          </div>
+          
+          <div class="ranges-control-footer">
+            <div class="ranges-swatch-info">
+              <span><i class="play"></i>Played correctly</span>
+              <span><i class="dev"></i>Deviation spots</span>
+            </div>
+            <span class="kick" id="ranges-combos-lbl">169 combos</span>
+          </div>
+        </div>
+        
+        <!-- Solver delta comparison list -->
+        <div class="card solver-delta-card">
+          <span class="kick accent">Solver Delta Validation</span>
+          <div style="margin-top:14px;">
+            <div class="solver-delta-row">
+              <span class="pos-lbl">UTG Open</span>
+              <div class="val-group"><span class="ours">15.2%</span><span class="solver">15.0%</span></div>
+              <span class="delta-lbl wider">+0.2% OK</span>
+            </div>
+            <div class="solver-delta-row">
+              <span class="pos-lbl">CO Open</span>
+              <div class="val-group"><span class="ours">28.4%</span><span class="solver">26.0%</span></div>
+              <span class="delta-lbl wider">+2.4% Wide</span>
+            </div>
+            <div class="solver-delta-row">
+              <span class="pos-lbl">BTN Open</span>
+              <div class="val-group"><span class="ours">58.0%</span><span class="solver">48.0%</span></div>
+              <span class="delta-lbl tighter">+10.0% Wide</span>
+            </div>
+            <div class="solver-delta-row">
+              <span class="pos-lbl">SB Open</span>
+              <div class="val-group"><span class="ours">38.0%</span><span class="solver">40.0%</span></div>
+              <span class="delta-lbl tighter">-2.0% Tight</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    </section>
+  </div>
+  
+  <script>
+    // Local script placeholder for standalone pages
+    /* SCRIPTS_INJECT_PLACEHOLDER */
+  </script>
+</body>
+</html>

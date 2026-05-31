@@ -1,0 +1,981 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1480, initial-scale=1" />
+<title>Arena — Poker Analyzer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="v8-shell.css">
+<style>
+/* ===== ARENA TABLE ===== */
+.ptable-outer { position: relative; max-width: 860px; margin: 0 auto; }
+.ptable-rail {
+  aspect-ratio: 2.15 / 1;
+  border-radius: 50%;
+  background: linear-gradient(165deg, #322c26 0%, #211c17 52%, #14110d 100%);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.05), 0 22px 60px -18px rgba(0,0,0,0.8),
+              inset 0 2px 0 rgba(255,255,255,0.07), inset 0 -3px 6px rgba(0,0,0,0.5);
+  position: relative;
+  padding: 13px;
+}
+.ptable-felt {
+  position: absolute; inset: 13px; border-radius: 50%;
+  background: radial-gradient(95% 75% at 50% 30%, #237a45 0%, #1a6038 44%, #0f4526 78%, #0a3a20 100%);
+  box-shadow: inset 0 6px 30px rgba(0,0,0,0.5), inset 0 0 0 2px rgba(255,255,255,0.045), inset 0 -4px 24px rgba(0,0,0,0.45);
+  overflow: hidden;
+}
+.ptable-felt::before {
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(55% 36% at 50% 16%, rgba(255,255,255,0.09) 0%, transparent 60%);
+  pointer-events: none;
+}
+.ptable-felt::after {
+  content: ''; position: absolute; inset: 22%; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.05); pointer-events: none;
+  box-shadow: 0 50px 60px -30px rgba(124,131,247,0.2);
+}
+/* Seats — positioned absolutely on the rail div */
+.ptable-seats { position: absolute; inset: 0; pointer-events: none; }
+.seat-wrap {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: all;
+  z-index: 20;
+}
+.seat {
+  width: 116px;
+  background: linear-gradient(165deg, rgba(26,28,35,0.94), rgba(15,16,21,0.94));
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  padding: 8px 11px 9px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 22px -10px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05);
+  transition: border-color 0.2s, opacity 0.2s;
+  position: relative;
+}
+.seat.active { border-color: rgba(217,168,90,0.55); box-shadow: 0 0 0 1px rgba(217,168,90,0.15); }
+.seat.folded { opacity: 0.38; }
+.seat.hero-seat { border-color: rgba(124,131,247,0.50); box-shadow: 0 0 0 1px rgba(124,131,247,0.12); }
+.seat .s-pos { font-family: var(--mono); font-size: 8.5px; color: var(--fg-4); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 3px; }
+.seat .s-name { font-size: 11px; color: var(--fg); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.seat .s-stack { font-family: var(--mono); font-size: 10.5px; color: var(--fg-3); margin-top: 2px; }
+.seat .s-action { font-family: var(--mono); font-size: 9.5px; color: var(--warn); margin-top: 4px; padding-top: 4px; border-top: 1px solid var(--border); }
+.seat .s-action.fold-act { color: var(--fg-4); }
+.seat .s-cards { display: flex; gap: 3px; margin-top: 5px; }
+/* Table center */
+.ptable-center {
+  position: absolute; top: 46%; left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 10;
+}
+.street-badge {
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); padding: 3px 10px; border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px; background: rgba(0,0,0,0.3);
+}
+.board-cards { display: flex; gap: 6px; align-items: flex-end; min-height: 58px; }
+.pot-row {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--mono); font-size: 12.5px;
+  padding: 4px 14px 4px 8px; background: rgba(0,0,0,0.42);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+}
+.pot-row .pl { color: rgba(255,255,255,0.4); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; }
+.pot-row .pv { color: var(--money); font-weight: 600; }
+
+/* Poker chips */
+.chip {
+  --c: #e0bd78;
+  width: 22px; height: 22px; border-radius: 50%; position: relative; flex-shrink: 0;
+  background: radial-gradient(circle at 50% 34%, color-mix(in srgb, var(--c) 65%, #fff) 0%, var(--c) 46%, color-mix(in srgb, var(--c) 72%, #000) 100%);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.55), inset 0 0 0 2px rgba(255,255,255,0.18), inset 0 -2px 3px rgba(0,0,0,0.3);
+}
+.chip::before {
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  background: repeating-conic-gradient(rgba(255,255,255,0.9) 0deg 11deg, transparent 11deg 30deg);
+  -webkit-mask: radial-gradient(circle, transparent 58%, #000 60%, #000 90%, transparent 92%);
+  mask: radial-gradient(circle, transparent 58%, #000 60%, #000 90%, transparent 92%);
+  opacity: 0.55;
+}
+.chip::after { content: ''; position: absolute; inset: 6px; border-radius: 50%; border: 1px dashed rgba(255,255,255,0.45); }
+.chip.gold { --c: #e0a85a; } .chip.violet { --c: #7c83f7; } .chip.green { --c: #5ec98f; } .chip.red { --c: #ef7c74; }
+.chip-stack { display: inline-flex; align-items: center; }
+.chip-stack .chip { margin-left: -12px; }
+.chip-stack .chip:first-child { margin-left: 0; }
+.chip-stack .chip:nth-child(2) { transform: translateY(-2px); }
+.chip-stack .chip:nth-child(3) { transform: translateY(-3px); }
+.seat-bet { position: absolute; left: 50%; bottom: -16px; transform: translateX(-50%); display: flex; align-items: center; gap: 6px; pointer-events: none; z-index: 25; }
+.seat-bet .amt { font-family: var(--mono); font-size: 9.5px; color: rgba(255,255,255,0.9); background: rgba(0,0,0,0.5); padding: 1px 5px; border-radius: 3px; }
+
+/* Cards */
+.card-face {
+  position: relative; flex-shrink: 0; isolation: isolate; overflow: hidden;
+  border-radius: 6px;
+  background: linear-gradient(150deg, #ffffff 0%, #f6f1e8 55%, #ece3d3 100%);
+  font-family: Georgia, 'Times New Roman', serif; font-weight: 700; line-height: 1; user-select: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4), 0 10px 22px -8px rgba(0,0,0,0.55),
+              inset 0 1px 0 rgba(255,255,255,0.95), inset 0 -2px 5px rgba(120,95,60,0.13);
+}
+.card-face::after { /* paper sheen */
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(150deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 40%);
+  opacity: 0.7;
+}
+.card-face.r { color: #d11f2b; }
+.card-face.k { color: #17181d; }
+.card-face.b { color: #1f5fd0; }
+.card-face.g { color: #1f8a44; }
+.card-face .c-ix { position: absolute; top: 6.5%; left: 8%; display: flex; flex-direction: column; align-items: center; line-height: 0.8; z-index: 1; }
+.card-face .c-ix.br { top: auto; bottom: 6.5%; left: auto; right: 8%; transform: rotate(180deg); }
+.card-face .c-r { font-size: 0.34em; letter-spacing: -0.05em; }
+.card-face .c-s { font-size: 0.25em; margin-top: 2px; }
+.card-face .c-mid { position: absolute; inset: 0; display: grid; place-items: center; font-size: 0.6em; opacity: 0.9; z-index: 0; }
+.card-face.sm { width: 23px; height: 33px; font-size: 33px; border-radius: 4px; }
+.card-face.sm .c-mid, .card-face.sm .c-ix.br { display: none; }
+.card-face.md { width: 42px; height: 59px; font-size: 54px; }
+.card-face.lg {
+  width: 52px; height: 74px; font-size: 65px; border-radius: 7px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.55), 0 0 0 1.5px rgba(124,131,247,0.5),
+              0 0 26px -2px rgba(124,131,247,0.45), inset 0 1px 0 rgba(255,255,255,0.95);
+}
+.card-face.empty { background: rgba(255,255,255,0.04); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.07); border: 1px dashed rgba(255,255,255,0.13); }
+.card-face.empty::after, .card-face.empty .c-ix, .card-face.empty .c-mid { display: none; }
+.card-back {
+  background: repeating-linear-gradient(135deg, #1a2888 0px, #1a2888 5px, #2232a8 5px, #2232a8 10px);
+  border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); flex-shrink: 0;
+}
+.card-back.sm { width: 22px; height: 32px; border-radius: 3px; }
+
+/* Hero zone */
+.hero-zone {
+  max-width: 860px; margin: 0 auto;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  padding: 14px 0 8px;
+  position: relative;
+}
+.hero-zone::before {
+  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 2px; height: 14px; background: var(--accent); opacity: 0.5;
+}
+.hero-cards { display: flex; gap: 8px; }
+.hero-info {
+  display: flex; align-items: center; gap: 14px;
+  font-family: var(--mono); font-size: 11px; color: var(--fg-3);
+}
+.hero-info .hn { color: var(--accent-2); font-weight: 500; }
+.hero-info .hpos { padding: 2px 7px; background: rgba(124,131,247,0.08); border: 1px solid rgba(124,131,247,0.20); border-radius: 4px; color: var(--accent); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* Action zone */
+.action-zone { max-width: 860px; margin: 12px auto 0; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.villain-prompt {
+  font-family: var(--mono); font-size: 12px; color: var(--fg-2);
+  padding: 9px 18px; background: var(--panel); border: 1px solid var(--border);
+  border-radius: 7px; text-align: center; max-width: 600px;
+}
+.villain-prompt .hl { color: var(--warn); font-weight: 500; }
+.action-btns { display: flex; gap: 10px; }
+.action-btn {
+  padding: 13px 24px; border-radius: 9px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 5px; min-width: 118px;
+  transition: all 0.12s ease; font-family: var(--sans); border: 1px solid;
+}
+.action-btn .abl { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+.action-btn .abs { font-family: var(--mono); font-size: 10.5px; }
+.action-btn.fold { background: rgba(239,124,116,0.06); border-color: rgba(239,124,116,0.22); color: var(--neg); }
+.action-btn.fold:hover { background: rgba(239,124,116,0.14); border-color: rgba(239,124,116,0.42); transform: translateY(-1px); }
+.action-btn.call { background: rgba(94,201,143,0.07); border-color: rgba(94,201,143,0.24); color: var(--pos); }
+.action-btn.call:hover { background: rgba(94,201,143,0.15); border-color: rgba(94,201,143,0.45); transform: translateY(-1px); }
+.action-btn.raise { background: rgba(124,131,247,0.08); border-color: rgba(124,131,247,0.28); color: var(--accent-2); }
+.action-btn.raise:hover { background: rgba(124,131,247,0.16); border-color: rgba(124,131,247,0.48); transform: translateY(-1px); }
+.action-btn:active { transform: translateY(1px) !important; }
+
+/* Feedback panel */
+.feedback-panel {
+  max-width: 860px; margin: 12px auto 0;
+  background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+  padding: 22px 26px; display: grid; grid-template-columns: 160px 1fr 148px; gap: 22px; align-items: start;
+}
+.fb-left { display: flex; flex-direction: column; gap: 10px; }
+.fb-grade {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.10em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 5px; border: 1px solid; width: fit-content;
+}
+.fb-grade.correct { color: var(--pos); background: rgba(94,201,143,0.08); border-color: rgba(94,201,143,0.28); }
+.fb-grade.mistake { color: var(--neg); background: rgba(239,124,116,0.08); border-color: rgba(239,124,116,0.28); }
+.fb-ev { font-family: var(--mono); font-size: 26px; font-weight: 500; line-height: 1; }
+.fb-ev.pos { color: var(--pos); }
+.fb-ev.neg { color: var(--neg); }
+.fb-ev .fb-ev-lbl { font-size: 10px; color: var(--fg-3); display: block; margin-top: 5px; letter-spacing: 0.06em; text-transform: uppercase; }
+.fb-body .fb-title { font-size: 13px; font-weight: 600; color: var(--fg); margin-bottom: 8px; letter-spacing: -0.005em; }
+.fb-body .fb-text { font-size: 12.5px; color: var(--fg-2); line-height: 1.65; }
+.fb-solver {
+  margin-top: 12px; padding: 10px 12px; background: var(--panel-2);
+  border: 1px solid var(--border); border-radius: 7px;
+  font-family: var(--mono); font-size: 10.5px; color: var(--fg-3);
+  display: flex; flex-direction: column; gap: 5px;
+}
+.fb-solver .s-row { display: flex; justify-content: space-between; }
+.fb-solver .s-row .k { color: var(--fg-3); }
+.fb-solver .s-row .v { color: var(--fg); font-weight: 500; }
+.fb-solver .s-row .v.correct { color: var(--pos); }
+.fb-right { display: flex; flex-direction: column; gap: 8px; }
+.fb-next { background: var(--accent); border: 0; color: #0c0d12; font: 600 12.5px var(--sans); padding: 11px 16px; border-radius: 7px; cursor: pointer; width: 100%; }
+.fb-next:hover { background: var(--accent-2); }
+.fb-skip { background: transparent; border: 1px solid var(--border-strong); color: var(--fg-3); font: 500 12px var(--sans); padding: 9px 16px; border-radius: 7px; cursor: pointer; width: 100%; }
+.fb-skip:hover { color: var(--fg); }
+.fb-score { text-align: center; font-family: var(--mono); font-size: 10px; color: var(--fg-4); margin-top: 4px; }
+
+/* Drill progress bar */
+.drill-progress { max-width: 860px; margin: 0 auto 16px; background: var(--panel); border: 1px solid var(--border); border-radius: 9px; padding: 14px 18px; display: flex; align-items: center; gap: 18px; }
+.dp-back { background: none; border: 0; color: var(--fg-3); cursor: pointer; display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 11px; padding: 0; }
+.dp-back:hover { color: var(--fg); }
+.dp-back svg { width: 12px; height: 12px; }
+.dp-title { font-size: 13px; font-weight: 600; color: var(--fg); letter-spacing: -0.005em; }
+.dp-sub { font-family: var(--mono); font-size: 10.5px; color: var(--fg-3); }
+.dp-progress { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.dp-dots { display: flex; gap: 4px; }
+.dp-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--panel-3); border: 1px solid var(--border); transition: all 0.2s; }
+.dp-dot.done-correct { background: var(--pos); border-color: var(--pos); }
+.dp-dot.done-mistake { background: var(--neg); border-color: var(--neg); }
+.dp-dot.current { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,131,247,0.18); }
+.dp-text { font-family: var(--mono); font-size: 10.5px; color: var(--fg-3); }
+
+/* Drill Complete */
+.drill-complete { max-width: 860px; margin: 40px auto 0; text-align: center; }
+.dc-score { font-family: var(--mono); font-size: 64px; font-weight: 500; color: var(--money); line-height: 1; }
+.dc-score span { font-size: 32px; color: rgba(216,176,102,0.55); }
+.dc-label { font-family: var(--mono); font-size: 11px; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.14em; margin-top: 10px; }
+.dc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 28px 0; text-align: left; }
+.dc-stat { background: var(--panel); border: 1px solid var(--border); border-radius: 9px; padding: 16px 18px; }
+.dc-stat .l { font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--fg-3); font-family: var(--mono); margin-bottom: 8px; }
+.dc-stat .v { font-family: var(--mono); font-size: 22px; color: var(--fg); font-weight: 500; }
+.dc-stat .v.pos { color: var(--pos); }
+.dc-stat .v.neg { color: var(--neg); }
+.dc-btns { display: flex; gap: 10px; justify-content: center; }
+
+/* Hub styles */
+.arena-rec { padding: 24px 28px; margin-bottom: 20px; position: relative; background: linear-gradient(160deg, rgba(124,131,247,0.09) 0%, rgba(124,131,247,0.02) 60%, transparent 100%); border: 1px solid var(--accent-border); overflow: hidden; border-radius: 12px; }
+.arena-rec::after { content: ''; position: absolute; right: -40px; top: -40px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(124,131,247,0.16) 0%, transparent 65%); pointer-events: none; }
+.rec-grid { display: grid; grid-template-columns: 1fr 200px; gap: 24px; align-items: center; position: relative; }
+.rec-eye { font-family: var(--mono); font-size: 10px; color: var(--accent-2); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 9px; }
+.rec-eye .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 0 3px rgba(124,131,247,0.18); }
+.rec-title { font-size: 22px; font-weight: 600; letter-spacing: -0.014em; line-height: 1.25; }
+.rec-title em { color: var(--accent-2); font-style: normal; }
+.rec-sub { font-size: 13px; color: var(--fg-2); margin-top: 8px; line-height: 1.6; max-width: 580px; }
+.rec-stats { display: flex; gap: 20px; margin-top: 14px; font-family: var(--mono); font-size: 11px; color: var(--fg-3); flex-wrap: wrap; }
+.rec-stats b { color: var(--fg); font-weight: 500; }
+.rec-stats .pos { color: var(--pos); }
+.rec-action { display: flex; flex-direction: column; gap: 8px; }
+.hub-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+.drill-card { background: var(--panel); border: 1px solid var(--border); border-radius: 11px; padding: 18px 20px; cursor: pointer; transition: transform 0.14s, border-color 0.14s; display: flex; flex-direction: column; gap: 12px; position: relative; }
+.drill-card:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+.drill-card.priority { background: linear-gradient(160deg, rgba(239,124,116,0.05) 0%, var(--panel) 60%); border-color: rgba(239,124,116,0.18); }
+.drill-card.priority:hover { border-color: rgba(239,124,116,0.38); }
+.drill-card .dc-head { display: flex; align-items: flex-start; gap: 12px; }
+.drill-card .dc-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--accent-soft); border: 1px solid var(--accent-border); color: var(--accent-2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.drill-card.priority .dc-icon { background: rgba(239,124,116,0.08); border-color: rgba(239,124,116,0.28); color: var(--neg); }
+.drill-card .dc-icon svg { width: 15px; height: 15px; }
+.drill-tag { font-family: var(--mono); font-size: 9px; padding: 2px 7px; border-radius: 3px; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid; }
+.drill-tag.crit { color: var(--neg); background: rgba(239,124,116,0.08); border-color: rgba(239,124,116,0.28); }
+.drill-tag.high { color: var(--warn); background: rgba(217,168,90,0.08); border-color: rgba(217,168,90,0.28); }
+.drill-tag.done { color: var(--pos); background: rgba(94,201,143,0.08); border-color: rgba(94,201,143,0.28); }
+.drill-card .dc-name { font-size: 14.5px; font-weight: 600; letter-spacing: -0.007em; margin-bottom: 4px; }
+.drill-card .dc-sub { font-size: 12px; color: var(--fg-2); line-height: 1.5; }
+.drill-card .dc-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; padding: 10px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-top: auto; }
+.drill-card .ds .l { font-family: var(--mono); font-size: 8.5px; color: var(--fg-4); letter-spacing: 0.1em; text-transform: uppercase; }
+.drill-card .ds .v { font-family: var(--mono); font-size: 13px; color: var(--fg); font-weight: 500; margin-top: 2px; }
+.drill-card .ds .v.pos { color: var(--pos); }
+.drill-card .dc-prog { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 10.5px; color: var(--fg-3); }
+.drill-card .dc-prog .bar { flex: 1; height: 3px; background: var(--panel-3); border-radius: 2px; overflow: hidden; }
+.drill-card .dc-prog .bar i { display: block; height: 100%; background: var(--accent); border-radius: 2px; }
+.start-btn { background: var(--accent); border: 0; color: #0c0d12; font: 600 13px var(--sans); padding: 11px 18px; border-radius: 7px; cursor: pointer; }
+.start-btn:hover { background: var(--accent-2); }
+</style>
+</head>
+<body>
+
+<div class="chrome">
+  <div class="chrome-inner">
+    <div class="chrome-brand">
+      <div class="chrome-brand-mark">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M7 1.5 C9.5 4.5, 11.5 6, 11.5 8.5 C11.5 10.5, 10 11.5, 8.5 11.5 C7.8 11.5, 7 11.2, 7 11.2 C7 11.2, 6.2 11.5, 5.5 11.5 C4 11.5, 2.5 10.5, 2.5 8.5 C2.5 6, 4.5 4.5, 7 1.5 Z" fill="currentColor"/></svg>
+      </div>
+      <b>Poker Analyzer</b><span>· scorza23</span>
+    </div>
+    <div class="chrome-spacer"></div>
+    <div class="chrome-note" id="chrome-note">12 drills queued · 4 from current leaks</div>
+  </div>
+</div>
+
+<div class="frame">
+  <aside class="sb">
+    <div class="sb-brand">
+      <div class="sb-mark"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M7 1.5 C9.5 4.5, 11.5 6, 11.5 8.5 C11.5 10.5, 10 11.5, 8.5 11.5 C7.8 11.5, 7 11.2, 7 11.2 C7 11.2, 6.2 11.5, 5.5 11.5 C4 11.5, 2.5 10.5, 2.5 8.5 C2.5 6, 4.5 4.5, 7 1.5 Z" fill="currentColor"/></svg></div>
+      <div><div class="sb-name">Poker Analyzer</div><div class="sb-name-sub">scorza23 · local</div></div>
+    </div>
+    <div class="sb-search"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="5"/><line x1="11" y1="11" x2="14" y2="14"/></svg>Search hands, leaks…<span class="key">⌘K</span></div>
+    <div class="sb-section">Review</div>
+    <a class="sb-item" href="Dashboard v8.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="2" width="5" height="5" rx="0.8"/><rect x="9" y="2" width="5" height="5" rx="0.8"/><rect x="2" y="9" width="5" height="5" rx="0.8"/><rect x="9" y="9" width="5" height="5" rx="0.8"/></svg>Dashboard</a>
+    <a class="sb-item" href="Hands.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="4.5"/><line x1="10.5" y1="10.5" x2="14" y2="14"/></svg>Hands<span class="sb-count">10,716</span></a>
+    <a class="sb-item" href="Leaks.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 1.5 L14 13.5 L2 13.5 Z"/><line x1="8" y1="6" x2="8" y2="10"/><circle cx="8" cy="11.5" r="0.6" fill="currentColor"/></svg>Leaks<span class="sb-count">8</span></a>
+    <a class="sb-item" href="Ranges.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="2" width="12" height="12" rx="1"/><line x1="6" y1="2" x2="6" y2="14"/><line x1="10" y1="2" x2="10" y2="14"/><line x1="2" y1="6" x2="14" y2="6"/><line x1="2" y1="10" x2="14" y2="10"/></svg>Ranges</a>
+    <div class="sb-section">Reports</div>
+    <a class="sb-item" href="Career.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 2 L11 2 L11 5 L13 5 L13 14 L3 14 L3 5 L5 5 Z"/><circle cx="8" cy="7" r="1.5" fill="currentColor"/></svg>Career</a>
+    <a class="sb-item" href="Sessions.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="3" width="12" height="11" rx="1"/><line x1="2" y1="6" x2="14" y2="6"/><line x1="5" y1="1.5" x2="5" y2="4.5"/><line x1="11" y1="1.5" x2="11" y2="4.5"/></svg>Sessions<span class="sb-count">37</span></a>
+    <div class="sb-section">Practice</div>
+    <a class="sb-item" href="Arena.html" aria-current="page"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="3"/></svg>Arena</a>
+    <div class="sb-section">Data</div>
+    <a class="sb-item" href="Villains.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5" r="2.5"/><path d="M3 14 C3 11, 5 9.5, 8 9.5 C11 9.5, 13 11, 13 14"/></svg>Villains<span class="sb-count">44</span></a>
+    <a class="sb-item" href="Demo.html"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 13 L6 8 L9 11 L14 4"/></svg>Demo</a>
+    <div class="sb-stake">
+      <div class="sb-stake-eyebrow">Lifetime profit</div>
+      <div class="sb-stake-val">+$388.85</div>
+      <div class="sb-stake-row"><span class="dot"></span>141.4% ROI · 250 tourneys</div>
+      <div class="sb-stake-tiny"><span>30d <b style="color:var(--pos)">+$24.30</b></span><span>$1.10 ABI</span></div>
+    </div>
+    <div class="sb-foot"><button class="sb-collapse"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M10 4 L6 8 L10 12"/><line x1="2.5" y1="3" x2="2.5" y2="13"/></svg>Collapse<span class="k">⌘\</span></button></div>
+  </aside>
+
+  <main class="main">
+
+    <!-- ===== HUB VIEW ===== -->
+    <div id="hub-view">
+      <div class="topbar">
+        <div>
+          <div class="crumb">PRACTICE · ARENA · DRILL HUB</div>
+          <h1>Practice the spots you're losing.</h1>
+          <div class="meta">
+            <span><b>3 drills</b> ready to play</span>
+            <span><b>3 from current leaks</b></span>
+            <span>last drilled <b>21 Oct</b> · 92% accuracy</span>
+          </div>
+        </div>
+        <div class="top-actions">
+          <button class="btn-ghost">+ Custom drill</button>
+        </div>
+      </div>
+
+      <div class="card arena-rec">
+        <div class="rec-grid">
+          <div>
+            <div class="rec-eye"><span class="dot"></span>TOP RECOMMENDATION · FROM YOUR #1 LEAK</div>
+            <div class="rec-title">Drill BB defend vs CO — the spot <em>costing you a buy-in per session.</em></div>
+            <div class="rec-sub">12 hands isolated from your last 8 sessions, all turn over-folds against a CO 2.5x open. Solver feedback after each decision.</div>
+            <div class="rec-stats">
+              <span><b>3 hands</b> · queued</span>
+              <span><b>~5 min</b> · est. duration</span>
+              <span class="pos"><b>+$8 / month</b> · expected recovery</span>
+            </div>
+          </div>
+          <div class="rec-action">
+            <button class="start-btn" onclick="startDrill(0)">Start drill →</button>
+            <button class="btn-ghost" style="text-align:center;">Preview</button>
+            <span style="font-family:var(--mono);font-size:10px;color:var(--fg-4);text-align:center;">⏎ to start</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-family:var(--mono);font-size:10px;color:var(--fg-3);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:12px;font-weight:600;">§ Drills from your leaks · 3 active</div>
+
+      <div class="hub-grid">
+        <div class="drill-card priority">
+          <div class="dc-head">
+            <div class="dc-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 1.5 L14 13.5 L2 13.5 Z"/><line x1="8" y1="6" x2="8" y2="10"/><circle cx="8" cy="11.5" r="0.6" fill="currentColor"/></svg></div>
+            <div>
+              <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;"><span style="font-family:var(--mono);font-size:9.5px;color:var(--fg-3);">Leak 01 · crit</span><span class="drill-tag crit">−$14.20</span></div>
+              <div class="dc-name">BB defend vs CO 2.5x</div>
+              <div class="dc-sub">Turn calls on blocker textures. Solver calls 64%; you call 38%.</div>
+            </div>
+          </div>
+          <div class="dc-stats">
+            <div class="ds"><div class="l">HANDS</div><div class="v">3</div></div>
+            <div class="ds"><div class="l">DURATION</div><div class="v">~5 min</div></div>
+            <div class="ds"><div class="l">EV / MO</div><div class="v pos">+$8.00</div></div>
+          </div>
+          <div class="dc-prog"><div class="bar"><i style="width:0%"></i></div><span>not started</span><button class="start-btn" style="font-size:11px;padding:6px 12px;margin-left:auto;" onclick="startDrill(0)">Start →</button></div>
+        </div>
+
+        <div class="drill-card priority">
+          <div class="dc-head">
+            <div class="dc-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 13 L6 9 L10 11 L14 4"/></svg></div>
+            <div>
+              <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;"><span style="font-family:var(--mono);font-size:9.5px;color:var(--fg-3);">Leak 02 · crit</span><span class="drill-tag crit">−$9.40</span></div>
+              <div class="dc-name">BTN open — tighten range</div>
+              <div class="dc-sub">Opening 58% vs target 48–52%. Marginal hands bleeding chips.</div>
+            </div>
+          </div>
+          <div class="dc-stats">
+            <div class="ds"><div class="l">HANDS</div><div class="v">3</div></div>
+            <div class="ds"><div class="l">DURATION</div><div class="v">~4 min</div></div>
+            <div class="ds"><div class="l">EV / MO</div><div class="v pos">+$5.20</div></div>
+          </div>
+          <div class="dc-prog"><div class="bar"><i style="width:0%"></i></div><span>not started</span><button class="start-btn" style="font-size:11px;padding:6px 12px;margin-left:auto;" onclick="startDrill(1)">Start →</button></div>
+        </div>
+
+        <div class="drill-card">
+          <div class="dc-head">
+            <div class="dc-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 11 L8 4 L13 11"/><line x1="3" y1="11" x2="13" y2="11"/></svg></div>
+            <div>
+              <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;"><span style="font-family:var(--mono);font-size:9.5px;color:var(--fg-3);">Leak 03 · high</span><span class="drill-tag high">−$6.10</span></div>
+              <div class="dc-name">SB 3-bet frequency</div>
+              <div class="dc-sub">3-betting 14.2% from SB vs HJ/CO. Solver target is 11%.</div>
+            </div>
+          </div>
+          <div class="dc-stats">
+            <div class="ds"><div class="l">HANDS</div><div class="v">3</div></div>
+            <div class="ds"><div class="l">DURATION</div><div class="v">~4 min</div></div>
+            <div class="ds"><div class="l">EV / MO</div><div class="v pos">+$3.40</div></div>
+          </div>
+          <div class="dc-prog"><div class="bar"><i style="width:0%"></i></div><span>not started</span><button class="start-btn" style="font-size:11px;padding:6px 12px;margin-left:auto;" onclick="startDrill(2)">Start →</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ARENA VIEW ===== -->
+    <div id="arena-view" hidden>
+
+      <!-- Drill progress -->
+      <div class="drill-progress" id="drill-progress">
+        <button class="dp-back" onclick="exitArena()">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7.5 2.5 L3.5 6 L7.5 9.5"/></svg>
+          All drills
+        </button>
+        <div style="width:1px;height:28px;background:var(--border);"></div>
+        <div>
+          <div class="dp-title" id="dp-title">BB defend vs CO 2.5x</div>
+          <div class="dp-sub" id="dp-sub">Leak 01 · critical · GTO baseline</div>
+        </div>
+        <div class="dp-progress">
+          <div class="dp-dots" id="dp-dots"></div>
+          <div class="dp-text" id="dp-text">Hand 1 of 3</div>
+        </div>
+      </div>
+
+      <!-- Poker table -->
+      <div class="ptable-outer" id="ptable-outer">
+        <div class="ptable-rail" id="ptable-rail">
+          <div class="ptable-felt">
+            <div class="ptable-center">
+              <div class="street-badge" id="street-badge">PREFLOP</div>
+              <div class="board-cards" id="board-cards"></div>
+              <div class="pot-row">
+                <span class="chip-stack"><span class="chip green"></span><span class="chip violet"></span><span class="chip green"></span></span>
+                <span class="pl">POT</span>
+                <span class="pv" id="pot-value">1.5 bb</span>
+              </div>
+            </div>
+          </div>
+          <!-- Seats overlay -->
+          <div class="ptable-seats" id="ptable-seats"></div>
+        </div>
+      </div>
+
+      <!-- Hero zone -->
+      <div class="hero-zone" id="hero-zone">
+        <div class="hero-cards" id="hero-cards"></div>
+        <div class="hero-info">
+          <span class="hn">scorza23</span>
+          <span class="hpos" id="hero-pos-badge">BB</span>
+          <span id="hero-stack-info">18.4 bb</span>
+        </div>
+      </div>
+
+      <!-- Action zone -->
+      <div class="action-zone" id="action-zone">
+        <div class="villain-prompt" id="villain-prompt"></div>
+        <div class="action-btns" id="action-btns"></div>
+      </div>
+
+      <!-- Feedback panel (hidden until decision) -->
+      <div class="feedback-panel" id="feedback-panel" hidden>
+        <div class="fb-left">
+          <div class="fb-grade" id="fb-grade">✓ Correct</div>
+          <div class="fb-ev" id="fb-ev">+0.4bb<span class="fb-ev-lbl">EV impact</span></div>
+        </div>
+        <div class="fb-body">
+          <div class="fb-title" id="fb-title">Nice — solver agrees</div>
+          <div class="fb-text" id="fb-text"></div>
+          <div class="fb-solver" id="fb-solver"></div>
+        </div>
+        <div class="fb-right">
+          <button class="fb-next" id="fb-next" onclick="nextHand()">Next hand →</button>
+          <button class="fb-skip" onclick="exitArena()">Exit drill</button>
+          <div class="fb-score" id="fb-score">1 / 3 hands</div>
+        </div>
+      </div>
+
+      <!-- Drill complete (hidden until finished) -->
+      <div class="drill-complete" id="drill-complete" hidden>
+        <div class="drill-progress" style="margin-bottom:32px;">
+          <button class="dp-back" onclick="exitArena()">
+            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7.5 2.5 L3.5 6 L7.5 9.5"/></svg>
+            Back to hub
+          </button>
+        </div>
+        <div class="dc-score" id="dc-score">2<span>/3</span></div>
+        <div class="dc-label" id="dc-label">correct decisions · this drill</div>
+        <div class="dc-grid">
+          <div class="dc-stat"><div class="l">EV saved</div><div class="v pos" id="dc-ev">+0.8bb</div></div>
+          <div class="dc-stat"><div class="l">Solver match</div><div class="v" id="dc-match">67%</div></div>
+          <div class="dc-stat"><div class="l">Streak</div><div class="v" id="dc-streak">2</div></div>
+        </div>
+        <div class="dc-btns">
+          <button class="start-btn" onclick="retryDrill()">Retry drill</button>
+          <button class="btn-ghost" onclick="exitArena()">Back to hub</button>
+        </div>
+      </div>
+
+    </div><!-- end arena-view -->
+
+  </main>
+</div>
+
+<script>
+// ===== CARD HELPER =====
+function card(r, s, c, size) {
+  var cc = s === '♥' ? 'r' : s === '♦' ? 'b' : s === '♣' ? 'g' : 'k';
+  return '<div class="card-face '+cc+' '+size+'">'
+    + '<span class="c-ix"><span class="c-r">'+r+'</span><span class="c-s">'+s+'</span></span>'
+    + '<span class="c-mid">'+s+'</span>'
+    + '<span class="c-ix br"><span class="c-r">'+r+'</span><span class="c-s">'+s+'</span></span>'
+    + '</div>';
+}
+function cardBack(size) {
+  return '<div class="card-back '+size+'"></div>';
+}
+function cardEmpty(size) {
+  return '<div class="card-face empty '+size+'"></div>';
+}
+
+// ===== DRILL DATA =====
+const DRILLS_META = [
+  { title: 'BB defend vs CO 2.5x', sub: 'Leak 01 · critical · GTO baseline', hands: [0,1,2] },
+  { title: 'BTN open — tighten range', sub: 'Leak 02 · critical · GTO baseline', hands: [3,4,5] },
+  { title: 'SB 3-bet frequency', sub: 'Leak 03 · high · GTO baseline', hands: [6,7,8] }
+];
+
+const HANDS = [
+  // ===== DRILL 1: BB defend vs CO 2.5x =====
+  {
+    heroCards: [{r:'A',s:'♠',c:'k'},{r:'K',s:'♥',c:'r'}],
+    heroPos: 'BB', heroStack: '18.4',
+    board: [{r:'Q',s:'♣',c:'k'},{r:'7',s:'♠',c:'k'},{r:'2',s:'♦',c:'r'},{r:'9',s:'♥',c:'r'},null],
+    pot: '12.9', street: 'TURN',
+    seats: [
+      {id:'utg', pos:'UTG', name:'card_grinder', stack:'20.1', action:'folded', active:false},
+      {id:'hj',  pos:'HJ',  name:'spinforfun',  stack:'26.4', action:'folded', active:false},
+      {id:'co',  pos:'CO',  name:'villain_a17', stack:'21.4', action:'bet 9.0bb', active:true},
+      {id:'btn', pos:'BTN', name:'reg_88',       stack:'28.0', action:'folded', active:false},
+      {id:'sb',  pos:'SB',  name:'tilt_jane',   stack:'16.8', action:'folded', active:false}
+    ],
+    prompt: '<span class="hl">villain_a17 (CO)</span> bets <span class="hl">9.0bb</span> into a 12.9bb pot. What do you do?',
+    options:[{id:'fold',label:'Fold',sub:'pass',cls:'fold'},{id:'call',label:'Call',sub:'9.0 bb',cls:'call'},{id:'raise',label:'Raise',sub:'to 22bb',cls:'raise'}],
+    correct:'call',
+    feedback:{
+      fold:{grade:'mistake',evCls:'neg',ev:'−0.8bb',title:'Under-folding a strong draw',text:'Solver calls 64% here. A♠K♥ holds a J-high gutshot, backdoor nut-flush draw, and two overcards — significant equity. This fold is the exact pattern Leak 01 is tracking.',solver:[['Solver action','Call 64% / Raise 6%'],['Your EV (call)','−0.4bb ✓ correct'],['Your EV (fold)','−1.2bb ✗']]},
+      call:{grade:'correct',evCls:'pos',ev:'+0.4bb',title:'Good read on your equity',text:'Correct. You unblock the J-gutshot (A♠ doesn\'t block AJ), have backdoor nut-flush, and two overcards. Calling beats folding by 0.8bb. Raising is possible but thinner.',solver:[['Solver action','Call 64% / Raise 6%'],['Your EV','−0.4bb ✓ optimal'],['EV vs fold','+0.8bb improvement']]},
+      raise:{grade:'mistake',evCls:'neg',ev:'−0.8bb',title:'Raising is too thin here',text:'Check-raising requires more fold equity than you have. Villain\'s barrel range connects too often with this Q-7-2-9 board — you\'d face a lot of calls or reraises from sets and two-pair.',solver:[['Solver action','Call 64% / Raise 6%'],['Your EV (raise)','−1.2bb'],['Your EV (call)','−0.4bb ✓ better']]}
+    }
+  },
+  {
+    heroCards: [{r:'A',s:'♥',c:'r'},{r:'J',s:'♦',c:'r'}],
+    heroPos: 'BB', heroStack: '22.1',
+    board: [{r:'K',s:'♣',c:'k'},{r:'5',s:'♥',c:'r'},{r:'3',s:'♦',c:'r'},{r:'T',s:'♠',c:'k'},null],
+    pot: '11.2', street: 'TURN',
+    seats: [
+      {id:'utg', pos:'UTG', name:'spinforfun',  stack:'18.4', action:'folded', active:false},
+      {id:'hj',  pos:'HJ',  name:'tilt_jane',   stack:'24.0', action:'folded', active:false},
+      {id:'co',  pos:'CO',  name:'villain_a17', stack:'19.8', action:'bet 7.5bb', active:true},
+      {id:'btn', pos:'BTN', name:'card_grinder', stack:'22.6', action:'folded', active:false},
+      {id:'sb',  pos:'SB',  name:'reg_88',      stack:'20.0', action:'folded', active:false}
+    ],
+    prompt: '<span class="hl">villain_a17 (CO)</span> bets <span class="hl">7.5bb</span> (67% pot). You have a flush draw and backdoor straight. What do you do?',
+    options:[{id:'fold',label:'Fold',sub:'pass',cls:'fold'},{id:'call',label:'Call',sub:'7.5 bb',cls:'call'},{id:'raise',label:'Raise',sub:'to 19bb',cls:'raise'}],
+    correct:'call',
+    feedback:{
+      fold:{grade:'mistake',evCls:'neg',ev:'−1.1bb',title:'Big fold mistake with live equity',text:'A♥J♦ has the nut-flush draw (9 outs), backdoor straight draws, and an overcard. This is a high-equity hand that generates significant pot-share. Never fold draws this strong.',solver:[['Solver action','Call 71% / Raise 12%'],['Your equity','~35% on river'],['EV vs call','−1.1bb worse']]},
+      call:{grade:'correct',evCls:'pos',ev:'+0.6bb',title:'Correct — nut draw is a clear call',text:'With the nut-flush draw plus backdoor straight outs, you have roughly 35% equity getting 2:1 from the pot. This is a comfortable call. Raising is also fine but calling is lower variance.',solver:[['Solver action','Call 71% / Raise 12%'],['Your equity','~35%'],['Pot odds needed','~29%']]},
+      raise:{grade:'correct',evCls:'pos',ev:'+0.4bb',title:'Acceptable — draw is strong enough',text:'Raising with the nut flush draw as a semi-bluff is solver-endorsed ~12% of the time. You apply fold equity on top of your draw equity. Slightly lower EV than calling but a fine play.',solver:[['Solver action','Call 71% / Raise 12%'],['Your EV (raise)','−0.6bb'],['Your EV (call)','−0.4bb']]}
+    }
+  },
+  {
+    heroCards: [{r:'Q',s:'♦',c:'r'},{r:'T',s:'♣',c:'k'}],
+    heroPos: 'BB', heroStack: '17.2',
+    board: [{r:'Q',s:'♥',c:'r'},{r:'8',s:'♣',c:'k'},{r:'4',s:'♦',c:'r'},{r:'J',s:'♠',c:'k'},null],
+    pot: '14.4', street: 'TURN',
+    seats: [
+      {id:'utg', pos:'UTG', name:'lucky_lou',   stack:'26.4', action:'folded', active:false},
+      {id:'hj',  pos:'HJ',  name:'card_grinder',stack:'19.2', action:'folded', active:false},
+      {id:'co',  pos:'CO',  name:'villain_a17', stack:'22.8', action:'bet 5.8bb', active:true},
+      {id:'btn', pos:'BTN', name:'spinforfun',  stack:'16.8', action:'folded', active:false},
+      {id:'sb',  pos:'SB',  name:'tilt_jane',  stack:'22.0', action:'folded', active:false}
+    ],
+    prompt: '<span class="hl">villain_a17 (CO)</span> bets <span class="hl">5.8bb</span> (40% pot) on J-turn. You have top pair. What do you do?',
+    options:[{id:'fold',label:'Fold',sub:'pass',cls:'fold'},{id:'call',label:'Call',sub:'5.8 bb',cls:'call'},{id:'raise',label:'Raise',sub:'to 16bb',cls:'raise'}],
+    correct:'raise',
+    feedback:{
+      fold:{grade:'mistake',evCls:'neg',ev:'−3.2bb',title:'Major over-fold with top pair',text:'Q♦T♣ has top pair + open-ended straight draw on this J♠ turn. You are nowhere near a fold. Against a small bet this is a raise or call at minimum.',solver:[['Solver action','Raise 44% / Call 38%'],['Hand rank','Top pair + OESD'],['EV vs raise','−3.2bb worse']]},
+      call:{grade:'correct',evCls:'pos',ev:'+0.3bb',title:'Defensible — top pair good kicker',text:'Calling is fine — you have top pair with a decent kicker and pot odds are excellent (2.5:1 on a 40% pot bet). You protect your range by mixing calls and raises here.',solver:[['Solver action','Raise 44% / Call 38%'],['Your EV (call)','solid'],['Raise for more value','slightly better']]},
+      raise:{grade:'correct',evCls:'pos',ev:'+0.8bb',title:'Best play — top pair + draw demands value',text:'With Q-top-pair and an open-ended straight draw (K or 9 completes), you have both significant equity and value. Raising charges draws, builds the pot, and folds worse hands.',solver:[['Solver action','Raise 44% / Call 38%'],['Your EV (raise)','highest'],['Villain\'s fold equity','~34%']]}
+    }
+  },
+
+  // ===== DRILL 2: BTN open range =====
+  {
+    heroCards: [{r:'K',s:'♦',c:'r'},{r:'7',s:'♣',c:'k'}],
+    heroPos: 'BTN', heroStack: '24.0',
+    board: [null,null,null,null,null],
+    pot: '1.5', street: 'PREFLOP',
+    seats: [
+      {id:'utg', pos:'UTG', name:'card_grinder', stack:'18.2', action:'folded', active:false},
+      {id:'hj',  pos:'HJ',  name:'spinforfun',  stack:'22.6', action:'folded', active:false},
+      {id:'co',  pos:'CO',  name:'reg_88',       stack:'28.0', action:'folded', active:false},
+      {id:'sb',  pos:'SB',  name:'tilt_jane',   stack:'16.8', action:'waiting', active:false}
+    ],
+    prompt: 'Folds to you on the <span class="hl">BTN</span>. SB and BB are solid regulars. Stack <span class="hl">24bb</span>. Do you open <span class="hl">K♦7♣</span>?',
+    options:[{id:'fold',label:'Fold',sub:'pass',cls:'fold'},{id:'open',label:'Open',sub:'2.5x',cls:'call'},{id:'open3',label:'Open',sub:'3x (large)',cls:'raise'}],
+    correct:'fold',
+    feedback:{
+      fold:{grade:'correct',evCls:'pos',ev:'+0.2bb',title:'Right — K7o is outside your range',text:'K7o is a marginal hand at 24bb. With solid regulars in the blinds, the post-flop equity isn\'t sufficient. Folding keeps your BTN open range at the target 48–52%, trimming this leak.',solver:[['GTO open range','~50% BTN'],['K7o inclusion','borderline fold'],['Your rate before','58% (over by 8pp)']]},
+      open:{grade:'mistake',evCls:'neg',ev:'−0.4bb',title:'K7o is in the over-range zone',text:'This hand contributes to your 58% BTN open — 8pp above the 50% target. Against solid regulars in the blinds, K7o struggles post-flop OOP when called. Fold it to tighten toward target.',solver:[['GTO open range','~50% BTN'],['K7o EV (open)','slightly −EV here'],['Cost per orbit','−0.4bb']]},
+      open3:{grade:'mistake',evCls:'neg',ev:'−0.9bb',title:'Opening large makes it worse',text:'K7o at 3x commits more chips with a below-range hand. You give better pot odds when called and bloat the pot with a holding that doesn\'t benefit from it. Double mistake.',solver:[['GTO open range','~50% BTN'],['3x vs 2.5x','worse for marginal hands'],['Cost','−0.9bb']]}
+    }
+  },
+  {
+    heroCards: [{r:'J',s:'♠',c:'k'},{r:'6',s:'♣',c:'k'}],
+    heroPos: 'BTN', heroStack: '20.4',
+    board: [null,null,null,null,null],
+    pot: '1.5', street: 'PREFLOP',
+    seats: [
+      {id:'utg', pos:'UTG', name:'spinforfun',   stack:'24.6', action:'folded', active:false},
+      {id:'hj',  pos:'HJ',  name:'card_grinder', stack:'19.8', action:'folded', active:false},
+      {id:'co',  pos:'CO',  name:'tilt_jane',    stack:'22.0', action:'folded', active:false},
+      {id:'sb',  pos:'SB',  name:'villain_a17',  stack:'18.4', action:'waiting', active:false}
+    ],
+    prompt: 'Folds to you on the <span class="hl">BTN</span>. Stack <span class="hl">20bb</span>. You hold <span class="hl">J♠6♣</span>. Action?',
+    options:[{id:'fold',label:'Fold',sub:'pass',cls:'fold'},{id:'open',label:'Open',sub:'2.5x',cls:'call'},{id:'jam',label:'Jam',sub:'all-in 20bb',cls:'raise'}],
+    correct:'fold',
+    feedback:{
+      fold:{grade:'correct',evCls:'pos',ev:'+0.2bb',title:'Correct fold',text:'J6o at 20bb from BTN is a clear fold. It\'s not in any GTO BTN open range at this depth, and it plays poorly post-flop. Keeping your range tight protects you against the blinds\' 3-bet ranges.',solver:[['GTO open range','~45% BTN at 20bb'],['J6o','not in range'],['EV (fold) vs open','fold is better']]},
+      open:{grade:'mistake',evCls:'neg',ev:'−0.6bb',title:'J6o is not in the BTN opening range',text:'At 20bb, BTN open range tightens slightly from 100bb. J6o has poor connectivity and doesn\'t generate enough post-flop value against typical blind defenses. This is a fold.',solver:[['GTO open range','~45% BTN at 20bb'],['J6o EV','-EV to open'],['Pattern','contributes to 58% rate']]},
+      jam:{grade:'mistake',evCls:'neg',ev:'−2.1bb',title:'Jamming J6o is a big mistake',text:'J6o is not a jam at 20bb. You\'re not committed; you\'re building a pot with a below-range hand and likely being called by better holdings. This bleeds significant EV.',solver:[['Nash range (BTN jam 20bb)','A2+, K7s+, Q9s+ etc'],['J6o','far outside Nash'],['EV impact','−2.1bb vs fold']]}
+    }
+  },
+  {
+    heroCards: [{r:'A',s:'♣',c:'k'},{r:'4',s:'♥',c:'r'}],
+    heroPos: 'BTN', heroStack: '26.8',
+    board: [null,null,null,null,null],
+    pot: '1.5', street: 'PREFLOP',
+    seats: [
+      {id:'utg', pos:'UTG', name:'lucky_lou',   stack:'28.4', action:'folded', active:false},
+      {id:'hj',  pos:'HJ',  name:'reg_88',      stack:'22.0', action:'folded', active:false},
+      {id:'co',  pos:'CO',  name:'villain_a17', stack:'19.6', action:'folded', active:false},
+      {id:'sb',  pos:'SB',  name:'spinforfun',  stack:'14.8', action:'waiting', active:false}
+    ],
+    prompt: 'Folds to you on the <span class="hl">BTN</span>. Stack <span class="hl">26bb</span>. You hold <span class="hl">A♣4♥</span>. Open?',
+    options:[{id:'fold',label:'Fold',sub:'pass',cls:'fold'},{id:'open',label:'Open',sub:'2.5x',cls:'call'},{id:'jam',label:'Jam',sub:'all-in',cls:'raise'}],
+    correct:'open',
+    feedback:{
+      fold:{grade:'mistake',evCls:'neg',ev:'−0.5bb',title:'A4o is in your BTN range',text:'Unlike K7o, A4o belongs in the BTN opening range at 26bb. Ace-high dominates SB/BB\'s calling range and post-flop top pair has enough value. This is a standard open.',solver:[['GTO BTN range','includes A4o+'],['A4o EV (open)','+0.3bb'],['Fold here','losing value']]},
+      open:{grade:'correct',evCls:'pos',ev:'+0.3bb',title:'Yes — A4o is a BTN open',text:'Correct. A4o is in the GTO BTN opening range at most stack depths. The ace blocker reduces villain re-shove hands, and post-flop you have top-pair potential. Standard open.',solver:[['GTO BTN range','A4o is included'],['Ace blocker value','reduces 3-bet jam frequency'],['EV','+0.3bb vs fold']]},
+      jam:{grade:'mistake',evCls:'neg',ev:'−0.3bb',title:'Jamming is too aggressive',text:'A4o doesn\'t benefit from jamming at 26bb. The pot is unraised — you\'d be building a huge pot with a marginal hand. Standard 2.5x open is optimal. Save jams for ≤15bb.',solver:[['GTO action (26bb)','open 2.5x'],['Jam threshold','typically ≤15bb'],['EV (jam vs open)','−0.3bb worse']]}
+    }
+  },
+
+  // ===== DRILL 3: SB 3-bet =====
+  {
+    heroCards: [{r:'7',s:'♥',c:'r'},{r:'6',s:'♥',c:'r'}],
+    heroPos: 'SB', heroStack: '22.0',
+    board: [null,null,null,null,null],
+    pot: '3.0', street: 'PREFLOP',
+    seats: [
+      {id:'utg', pos:'UTG', name:'spinforfun',  stack:'19.2', action:'folded', active:false},
+      {id:'hj',  pos:'HJ',  name:'reg_88',      stack:'28.0', action:'raised 2.5x', active:true},
+      {id:'co',  pos:'CO',  name:'lucky_lou',   stack:'20.4', action:'folded', active:false},
+      {id:'btn', pos:'BTN', name:'tilt_jane',   stack:'16.8', action:'folded', active:false}
+    ],
+    prompt: '<span class="hl">reg_88 (HJ)</span> opens 2.5x. Folds to you in the <span class="hl">SB</span>. BB is a regular. You hold <span class="hl">7♥6♥</span>.',
+    options:[{id:'fold',label:'Fold',sub:'pass',cls:'fold'},{id:'call',label:'Call',sub:'2.5x',cls:'call'},{id:'3bet',label:'3-Bet',sub:'to 7.5bb',cls:'raise'}],
+    correct:'fold',
+    feedback:{
+      fold:{grade:'correct',evCls:'pos',ev:'+0.3bb',title:'Correct — 76s is a SB fold here',text:'7♥6♥ from SB vs a HJ open at 22bb is a fold. Calling OOP with suited connectors at this stack depth is barely breakeven; 3-betting inflates your SB 3-bet frequency above 11%. Fold keeps you clean.',solver:[['SB 3-bet range vs HJ','~11% (GTO)'],['76s inclusion','not at 22bb vs HJ'],['Call EV','marginally negative']]},
+      call:{grade:'mistake',evCls:'neg',ev:'−0.3bb',title:'Calling OOP is marginally losing',text:'76s has real value but it needs position or SPR to realize equity. From SB against a HJ opener at 22bb, you\'re OOP every street with a speculative hand. Folding is cleaner.',solver:[['76s from SB (call)','borderline -EV at 22bb'],['OOP penalty','significant for connectors'],['GTO action','fold or 3-bet bluff (infrequently)']]},
+      '3bet':{grade:'mistake',evCls:'neg',ev:'−0.6bb',title:'3-betting inflates your frequency',text:'3-betting 76s from SB vs HJ pushes your 3-bet range toward ~14%, well above the 11% GTO target. This is exactly the Leak 03 pattern. At 22bb the SPR is too low to make 76s a profitable 3-bet bluff.',solver:[['GTO SB 3-bet vs HJ','~11%'],['76s at 22bb','fold > 3-bet'],['Leak impact','contributes to −$6.10/mo']]}
+    }
+  },
+  {
+    heroCards: [{r:'K',s:'♠',c:'k'},{r:'Q',s:'♣',c:'k'}],
+    heroPos: 'SB', heroStack: '19.4',
+    board: [null,null,null,null,null],
+    pot: '3.0', street: 'PREFLOP',
+    seats: [
+      {id:'utg', pos:'UTG', name:'card_grinder', stack:'22.8', action:'folded', active:false},
+      {id:'hj',  pos:'HJ',  name:'villain_a17',  stack:'24.0', action:'raised 2.5x', active:true},
+      {id:'co',  pos:'CO',  name:'spinforfun',   stack:'18.6', action:'folded', active:false},
+      {id:'btn', pos:'BTN', name:'reg_88',        stack:'26.4', action:'folded', active:false}
+    ],
+    prompt: '<span class="hl">villain_a17 (HJ)</span> opens 2.5x. Folds to you in the <span class="hl">SB</span>. You hold <span class="hl">K♠Q♣</span>. Action?',
+    options:[{id:'fold',label:'Fold',sub:'pass',cls:'fold'},{id:'call',label:'Call',sub:'2.5x',cls:'call'},{id:'3bet',label:'3-Bet',sub:'to 7bb',cls:'raise'}],
+    correct:'3bet',
+    feedback:{
+      fold:{grade:'mistake',evCls:'neg',ev:'−0.8bb',title:'KQo is too strong to fold',text:'KQo from SB vs a HJ open is a 3-bet or call at nearly any stack depth. Folding loses too much equity and isn\'t required by any GTO strategy. This would tighten your 3-bet range too much.',solver:[['KQo from SB vs HJ','3-bet or call'],['GTO action','3-bet ~65%'],['Folding EV','−0.8bb vs 3-bet']]},
+      call:{grade:'correct',evCls:'pos',ev:'+0.2bb',title:'Acceptable — KQo can call',text:'Calling is okay. KQo has strong post-flop value and can realize equity in position (BB still to act). However, 3-betting is the solver-preferred line about 65% of the time.',solver:[['GTO action','3-bet 65% / call 35%'],['Call EV','solid, slightly less than 3-bet'],['Note','3-betting is marginally better']]},
+      '3bet':{grade:'correct',evCls:'pos',ev:'+0.5bb',title:'Best play — KQo 3-bet from SB',text:'3-betting KQo from SB is the GTO-preferred action about 65% of the time. It builds value, applies pressure, and puts you in a better spot than calling OOP. KQo has the equity to commit.',solver:[['GTO action','3-bet 65% / call 35%'],['Your EV (3-bet)','highest'],['KQo vs HJ range','~58% equity']]}
+    }
+  },
+  {
+    heroCards: [{r:'A',s:'♦',c:'r'},{r:'9',s:'♠',c:'k'}],
+    heroPos: 'SB', heroStack: '25.2',
+    board: [null,null,null,null,null],
+    pot: '3.0', street: 'PREFLOP',
+    seats: [
+      {id:'utg', pos:'UTG', name:'tilt_jane',    stack:'20.0', action:'folded', active:false},
+      {id:'hj',  pos:'HJ',  name:'lucky_lou',    stack:'18.4', action:'raised 2.5x', active:true},
+      {id:'co',  pos:'CO',  name:'card_grinder', stack:'28.2', action:'folded', active:false},
+      {id:'btn', pos:'BTN', name:'villain_a17',  stack:'22.6', action:'folded', active:false}
+    ],
+    prompt: '<span class="hl">lucky_lou (HJ)</span> opens 2.5x. Folds to you in the <span class="hl">SB</span>. You hold <span class="hl">A♦9♠</span>. Action?',
+    options:[{id:'fold',label:'Fold',sub:'pass',cls:'fold'},{id:'call',label:'Call',sub:'2.5x',cls:'call'},{id:'3bet',label:'3-Bet',sub:'to 7.5bb',cls:'raise'}],
+    correct:'3bet',
+    feedback:{
+      fold:{grade:'mistake',evCls:'neg',ev:'−1.0bb',title:'A9o is a clear 3-bet from SB',text:'A9o from SB vs a HJ open is a 3-bet or call at 25bb. It has strong blocker value (ace blocks opponent\'s 4-bet range), strong equity when called, and generates fold equity. Folding here is a clear mistake.',solver:[['GTO action','3-bet ~60%'],['A9o equity vs HJ range','~52%'],['Fold EV','−1.0bb vs 3-bet']]},
+      call:{grade:'correct',evCls:'pos',ev:'+0.1bb',title:'Acceptable but slightly passive',text:'Calling A9o is okay — you have solid equity and the ace plays well post-flop. But you\'re OOP from SB, so 3-betting to force a fold or get value is the solver-preferred line.',solver:[['GTO action','3-bet ~60% / call ~30%'],['Call EV','positive but below 3-bet'],['Passive line','slightly -EV vs 3-bet']]},
+      '3bet':{grade:'correct',evCls:'pos',ev:'+0.6bb',title:'Yes — A9o 3-bet is GTO from SB',text:'A9o is in the SB 3-bet range vs a HJ open. The ace blocks villain\'s 4-bet jam range (AA, AK), you have ~52% equity vs the calling range, and you apply fold equity to any villain who open-folds.',solver:[['GTO action','3-bet ~60%'],['Ace blocker value','reduces villain 4-bet jams'],['EV (3-bet)','highest of three options']]}
+    }
+  }
+];
+
+// ===== SEAT POSITIONS =====
+const SEAT_POSITIONS = {
+  utg:  { left: '8%',  top: '30%' },
+  hj:   { left: '26%', top: '7%'  },
+  co:   { left: '64%', top: '7%'  },
+  btn:  { left: '84%', top: '30%' },
+  sb:   { left: '68%', top: '78%' }
+};
+
+// ===== STATE =====
+let activeDrill = null;
+let handQueue = [];
+let handIdx = 0;
+let results = [];
+
+function startDrill(drillIdx) {
+  activeDrill = drillIdx;
+  handQueue = DRILLS_META[drillIdx].hands;
+  handIdx = 0;
+  results = [];
+  document.getElementById('hub-view').hidden = true;
+  document.getElementById('arena-view').hidden = false;
+  document.getElementById('drill-complete').hidden = true;
+  const dm = DRILLS_META[drillIdx];
+  document.getElementById('dp-title').textContent = dm.title;
+  document.getElementById('dp-sub').textContent = dm.sub;
+  buildProgressDots();
+  loadHand(handIdx);
+}
+
+function buildProgressDots() {
+  const container = document.getElementById('dp-dots');
+  container.innerHTML = '';
+  handQueue.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dp-dot' + (i === 0 ? ' current' : '');
+    d.id = 'dot-' + i;
+    container.appendChild(d);
+  });
+}
+
+function updateProgressDots() {
+  handQueue.forEach((_, i) => {
+    const d = document.getElementById('dot-' + i);
+    if (!d) return;
+    d.className = 'dp-dot';
+    if (i < handIdx) {
+      d.classList.add(results[i] ? 'done-correct' : 'done-mistake');
+    } else if (i === handIdx) {
+      d.classList.add('current');
+    }
+  });
+  document.getElementById('dp-text').textContent = 'Hand ' + (handIdx + 1) + ' of ' + handQueue.length;
+}
+
+function loadHand(idx) {
+  updateProgressDots();
+  const h = HANDS[handQueue[idx]];
+
+  // Board
+  const boardEl = document.getElementById('board-cards');
+  boardEl.innerHTML = '';
+  h.board.forEach(c => {
+    if (c) boardEl.innerHTML += card(c.r, c.s, c.c, 'md');
+    else boardEl.innerHTML += cardEmpty('md');
+  });
+
+  // Street badge + pot
+  document.getElementById('street-badge').textContent = h.street;
+  document.getElementById('pot-value').textContent = h.pot + ' bb';
+
+  // Seats
+  const seatsEl = document.getElementById('ptable-seats');
+  seatsEl.innerHTML = '';
+  h.seats.forEach(s => {
+    const pos = SEAT_POSITIONS[s.id];
+    if (!pos) return;
+    const isFolded = s.action === 'folded';
+    const cls = ['seat', isFolded ? 'folded' : '', s.active ? 'active' : ''].filter(Boolean).join(' ');
+    let actionHtml = '';
+    if (s.action && s.action !== 'waiting') {
+      actionHtml = '<div class="s-action' + (isFolded ? ' fold-act' : '') + '">' + s.action + '</div>';
+    }
+    let cardsHtml = '';
+    if (!isFolded && s.action !== 'waiting') {
+      cardsHtml = '<div class="s-cards">' + cardBack('sm') + cardBack('sm') + '</div>';
+    }
+    let betHtml = '';
+    if (!isFolded && s.action && s.action !== 'waiting' && !/check/i.test(s.action)) {
+      const colCls = /post|blind|limp|call/i.test(s.action) ? 'green' : 'gold';
+      betHtml = '<div class="seat-bet"><span class="chip-stack"><span class="chip '+colCls+'"></span><span class="chip '+colCls+'"></span><span class="chip '+colCls+'"></span></span></div>';
+    }
+    seatsEl.innerHTML += `
+      <div class="seat-wrap" style="left:${pos.left};top:${pos.top};">
+        <div class="${cls}">
+          <div class="s-pos">${s.pos}</div>
+          <div class="s-name">${s.name}</div>
+          <div class="s-stack">${s.stack} bb</div>
+          ${actionHtml}
+          ${cardsHtml}
+        </div>
+        ${betHtml}
+      </div>`;
+  });
+
+  // Hero cards
+  const heroEl = document.getElementById('hero-cards');
+  heroEl.innerHTML = h.heroCards.map(c => card(c.r, c.s, c.c, 'lg')).join('');
+  document.getElementById('hero-pos-badge').textContent = h.heroPos;
+  document.getElementById('hero-stack-info').textContent = h.heroStack + ' bb';
+
+  // Action zone
+  document.getElementById('action-zone').hidden = false;
+  document.getElementById('feedback-panel').hidden = true;
+  document.getElementById('villain-prompt').innerHTML = h.prompt;
+
+  const btnsEl = document.getElementById('action-btns');
+  btnsEl.innerHTML = '';
+  h.options.forEach(opt => {
+    btnsEl.innerHTML += `
+      <button class="action-btn ${opt.cls}" onclick="decide('${opt.id}')">
+        <span class="abl">${opt.label}</span>
+        <span class="abs">${opt.sub}</span>
+      </button>`;
+  });
+}
+
+function decide(choice) {
+  const h = HANDS[handQueue[handIdx]];
+  const fb = h.feedback[choice];
+  const isCorrect = choice === h.correct;
+  results.push(isCorrect);
+
+  document.getElementById('action-zone').hidden = true;
+  const panel = document.getElementById('feedback-panel');
+  panel.hidden = false;
+
+  const grade = document.getElementById('fb-grade');
+  grade.className = 'fb-grade ' + (isCorrect ? 'correct' : 'mistake');
+  grade.textContent = isCorrect ? '✓ Correct' : '✗ Mistake';
+
+  const evEl = document.getElementById('fb-ev');
+  evEl.className = 'fb-ev ' + fb.evCls;
+  evEl.innerHTML = fb.ev + '<span class="fb-ev-lbl">EV impact</span>';
+
+  document.getElementById('fb-title').textContent = fb.title;
+  document.getElementById('fb-text').textContent = fb.text;
+
+  const solverEl = document.getElementById('fb-solver');
+  solverEl.innerHTML = fb.solver.map(([k, v]) =>
+    `<div class="s-row"><span class="k">${k}</span><span class="v${v.includes('✓') ? ' correct' : ''}">${v}</span></div>`
+  ).join('');
+
+  const isLast = handIdx >= handQueue.length - 1;
+  const nextBtn = document.getElementById('fb-next');
+  nextBtn.textContent = isLast ? 'Finish drill' : 'Next hand →';
+  document.getElementById('fb-score').textContent = (handIdx + 1) + ' / ' + handQueue.length + ' hands';
+
+  // Update current dot
+  const dot = document.getElementById('dot-' + handIdx);
+  if (dot) {
+    dot.className = 'dp-dot ' + (isCorrect ? 'done-correct' : 'done-mistake');
+  }
+}
+
+function nextHand() {
+  handIdx++;
+  if (handIdx >= handQueue.length) {
+    showComplete();
+    return;
+  }
+  loadHand(handIdx);
+}
+
+function showComplete() {
+  document.getElementById('feedback-panel').hidden = true;
+  document.getElementById('action-zone').hidden = true;
+  document.getElementById('drill-complete').hidden = false;
+  document.getElementById('ptable-outer').style.opacity = '0.4';
+  document.getElementById('hero-zone').style.opacity = '0.4';
+
+  const correct = results.filter(Boolean).length;
+  const total = results.length;
+  document.getElementById('dc-score').innerHTML = correct + '<span>/' + total + '</span>';
+  document.getElementById('dc-label').textContent = 'correct decisions · this drill';
+  document.getElementById('dc-match').textContent = Math.round((correct / total) * 100) + '%';
+  document.getElementById('dc-streak').textContent = longestStreak();
+  document.getElementById('dc-ev').textContent = correct >= 2 ? '+' + (correct * 0.4).toFixed(1) + 'bb' : '−0.4bb';
+}
+
+function longestStreak() {
+  let max = 0, cur = 0;
+  results.forEach(r => { cur = r ? cur + 1 : 0; max = Math.max(max, cur); });
+  return max;
+}
+
+function retryDrill() {
+  document.getElementById('drill-complete').hidden = true;
+  document.getElementById('ptable-outer').style.opacity = '';
+  document.getElementById('hero-zone').style.opacity = '';
+  handIdx = 0;
+  results = [];
+  buildProgressDots();
+  loadHand(0);
+}
+
+function exitArena() {
+  document.getElementById('arena-view').hidden = true;
+  document.getElementById('hub-view').hidden = false;
+  document.getElementById('drill-complete').hidden = true;
+  document.getElementById('ptable-outer').style.opacity = '';
+  document.getElementById('hero-zone').style.opacity = '';
+}
+
+// Keyboard shortcut: 1=fold, 2=call, 3=raise, Esc=exit
+document.addEventListener('keydown', e => {
+  if (document.getElementById('arena-view').hidden) return;
+  if (!document.getElementById('action-zone').hidden) {
+    const btns = document.getElementById('action-btns').querySelectorAll('.action-btn');
+    if (e.key === '1' && btns[0]) btns[0].click();
+    if (e.key === '2' && btns[1]) btns[1].click();
+    if (e.key === '3' && btns[2]) btns[2].click();
+  }
+  if (e.key === 'Escape') exitArena();
+  if (e.key === 'Enter' && !document.getElementById('feedback-panel').hidden) nextHand();
+});
+</script>
+<script src="shader-bg.js"></script>
+</body>
+</html>

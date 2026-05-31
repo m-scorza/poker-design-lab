@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Replayer Cards Dealer Sequence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="../gsap.min.js"></script>
+  <style>
+    :root {
+      --bg: #050608;
+      --bg-2: #0b0d12;
+      --bg-card: rgba(13, 17, 25, 0.65);
+      --bg-card-hover: rgba(20, 26, 38, 0.75);
+      --border: rgba(255, 255, 255, 0.05);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --accent-2: #00FF87;
+      --accent-soft: rgba(0, 240, 255, 0.06);
+      --accent-glow: rgba(0, 240, 255, 0.25);
+      --accent-line: rgba(0, 240, 255, 0.35);
+      --loss: #FF3B6B;
+      --loss-soft: rgba(255, 59, 107, 0.08);
+      --fg: #f3f4f6;
+      --fg-muted: #8892b0;
+      --fg-dim: #3a3f50;
+      --sans: 'Inter', -apple-system, sans-serif;
+      --display: 'Outfit', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      overflow-x: hidden;
+    }
+    .container { max-width: 800px; width: 100%; text-align: center; z-index: 10; }
+    h1 { font-family: var(--display); font-weight: 700; margin-bottom: 30px; letter-spacing: -0.02em; }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-muted); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    
+  .mini-felt { width: 340px; height: 180px; background: radial-gradient(circle, #1a2d24 0%, #0d1612 100%); border: 6px solid #222a36; border-radius: 90px; margin: 30px auto; position: relative; overflow: hidden; }
+  .deck-pile { width: 35px; height: 50px; background: rgba(255,255,255,0.1); border: 1.5px dashed rgba(255,255,255,0.3); border-radius: 4px; position: absolute; top: 65px; left: 152px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 8px; color: var(--fg-muted); }
+  .felt-card { width: 32px; height: 46px; background: #fff; border-radius: 3px; position: absolute; top: 67px; left: 154px; opacity: 0; transform: scale(0.2); box-shadow: 0 4px 8px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 14px; font-weight: 700; color: #000; }
+  .felt-card.red { color: #f43f5e; }
+  .deal-btn { padding: 12px 24px; background: var(--accent-soft); border: 1px solid var(--accent-line); color: var(--fg); font-family: var(--mono); font-size: 11px; text-transform: uppercase; cursor: pointer; border-radius: 6px; }
+  .deal-btn:hover { background: var(--bg-card-hover); }
+  
+  </style>
+</head>
+<body>
+  <a href="../elements_showcase.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Replayer Cards Dealer Sequence</h1>
+    
+  <p style="color: var(--fg-muted);">Clicking a hand triggers cards dealing from the center deck stack to active seats.</p>
+  <div class="mini-felt">
+    <div class="deck-pile">DECK</div>
+    <div class="felt-card" id="card-hero-1">A♠</div>
+    <div class="felt-card" id="card-hero-2">K♠</div>
+  </div>
+  <button class="deal-btn" onclick="dealSequence()">Deal Cards</button>
+  
+  </div>
+  <script>
+    
+  function dealSequence() {
+    const c1 = document.getElementById('card-hero-1');
+    const c2 = document.getElementById('card-hero-2');
+    
+    // Reset
+    gsap.set([c1, c2], { x: 0, y: 0, rotation: 0, scale: 0.2, opacity: 0 });
+    
+    // Deal c1 to left
+    gsap.to(c1, {
+      x: -50,
+      y: 20,
+      rotation: -12,
+      scale: 1,
+      opacity: 1,
+      duration: 0.45,
+      ease: "power2.out"
+    });
+    
+    // Deal c2 to right
+    gsap.to(c2, {
+      x: -16,
+      y: 20,
+      rotation: 8,
+      scale: 1,
+      opacity: 1,
+      delay: 0.15,
+      duration: 0.45,
+      ease: "power2.out"
+    });
+  }
+  
+  </script>
+</body>
+</html>

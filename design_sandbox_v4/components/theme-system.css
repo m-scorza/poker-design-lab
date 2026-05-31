@@ -1,0 +1,73 @@
+/* =========================================================
+   CSS VARIABLES & DESIGN SYSTEM (Theme Attribute Mapping)
+   ========================================================= */
+
+/* DEFAULT VARIABLES (Obsidian Color Theme + Geometric Fonts) */
+:root {
+  /* Colors (Refined Obsidian / Glacier Cyan / Emerald Mint) */
+  --bg: #050608;          /* Refined dark charcoal-graphite background */
+  --bg-2: #0b0d12;        /* Polished slate container backing */
+  --bg-card: rgba(13, 17, 25, 0.65); /* High-end dark glassmorphism card */
+  --bg-card-hover: rgba(20, 26, 38, 0.75);
+  --bg-input: #0f121a;
+  --border: rgba(255, 255, 255, 0.05);
+  --border-strong: rgba(255, 255, 255, 0.15);
+  
+  --accent: #00F0FF;      /* Glacier Cyan - clean and precise */
+  --accent-2: #00FF87;    /* Mint Emerald - vibrant and modern */
+  --accent-soft: rgba(0, 240, 255, 0.06);
+  --accent-glow: rgba(0, 240, 255, 0.25);
+  --accent-line: rgba(0, 240, 255, 0.35);
+  
+  --loss: #FF3B6B;        /* Vibrant Coral Pink / Red */
+  --loss-soft: rgba(255, 59, 107, 0.08);
+  --loss-line: rgba(255, 59, 107, 0.35);
+  
+  --c-indigo: #8B7CFF;
+  --c-chip-1: #8B7CFF;
+  --c-chip-2: #00FF87;
+  --c-chip-3: #FF3B6B;
+  
+  --fg: #f3f4f6;
+  --fg-muted: #8892b0;
+  --fg-dim: #3a3f50;
+  
+  /* Fonts (Geometric default) */
+  --sans: 'Inter', -apple-system, sans-serif;
+  --display: 'Outfit', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  
+  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* --- COLOR THEME: ULTRAVIOLET OVERRIDES --- */
+body[data-color="ultraviolet"] {
+  --bg: #07050d;          /* Deep royal orchid */
+  --bg-2: #0e0a1b;        /* Midnight amethyst */
+  --bg-card: rgba(18, 14, 32, 0.65); /* Eggplant glassmorphism */
+  --bg-card-hover: rgba(26, 20, 44, 0.75);
+  --bg-input: #150f28;
+  --border: rgba(155, 81, 224, 0.15);
+  --border-strong: rgba(155, 81, 224, 0.30);
+  
+  --accent: #9B51E0;      /* Electric Violet Orchid */
+  --accent-2: #10F294;    /* Spring Green highlight */
+  --accent-soft: rgba(155, 81, 224, 0.10);
+  --accent-glow: rgba(155, 81, 224, 0.30);
+  --accent-line: rgba(155, 81, 224, 0.45);
+  
+  --loss: #FF4B72;        /* Glowing Rose Crimson */
+  --loss-soft: rgba(255, 75, 114, 0.12);
+  --loss-line: rgba(255, 75, 114, 0.40);
+  
+  --c-chip-1: #6A3FD6;
+  --c-chip-2: #9B51E0;
+  --c-chip-3: #FF4B72;
+}
+
+/* --- TYPOGRAPHY THEME: EDITORIAL OVERRIDES --- */
+body[data-font="editorial"] {
+  --sans: 'Hanken Grotesk', system-ui, sans-serif;
+  --display: 'Space Grotesk', system-ui, sans-serif; /* Replaced Bricolage with premium Space Grotesk */
+  --mono: 'Space Mono', ui-monospace, monospace;
+}

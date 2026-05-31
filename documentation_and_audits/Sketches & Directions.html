@@ -1,0 +1,1427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1480, initial-scale=1" />
+<title>Sketches &amp; Directions — Poker Analyzer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --panel: #14151a;
+    --panel-2: #1a1c22;
+    --panel-3: #20232a;
+    --border: rgba(255,255,255,0.07);
+    --border-strong: rgba(255,255,255,0.13);
+    --fg: #efefef;
+    --fg-2: #b4b6bc;
+    --fg-3: #74777e;
+    --fg-4: #4a4d54;
+    --accent: #8b7cff;
+    --accent-2: #b7adff;
+    --accent-soft: rgba(139,124,255,0.10);
+    --accent-border: rgba(139,124,255,0.30);
+    --pos: #6dbf8d;
+    --neg: #e8807a;
+    --warn: #d9a85a;
+    --info: #7eb6f0;
+    --money: #b8e1c8;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--sans); -webkit-font-smoothing: antialiased; min-height: 100vh; }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+
+  /* ============ CHROME ============ */
+  .chrome { position: sticky; top: 0; z-index: 100; background: rgba(10,10,12,0.88); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
+  .chrome-inner { max-width: 1440px; margin: 0 auto; padding: 13px 32px; display: flex; align-items: center; gap: 24px; }
+  .chrome-brand { display: flex; align-items: center; gap: 11px; font-size: 13px; color: #cfd1d6; }
+  .chrome-brand-mark { width: 22px; height: 22px; border-radius: 5px; background: linear-gradient(135deg, #232631 0%, #14161a 100%); border: 1px solid rgba(255,255,255,0.10); display: flex; align-items: center; justify-content: center; color: #b7adff; }
+  .chrome-brand-mark svg { width: 11px; height: 11px; }
+  .chrome-brand b { font-weight: 600; color: var(--fg); }
+  .chrome-brand span { color: var(--fg-3); font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; }
+  .chrome-spacer { flex: 1; }
+  .chrome-tabs { display: flex; gap: 4px; }
+  .chrome-tab { background: none; border: 1px solid transparent; color: var(--fg-3); font: 500 12.5px var(--sans); padding: 8px 14px; border-radius: 7px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s ease; }
+  .chrome-tab:hover { color: var(--fg); background: rgba(255,255,255,0.03); }
+  .chrome-tab[aria-selected="true"] { color: var(--fg); background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.10); }
+  .chrome-tab-num { font-family: var(--mono); font-size: 10.5px; color: var(--fg-4); font-weight: 500; }
+  .chrome-tab[aria-selected="true"] .chrome-tab-num { color: var(--accent-2); }
+  .chrome-note { font-size: 11.5px; color: var(--fg-3); font-family: var(--mono); }
+
+  /* ============ DOC HEAD ============ */
+  .shell { max-width: 1440px; margin: 0 auto; padding: 32px 32px 96px; }
+  .doc-head { padding-bottom: 28px; border-bottom: 1px solid var(--border); margin-bottom: 36px; }
+  .crumb { font-family: var(--mono); font-size: 11px; color: var(--fg-3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+  .doc-head h1 { margin: 0 0 12px; font-size: 32px; font-weight: 600; letter-spacing: -0.025em; line-height: 1.1; }
+  .doc-head .lede { font-size: 14.5px; color: var(--fg-2); max-width: 760px; margin: 0; line-height: 1.6; }
+  .doc-meta { display: flex; gap: 26px; margin-top: 20px; font-size: 11.5px; color: var(--fg-3); font-family: var(--mono); }
+  .doc-meta b { color: var(--fg-2); font-weight: 500; display: block; margin-top: 3px; font-size: 12.5px; }
+
+  /* ============ STAGE / SECTION ============ */
+  .stage { display: none; }
+  .stage[data-active="true"] { display: block; }
+
+  .sec-head { display: flex; align-items: baseline; gap: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border); margin: 56px 0 24px; }
+  .sec-num { font-family: var(--mono); font-size: 11px; color: var(--fg-4); letter-spacing: 0.06em; }
+  .sec-head h2 { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.015em; }
+  .sec-sub { color: var(--fg-3); font-size: 11px; font-family: var(--mono); margin: 0; flex: 1; text-align: right; }
+
+  /* ============ SKETCH SHEET ============ */
+  .sk-intro { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 18px; margin-bottom: 30px; }
+  .sk-intro-card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
+  .sk-intro-eye { font-size: 10px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.14em; color: var(--fg-4); margin-bottom: 8px; font-weight: 600; }
+  .sk-intro-t { font-size: 14px; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.005em; }
+  .sk-intro-card p { margin: 0; font-size: 12.5px; color: var(--fg-2); line-height: 1.55; }
+  .sk-intro-card code { font-family: var(--mono); font-size: 11.5px; color: var(--accent-2); background: var(--accent-soft); padding: 1px 5px; border-radius: 3px; }
+
+  .sketch-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .sk {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .sk-head {
+    padding: 12px 16px 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+  }
+  .sk-head-l { display: flex; align-items: baseline; gap: 10px; }
+  .sk-route { font-family: var(--mono); font-size: 9.5px; color: var(--fg-4); letter-spacing: 0.06em; }
+  .sk-name { font-size: 13px; font-weight: 600; letter-spacing: -0.005em; }
+  .sk-tag { font-family: var(--mono); font-size: 9.5px; color: var(--accent-2); background: var(--accent-soft); border: 1px solid var(--accent-border); padding: 2px 6px; border-radius: 3px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .sk-tag.done { color: var(--pos); background: rgba(109,191,141,0.08); border-color: rgba(109,191,141,0.30); }
+  .sk-tag.wip { color: var(--warn); background: rgba(217,168,90,0.08); border-color: rgba(217,168,90,0.30); }
+
+  .sk-canvas {
+    background:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px),
+      #0d0e12;
+    background-size: 12px 12px;
+    padding: 18px;
+    height: 360px;
+    position: relative;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    color: var(--fg-3);
+    letter-spacing: 0.04em;
+  }
+  .sk-caption {
+    padding: 12px 16px 14px;
+    font-size: 11.5px;
+    color: var(--fg-2);
+    line-height: 1.55;
+    border-top: 1px solid var(--border);
+    background: var(--panel-2);
+  }
+  .sk-caption b { color: var(--fg); font-weight: 600; }
+  .sk-caption .why { display: block; margin-top: 6px; color: var(--fg-3); font-family: var(--mono); font-size: 10.5px; }
+
+  /* generic sketch primitives — dashed outlines, hand-drawn-ish */
+  .b {
+    position: absolute;
+    border: 1.2px dashed rgba(255,255,255,0.22);
+    border-radius: 4px;
+    padding: 5px 7px;
+    color: var(--fg-3);
+    font-family: var(--mono);
+    font-size: 9px;
+    line-height: 1.35;
+    letter-spacing: 0.04em;
+    background: rgba(255,255,255,0.012);
+  }
+  .b.solid { border-style: solid; border-color: rgba(255,255,255,0.18); }
+  .b.accent { border-color: var(--accent-border); background: var(--accent-soft); color: var(--accent-2); }
+  .b.pos { border-color: rgba(109,191,141,0.35); background: rgba(109,191,141,0.06); color: var(--pos); }
+  .b.neg { border-color: rgba(232,128,122,0.35); background: rgba(232,128,122,0.06); color: var(--neg); }
+  .b.warn { border-color: rgba(217,168,90,0.35); background: rgba(217,168,90,0.06); color: var(--warn); }
+  .b.muted { border-color: rgba(255,255,255,0.10); color: var(--fg-4); }
+  .b .h { color: var(--fg); font-weight: 600; display: block; margin-bottom: 2px; letter-spacing: 0.06em; text-transform: uppercase; font-size: 8.5px; }
+  .b .sub { display: block; color: var(--fg-4); font-size: 8.5px; margin-top: 2px; }
+  .b.center { display: flex; align-items: center; justify-content: center; text-align: center; }
+  .l {
+    position: absolute;
+    background: rgba(255,255,255,0.10);
+  }
+  .lbl {
+    position: absolute;
+    font-family: var(--mono);
+    font-size: 8.5px;
+    color: var(--fg-4);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .row-bars { display: flex; flex-direction: column; gap: 4px; padding-top: 14px; }
+  .bar-row { display: grid; grid-template-columns: 36px 1fr 38px; gap: 6px; align-items: center; font-size: 8.5px; color: var(--fg-3); }
+  .bar { height: 5px; background: rgba(255,255,255,0.08); border-radius: 2px; position: relative; }
+  .bar > i { position: absolute; left: 0; top: 0; bottom: 0; background: rgba(139,124,255,0.55); border-radius: 2px; display: block; }
+  .bar > i.warn { background: rgba(217,168,90,0.6); }
+  .bar > i.neg { background: rgba(232,128,122,0.6); }
+  .bar > i.pos { background: rgba(109,191,141,0.55); }
+
+  /* mini range grid */
+  .mini-range { display: grid; grid-template-columns: repeat(13, 1fr); gap: 1px; }
+  .mini-range > i {
+    aspect-ratio: 1;
+    background: rgba(255,255,255,0.05);
+    border-radius: 1px;
+    display: block;
+  }
+  .mini-range > i.r1 { background: rgba(139,124,255,0.18); }
+  .mini-range > i.r2 { background: rgba(139,124,255,0.38); }
+  .mini-range > i.r3 { background: rgba(139,124,255,0.60); }
+  .mini-range > i.r4 { background: rgba(139,124,255,0.85); }
+  .mini-range > i.dev { box-shadow: inset 0 0 0 1px var(--neg); }
+
+  /* table-like rows */
+  .rows { display: flex; flex-direction: column; }
+  .rrow { display: grid; align-items: center; padding: 4px 6px; border-top: 1px dashed rgba(255,255,255,0.08); font-size: 8.5px; color: var(--fg-3); font-family: var(--mono); letter-spacing: 0.02em; }
+  .rrow:first-child { border-top: 0; color: var(--fg-4); font-size: 8px; text-transform: uppercase; letter-spacing: 0.10em; }
+  .rrow b { color: var(--fg); font-weight: 500; }
+  .rrow .neg { color: var(--neg); }
+  .rrow .pos { color: var(--pos); }
+  .rrow .warn { color: var(--warn); }
+  .rrow .dot { display: inline-block; width: 4px; height: 4px; border-radius: 50%; margin-right: 4px; }
+  .rrow .dot.neg { background: var(--neg); }
+  .rrow .dot.warn { background: var(--warn); }
+  .rrow .dot.med { background: var(--info); }
+
+  /* annotated callouts */
+  .anno { position: absolute; font-family: var(--mono); font-size: 8.5px; color: var(--fg-3); letter-spacing: 0.04em; display: flex; align-items: center; gap: 6px; }
+  .anno::before { content: ''; width: 14px; height: 1px; background: rgba(255,255,255,0.20); }
+  .anno.r::before { display: none; }
+  .anno.r::after { content: ''; width: 14px; height: 1px; background: rgba(255,255,255,0.20); }
+  .anno b { color: var(--fg); font-weight: 500; }
+  .pin { width: 14px; height: 14px; border-radius: 50%; background: var(--panel-3); border: 1px solid var(--border-strong); color: var(--fg-2); font-family: var(--mono); font-size: 8.5px; display: inline-flex; align-items: center; justify-content: center; }
+
+  /* ============ DIRECTIONS ============ */
+  .dirs-intro { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 24px; }
+
+  .dir-shell {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 26px;
+    background: var(--panel);
+  }
+  .dir-head {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel-2);
+    display: flex; align-items: center; gap: 20px;
+  }
+  .dir-head .tag { font-family: var(--mono); font-size: 10.5px; color: var(--fg-3); letter-spacing: 0.08em; text-transform: uppercase; }
+  .dir-head .tag b { color: var(--fg); font-weight: 600; }
+  .dir-head h3 { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: -0.005em; }
+  .dir-head .sub { color: var(--fg-3); font-size: 12px; font-family: var(--mono); margin-left: auto; }
+  .dir-swatches { display: flex; gap: 4px; align-items: center; }
+  .dir-swatches i { width: 16px; height: 16px; border-radius: 4px; display: block; border: 1px solid rgba(255,255,255,0.10); }
+
+  .dir-body { padding: 24px; }
+
+  /* ============= DIRECTION A — Calm Editorial ============= */
+  .dA {
+    --bg: #0d0c0a;
+    --panel: #181612;
+    --panel-2: #1d1b17;
+    --panel-3: #24211c;
+    --border: rgba(255,240,210,0.07);
+    --border-strong: rgba(255,240,210,0.14);
+    --fg: #efece5;
+    --fg-2: #b8b4ab;
+    --fg-3: #807c73;
+    --fg-4: #514e47;
+    --accent: #c8a86b;
+    --accent-2: #e3c789;
+    --accent-soft: rgba(200,168,107,0.10);
+    --pos: #82bb86;
+    --neg: #d68a82;
+    --money: #d6c89a;
+    background: var(--bg); color: var(--fg);
+    font-family: 'Source Serif 4', 'Source Serif Pro', Georgia, serif;
+  }
+  .dA .body { background: var(--bg); padding: 28px 36px; }
+  .dA .crumb { font-family: var(--mono); font-size: 10px; color: var(--fg-3); letter-spacing: 0.14em; text-transform: uppercase; }
+  .dA .title { font-size: 36px; font-weight: 500; line-height: 1.05; margin: 14px 0 6px; letter-spacing: -0.018em; }
+  .dA .title em { font-style: italic; color: var(--accent-2); font-weight: 500; }
+  .dA .lede { font-size: 14.5px; color: var(--fg-2); max-width: 640px; line-height: 1.6; margin: 0 0 32px; font-family: 'Source Serif 4', serif; }
+  .dA .rule { height: 1px; background: var(--border); margin: 22px 0; }
+  .dA .money-row { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; padding: 8px 0 28px; }
+  .dA .money-big { font-family: var(--mono); font-size: 56px; color: var(--money); font-weight: 400; letter-spacing: -0.02em; line-height: 1; }
+  .dA .money-big .c { color: rgba(214,200,154,0.5); font-size: 30px; }
+  .dA .money-eye { font-size: 10px; font-family: var(--mono); letter-spacing: 0.16em; color: var(--fg-3); text-transform: uppercase; margin-bottom: 12px; }
+  .dA .money-foot { margin-top: 18px; font-family: var(--mono); font-size: 11px; color: var(--fg-3); display: flex; gap: 24px; flex-wrap: wrap; }
+  .dA .money-foot b { color: var(--fg-2); font-weight: 500; }
+  .dA .editorial-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 28px; align-content: center; }
+  .dA .ed-stat .l { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--fg-3); text-transform: uppercase; margin-bottom: 6px; }
+  .dA .ed-stat .v { font-size: 22px; font-weight: 500; letter-spacing: -0.01em; }
+  .dA .ed-stat .v.pos { color: var(--pos); }
+  .dA .ed-stat .s { font-family: var(--mono); font-size: 10px; color: var(--fg-3); margin-top: 4px; }
+  .dA .verdict {
+    padding: 28px 0 8px;
+    border-top: 1px solid var(--border);
+  }
+  .dA .verdict-eye { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; color: var(--accent); text-transform: uppercase; margin-bottom: 14px; }
+  .dA .verdict-t { font-size: 26px; font-weight: 500; line-height: 1.35; letter-spacing: -0.012em; max-width: 720px; font-family: 'Source Serif 4', serif; }
+  .dA .verdict-t em { color: var(--accent-2); font-style: italic; }
+  .dA .verdict-sub { font-size: 13.5px; color: var(--fg-2); margin-top: 14px; max-width: 640px; line-height: 1.65; }
+  .dA .leaks-section { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; padding-top: 28px; }
+  .dA .leak-list { display: flex; flex-direction: column; }
+  .dA .leak-row { display: grid; grid-template-columns: 18px 1fr 90px 60px; align-items: baseline; gap: 14px; padding: 14px 0; border-top: 1px solid var(--border); }
+  .dA .leak-row:first-child { border-top: 0; }
+  .dA .leak-n { font-family: var(--mono); font-size: 10px; color: var(--fg-4); }
+  .dA .leak-name { font-size: 14.5px; font-weight: 500; letter-spacing: -0.005em; }
+  .dA .leak-name .sub { display: block; font-family: var(--mono); font-size: 10.5px; color: var(--fg-3); margin-top: 2px; letter-spacing: 0.02em; }
+  .dA .leak-impact { font-family: var(--mono); font-size: 13px; color: var(--neg); text-align: right; }
+  .dA .leak-sev { font-family: var(--mono); font-size: 9.5px; color: var(--fg-3); letter-spacing: 0.1em; text-transform: uppercase; text-align: right; }
+  .dA .leak-sev.crit { color: var(--neg); }
+  .dA .leak-sev.high { color: var(--accent); }
+  .dA .quote-card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 22px; }
+  .dA .quote-eye { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--fg-3); text-transform: uppercase; margin-bottom: 12px; }
+  .dA .quote { font-size: 16px; line-height: 1.55; font-family: 'Source Serif 4', serif; font-style: italic; color: var(--fg); }
+  .dA .quote-foot { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1fr; gap: 14px; font-family: var(--mono); font-size: 11px; }
+  .dA .quote-foot .l { color: var(--fg-3); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+  .dA .quote-foot .v { color: var(--fg); font-weight: 500; }
+  .dA .quote-foot .v.neg { color: var(--neg); }
+
+  /* ============= DIRECTION B — Trading Terminal ============= */
+  .dB {
+    --bg: #06070a;
+    --panel: #0c0e13;
+    --panel-2: #11141b;
+    --panel-3: #161a23;
+    --border: rgba(255,255,255,0.06);
+    --border-strong: rgba(255,255,255,0.14);
+    --grid: rgba(255,255,255,0.038);
+    --fg: #e7ecf2;
+    --fg-2: #97a0ad;
+    --fg-3: #6a7280;
+    --fg-4: #424955;
+    --accent: #5ad1a6;
+    --accent-2: #8be0bf;
+    --accent-soft: rgba(90,209,166,0.08);
+    --pos: #5ad1a6;
+    --neg: #ff7a7a;
+    --warn: #ffba5a;
+    --info: #7eb6f0;
+    background: var(--bg); color: var(--fg);
+    font-family: var(--mono);
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 64px 64px;
+    background-position: -1px -1px;
+  }
+  .dB .body { padding: 0; }
+  .dB .topstrip { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; border-bottom: 1px solid var(--border); background: rgba(6,7,10,0.8); }
+  .dB .topstrip > div { padding: 14px 18px; border-left: 1px solid var(--border); }
+  .dB .topstrip > div:first-child { border-left: 0; }
+  .dB .ts-eye { font-size: 9.5px; color: var(--fg-4); letter-spacing: 0.14em; text-transform: uppercase; }
+  .dB .ts-v { font-size: 24px; color: var(--fg); margin-top: 4px; letter-spacing: -0.005em; }
+  .dB .ts-v.pos { color: var(--pos); }
+  .dB .ts-v.neg { color: var(--neg); }
+  .dB .ts-sub { font-size: 10px; color: var(--fg-3); margin-top: 4px; }
+  .dB .ts-sub .pos { color: var(--pos); }
+
+  .dB .term-cols { display: grid; grid-template-columns: 1.3fr 1fr; gap: 0; border-bottom: 1px solid var(--border); }
+  .dB .term-col { padding: 18px 24px; }
+  .dB .term-col + .term-col { border-left: 1px solid var(--border); background: rgba(255,255,255,0.012); }
+  .dB .term-h { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; }
+  .dB .term-h .t { font-size: 11px; color: var(--fg); letter-spacing: 0.10em; text-transform: uppercase; }
+  .dB .term-h .meta { margin-left: auto; font-size: 10px; color: var(--fg-3); }
+  .dB .stream { font-size: 11.5px; line-height: 1.7; color: var(--fg-2); }
+  .dB .stream .ln { display: grid; grid-template-columns: 60px 1fr 70px 38px; gap: 10px; padding: 3px 0; border-bottom: 1px dashed rgba(255,255,255,0.04); }
+  .dB .stream .ln .ts { color: var(--fg-4); }
+  .dB .stream .ln .nm { color: var(--fg); }
+  .dB .stream .ln .v.neg { color: var(--neg); text-align: right; }
+  .dB .stream .ln .v.pos { color: var(--pos); text-align: right; }
+  .dB .stream .ln .tag { color: var(--fg-4); text-align: right; }
+  .dB .stream .ln .tag.crit { color: var(--neg); }
+  .dB .stream .ln .tag.warn { color: var(--warn); }
+  .dB .ascii-arc {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 16px;
+    font-size: 10.5px;
+    line-height: 1.35;
+    color: var(--fg-3);
+    white-space: pre;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .dB .meter { display: grid; grid-template-columns: 96px 1fr 80px; gap: 12px; align-items: center; font-size: 11px; padding: 5px 0; }
+  .dB .meter .nm { color: var(--fg-2); }
+  .dB .meter .br { height: 12px; background: var(--panel-3); border-radius: 2px; position: relative; overflow: hidden; }
+  .dB .meter .br i { display: block; height: 100%; background: var(--accent); position: relative; }
+  .dB .meter .br i.warn { background: var(--warn); }
+  .dB .meter .br i.neg { background: var(--neg); }
+  .dB .meter .br i.pos { background: var(--pos); }
+  .dB .meter .br .tgt { position: absolute; top: -2px; bottom: -2px; width: 1px; background: rgba(255,255,255,0.4); }
+  .dB .meter .vv { color: var(--fg); text-align: right; }
+  .dB .meter .vv.warn { color: var(--warn); }
+  .dB .meter .vv.neg { color: var(--neg); }
+  .dB .meter .vv.pos { color: var(--pos); }
+
+  /* ============= DIRECTION C — Felt Casino ============= */
+  .dC {
+    --bg: #0a1612;
+    --panel: #0e1f1a;
+    --panel-2: #122821;
+    --panel-3: #173329;
+    --border: rgba(190,255,220,0.06);
+    --border-strong: rgba(190,255,220,0.14);
+    --fg: #eef4ee;
+    --fg-2: #adb8b1;
+    --fg-3: #72807a;
+    --fg-4: #4a574f;
+    --accent: #d4a943;
+    --accent-2: #f0c965;
+    --accent-soft: rgba(212,169,67,0.10);
+    --money: #f0d99a;
+    --pos: #82d9a1;
+    --neg: #e89486;
+    background: var(--bg); color: var(--fg);
+    font-family: var(--sans);
+    background-image:
+      radial-gradient(ellipse 1200px 600px at 70% -10%, rgba(20,80,55,0.55) 0%, transparent 70%),
+      radial-gradient(ellipse 800px 500px at 0% 100%, rgba(35,80,45,0.30) 0%, transparent 60%);
+  }
+  .dC .body { padding: 28px 32px; }
+  .dC .crumb { font-family: var(--mono); font-size: 10.5px; color: var(--accent); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 12px; }
+  .dC .title-row { display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; align-items: end; padding-bottom: 22px; border-bottom: 1px solid var(--border); margin-bottom: 22px; }
+  .dC .title { margin: 0; font-size: 30px; font-weight: 600; letter-spacing: -0.022em; line-height: 1.08; }
+  .dC .title em { color: var(--accent-2); font-style: normal; }
+  .dC .seg { display: inline-flex; background: rgba(0,0,0,0.30); border: 1px solid var(--border); border-radius: 8px; padding: 3px; margin-left: auto; }
+  .dC .seg button { background: none; border: 0; color: var(--fg-2); font: 500 12px var(--sans); padding: 6px 13px; border-radius: 5px; cursor: pointer; }
+  .dC .seg button[aria-pressed="true"] { background: rgba(212,169,67,0.18); color: var(--accent-2); }
+
+  .dC .felt {
+    background:
+      radial-gradient(ellipse 600px 320px at center, rgba(40,110,70,0.30) 0%, rgba(20,60,40,0.10) 60%, transparent 90%),
+      var(--panel);
+    border: 1px solid var(--border-strong);
+    border-radius: 22px;
+    padding: 34px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .dC .felt::before {
+    content: ''; position: absolute; inset: 8px;
+    border: 1px solid rgba(212,169,67,0.18);
+    border-radius: 18px;
+    pointer-events: none;
+  }
+  .dC .felt-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; position: relative; }
+  .dC .pot-eye { font-family: var(--mono); font-size: 10.5px; color: var(--accent); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+  .dC .pot-eye .dot { width: 7px; height: 7px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 0 4px rgba(212,169,67,0.18); }
+  .dC .pot-big { font-family: var(--mono); font-size: 70px; color: var(--money); font-weight: 500; letter-spacing: -0.028em; line-height: 1; text-shadow: 0 1px 0 rgba(0,0,0,0.4); }
+  .dC .pot-big .c { color: rgba(240,217,154,0.5); font-size: 36px; }
+  .dC .pot-sub { font-family: var(--mono); font-size: 12px; color: var(--accent-2); margin-top: 10px; }
+  .dC .pot-foot { margin-top: 16px; padding-top: 14px; border-top: 1px dashed rgba(212,169,67,0.20); display: flex; gap: 22px; flex-wrap: wrap; font-family: var(--mono); font-size: 11px; color: var(--fg-2); }
+  .dC .pot-foot b { color: var(--accent-2); font-weight: 500; }
+  .dC .chips-vis {
+    position: relative;
+    height: 200px;
+    display: flex; align-items: flex-end; justify-content: center;
+    gap: 8px;
+  }
+  .dC .chip-col { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .dC .chip-col-lbl { font-family: var(--mono); font-size: 9px; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 6px; }
+  .dC .chip-stack-mini { display: flex; flex-direction: column-reverse; gap: -6px; align-items: center; }
+  .dC .chip {
+    width: 56px; height: 12px;
+    border-radius: 50%/40%;
+    margin-top: -7px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.5), inset 0 -1px 0 rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.08);
+    border: 1px solid rgba(0,0,0,0.4);
+    position: relative;
+  }
+  .dC .chip::before {
+    content: ''; position: absolute; inset: 1px;
+    border-radius: 50%/45%;
+    background: repeating-conic-gradient(currentColor 0deg 18deg, transparent 18deg 36deg);
+    opacity: 0.18;
+  }
+  .dC .chip.gold { background: linear-gradient(180deg, #d4a943 0%, #8e6e22 100%); color: #fff; }
+  .dC .chip.cream { background: linear-gradient(180deg, #ebe0c0 0%, #b9ad84 100%); color: #5a4b1e; }
+  .dC .chip.green { background: linear-gradient(180deg, #4f9268 0%, #2b5640 100%); color: #fff; }
+  .dC .chip.red { background: linear-gradient(180deg, #b54a40 0%, #6e2b25 100%); color: #fff; }
+  .dC .chip.black { background: linear-gradient(180deg, #2a2a2a 0%, #0a0a0a 100%); color: #fff; }
+
+  .dC .ribbon { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 22px; }
+  .dC .ribbon-cell { background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .dC .ribbon-eye { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-3); margin-bottom: 6px; }
+  .dC .ribbon-v { font-family: var(--mono); font-size: 20px; color: var(--fg); font-weight: 500; }
+  .dC .ribbon-v.pos { color: var(--pos); }
+  .dC .ribbon-v.money { color: var(--money); }
+  .dC .ribbon-s { font-family: var(--mono); font-size: 10.5px; color: var(--fg-3); margin-top: 4px; }
+
+  .dC .verdict-card { margin-top: 22px; background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 14px; padding: 24px 26px; border-left: 3px solid var(--accent); }
+  .dC .v-eye { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  .dC .v-title { font-size: 20px; font-weight: 600; line-height: 1.35; letter-spacing: -0.012em; max-width: 600px; }
+  .dC .v-title em { color: var(--accent-2); font-style: normal; }
+  .dC .v-sub { font-size: 13px; color: var(--fg-2); margin-top: 12px; line-height: 1.6; max-width: 640px; }
+
+  /* ============ FOOTER NOTE ============ */
+  .endnote { margin-top: 56px; padding: 24px 28px; border: 1px dashed var(--border-strong); border-radius: 10px; font-size: 12.5px; color: var(--fg-3); line-height: 1.6; font-family: var(--mono); }
+  .endnote b { color: var(--fg); font-weight: 500; }
+  .endnote ul { margin: 8px 0 0; padding-left: 18px; }
+  .endnote li { margin: 4px 0; }
+</style>
+</head>
+<body>
+
+<!-- ============= CHROME ============= -->
+<div class="chrome">
+  <div class="chrome-inner">
+    <div class="chrome-brand">
+      <div class="chrome-brand-mark">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M7 1.5 C9.5 4.5, 11.5 6, 11.5 8.5 C11.5 10.5, 10 11.5, 8.5 11.5 C7.8 11.5, 7 11.2, 7 11.2 C7 11.2, 6.2 11.5, 5.5 11.5 C4 11.5, 2.5 10.5, 2.5 8.5 C2.5 6, 4.5 4.5, 7 1.5 Z" fill="currentColor"/></svg>
+      </div>
+      <b>Poker Analyzer</b>
+      <span>· sketches &amp; directions</span>
+    </div>
+    <div class="chrome-spacer"></div>
+    <div class="chrome-tabs" role="tablist">
+      <button class="chrome-tab" data-tab="sketches" aria-selected="true"><span class="chrome-tab-num">01</span>All pages — sketches</button>
+      <button class="chrome-tab" data-tab="dirs"><span class="chrome-tab-num">02</span>Directions applied to v8</button>
+    </div>
+    <div class="chrome-spacer"></div>
+    <div class="chrome-note">based on v8 · 23 May 26</div>
+  </div>
+</div>
+
+<!-- ============= SKETCHES STAGE ============= -->
+<div class="stage" data-stage="sketches" data-active="true">
+  <div class="shell">
+
+    <div class="doc-head">
+      <div class="crumb">SKETCHES / FULL PRODUCT IA / scorza23</div>
+      <h1>What every page should look like.</h1>
+      <p class="lede">
+        Dashboard v8 is the only screen that exists at fidelity. Before redesigning anything else,
+        a lo-fi sketch for each of the eight remaining pages — what blocks live there, what the
+        page is for, and which v8 patterns it inherits. Notation, not visuals: dashed regions, mono
+        labels, no color decisions yet.
+      </p>
+      <div class="doc-meta">
+        <span>SCOPE<b>9 pages</b></span>
+        <span>FIDELITY<b>wireframe / lo-fi</b></span>
+        <span>BASIS<b>Dashboard v8 patterns</b></span>
+        <span>STATUS<b>for review</b></span>
+      </div>
+    </div>
+
+    <!-- intro cards -->
+    <div class="sk-intro">
+      <div class="sk-intro-card">
+        <div class="sk-intro-eye">CONVENTIONS</div>
+        <h3 class="sk-intro-t">How to read these</h3>
+        <p>
+          Every box is a region with a name + role. <code>solid</code> = decided block from v8.
+          <code>dashed</code> = new block, structure proposed not styled. <code>accent</code> = the page's primary call to action.
+          Color hints (pos/neg/warn) carry semantic meaning only — palette will be locked in the directions pass.
+        </p>
+      </div>
+      <div class="sk-intro-card">
+        <div class="sk-intro-eye">REUSE FROM v8</div>
+        <h3 class="sk-intro-t">Shared scaffolding</h3>
+        <p>
+          Sidebar, top crumb + H1, period segmented control, mono section eyebrows, severity dots,
+          range matrix, strip-row pattern, and the money hero treatment are all carried over. Don't reinvent.
+        </p>
+      </div>
+      <div class="sk-intro-card">
+        <div class="sk-intro-eye">OPEN QUESTIONS</div>
+        <h3 class="sk-intro-t">Decide before hi-fi</h3>
+        <p>
+          (1) Does <b>Ranges</b> live next to Hands or with Reports? (2) Is <b>Arena</b> one screen or a hub?
+          (3) <b>Villains</b> — flat table or per-villain dossier? (4) Does <b>Career</b> get its own narrative layout
+          or is it just Dashboard zoomed out to lifetime?
+        </p>
+      </div>
+    </div>
+
+    <!-- ============ SKETCH GRID ============ -->
+    <div class="sketch-grid">
+
+      <!-- 01 Dashboard -->
+      <div class="sk">
+        <div class="sk-head">
+          <div class="sk-head-l">
+            <span class="sk-route">01 · /dashboard</span>
+            <span class="sk-name">Dashboard</span>
+          </div>
+          <span class="sk-tag done">v8 · done</span>
+        </div>
+        <div class="sk-canvas">
+          <div class="b solid" style="left:14px; right:14px; top:14px; height:60px;">
+            <span class="h">MONEY HERO</span>
+            +$388.85 · ROI · ITM · Drawdown · chip stack
+          </div>
+          <div class="b solid" style="left:14px; right:14px; top:84px; height:52px;">
+            <span class="h">KPI STRIP — carousel</span>
+            VPIP · PFR · 3-BET · AF · WTSD · W$SD · STEAL
+          </div>
+          <div class="b accent" style="left:14px; width:54%; top:146px; height:88px;">
+            <span class="h">VERDICT</span>
+            One-sentence read of the player, supporting stats
+          </div>
+          <div class="b solid" style="right:14px; width:38%; top:146px; height:88px;">
+            <span class="h">RANGE MATRIX · BTN OPEN</span>
+            <span class="sub">deviation cell highlighted</span>
+          </div>
+          <div class="b warn" style="left:14px; right:14px; top:244px; height:54px;">
+            <span class="h">TOP LEAK / BLOCKER</span>
+            BB defend vs 2.5x · −$14.20 · open in Leaks
+          </div>
+          <div class="b solid" style="left:14px; right:14px; top:308px; height:32px;">
+            <span class="h">CAREER ARC SPARK</span>
+            small lifetime profit curve · period selector
+          </div>
+        </div>
+        <div class="sk-caption">
+          <b>Canonical reference.</b> This sketch only documents what v8 already does — every other page
+          should borrow its eyebrow, period switcher, and verdict patterns.
+          <span class="why">why this matters → v8 is the source of truth for chrome and rhythm.</span>
+        </div>
+      </div>
+
+      <!-- 02 Hands -->
+      <div class="sk">
+        <div class="sk-head">
+          <div class="sk-head-l">
+            <span class="sk-route">02 · /hands</span>
+            <span class="sk-name">Hands</span>
+          </div>
+          <span class="sk-tag">to design</span>
+        </div>
+        <div class="sk-canvas">
+          <!-- filter rail -->
+          <div class="b solid" style="left:14px; width:120px; top:14px; bottom:14px;">
+            <span class="h">FILTERS</span>
+            position<br/>street<br/>pot type<br/>stack band<br/>villain tag<br/>result range<br/>tag / leak
+            <span class="sub">saved views ▾</span>
+          </div>
+          <!-- search + chips -->
+          <div class="b" style="left:148px; right:14px; top:14px; height:34px;">
+            <span class="h">SEARCH · SAVED VIEWS · CHIP-FILTER BAR</span>
+          </div>
+          <!-- columns header -->
+          <div class="lbl" style="left:155px; right:18px; top:60px;">HAND-ID · DATE · POS · ACTION · RESULT · LEAK</div>
+          <div class="l" style="left:148px; right:14px; top:74px; height:1px;"></div>
+          <!-- rows -->
+          <div style="position:absolute; left:148px; right:14px; top:80px; bottom:88px;">
+            <div class="rows">
+              <div class="rrow" style="grid-template-columns: 60px 1fr 30px 40px 50px 50px;"><span>#10716</span><b>AKo · BB def vs 2.5x co</b><span>BB</span><span>RFI</span><span class="neg">−$1.20</span><span class="warn">leak·b</span></div>
+              <div class="rrow" style="grid-template-columns: 60px 1fr 30px 40px 50px 50px;"><span>#10715</span><b>TT · 4-bet jam vs UTG</b><span>SB</span><span>4B</span><span class="pos">+$2.40</span><span></span></div>
+              <div class="rrow" style="grid-template-columns: 60px 1fr 30px 40px 50px 50px;"><span>#10714</span><b>76s · turn float bluff</b><span>BTN</span><span>F1</span><span class="neg">−$0.80</span><span></span></div>
+              <div class="rrow" style="grid-template-columns: 60px 1fr 30px 40px 50px 50px;"><span>#10713</span><b>AhJh · river over-bet vs reg</b><span>CO</span><span>RVR</span><span class="neg">−$3.10</span><span class="warn">leak·c</span></div>
+              <div class="rrow" style="grid-template-columns: 60px 1fr 30px 40px 50px 50px;"><span>#10712</span><b>JJ · check-call line</b><span>HJ</span><span>F1</span><span class="pos">+$1.05</span><span></span></div>
+              <div class="rrow" style="grid-template-columns: 60px 1fr 30px 40px 50px 50px;"><span>#10711</span><b>K9o · steal vs limpers</b><span>BTN</span><span>OPN</span><span class="pos">+$0.40</span><span></span></div>
+              <div class="rrow" style="grid-template-columns: 60px 1fr 30px 40px 50px 50px;"><span>#10710</span><b>76s · 3-bet light from SB</b><span>SB</span><span>3B</span><span class="neg">−$2.00</span><span></span></div>
+            </div>
+          </div>
+          <!-- replayer preview -->
+          <div class="b accent" style="left:148px; right:14px; bottom:14px; height:66px;">
+            <span class="h">REPLAYER · selected hand pinned</span>
+            felt · action ticker · per-street EV ribbon · "open in Arena"
+          </div>
+        </div>
+        <div class="sk-caption">
+          Browse and drill. <b>Left rail</b> persists; <b>chip bar</b> is for fast multi-filter; the
+          <b>replayer at the bottom</b> stays pinned so users don't lose context when scanning rows.
+          <span class="why">why this matters → most of the user's time is here; speed of finding a hand wins.</span>
+        </div>
+      </div>
+
+      <!-- 03 Leaks -->
+      <div class="sk">
+        <div class="sk-head">
+          <div class="sk-head-l">
+            <span class="sk-route">03 · /leaks</span>
+            <span class="sk-name">Leaks</span>
+          </div>
+          <span class="sk-tag">to design</span>
+        </div>
+        <div class="sk-canvas">
+          <div class="b solid" style="left:14px; right:14px; top:14px; height:40px;">
+            <span class="h">SEVERITY HEATMAP — 8 leaks × per-street/position</span>
+          </div>
+          <!-- master list -->
+          <div class="b" style="left:14px; width:52%; top:64px; bottom:14px;">
+            <span class="h">LEAKS LIST (severity-sorted)</span>
+            <div class="rows" style="margin-top:8px;">
+              <div class="rrow" style="grid-template-columns: 16px 1fr 50px 38px;"><span class="dot neg"></span><b>BB def vs 2.5x CO</b><span class="neg">−$14.20</span><span>crit</span></div>
+              <div class="rrow" style="grid-template-columns: 16px 1fr 50px 38px;"><span class="dot neg"></span><b>River over-bet vs reg</b><span class="neg">−$9.40</span><span>crit</span></div>
+              <div class="rrow" style="grid-template-columns: 16px 1fr 50px 38px;"><span class="dot warn"></span><b>3-bet light from SB</b><span class="neg">−$6.10</span><span>high</span></div>
+              <div class="rrow" style="grid-template-columns: 16px 1fr 50px 38px;"><span class="dot warn"></span><b>Limp re-iso post-flop</b><span class="neg">−$4.80</span><span>high</span></div>
+              <div class="rrow" style="grid-template-columns: 16px 1fr 50px 38px;"><span class="dot med"></span><b>BTN steal under-freq</b><span class="neg">−$3.20</span><span>med</span></div>
+              <div class="rrow" style="grid-template-columns: 16px 1fr 50px 38px;"><span class="dot med"></span><b>Turn float bluff over-freq</b><span class="neg">−$2.60</span><span>med</span></div>
+              <div class="rrow" style="grid-template-columns: 16px 1fr 50px 38px;"><span class="dot med"></span><b>Push/fold band errors</b><span class="neg">−$2.10</span><span>med</span></div>
+              <div class="rrow" style="grid-template-columns: 16px 1fr 50px 38px;"><span class="dot med"></span><b>ITM stall ranges</b><span class="neg">−$1.40</span><span>med</span></div>
+            </div>
+          </div>
+          <!-- detail -->
+          <div class="b accent" style="right:14px; width:42%; top:64px; bottom:80px;">
+            <span class="h">LEAK DETAIL · selected</span>
+            <div style="margin-top:6px; color: var(--fg-2); font-size: 9px;">title · diagnosis prose · target vs actual · sample hands</div>
+            <div class="row-bars" style="padding-top:8px;">
+              <div class="bar-row"><span>actual</span><div class="bar"><i class="neg" style="width:78%;"></i></div><span>62%</span></div>
+              <div class="bar-row"><span>target</span><div class="bar"><i class="pos" style="width:36%;"></i></div><span>36%</span></div>
+              <div class="bar-row"><span>field</span><div class="bar"><i style="width:48%; background: rgba(255,255,255,0.20);"></i></div><span>48%</span></div>
+            </div>
+            <div class="lbl" style="left:8px; right:8px; bottom:8px;">+ 3 sample hands → click to open in replayer</div>
+          </div>
+          <div class="b" style="right:14px; width:42%; bottom:14px; height:60px;">
+            <span class="h">DRILL CTA → ARENA</span>
+            "drill 12 hands of this spot · ~7 min"
+          </div>
+        </div>
+        <div class="sk-caption">
+          Heatmap up top for instant orientation, master-detail below for diagnosis. Every leak ends
+          with a drill CTA — that's the loop back into Arena that v8 currently teases but doesn't close.
+          <span class="why">why this matters → leaks without a drill path are just blame; this is the value of the app.</span>
+        </div>
+      </div>
+
+      <!-- 04 Career -->
+      <div class="sk">
+        <div class="sk-head">
+          <div class="sk-head-l">
+            <span class="sk-route">04 · /career</span>
+            <span class="sk-name">Career</span>
+          </div>
+          <span class="sk-tag wip">narrative</span>
+        </div>
+        <div class="sk-canvas">
+          <div class="b solid" style="left:14px; right:14px; top:14px; height:46px;">
+            <span class="h">LIFETIME MONEY ARC — 8 month curve, annotated</span>
+            <span class="sub">peaks · drawdowns · longest streak · best/worst</span>
+          </div>
+          <!-- milestones rail -->
+          <div class="b accent" style="left:14px; right:14px; top:70px; height:42px;">
+            <span class="h">MILESTONE RAIL</span>
+            first cash · first $100 · ITM streak 11 · 250th tourney
+          </div>
+          <!-- profile evolution -->
+          <div class="b" style="left:14px; width:54%; top:122px; bottom:14px;">
+            <span class="h">PROFILE EVOLUTION (tags over time)</span>
+            <div class="row-bars" style="padding-top:8px;">
+              <div class="bar-row"><span>nit</span><div class="bar"><i style="width:14%;"></i></div><span>14%</span></div>
+              <div class="bar-row"><span>solid</span><div class="bar"><i style="width:74%;"></i></div><span>74%</span></div>
+              <div class="bar-row"><span>spewy</span><div class="bar"><i class="warn" style="width:8%;"></i></div><span>8%</span></div>
+              <div class="bar-row"><span>splash</span><div class="bar"><i class="neg" style="width:4%;"></i></div><span>4%</span></div>
+            </div>
+            <div class="lbl" style="left:8px; bottom:8px;">m1 ····· m8 — strip per month</div>
+          </div>
+          <div class="b" style="right:14px; width:40%; top:122px; bottom:14px;">
+            <span class="h">RECORDS</span>
+            best cash · worst session · longest stretch · biggest field
+            <div class="rows" style="margin-top:6px;">
+              <div class="rrow" style="grid-template-columns: 1fr 60px;"><span>best cash</span><b class="pos">+$22.50</b></div>
+              <div class="rrow" style="grid-template-columns: 1fr 60px;"><span>worst day</span><b class="neg">−$8.40</b></div>
+              <div class="rrow" style="grid-template-columns: 1fr 60px;"><span>longest ITM</span><b>11</b></div>
+              <div class="rrow" style="grid-template-columns: 1fr 60px;"><span>biggest field</span><b>1,142</b></div>
+            </div>
+          </div>
+        </div>
+        <div class="sk-caption">
+          Narrative, not dashboard. Career is the long view — a single annotated curve, the
+          milestone rail under it, and "what kind of player am I becoming?" through tag-share over time.
+          <span class="why">why this matters → motivation lives in the arc, not in the KPI strip.</span>
+        </div>
+      </div>
+
+      <!-- 05 Sessions -->
+      <div class="sk">
+        <div class="sk-head">
+          <div class="sk-head-l">
+            <span class="sk-route">05 · /sessions</span>
+            <span class="sk-name">Sessions</span>
+          </div>
+          <span class="sk-tag">to design</span>
+        </div>
+        <div class="sk-canvas">
+          <div class="b solid" style="left:14px; right:14px; top:14px; height:46px;">
+            <span class="h">CALENDAR HEATMAP</span>
+            green = winning day · red = losing · density = volume
+          </div>
+          <div class="b" style="left:14px; right:14px; top:70px; bottom:14px;">
+            <span class="h">SESSION LIST — 37 sessions</span>
+            <div class="lbl" style="right:14px; top:8px;">date · #tourneys · net · ROI · ITM · best · worst · notes</div>
+            <div class="l" style="left:8px; right:8px; top:32px; height:1px;"></div>
+            <div class="rows" style="margin-top:30px;">
+              <div class="rrow" style="grid-template-columns: 60px 28px 50px 38px 38px 50px 38px;"><span>23 Oct</span><span>12</span><b class="pos">+$8.20</b><span class="pos">68%</span><span>42%</span><span class="pos">+22.50</span><span>n</span></div>
+              <div class="rrow" style="grid-template-columns: 60px 28px 50px 38px 38px 50px 38px;"><span>22 Oct</span><span>8</span><b class="neg">−$3.40</b><span class="neg">−38%</span><span>25%</span><span>2.10</span><span>n</span></div>
+              <div class="rrow" style="grid-template-columns: 60px 28px 50px 38px 38px 50px 38px;"><span>21 Oct</span><span>14</span><b class="pos">+$4.10</b><span class="pos">29%</span><span>36%</span><span>4.40</span><span>·</span></div>
+              <div class="rrow" style="grid-template-columns: 60px 28px 50px 38px 38px 50px 38px;"><span>19 Oct</span><span>9</span><b class="pos">+$1.80</b><span class="pos">19%</span><span>33%</span><span>3.00</span><span>·</span></div>
+              <div class="rrow" style="grid-template-columns: 60px 28px 50px 38px 38px 50px 38px;"><span>17 Oct</span><span>11</span><b class="neg">−$2.10</b><span class="neg">−19%</span><span>27%</span><span>1.20</span><span>·</span></div>
+              <div class="rrow" style="grid-template-columns: 60px 28px 50px 38px 38px 50px 38px;"><span>16 Oct</span><span>7</span><b class="pos">+$5.40</b><span class="pos">76%</span><span>43%</span><span>9.00</span><span>n</span></div>
+              <div class="rrow" style="grid-template-columns: 60px 28px 50px 38px 38px 50px 38px;"><span>14 Oct</span><span>13</span><b class="pos">+$3.00</b><span class="pos">21%</span><span>31%</span><span>5.50</span><span>·</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="sk-caption">
+          Calendar on top (mental model: "when did I play"), table below (mental model: "what happened").
+          Self-notes <code>n</code> open an inline drawer with mindset/sleep/tilt tags.
+          <span class="why">why this matters → most players already keep a journal here; meet them where they are.</span>
+        </div>
+      </div>
+
+      <!-- 06 Ranges -->
+      <div class="sk">
+        <div class="sk-head">
+          <div class="sk-head-l">
+            <span class="sk-route">06 · /ranges</span>
+            <span class="sk-name">Ranges</span>
+          </div>
+          <span class="sk-tag">to design</span>
+        </div>
+        <div class="sk-canvas">
+          <!-- left rail -->
+          <div class="b solid" style="left:14px; width:96px; top:14px; bottom:14px;">
+            <span class="h">SPOT TREE</span>
+            BTN ▸ open<br/>· vs SB 3B<br/>· vs BB 3B<br/>CO ▸ open<br/>HJ ▸ open<br/>SB ▸ open<br/>BB ▸ defend<br/>· vs 2.5x<br/>· vs 3x
+          </div>
+          <!-- main matrix -->
+          <div style="position:absolute; left:120px; right:138px; top:14px; bottom:14px;">
+            <div class="mini-range" style="padding: 6px; border: 1.2px solid rgba(255,255,255,0.18); border-radius: 6px; height: 92%;">
+              <!-- 169 cells, mostly empty/random distribution; just enough to look like a chart -->
+              <i class="r4"></i><i class="r4"></i><i class="r4"></i><i class="r4"></i><i class="r3"></i><i class="r3"></i><i class="r3"></i><i class="r3"></i><i class="r3"></i><i class="r2"></i><i class="r2"></i><i class="r2"></i><i class="r1"></i>
+              <i class="r3"></i><i class="r4"></i><i class="r4"></i><i class="r4"></i><i class="r3"></i><i class="r3"></i><i class="r3"></i><i class="r2"></i><i class="r2"></i><i class="r2"></i><i class="r1"></i><i class="r1"></i><i></i>
+              <i class="r3"></i><i class="r3"></i><i class="r4"></i><i class="r3 dev"></i><i class="r3"></i><i class="r3"></i><i class="r2"></i><i class="r2"></i><i class="r2"></i><i class="r1"></i><i class="r1"></i><i></i><i></i>
+              <i class="r3"></i><i class="r3"></i><i class="r3"></i><i class="r4"></i><i class="r3"></i><i class="r3"></i><i class="r2"></i><i class="r2"></i><i class="r1"></i><i class="r1"></i><i></i><i></i><i></i>
+              <i class="r2"></i><i class="r2"></i><i class="r3"></i><i class="r3"></i><i class="r4"></i><i class="r3"></i><i class="r2"></i><i class="r2"></i><i class="r1"></i><i class="r1"></i><i></i><i></i><i></i>
+              <i class="r2"></i><i class="r2"></i><i class="r2"></i><i class="r2"></i><i class="r3"></i><i class="r4"></i><i class="r3"></i><i class="r2"></i><i class="r1"></i><i></i><i></i><i></i><i></i>
+              <i class="r2"></i><i class="r2"></i><i class="r2"></i><i class="r2"></i><i class="r2"></i><i class="r3"></i><i class="r4"></i><i class="r2"></i><i class="r1"></i><i></i><i></i><i></i><i></i>
+              <i class="r1"></i><i class="r2"></i><i class="r2"></i><i class="r1"></i><i class="r2"></i><i class="r2"></i><i class="r2"></i><i class="r3"></i><i class="r2"></i><i></i><i></i><i></i><i></i>
+              <i class="r1"></i><i class="r1"></i><i class="r1"></i><i class="r1"></i><i class="r1"></i><i class="r1"></i><i class="r1"></i><i class="r2"></i><i class="r3"></i><i class="r1"></i><i></i><i></i><i></i>
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="r1"></i><i class="r3"></i><i></i><i></i><i></i>
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="r3"></i><i></i><i></i>
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="r2"></i><i></i>
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="r2"></i>
+            </div>
+            <div class="anno" style="left:50%; top:42%; transform: translate(-50%,-50%); background: rgba(232,128,122,0.08); border: 1px solid rgba(232,128,122,0.30); padding: 3px 6px; border-radius: 3px;">JTo deviation —2.4bb/100</div>
+          </div>
+          <!-- right legend -->
+          <div class="b" style="right:14px; width:118px; top:14px; bottom:14px;">
+            <span class="h">CONTROLS</span>
+            base ▸ GTO<br/>compare ▸ yours<br/>show ▸ deviations<br/>stack ▸ 15bb<br/>weight ▸ freq
+            <div class="lbl" style="left:8px; bottom:8px;">cell click → hands in spot</div>
+          </div>
+        </div>
+        <div class="sk-caption">
+          Spot tree left, matrix center, controls right. The deviations layer is the point —
+          v8 already speaks this vocabulary on the dashboard, so the full page just makes it explorable.
+          <span class="why">why this matters → reuses the strongest pattern v8 already invented.</span>
+        </div>
+      </div>
+
+      <!-- 07 Arena -->
+      <div class="sk">
+        <div class="sk-head">
+          <div class="sk-head-l">
+            <span class="sk-route">07 · /arena</span>
+            <span class="sk-name">Arena</span>
+          </div>
+          <span class="sk-tag wip">hub or drill?</span>
+        </div>
+        <div class="sk-canvas">
+          <div class="b accent" style="left:14px; right:14px; top:14px; height:60px;">
+            <span class="h">CURRENT DRILL · BB defend vs 2.5x</span>
+            12 hands queued · est ~7 min · pulled from your leaks
+          </div>
+          <!-- felt -->
+          <div class="b" style="left:14px; width:55%; top:80px; bottom:60px;">
+            <span class="h">FELT</span>
+            <div style="position:absolute; inset: 22px; border: 1px dashed rgba(255,255,255,0.20); border-radius: 50% / 35%; display: flex; align-items: center; justify-content: center; color: var(--fg-3); font-size: 10px;">
+              <div style="text-align:center; line-height: 1.5;">
+                board · pot · stacks<br/>
+                <span style="color: var(--fg-4); font-size: 8.5px;">action history right side</span>
+              </div>
+            </div>
+          </div>
+          <!-- options -->
+          <div class="b" style="right:14px; width:40%; top:80px; bottom:60px;">
+            <span class="h">DECISION</span>
+            <div class="rows" style="margin-top:6px;">
+              <div class="rrow" style="grid-template-columns: 50px 1fr 30px;"><span>F</span><b>fold</b><span>42%</span></div>
+              <div class="rrow" style="grid-template-columns: 50px 1fr 30px;"><span>C</span><b>call</b><span>48%</span></div>
+              <div class="rrow" style="grid-template-columns: 50px 1fr 30px;"><span>3B</span><b>3-bet 7.5bb</b><span class="pos">10%</span></div>
+            </div>
+            <div class="lbl" style="left:8px; right:8px; bottom:8px;">solver freq after answer</div>
+          </div>
+          <!-- progress -->
+          <div class="b solid" style="left:14px; right:14px; bottom:14px; height:36px;">
+            <span class="h">PROGRESS BAR</span>
+            ●●●●○○○○○○○○ · 4 / 12 · running EV +0.2bb
+          </div>
+        </div>
+        <div class="sk-caption">
+          One screen, one job: answer the queued spot, see the solver's distribution, advance.
+          Arena is the <em>closing</em> half of Leaks — opens with a drill auto-loaded from the top leak.
+          <span class="why">why this matters → without practice the loop never closes.</span>
+        </div>
+      </div>
+
+      <!-- 08 Villains -->
+      <div class="sk">
+        <div class="sk-head">
+          <div class="sk-head-l">
+            <span class="sk-route">08 · /villains</span>
+            <span class="sk-name">Villains</span>
+          </div>
+          <span class="sk-tag wip">table or dossier?</span>
+        </div>
+        <div class="sk-canvas">
+          <div class="b solid" style="left:14px; right:14px; top:14px; height:36px;">
+            <span class="h">FILTER · #hands min · tag · last seen · ROI vs you</span>
+          </div>
+          <div class="b" style="left:14px; width:42%; top:60px; bottom:14px;">
+            <span class="h">VILLAIN LIST · 44</span>
+            <div class="rows" style="margin-top:6px;">
+              <div class="rrow" style="grid-template-columns: 70px 1fr 30px 40px;"><span>player_a17</span><b>nit</b><span>148</span><span class="pos">+$3</span></div>
+              <div class="rrow" style="grid-template-columns: 70px 1fr 30px 40px;"><span>spinforfun</span><b>splash</b><span>132</span><span class="pos">+$8</span></div>
+              <div class="rrow" style="grid-template-columns: 70px 1fr 30px 40px;"><span>reg_88</span><b>solid</b><span>114</span><span class="neg">−$2</span></div>
+              <div class="rrow" style="grid-template-columns: 70px 1fr 30px 40px;"><span>maniac_22</span><b>spew</b><span>87</span><span class="pos">+$11</span></div>
+              <div class="rrow" style="grid-template-columns: 70px 1fr 30px 40px;"><span>card_grinder</span><b>tag</b><span>74</span><span class="neg">−$1</span></div>
+              <div class="rrow" style="grid-template-columns: 70px 1fr 30px 40px;"><span>lucky_lou</span><b>fish</b><span>68</span><span class="pos">+$6</span></div>
+              <div class="rrow" style="grid-template-columns: 70px 1fr 30px 40px;"><span>tilt_jane</span><b>spew</b><span>60</span><span class="pos">+$4</span></div>
+            </div>
+          </div>
+          <div class="b accent" style="right:14px; width:54%; top:60px; bottom:14px;">
+            <span class="h">DOSSIER · spinforfun</span>
+            <div style="margin-top:4px; font-size: 9px; color: var(--fg-2);">tag · field · VPIP/PFR · steal · 3B · WTSD · last 30d</div>
+            <div class="row-bars" style="padding-top:6px;">
+              <div class="bar-row"><span>VPIP</span><div class="bar"><i style="width:48%;"></i></div><span>48%</span></div>
+              <div class="bar-row"><span>PFR</span><div class="bar"><i style="width:18%;"></i></div><span>18%</span></div>
+              <div class="bar-row"><span>3-BET</span><div class="bar"><i style="width:5%;"></i></div><span>5%</span></div>
+              <div class="bar-row"><span>STEAL</span><div class="bar"><i style="width:62%;"></i></div><span>62%</span></div>
+              <div class="bar-row"><span>WTSD</span><div class="bar"><i class="warn" style="width:42%;"></i></div><span>42%</span></div>
+            </div>
+            <div class="lbl" style="left:8px; bottom:24px;">notable hands ▾ — recent spots vs you</div>
+            <div class="lbl" style="left:8px; bottom:8px;">your edge: target their wide PFR with isolations</div>
+          </div>
+        </div>
+        <div class="sk-caption">
+          Master-detail by default; dossier is "what's their tag and how do I exploit them".
+          Open question: most players are seen &lt;30 hands; dossier may not pay rent for the long tail.
+          <span class="why">why this matters → recurring opponents are the asymmetric edge in microstakes.</span>
+        </div>
+      </div>
+
+      <!-- 09 Demo -->
+      <div class="sk">
+        <div class="sk-head">
+          <div class="sk-head-l">
+            <span class="sk-route">09 · /demo</span>
+            <span class="sk-name">Demo</span>
+          </div>
+          <span class="sk-tag wip">utility</span>
+        </div>
+        <div class="sk-canvas">
+          <div class="b solid" style="left:14px; right:14px; top:14px; height:42px;">
+            <span class="h">SAMPLE PROFILES</span>
+            scorza23 · sample_solid · sample_spewy · sample_nit · empty-state
+          </div>
+          <div class="b accent" style="left:14px; right:14px; top:66px; height:42px;">
+            <span class="h">SCRIPTED TOURS</span>
+            "find your first leak" · "read the verdict" · "drill a spot"
+          </div>
+          <div class="b" style="left:14px; right:14px; top:114px; height:42px;">
+            <span class="h">IMPORT PLAYGROUND</span>
+            paste hand history · upload .txt · synthetic data slider
+          </div>
+          <div class="b" style="left:14px; right:14px; top:162px; bottom:14px;">
+            <span class="h">CHANGELOG</span>
+            <div class="rows" style="margin-top:6px;">
+              <div class="rrow" style="grid-template-columns: 60px 1fr;"><span>v8</span><b>chip stack hero · KPI carousel · violet lock</b></div>
+              <div class="rrow" style="grid-template-columns: 60px 1fr;"><span>v7</span><span>verdict block, severity strip refined</span></div>
+              <div class="rrow" style="grid-template-columns: 60px 1fr;"><span>v6</span><span>sidebar bankroll card, deviations on matrix</span></div>
+              <div class="rrow" style="grid-template-columns: 60px 1fr;"><span>v5</span><span>collapsed diagnostics, mono eyebrows</span></div>
+              <div class="rrow" style="grid-template-columns: 60px 1fr;"><span>v4</span><span>first full hi-fi pass</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="sk-caption">
+          Sandbox + tour + import. Useful for showing the product cold without polluting scorza23's
+          real data. Not user-facing in the navigation if we ship — gated behind a dev flag.
+          <span class="why">why this matters → demoing without a dataset is the #1 thing reviewers complain about.</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- IA decisions -->
+    <div class="sec-head">
+      <span class="sec-num">§ 1.B</span>
+      <h2>Open IA questions for this pass</h2>
+      <p class="sec-sub">decide before hi-fi · 4 items</p>
+    </div>
+    <div class="sketch-grid">
+      <div class="sk-intro-card">
+        <div class="sk-intro-eye">Q1 · placement</div>
+        <h3 class="sk-intro-t">Ranges under Review or Reports?</h3>
+        <p>Currently in Reports — but it's used <em>during</em> hand review, not after. Recommend moving up to Review next to Hands.</p>
+      </div>
+      <div class="sk-intro-card">
+        <div class="sk-intro-eye">Q2 · shape</div>
+        <h3 class="sk-intro-t">Arena: one drill or a hub?</h3>
+        <p>If we list "drills available" as a hub, the user has to pick. If we auto-load the top leak, friction drops. Recommend auto-load with "switch drill ▾".</p>
+      </div>
+      <div class="sk-intro-card">
+        <div class="sk-intro-eye">Q3 · depth</div>
+        <h3 class="sk-intro-t">Villains: dossier worth it?</h3>
+        <p>44 villains, but the long tail has &lt;30 hands of evidence. Maybe show <em>only</em> the top 6 as dossiers, the rest as table-only.</p>
+      </div>
+      <div class="sk-intro-card">
+        <div class="sk-intro-eye">Q4 · scope</div>
+        <h3 class="sk-intro-t">Career = Dashboard zoomed out?</h3>
+        <p>Risk of redundancy. The differentiator is the <em>narrative</em>: milestones rail, profile evolution. If we can't commit to that, fold Career into Dashboard's lifetime tab.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ============= DIRECTIONS STAGE ============= -->
+<div class="stage" data-stage="dirs">
+  <div class="shell">
+
+    <div class="doc-head">
+      <div class="crumb">DIRECTIONS / DASHBOARD V8 / RE-SKINS</div>
+      <h1>Three ways to dress v8.</h1>
+      <p class="lede">
+        Same content, same information density, same hierarchy as Dashboard v8 — three different visual
+        systems. The question to answer here is <em>tone</em>, not features. Pick one, then
+        propagate it to the eight pages sketched above.
+      </p>
+      <div class="doc-meta">
+        <span>BASIS<b>Dashboard v8</b></span>
+        <span>VARIABLE<b>type · color · texture</b></span>
+        <span>CONSTANT<b>IA · copy · data</b></span>
+        <span>FIDELITY<b>mid · representative</b></span>
+      </div>
+    </div>
+
+    <!-- direction comparison strip -->
+    <div class="dirs-intro">
+      <div class="sk-intro-card">
+        <div class="sk-intro-eye">A · CALM EDITORIAL</div>
+        <h3 class="sk-intro-t">Warmer paper, less chrome</h3>
+        <p>Serif headlines, monospace details, a thin gold accent. Reads like a quarterly letter to yourself. Lots of white space, no cards-in-cards.</p>
+      </div>
+      <div class="sk-intro-card">
+        <div class="sk-intro-eye">B · TRADING TERMINAL</div>
+        <h3 class="sk-intro-t">All mono, info-dense, mint accent</h3>
+        <p>Bloomberg / hedge-fund desk. Tight grid lines, no rounded corners on data, ASCII curves. For a power user that lives in this tool daily.</p>
+      </div>
+      <div class="sk-intro-card">
+        <div class="sk-intro-eye">C · FELT CASINO</div>
+        <h3 class="sk-intro-t">Green felt, gold accents, chips</h3>
+        <p>Leans into the metaphor. The dashboard <em>is</em> the table. Warm and a little theatrical — the chip stack motif from v8 extended across the page.</p>
+      </div>
+    </div>
+
+    <!-- ===================== DIRECTION A ===================== -->
+    <div class="dir-shell">
+      <div class="dir-head">
+        <span class="tag">DIR · <b>A</b></span>
+        <h3>Calm Editorial</h3>
+        <div class="dir-swatches">
+          <i style="background:#0d0c0a;"></i>
+          <i style="background:#181612;"></i>
+          <i style="background:#c8a86b;"></i>
+          <i style="background:#d6c89a;"></i>
+          <i style="background:#82bb86;"></i>
+          <i style="background:#d68a82;"></i>
+        </div>
+        <span class="sub">Source Serif · JetBrains Mono · paper-dark · gold</span>
+      </div>
+      <div class="dA dir-body" style="padding: 0;">
+        <div class="body">
+          <div class="crumb">DASHBOARD · OVERVIEW · scorza23 · 23 may 26</div>
+          <h2 class="title">A solid micro-stakes grinder, <em>quietly outperforming the field.</em></h2>
+          <p class="lede">
+            Through 250 tournaments at $1.10 average buy-in, scorza23 has compounded $388.85 in profit at a 141% ROI.
+            The story isn't variance — it's a stable, reproducible edge in late-stage steal frequency and BB defense calibration.
+          </p>
+
+          <div class="rule"></div>
+
+          <div class="money-row">
+            <div>
+              <div class="money-eye">NET PROFIT · LIFETIME</div>
+              <div class="money-big">+$388<span class="c">.85</span></div>
+              <div class="money-foot">
+                <span>250 <b>tournaments</b></span>
+                <span>·</span>
+                <span>$1.10 <b>ABI</b></span>
+                <span>·</span>
+                <span>8 <b>months</b></span>
+                <span>·</span>
+                <span style="color: var(--pos);">+$24.30 last 30d</span>
+              </div>
+            </div>
+            <div class="editorial-grid">
+              <div class="ed-stat"><div class="l">ROI</div><div class="v pos">141.4%</div><div class="s">vs 0% breakeven</div></div>
+              <div class="ed-stat"><div class="l">ITM rate</div><div class="v">35.6%</div><div class="s">vs ~16% field</div></div>
+              <div class="ed-stat"><div class="l">Best cash</div><div class="v">+$22.50</div><div class="s">23 Oct, 1/89</div></div>
+              <div class="ed-stat"><div class="l">Drawdown</div><div class="v">−$18.40</div><div class="s">recovered in 12</div></div>
+            </div>
+          </div>
+
+          <div class="verdict">
+            <div class="verdict-eye">§ VERDICT</div>
+            <div class="verdict-t">You play <em>tight, with confidence,</em> and steal less often than a similar profile should. Closing that 5-point gap is worth roughly <em>+$18 a month</em> at current volume.</div>
+            <div class="verdict-sub">
+              Your KPIs cluster inside the solid-TAG envelope (VPIP 21.8, PFR 17.2, 3-BET 8.4). The one
+              consistently low number is steal frequency from the button — 34% against a target band of
+              39–42%. The 12 hands tagged below show the pattern.
+            </div>
+          </div>
+
+          <div class="leaks-section">
+            <div>
+              <div class="verdict-eye" style="margin-bottom: 14px;">§ TOP LEAKS · BY EV LOST</div>
+              <div class="leak-list">
+                <div class="leak-row">
+                  <span class="leak-n">01</span>
+                  <span class="leak-name">BB defend vs 2.5x CO<span class="sub">over-folds vs blockers · 38% sample</span></span>
+                  <span class="leak-impact">−$14.20</span>
+                  <span class="leak-sev crit">crit</span>
+                </div>
+                <div class="leak-row">
+                  <span class="leak-n">02</span>
+                  <span class="leak-name">River over-bet vs reg<span class="sub">unbalanced · 12 hands isolated</span></span>
+                  <span class="leak-impact">−$9.40</span>
+                  <span class="leak-sev crit">crit</span>
+                </div>
+                <div class="leak-row">
+                  <span class="leak-n">03</span>
+                  <span class="leak-name">3-bet light from SB<span class="sub">freq above solver by 3.2%</span></span>
+                  <span class="leak-impact">−$6.10</span>
+                  <span class="leak-sev high">high</span>
+                </div>
+                <div class="leak-row">
+                  <span class="leak-n">04</span>
+                  <span class="leak-name">BTN steal under-freq<span class="sub">−5pts vs target band</span></span>
+                  <span class="leak-impact">−$3.20</span>
+                  <span class="leak-sev high">high</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="quote-card">
+              <div class="quote-eye">§ THE READ</div>
+              <p class="quote">"A nit who has earned the right to be one. The trick is loosening up where it's free — the button — without losing the discipline that built the bankroll."</p>
+              <div class="quote-foot">
+                <div><div class="l">Tag</div><div class="v">solid · trending TAG</div></div>
+                <div><div class="l">Confidence</div><div class="v">high · 10,716 hands</div></div>
+                <div><div class="l">Direction</div><div class="v">widen BTN open</div></div>
+                <div><div class="l">Expected</div><div class="v" style="color: var(--pos);">+0.4 bb/100</div></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== DIRECTION B ===================== -->
+    <div class="dir-shell">
+      <div class="dir-head">
+        <span class="tag">DIR · <b>B</b></span>
+        <h3>Trading Terminal</h3>
+        <div class="dir-swatches">
+          <i style="background:#06070a;"></i>
+          <i style="background:#0c0e13;"></i>
+          <i style="background:#5ad1a6;"></i>
+          <i style="background:#ffba5a;"></i>
+          <i style="background:#ff7a7a;"></i>
+          <i style="background:#7eb6f0;"></i>
+        </div>
+        <span class="sub">JetBrains Mono everywhere · grid · mint pos · no radius</span>
+      </div>
+      <div class="dB dir-body" style="padding: 0;">
+        <div class="body">
+
+          <div class="topstrip">
+            <div>
+              <div class="ts-eye">scorza23 · lifetime · usd</div>
+              <div class="ts-v pos">+$388.85</div>
+              <div class="ts-sub">last sync 14:22:07 · n=10716 · src local</div>
+            </div>
+            <div>
+              <div class="ts-eye">ROI</div>
+              <div class="ts-v pos">+141.4%</div>
+              <div class="ts-sub"><span class="pos">▲</span> +1.2 30d</div>
+            </div>
+            <div>
+              <div class="ts-eye">ITM</div>
+              <div class="ts-v">35.6%</div>
+              <div class="ts-sub">field 16.1</div>
+            </div>
+            <div>
+              <div class="ts-eye">DD</div>
+              <div class="ts-v neg">−$18.40</div>
+              <div class="ts-sub">rec in 12</div>
+            </div>
+            <div>
+              <div class="ts-eye">$/HR</div>
+              <div class="ts-v">+1.62</div>
+              <div class="ts-sub">vol 240h</div>
+            </div>
+          </div>
+
+          <div class="term-cols">
+            <div class="term-col">
+              <div class="term-h"><span class="t">// PROFIT TICK · 30d</span><span class="meta">scorza23 :: tick = 1 tourney</span></div>
+              <div class="ascii-arc">  +$25 ┤                              ╭────
+  +$20 ┤                       ╭─────╯
+  +$15 ┤            ╭──────────╯
+  +$10 ┤      ╭─────╯
+   +$5 ┤  ╭───╯
+     0 ┼──╯                          ⊕ +$24.30
+   −$5 ┤                             ▲ +1.2pt ROI
+       └────────────────────────────────────
+        m-30                              now</div>
+
+              <div class="term-h" style="margin-top: 18px;"><span class="t">// LEAK STREAM · ranked −EV</span><span class="meta">sort: impact desc</span></div>
+              <div class="stream">
+                <div class="ln"><span class="ts">14:22</span><span class="nm">bb.def vs 2.5x co</span><span class="v neg">−14.20</span><span class="tag crit">crit</span></div>
+                <div class="ln"><span class="ts">14:22</span><span class="nm">river.over_bet vs reg</span><span class="v neg">−9.40</span><span class="tag crit">crit</span></div>
+                <div class="ln"><span class="ts">14:22</span><span class="nm">3bet.light from sb</span><span class="v neg">−6.10</span><span class="tag warn">high</span></div>
+                <div class="ln"><span class="ts">14:22</span><span class="nm">limp.reiso post-flop</span><span class="v neg">−4.80</span><span class="tag warn">high</span></div>
+                <div class="ln"><span class="ts">14:22</span><span class="nm">btn.steal under-freq</span><span class="v neg">−3.20</span><span class="tag">med</span></div>
+                <div class="ln"><span class="ts">14:22</span><span class="nm">turn.float bluff over</span><span class="v neg">−2.60</span><span class="tag">med</span></div>
+                <div class="ln"><span class="ts">14:22</span><span class="nm">pf.band errors 8-12bb</span><span class="v neg">−2.10</span><span class="tag">med</span></div>
+                <div class="ln"><span class="ts">14:22</span><span class="nm">itm.stall ranges</span><span class="v neg">−1.40</span><span class="tag">med</span></div>
+              </div>
+            </div>
+
+            <div class="term-col">
+              <div class="term-h"><span class="t">// KEY INDICATORS</span><span class="meta">profile :: TAG-solid</span></div>
+              <div class="meter"><span class="nm">VPIP</span><div class="br"><i class="pos" style="width:54%;"></i><span class="tgt" style="left:50%;"></span></div><span class="vv pos">21.8%</span></div>
+              <div class="meter"><span class="nm">PFR</span><div class="br"><i class="pos" style="width:57%;"></i><span class="tgt" style="left:55%;"></span></div><span class="vv pos">17.2%</span></div>
+              <div class="meter"><span class="nm">3-BET</span><div class="br"><i class="pos" style="width:56%;"></i><span class="tgt" style="left:53%;"></span></div><span class="vv pos">8.4%</span></div>
+              <div class="meter"><span class="nm">AF</span><div class="br"><i class="pos" style="width:48%;"></i><span class="tgt" style="left:50%;"></span></div><span class="vv pos">2.4</span></div>
+              <div class="meter"><span class="nm">WTSD</span><div class="br"><i class="warn" style="width:65%;"></i><span class="tgt" style="left:48%;"></span></div><span class="vv warn">28%</span></div>
+              <div class="meter"><span class="nm">W$SD</span><div class="br"><i class="pos" style="width:44%;"></i><span class="tgt" style="left:46%;"></span></div><span class="vv pos">51%</span></div>
+              <div class="meter"><span class="nm">STEAL</span><div class="br"><i class="warn" style="width:42%;"></i><span class="tgt" style="left:54%;"></span></div><span class="vv warn">34%</span></div>
+              <div class="meter"><span class="nm">CBET</span><div class="br"><i class="pos" style="width:62%;"></i><span class="tgt" style="left:60%;"></span></div><span class="vv pos">68%</span></div>
+
+              <div class="term-h" style="margin-top: 20px;"><span class="t">// VERDICT</span><span class="meta">conf=high · n=10716</span></div>
+              <div style="font-size: 12.5px; line-height: 1.7; color: var(--fg-2);">
+                <div style="color: var(--fg); margin-bottom: 6px;">[TAG-solid] trending TAG, steal under-frequency on BTN.</div>
+                <div style="color: var(--fg-3);">&gt; close 5pt steal gap → est <span style="color: var(--pos);">+0.4 bb/100</span></div>
+                <div style="color: var(--fg-3);">&gt; tighten WTSD by 4pts → est <span style="color: var(--pos);">+0.2 bb/100</span></div>
+                <div style="color: var(--fg-3);">&gt; queue drill: bb.def → arena</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== DIRECTION C ===================== -->
+    <div class="dir-shell">
+      <div class="dir-head">
+        <span class="tag">DIR · <b>C</b></span>
+        <h3>Felt Casino</h3>
+        <div class="dir-swatches">
+          <i style="background:#0a1612;"></i>
+          <i style="background:#0e1f1a;"></i>
+          <i style="background:#1a4a30;"></i>
+          <i style="background:#d4a943;"></i>
+          <i style="background:#f0d99a;"></i>
+          <i style="background:#82d9a1;"></i>
+        </div>
+        <span class="sub">Inter · JetBrains Mono · deep felt · gold accent · chip motif</span>
+      </div>
+      <div class="dC dir-body" style="padding: 0;">
+        <div class="body">
+
+          <div class="crumb">DASHBOARD · scorza23 · the table</div>
+
+          <div class="title-row">
+            <h2 class="title">Where you stand <em>at the table.</em></h2>
+            <div class="seg">
+              <button aria-pressed="true">Lifetime</button>
+              <button>30d</button>
+              <button>Session</button>
+            </div>
+          </div>
+
+          <div class="felt">
+            <div class="felt-grid">
+              <div>
+                <div class="pot-eye"><span class="dot"></span>POT · LIFETIME</div>
+                <div class="pot-big">+$388<span class="c">.85</span></div>
+                <div class="pot-sub">↑ +$24.30 last 30 days · trend stable</div>
+                <div class="pot-foot">
+                  <span>250 <b>tourneys</b></span>
+                  <span>$1.10 <b>ABI</b></span>
+                  <span>8 <b>months</b></span>
+                  <span>ITM streak <b>11</b></span>
+                </div>
+              </div>
+              <div class="chips-vis">
+                <div class="chip-col">
+                  <div class="chip-stack-mini">
+                    <div class="chip gold"></div><div class="chip gold"></div><div class="chip gold"></div><div class="chip gold"></div><div class="chip gold"></div><div class="chip gold"></div><div class="chip gold"></div>
+                  </div>
+                  <div class="chip-col-lbl">×7 gold<br/>$50</div>
+                </div>
+                <div class="chip-col">
+                  <div class="chip-stack-mini">
+                    <div class="chip cream"></div><div class="chip cream"></div><div class="chip cream"></div><div class="chip cream"></div><div class="chip cream"></div>
+                  </div>
+                  <div class="chip-col-lbl">×5 cream<br/>$25</div>
+                </div>
+                <div class="chip-col">
+                  <div class="chip-stack-mini">
+                    <div class="chip green"></div><div class="chip green"></div><div class="chip green"></div><div class="chip green"></div><div class="chip green"></div><div class="chip green"></div><div class="chip green"></div><div class="chip green"></div><div class="chip green"></div>
+                  </div>
+                  <div class="chip-col-lbl">×9 green<br/>$5</div>
+                </div>
+                <div class="chip-col">
+                  <div class="chip-stack-mini">
+                    <div class="chip red"></div><div class="chip red"></div><div class="chip red"></div><div class="chip red"></div>
+                  </div>
+                  <div class="chip-col-lbl">×4 red<br/>$1</div>
+                </div>
+                <div class="chip-col">
+                  <div class="chip-stack-mini">
+                    <div class="chip black"></div><div class="chip black"></div><div class="chip black"></div>
+                  </div>
+                  <div class="chip-col-lbl">×3 black<br/>¢</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ribbon">
+            <div class="ribbon-cell"><div class="ribbon-eye">ROI</div><div class="ribbon-v pos">141.4%</div><div class="ribbon-s">vs breakeven</div></div>
+            <div class="ribbon-cell"><div class="ribbon-eye">ITM RATE</div><div class="ribbon-v">35.6%</div><div class="ribbon-s">vs ~16% field</div></div>
+            <div class="ribbon-cell"><div class="ribbon-eye">BEST CASH</div><div class="ribbon-v money">+$22.50</div><div class="ribbon-s">1/89 · 23 Oct</div></div>
+            <div class="ribbon-cell"><div class="ribbon-eye">DRAWDOWN</div><div class="ribbon-v">−$18.40</div><div class="ribbon-s">rec in 12</div></div>
+          </div>
+
+          <div class="verdict-card">
+            <div class="v-eye">THE READ</div>
+            <div class="v-title">You play <em>tight, with confidence,</em> and you're leaving roughly <em>$18/month</em> on the table by stealing too little from the button.</div>
+            <p class="v-sub">
+              Solid-TAG envelope, trending TAG. The one number consistently below band is BTN steal —
+              34% against a 39–42% target. Twelve hands tagged below. Drill them in Arena and you'll
+              find the gap closes inside a week.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Comparison table -->
+    <div class="sec-head">
+      <span class="sec-num">§ 2.B</span>
+      <h2>How they compare</h2>
+      <p class="sec-sub">decide before propagating · 1 row per dimension</p>
+    </div>
+    <div style="background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 6px 0; font-family: var(--mono); font-size: 12px; overflow: hidden;">
+      <div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; padding: 10px 22px; color: var(--fg-4); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; border-bottom: 1px solid var(--border);">
+        <div>DIMENSION</div>
+        <div>A · CALM EDITORIAL</div>
+        <div>B · TRADING TERMINAL</div>
+        <div>C · FELT CASINO</div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; padding: 12px 22px; color: var(--fg-2); border-bottom: 1px solid var(--border);">
+        <div style="color: var(--fg);">Type</div>
+        <div>Source Serif + mono</div>
+        <div>JetBrains Mono · 12-13px</div>
+        <div>Inter + mono (current)</div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; padding: 12px 22px; color: var(--fg-2); border-bottom: 1px solid var(--border);">
+        <div style="color: var(--fg);">Density</div>
+        <div>low · whitespace-led</div>
+        <div>high · everything on one screen</div>
+        <div>medium · v8 baseline</div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; padding: 12px 22px; color: var(--fg-2); border-bottom: 1px solid var(--border);">
+        <div style="color: var(--fg);">Accent</div>
+        <div>gold #c8a86b</div>
+        <div>mint #5ad1a6</div>
+        <div>gold #d4a943 on felt green</div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; padding: 12px 22px; color: var(--fg-2); border-bottom: 1px solid var(--border);">
+        <div style="color: var(--fg);">Reading mode</div>
+        <div>thoughtful · weekly</div>
+        <div>operational · daily</div>
+        <div>aspirational · ritual</div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; padding: 12px 22px; color: var(--fg-2); border-bottom: 1px solid var(--border);">
+        <div style="color: var(--fg);">Best for</div>
+        <div>career, leaks read-out</div>
+        <div>hands browser, ranges, sessions</div>
+        <div>dashboard, arena</div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; padding: 12px 22px; color: var(--fg-2);">
+        <div style="color: var(--fg);">Risk</div>
+        <div>too quiet for the live data feel</div>
+        <div>fatigue · no warmth</div>
+        <div>kitsch if not restrained</div>
+      </div>
+    </div>
+
+    <div class="endnote">
+      <b>Recommendation.</b><br/>
+      Use <b>C · Felt</b> on Dashboard + Arena (the moments the user wants to feel like they're at the table)
+      and <b>B · Terminal</b> on Hands, Ranges, Sessions (the moments the user wants to <em>work</em>).
+      <b>A · Calm Editorial</b> earns Career and Leaks read-out — places where the tone is reflection, not action.
+      <br/><br/>
+      Said another way: one product, three modes — table / desk / desk-side reading. The shared layer is
+      v8's information architecture and color semantics (pos / neg / warn / accent); everything else is mode.
+      <br/><br/>
+      <b>Next steps</b>
+      <ul>
+        <li>lock the IA questions (Q1–Q4 above)</li>
+        <li>pick a primary mode for Dashboard — recommend <b>C</b></li>
+        <li>build Hands page as the first non-Dashboard hi-fi (Direction B)</li>
+        <li>only then revisit Dashboard v9 with the chosen mode</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // tabs
+  const tabs = document.querySelectorAll('.chrome-tab');
+  const stages = document.querySelectorAll('.stage');
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => x.setAttribute('aria-selected', x === t ? 'true' : 'false'));
+    const key = t.dataset.tab;
+    stages.forEach(s => s.setAttribute('data-active', s.dataset.stage === key ? 'true' : 'false'));
+    window.scrollTo({ top: 0 });
+  }));
+</script>
+
+</body>
+</html>

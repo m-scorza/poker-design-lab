@@ -1,0 +1,35 @@
+[
+  {
+    "name": "fish_player_99",
+    "hands": 142,
+    "vpip": 38,
+    "pfr": 12,
+    "af": 1.1,
+    "gap": 26,
+    "arch": "lag",
+    "label": "Fish",
+    "advice": "Stations river calls. Bluff rarely; value bet thin pairs heavily."
+  },
+  {
+    "name": "nit_reg_37",
+    "hands": 842,
+    "vpip": 14,
+    "pfr": 11,
+    "af": 3.5,
+    "gap": 3,
+    "arch": "passive",
+    "label": "Nit",
+    "advice": "Folds to 3-bets at 80% rate. Attack their opens in late position constantly."
+  },
+  {
+    "name": "solid_pro_scorza",
+    "hands": 2200,
+    "vpip": 24,
+    "pfr": 20,
+    "af": 2.8,
+    "gap": 4,
+    "arch": "reg",
+    "label": "Solid Reg",
+    "advice": "Maintains GTO open baselines. Exploit via blind defense adjustments."
+  }
+]

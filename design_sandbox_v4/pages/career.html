@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Modular Prototyping - Career</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="../gsap.min.js"></script>
+  <style>
+    /* Injected layout CSS for standalone testing */
+    :root {
+      --bg: #06070a;
+      --bg-2: #0b0c10;
+      --bg-card: rgba(13, 16, 23, 0.65);
+      --bg-card-hover: rgba(20, 24, 33, 0.75);
+      --bg-input: #12131a;
+      --border: rgba(255, 255, 255, 0.05);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --accent-2: #00FF87;
+      --accent-soft: rgba(0, 240, 255, 0.06);
+      --accent-glow: rgba(0, 240, 255, 0.25);
+      --accent-line: rgba(0, 240, 255, 0.35);
+      --loss: #FF3B6B;
+      --loss-soft: rgba(255, 92, 138, 0.08);
+      --loss-line: rgba(255, 92, 138, 0.35);
+      --fg: #f3f4f6;
+      --fg-muted: #8892b0;
+      --fg-dim: #3a3f50;
+      --sans: 'Inter', -apple-system, sans-serif;
+      --display: 'Outfit', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.5);
+    }
+    body {
+      margin: 0; padding: 40px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+    }
+    /* Embed actual extracted styles below */
+    /* STYLES_INJECT_PLACEHOLDER */
+  </style>
+</head>
+<body>
+  <div style="max-width: 1480px; margin: 0 auto;">
+    <section class="page active" id="page-career">
+      
+      <div class="career-top-kpis">
+        <div class="card">
+          <span class="kick">Total tournaments</span>
+          <div class="mon-number" style="font-size:36px; margin-top:6px;">250</div>
+        </div>
+        <div class="card">
+          <span class="kick">Average Buy-In</span>
+          <div class="mon-number" style="font-size:36px; margin-top:6px;">$1.10</div>
+        </div>
+        <div class="card">
+          <span class="kick">ROI Total</span>
+          <div class="mon-number" style="font-size:36px; margin-top:6px; color:var(--accent);">141.4%</div>
+        </div>
+        <div class="card">
+          <span class="kick">ITM Cashes</span>
+          <div class="mon-number" style="font-size:36px; margin-top:6px;">89 <span class="cents" style="font-size:16px;">(35.6%)</span></div>
+        </div>
+      </div>
+      
+      <!-- Cumulative winnings chart (The Arc) -->
+      <div class="card chart-card">
+        <span class="kick accent">The Arc · cumulative progression</span>
+        <div class="arc-chart-container" id="career-arc-container">
+          <div class="chart-tooltip" id="chart-tooltip"></div>
+          <svg viewBox="0 0 1000 250" preserveAspectRatio="none">
+            <line x1="0" y1="50" x2="1000" y2="50" stroke="rgba(255,255,255,0.02)"/>
+            <line x1="0" y1="100" x2="1000" y2="100" stroke="rgba(255,255,255,0.02)"/>
+            <line x1="0" y1="150" x2="1000" y2="150" stroke="rgba(255,255,255,0.02)"/>
+            <line x1="0" y1="200" x2="1000" y2="200" stroke="rgba(255,255,255,0.02)"/>
+            <!-- Trend path line -->
+            <path d="M0 240 L100 230 L200 235 L300 210 L400 215 L500 180 L600 190 L700 140 L800 150 L900 80 L1000 50" fill="none" stroke="var(--accent)" stroke-width="2.5" />
+            <!-- Milestones nodes -->
+            <circle class="chart-node" cx="300" cy="210" r="5" data-info="<b>First cash</b> Tournament #45 (+$22.50) · 32% ITM" />
+            <circle class="chart-node" cx="500" cy="180" r="5" data-info="<b>Break-even cashed</b> Tournament #112 (+$48.00)" />
+            <circle class="chart-node" cx="700" cy="140" r="5" data-info="<b>Biggest win cashed</b> Tournament #188 (+$112.50) bounty run" />
+            <circle class="chart-node" cx="900" cy="80" r="5" data-info="<b>ABI Evolution Kashed</b> Tier Cashed $2.20 opens" />
+          </svg>
+        </div>
+      </div>
+      
+      <div class="career-bottom-grid">
+        <!-- Milestones list feed -->
+        <div>
+          <h3 class="kick accent" style="margin-bottom:14px;">Achievement feed</h3>
+          <div class="timeline-feed">
+            <div class="timeline-item">
+              <span class="t-date">May 2026</span>
+              <span class="t-title">Casher cashed $22.50 in $1.10 deepstack</span>
+              <span class="t-val">+$22.50</span>
+            </div>
+            <div class="timeline-item">
+              <span class="t-date">Apr 2026</span>
+              <span class="t-title">Cashed 4th place in Bounty Knockout</span>
+              <span class="t-val">+$48.00</span>
+            </div>
+            <div class="timeline-item">
+              <span class="t-date">Feb 2026</span>
+              <span class="t-title">Milestone: first cashed podium cashout</span>
+              <span class="t-val">+$112.50</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Day / Hour heatmap static widget -->
+        <div class="card">
+          <span class="kick">Data Health & ABI evolve</span>
+          <p style="font-size:12.5px; line-height:1.6; color:var(--fg-muted); margin: 12px 0 0;">
+            Import runs indicate high consistency. Cumulative bankroll trends stable. ROI is currently 141.4% (field average ~16%). ITM Cashes total 89. Keep preflop open compliance targets above 85% to evolve stakes.
+          </p>
+        </div>
+      </div>
+    
+    </section>
+  </div>
+  
+  <script>
+    // Local script placeholder for standalone pages
+    /* SCRIPTS_INJECT_PLACEHOLDER */
+  </script>
+</body>
+</html>

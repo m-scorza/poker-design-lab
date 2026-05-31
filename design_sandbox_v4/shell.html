@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1480, initial-scale=1" />
+<title>Editorial Obsidian Sandbox — Poker Analyzer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Include GSAP Local Downloaded Script -->
+<script src="gsap.min.js"></script>
+<style>
+  /* <!-- INJECT_STYLES --> */
+</style>
+</head>
+<body data-color="obsidian" data-font="geometric">
+
+  <canvas id="fluid-canvas"></canvas>
+  <div class="bg-grid"></div>
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+  <div id="cursor-follower" class="cursor-follower"></div>
+  <div id="slide-loader"></div>
+
+  <!-- ===================== MIDWAM LOADER ===================== -->
+  <div class="loader" id="loader">
+    <div class="loader-inner">
+      <div class="loader-eye"><span>Poker Analyzer</span><span>Local Edition <b>·</b> scorza23</span></div>
+      <div class="loader-pct" id="loader-pct">00</div>
+      <div class="loader-bar"><span id="loader-fill"></span></div>
+      <div class="loader-status" id="loader-status">Initialising telemetry</div>
+    </div>
+  </div>
+
+  <div class="sheet">
+
+    <!-- ===================== MASTHEAD NAVIGATION ===================== -->
+    <header class="masthead">
+      <div class="mast-top">
+        <div class="logo">
+          <span class="glyph">PA</span>
+          <h1 id="logo-title">THE LEDGER</h1>
+          <span class="sub">Poker Analyzer</span>
+        </div>
+        <nav class="mast-nav">
+          <a class="on" data-tab="overview">Desk</a>
+          <a data-tab="career">Career</a>
+          <a data-tab="sessions">Sessions</a>
+          <a data-tab="hands">Hands</a>
+          <a data-tab="leaks">Leaks</a>
+          <a data-tab="ranges">Ranges</a>
+          <a data-tab="villains">Villains</a>
+          <a data-tab="arena">Arena</a>
+        </nav>
+      </div>
+      <div class="dateline">
+        <span>No. <b>250</b></span>
+        <span>scorza23</span>
+        <span><b>$1.10</b> ABI</span>
+        <span><b>8</b> months</span>
+        <span><b>10,716</b> hands</span>
+        <span><b>37</b> sessions</span>
+        <span class="live">Reading — last import 2m ago</span>
+      </div>
+    </header>
+
+    <!-- ===================== THE WIRE TICKER ===================== -->
+    <section class="wire">
+      <div class="wire-badge">
+        <span class="pulse"></span>
+        <span class="t">The Wire<b>Live Feed</b></span>
+      </div>
+      <div class="wire-tape">
+        <div class="wire-track" id="wire-ticker">
+          <span>● CASHOUT: <b>+$22.50</b> in Tournament #250</span>
+          <span class="loss">● LEAK ALERT: <b>BTN Open range too wide (+8%)</b></span>
+          <span>● PREY TRACKER: Won <b>+42.3 bb</b> from <i>fish_player_99</i></span>
+          <span>● FORM UPGRADE: Compliance hit <b>94.2%</b> in Session #37</span>
+          <!-- Double to loop -->
+          <span>● CASHOUT: <b>+$22.50</b> in Tournament #250</span>
+          <span class="loss">● LEAK ALERT: <b>BTN Open range too wide (+8%)</b></span>
+          <span>● PREY TRACKER: Won <b>+42.3 bb</b> from <i>fish_player_99</i></span>
+          <span>● FORM UPGRADE: Compliance hit <b>94.2%</b> in Session #37</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         PAGE 1: DESK (Overview Dashboard)
+         ========================================================= -->
+    <!-- PAGE_OVERVIEW -->
+
+    <!-- =========================================================
+         PAGE 2: CAREER (Career Arc & Progression milestones)
+         ========================================================= -->
+    <!-- PAGE_CAREER -->
+
+    <!-- =========================================================
+         PAGE 3: SESSIONS (Volume Timeline & predators)
+         ========================================================= -->
+    <!-- PAGE_SESSIONS -->
+
+    <!-- =========================================================
+         PAGE 4: HANDS (Archive & simulated filter database)
+         ========================================================= -->
+    <!-- PAGE_HANDS -->
+
+    <!-- =========================================================
+         PAGE 5: LEAKS (Leaks prioritized index & ledger swaps)
+         ========================================================= -->
+    <!-- PAGE_LEAKS -->
+
+    <!-- =========================================================
+         PAGE 6: RANGES (Preflop matrix & solver validation)
+         ========================================================= -->
+    <!-- PAGE_RANGES -->
+
+    <!-- =========================================================
+         PAGE 7: VILLAINS (Opponents obsidian dossiers grid)
+         ========================================================= -->
+    <!-- PAGE_VILLAINS -->
+
+    <!-- =========================================================
+         PAGE 8: ARENA (Simulated GTO trainer, 3D felt)
+         ========================================================= -->
+    <!-- PAGE_ARENA -->
+
+  </div>
+
+  <!-- ===================== FLOATING THEME DOCK PANEL ===================== -->
+  <div class="theme-dock" id="theme-dock">
+    <div class="dock-header">Showcase Controls</div>
+    <div class="dock-row">
+      <span>Color:</span>
+      <div style="display:flex; gap:3px;">
+        <button class="dock-btn active" id="btn-color-obsidian">Obsidian</button>
+        <button class="dock-btn" id="btn-color-ultraviolet">Ultraviolet</button>
+      </div>
+    </div>
+    <div class="dock-row">
+      <span>Font:</span>
+      <div style="display:flex; gap:3px;">
+        <button class="dock-btn active" id="btn-font-geometric">Geometric</button>
+        <button class="dock-btn" id="btn-font-editorial">Editorial</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== THREE JS & GSAP ===================== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    // Safe mock fallbacks for GSAP if local or remote resources are offline
+    if (typeof gsap === 'undefined') {
+      window.gsap = {
+        to: (target, vars) => {
+          const els = typeof target === 'string' ? document.querySelectorAll(target) : [target];
+          els.forEach(el => {
+            if (!el) return;
+            if (vars.opacity !== undefined) el.style.opacity = vars.opacity;
+            if (vars.x !== undefined || vars.y !== undefined) {
+              const x = vars.x || 0; const y = vars.y || 0;
+              el.style.transform = `translate(${x}px, ${y}px)`;
+            }
+            if (vars.strokeDashoffset !== undefined) el.style.strokeDashoffset = vars.strokeDashoffset;
+          });
+        },
+        fromTo: (target, fromVars, toVars) => {
+          const els = typeof target === 'string' ? document.querySelectorAll(target) : [target];
+          els.forEach(el => {
+            if (!el) return;
+            if (toVars.left !== undefined) el.style.left = toVars.left;
+            if (toVars.opacity !== undefined) el.style.opacity = toVars.opacity;
+          });
+        },
+        set: (target, vars) => {
+          const els = typeof target === 'string' ? document.querySelectorAll(target) : [target];
+          els.forEach(el => {
+            if (vars.x !== undefined) el.style.transform = `translate(${vars.x}px, ${vars.y}px)`;
+          });
+        },
+        killTweensOf: () => {},
+        ticker: { add: () => {} }
+      };
+    }
+  </script>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    /* <!-- INJECT_SCRIPTS --> */
+  });
+</script>
+</body>
+</html>

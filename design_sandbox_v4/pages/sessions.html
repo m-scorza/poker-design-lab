@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Modular Prototyping - Sessions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="../gsap.min.js"></script>
+  <style>
+    /* Injected layout CSS for standalone testing */
+    :root {
+      --bg: #06070a;
+      --bg-2: #0b0c10;
+      --bg-card: rgba(13, 16, 23, 0.65);
+      --bg-card-hover: rgba(20, 24, 33, 0.75);
+      --bg-input: #12131a;
+      --border: rgba(255, 255, 255, 0.05);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --accent-2: #00FF87;
+      --accent-soft: rgba(0, 240, 255, 0.06);
+      --accent-glow: rgba(0, 240, 255, 0.25);
+      --accent-line: rgba(0, 240, 255, 0.35);
+      --loss: #FF3B6B;
+      --loss-soft: rgba(255, 92, 138, 0.08);
+      --loss-line: rgba(255, 92, 138, 0.35);
+      --fg: #f3f4f6;
+      --fg-muted: #8892b0;
+      --fg-dim: #3a3f50;
+      --sans: 'Inter', -apple-system, sans-serif;
+      --display: 'Outfit', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.5);
+    }
+    body {
+      margin: 0; padding: 40px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+    }
+    /* Embed actual extracted styles below */
+    /* STYLES_INJECT_PLACEHOLDER */
+  </style>
+</head>
+<body>
+  <div style="max-width: 1480px; margin: 0 auto;">
+    <section class="page active" id="page-sessions">
+      
+      <div class="card" style="padding:0; overflow:hidden;">
+        <div class="timeline-row-editorial" style="background:rgba(0,0,0,0.2); font-family:var(--mono); font-size:10px; text-transform:uppercase; color:var(--fg-muted); cursor:default; border-bottom-width:2px;">
+          <span>Date</span><span>Session details</span><span>Buy-ins</span><span>bb/100</span><span>GTO comp</span>
+        </div>
+        
+        <!-- Row 1 -->
+        <div class="timeline-row-editorial" data-drawer="drawer-1" data-month="May 30">
+          <div class="timeline-date-block">30/05/2026<div class="timeline-date-sub">18:42 - 21:12</div></div>
+          <div class="timeline-title-block"><div class="editorial-title">Session #37</div><div class="editorial-desc">420 hands · 3 tournaments</div></div>
+          <div class="timeline-val-block">$3.30</div>
+          <div class="timeline-val-block pos">+12.4</div>
+          <div class="timeline-val-block pos">88.5%</div>
+        </div>
+        <!-- Drawer 1 -->
+        <div class="editorial-expand-panel" id="drawer-1">
+          <div class="expanded-card-grid">
+            <div class="session-card">
+              <h4>Session Nemesis</h4>
+              <p class="mon-number" style="font-size:22px; margin:0;">villain_crusher</p>
+              <p style="font-size:11.5px; color:var(--fg-muted); margin:8px 0 0;">Took <span style="color:var(--loss); font-weight:700;">-32bb</span> from you on blinds battles.</p>
+            </div>
+            <div class="session-card">
+              <h4>Consistency ratios</h4>
+              <div class="session-bar-row">
+                <div class="session-bar-lbl"><span>C-Bet Total</span><span>65.0%</span></div>
+                <div class="session-bar-track"><span class="session-bar-fill" style="width: 65%;"></span></div>
+              </div>
+              <div class="session-bar-row">
+                <div class="session-bar-lbl"><span>C-Bet HU</span><span>95.0%</span></div>
+                <div class="session-bar-track"><span class="session-bar-fill blue" style="width: 95%;"></span></div>
+              </div>
+              <div class="session-bar-row">
+                <div class="session-bar-lbl"><span>WTSD</span><span>24.0%</span></div>
+                <div class="session-bar-track"><span class="session-bar-fill amber" style="width: 24%;"></span></div>
+              </div>
+            </div>
+            <div class="session-card">
+              <h4>Session Intelligence</h4>
+              <p style="font-size:12px; line-height:1.5; color:var(--fg-muted); margin:0;">
+                <span style="color:var(--accent); font-weight:700;">Elite discipline.</span> You maintained GTO open compliance at 88.5%. Turn actions were stable, but check blind defenses against late opens.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="timeline-row-editorial" data-drawer="drawer-2" data-month="May 28">
+          <div class="timeline-date-block">28/05/2026<div class="timeline-date-sub">19:15 - 23:45</div></div>
+          <div class="timeline-title-block"><div class="editorial-title">Session #36</div><div class="editorial-desc">1,120 hands · 6 tournaments</div></div>
+          <div class="timeline-val-block">$6.60</div>
+          <div class="timeline-val-block neg">-4.8</div>
+          <div class="timeline-val-block" style="color:#ffaa00;">81.2%</div>
+        </div>
+        <!-- Drawer 2 -->
+        <div class="editorial-expand-panel" id="drawer-2">
+          <div class="expanded-card-grid">
+            <div class="session-card">
+              <h4>Session Nemesis</h4>
+              <p class="mon-number" style="font-size:22px; margin:0;">fish_king_22</p>
+              <p style="font-size:11.5px; color:var(--fg-muted); margin:8px 0 0;">Took <span style="color:var(--loss); font-weight:700;">-78bb</span> from you with showdown calls.</p>
+            </div>
+            <div class="session-card">
+              <h4>Consistency ratios</h4>
+              <div class="session-bar-row">
+                <div class="session-bar-lbl"><span>C-Bet Total</span><span>58.0%</span></div>
+                <div class="session-bar-track"><span class="session-bar-fill" style="width: 58%;"></span></div>
+              </div>
+              <div class="session-bar-row">
+                <div class="session-bar-lbl"><span>C-Bet HU</span><span>82.0%</span></div>
+                <div class="session-bar-track"><span class="session-bar-fill blue" style="width: 82%;"></span></div>
+              </div>
+              <div class="session-bar-row">
+                <div class="session-bar-lbl"><span>WTSD</span><span>32.0%</span></div>
+                <div class="session-bar-track"><span class="session-bar-fill amber" style="width: 32%;"></span></div>
+              </div>
+            </div>
+            <div class="session-card">
+              <h4>Session Intelligence</h4>
+              <p style="font-size:12px; line-height:1.5; color:var(--fg-muted); margin:0;">
+                <span style="color:var(--loss); font-weight:700;">Low compliance.</span> Blinds defense was too wide vs HJ/CO openers. Re-evaluate SB fold criteria.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    
+    </section>
+  </div>
+  
+  <script>
+    // Local script placeholder for standalone pages
+    /* SCRIPTS_INJECT_PLACEHOLDER */
+  </script>
+</body>
+</html>

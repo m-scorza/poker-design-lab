@@ -1,0 +1,110 @@
+     MASTHEAD HEADER (Horizontal Navigation bar)
+     ========================================================= */
+  .masthead {
+    padding: 26px 0 0;
+    border-bottom: none;
+    position: relative;
+    z-index: 10;
+  }
+  .mast-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-bottom: 18px;
+  }
+  .logo {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .logo .glyph {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    background: var(--accent);
+    color: var(--bg);
+    padding: 3px 8px 4px;
+    border-radius: 3px;
+    line-height: 1;
+    align-self: center;
+    transition: background 0.3s, color 0.3s;
+  }
+  .logo h1 {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 30px;
+    letter-spacing: -0.03em;
+    line-height: 0.9;
+    color: var(--fg);
+    transition: color 0.3s;
+  }
+  .logo .sub {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin-left: 4px;
+  }
+
+  .mast-nav {
+    display: flex;
+    gap: 4px;
+  }
+  .mast-nav a {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    padding: 7px 13px;
+    border-radius: 4px;
+    transition: color .14s, background .14s;
+    cursor: pointer;
+  }
+  .mast-nav a:hover {
+    color: var(--fg);
+    background: rgba(255, 255, 255, 0.03);
+  }
+  .mast-nav a.on {
+    color: var(--fg);
+    background: var(--accent-soft);
+    border: 1px solid var(--border);
+  }
+
+  .dateline {
+    border-top: 1px solid var(--border-strong);
+    border-bottom: 1px solid var(--border);
+    padding: 9px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+  .dateline span {
+    padding: 0 16px;
+    border-right: 1px solid var(--border);
+  }
+  .dateline span:first-child { padding-left: 0; }
+  .dateline span:last-child { border-right: 0; }
+  .dateline b {
+    color: var(--fg);
+    font-weight: 700;
+  }
+  .dateline .live {
+    color: var(--accent);
+  }
+  .dateline .live::before {
+    content: '● ';
+    font-size: 8px;
+    vertical-align: 2px;
+  }
+
+  /* =========================================================

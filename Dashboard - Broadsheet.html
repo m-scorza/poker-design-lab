@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1480, initial-scale=1" />
+<title>The Ledger — Poker Analyzer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================
+     ULTRAVIOLET — an editorial broadsheet for the poker desk.
+     Monochrome violet on near-black. Type IS the structure.
+     Magenta is violet's NEIGHBOUR, used only for losses — never
+     a clashing accent. Big simple numbers. Broken grid. Hairlines.
+     ========================================================= */
+  :root {
+    --bg: #08060f;
+    --bg-2: #0b0816;
+    --panel: #100b1d;
+    --panel-2: #140e24;
+
+    --rule: rgba(173,150,255,0.15);
+    --rule-strong: rgba(173,150,255,0.30);
+
+    --ink: #f4f1fb;
+    --ink-2: #b3a9cf;
+    --ink-3: #7c7299;
+    --ink-4: #4f4769;
+
+    --uv: #8b6cff;
+    --uv-bright: #b6a0ff;
+    --uv-hot: #e4dbff;
+    --uv-deep: #5a3fd6;
+    --uv-soft: rgba(139,108,255,0.13);
+    --uv-line: rgba(139,108,255,0.45);
+    --uv-glow: rgba(139,108,255,0.55);
+
+    /* loss / critical — magenta, violet's neighbour on the wheel */
+    --rose: #ff5c8a;
+    --rose-bright: #ff86a9;
+    --rose-soft: rgba(255,92,138,0.12);
+    --rose-line: rgba(255,92,138,0.4);
+
+    --display: 'Bricolage Grotesque', system-ui, sans-serif;
+    --mono: 'Space Mono', ui-monospace, monospace;
+    --sans: 'Hanken Grotesk', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html {
+    background:
+      radial-gradient(120% 70% at 84% -10%, rgba(139,108,255,0.16) 0%, rgba(139,108,255,0) 55%),
+      radial-gradient(90% 60% at 6% 4%, rgba(90,63,214,0.12) 0%, rgba(90,63,214,0) 50%),
+      var(--bg);
+    background-attachment: fixed;
+    min-height: 100%;
+  }
+  body {
+    background: transparent;
+    color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  /* faint editorial grain/scanlines */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.014) 0 1px, transparent 1px 3px);
+    opacity: 0.5;
+  }
+  ::selection { background: var(--uv); color: #08060f; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: rgba(173,150,255,0.18); }
+  ::-webkit-scrollbar-track { background: transparent; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; }
+
+  .sheet { max-width: 1560px; margin: 0 auto; padding: 0 46px 90px; position: relative; z-index: 1; }
+
+  /* mono eyebrow / kicker utility */
+  .kick { font-family: var(--mono); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-3); }
+  .kick.uv { color: var(--uv-bright); }
+  .kick.rose { color: var(--rose); }
+
+  /* =========================================================
+     MASTHEAD
+     ========================================================= */
+  .masthead { padding: 26px 0 0; }
+  .mast-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding-bottom: 18px; }
+  .logo { display: flex; align-items: baseline; gap: 14px; }
+  .logo .glyph {
+    font-family: var(--display); font-weight: 800; font-size: 13px; letter-spacing: 0.02em;
+    background: var(--uv); color: #08060f; padding: 3px 8px 4px; border-radius: 3px; line-height: 1;
+    align-self: center;
+  }
+  .logo h1 {
+    margin: 0; font-family: var(--display); font-weight: 800;
+    font-size: 30px; letter-spacing: -0.03em; line-height: 0.9; color: var(--ink);
+  }
+  .logo .sub { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-3); margin-left: 4px; }
+
+  .mast-nav { display: flex; gap: 4px; }
+  .mast-nav a {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-3); padding: 7px 13px; border-radius: 4px; transition: color .14s, background .14s;
+  }
+  .mast-nav a:hover { color: var(--ink); background: rgba(173,150,255,0.06); }
+  .mast-nav a.on { color: var(--uv-hot); background: var(--uv-soft); }
+
+  .dateline {
+    border-top: 1px solid var(--rule-strong);
+    border-bottom: 1px solid var(--rule);
+    padding: 9px 0;
+    display: flex; flex-wrap: wrap; gap: 0;
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3);
+  }
+  .dateline span { padding: 0 16px; border-right: 1px solid var(--rule); }
+  .dateline span:first-child { padding-left: 0; }
+  .dateline span:last-child { border-right: 0; }
+  .dateline b { color: var(--ink); font-weight: 700; }
+  .dateline .live { color: var(--uv-bright); }
+  .dateline .live::before { content: '● '; font-size: 8px; vertical-align: 2px; }
+
+  /* =========================================================
+     THE MONUMENT (hero)
+     ========================================================= */
+  .monument { display: grid; grid-template-columns: 1.42fr 1fr; gap: 0; border-bottom: 1px solid var(--rule-strong); }
+  .mon-left { padding: 46px 48px 44px 0; border-right: 1px solid var(--rule); position: relative; }
+  .mon-kick { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .mon-kick .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--uv); box-shadow: 0 0 12px 1px var(--uv-glow); }
+  .mon-number {
+    font-family: var(--display); font-weight: 800;
+    font-size: clamp(96px, 13vw, 188px); line-height: 0.82; letter-spacing: -0.055em;
+    color: var(--ink); margin: 6px 0 0 -6px;
+    font-feature-settings: "tnum" 1;
+    text-shadow: 0 0 70px rgba(139,108,255,0.25);
+  }
+  .mon-number .cents { color: var(--uv-bright); }
+  .mon-number .sign { color: var(--uv); }
+  .mon-delta { margin-top: 22px; display: flex; align-items: baseline; gap: 18px; }
+  .mon-delta .big { font-family: var(--display); font-weight: 700; font-size: 26px; letter-spacing: -0.02em; color: var(--uv-hot); }
+  .mon-delta .lbl { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); }
+
+  .mon-right { padding: 46px 0 44px 48px; display: flex; flex-direction: column; }
+  .mon-verdict {
+    font-family: var(--display); font-weight: 600;
+    font-size: 33px; line-height: 1.08; letter-spacing: -0.025em; color: var(--ink);
+    text-wrap: balance;
+  }
+  .mon-verdict em { font-style: normal; color: var(--uv-bright); }
+  .mon-ledger { margin-top: auto; padding-top: 28px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--rule); }
+  .ml { padding: 16px 18px 2px 0; border-right: 1px solid var(--rule); }
+  .ml:last-child { border-right: 0; padding-right: 0; }
+  .ml .l { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+  .ml .v { font-family: var(--display); font-weight: 700; font-size: 30px; letter-spacing: -0.03em; color: var(--ink); margin-top: 7px; line-height: 1; }
+  .ml .v.uv { color: var(--uv-bright); }
+  .ml .s { font-family: var(--mono); font-size: 10px; color: var(--ink-3); margin-top: 6px; }
+
+  /* =========================================================
+     THE WIRE — live narration tape (the "scan" you liked)
+     ========================================================= */
+  .wire { display: grid; grid-template-columns: 168px 1fr; align-items: stretch; border-bottom: 1px solid var(--rule-strong); }
+  .wire-badge { display: flex; align-items: center; gap: 9px; padding: 13px 18px 13px 0; border-right: 1px solid var(--rule); }
+  .wire-badge .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--uv); box-shadow: 0 0 0 0 var(--uv-glow); animation: wp 2s ease-out infinite; }
+  @keyframes wp { 0% { box-shadow: 0 0 0 0 rgba(139,108,255,0.5); } 70% { box-shadow: 0 0 0 8px rgba(139,108,255,0); } 100% { box-shadow: 0 0 0 0 rgba(139,108,255,0); } }
+  .wire-badge .t { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-2); }
+  .wire-badge .t b { display: block; color: var(--uv-bright); }
+  .wire-tape { overflow: hidden; padding-left: 22px; display: flex; align-items: center; }
+  .wire-track { display: inline-flex; white-space: nowrap; animation: wire-drift 48s linear infinite; }
+  .wire-track span { font-family: var(--mono); font-size: 12px; letter-spacing: 0.05em; color: var(--ink-2); margin-right: 30px; display: inline-flex; gap: 9px; align-items: center; }
+  .wire-track span::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--uv); }
+  .wire-track span b { color: var(--ink); font-weight: 700; }
+  .wire-track span.rose::before { background: var(--rose); }
+  .wire-track span.rose b { color: var(--rose-bright); }
+  @keyframes wire-drift { to { transform: translateX(-50%); } }
+
+  /* =========================================================
+     HEADLINE INCIDENT (the leak, dramatized front page)
+     ========================================================= */
+  .incident { padding: 44px 0 40px; border-bottom: 1px solid var(--rule-strong); }
+  .inc-kick { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+  .inc-tag { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase; padding: 4px 10px; border: 1px solid var(--rose-line); color: var(--rose); border-radius: 3px; }
+  .inc-tag.uv { border-color: var(--uv-line); color: var(--uv-bright); }
+  .inc-meta { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+  .inc-meta b { color: var(--ink-2); }
+
+  .inc-head {
+    font-family: var(--display); font-weight: 800;
+    font-size: clamp(44px, 6vw, 84px); line-height: 1.0; letter-spacing: -0.04em;
+    color: var(--ink); margin: 0; padding-bottom: 0.1em; max-width: 16ch; text-wrap: balance;
+    transition: opacity .3s ease, transform .3s ease;
+  }
+  .inc-head .hot { color: var(--rose); }
+  .inc-head .uvx { color: var(--uv-bright); }
+  .incident.swap .inc-head, .incident.swap .inc-standfirst { opacity: 0; transform: translateY(10px); }
+
+  .inc-body { display: grid; grid-template-columns: 1.5fr 1fr; gap: 44px; margin-top: 66px; align-items: start; }
+  .inc-standfirst {
+    font-family: var(--display); font-weight: 500; font-size: 21px; line-height: 1.42; letter-spacing: -0.012em;
+    color: var(--ink-2); text-wrap: pretty; transition: opacity .3s ease, transform .3s ease;
+  }
+  .inc-standfirst b { color: var(--ink); font-weight: 700; }
+  .inc-standfirst em { font-style: normal; color: var(--rose-bright); font-family: var(--mono); font-size: 0.86em; letter-spacing: 0.02em; }
+  .inc-stats { margin-top: 26px; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--rule); }
+  .ist { padding: 16px 14px 2px 0; border-right: 1px solid var(--rule); }
+  .ist:last-child { border-right: 0; }
+  .ist .l { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+  .ist .v { font-family: var(--display); font-weight: 700; font-size: 25px; letter-spacing: -0.025em; color: var(--ink); margin-top: 6px; line-height: 1; }
+  .ist .v.rose { color: var(--rose); }
+  .ist .v.uv { color: var(--uv-bright); }
+  .inc-actions { margin-top: 26px; display: flex; gap: 10px; }
+  .btn-uv { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; background: var(--uv); color: #08060f; border: 0; padding: 11px 18px; border-radius: 4px; font-weight: 700; transition: background .14s; }
+  .btn-uv:hover { background: var(--uv-bright); }
+  .btn-line { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; background: transparent; color: var(--ink-2); border: 1px solid var(--rule-strong); padding: 11px 18px; border-radius: 4px; transition: color .14s, border-color .14s; }
+  .btn-line:hover { color: var(--ink); border-color: var(--ink-3); }
+
+  /* range matrix inset */
+  .inc-matrix { }
+  .im-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 11px; }
+  .im-title { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
+  .im-pos { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--uv-bright); }
+  .rg { display: grid; grid-template-columns: 13px repeat(13, 1fr); grid-template-rows: 13px repeat(13, 1fr); gap: 2px; }
+  .rg-lbl { display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 7.5px; color: var(--ink-4); }
+  .rg-cell { aspect-ratio: 1; background: rgba(173,150,255,0.05); font-family: var(--mono); font-size: 7px; color: var(--ink-4); display: flex; align-items: center; justify-content: center; line-height: 1; letter-spacing: -0.04em; transition: transform .1s, background .35s, outline-color .3s; outline: 0 solid transparent; border-radius: 1px; }
+  .rg-cell.t1 { background: rgba(139,108,255,0.20); color: var(--uv-bright); }
+  .rg-cell.t2 { background: rgba(139,108,255,0.40); color: #efeaff; }
+  .rg-cell.t3 { background: rgba(139,108,255,0.64); color: #fff; }
+  .rg-cell.t4 { background: rgba(139,108,255,0.92); color: #fff; }
+  .rg-cell:hover { transform: scale(1.2); z-index: 5; }
+  .rg-cell.dev { outline: 1.5px solid var(--rose); background: var(--rose); color: #fff; z-index: 3; }
+  .im-foot { margin-top: 11px; display: flex; gap: 16px; align-items: center; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+  .im-foot .sw { width: 9px; height: 9px; display: inline-block; margin-right: 5px; vertical-align: -1px; border-radius: 1px; }
+  .im-foot .sw.fold { background: var(--rose); }
+  .im-foot .sw.open { background: rgba(139,108,255,0.92); }
+
+  /* =========================================================
+     THE LEAK INDEX (ranked ledger, click to load incident)
+     ========================================================= */
+  .index { padding: 38px 0 0; }
+  .index-h { display: flex; align-items: baseline; gap: 16px; margin-bottom: 4px; }
+  .index-h h2 { margin: 0; font-family: var(--display); font-weight: 800; font-size: 23px; letter-spacing: -0.03em; }
+  .index-h .meta { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin-left: auto; }
+  .index-cols { display: grid; grid-template-columns: 34px 1fr 110px 96px 92px 18px; gap: 16px; padding: 10px 14px; border-top: 1px solid var(--rule-strong); border-bottom: 1px solid var(--rule); font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-4); }
+  .index-cols .r { text-align: right; }
+  .ix-row {
+    display: grid; grid-template-columns: 34px 1fr 110px 96px 92px 18px; gap: 16px; align-items: center;
+    padding: 15px 14px; border-bottom: 1px solid var(--rule); cursor: pointer; position: relative;
+    transition: background .12s;
+  }
+  .ix-row:hover { background: rgba(173,150,255,0.04); }
+  .ix-row[aria-selected="true"] { background: rgba(139,108,255,0.07); }
+  .ix-row[aria-selected="true"]::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--uv); box-shadow: 0 0 14px 0 var(--uv-glow); }
+  .ix-row[data-sev="crit"][aria-selected="true"]::before { background: var(--rose); box-shadow: 0 0 14px 0 rgba(255,92,138,0.5); }
+  .ix-rank { font-family: var(--mono); font-size: 13px; color: var(--ink-4); font-weight: 700; }
+  .ix-name { font-family: var(--display); font-weight: 700; font-size: 17px; letter-spacing: -0.02em; color: var(--ink); }
+  .ix-sub { font-family: var(--mono); font-size: 10px; letter-spacing: 0.04em; color: var(--ink-3); margin-top: 3px; }
+  .ix-sev { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 7px; }
+  .ix-sev .d { width: 6px; height: 6px; border-radius: 50%; }
+  .ix-sev.crit { color: var(--rose); } .ix-sev.crit .d { background: var(--rose); }
+  .ix-sev.high { color: var(--uv-bright); } .ix-sev.high .d { background: var(--uv-bright); }
+  .ix-sev.med { color: var(--ink-2); } .ix-sev.med .d { background: var(--ink-3); }
+  .ix-pos { font-family: var(--mono); font-size: 11px; color: var(--ink-2); text-align: right; }
+  .ix-cost { font-family: var(--display); font-weight: 700; font-size: 19px; letter-spacing: -0.02em; color: var(--rose); text-align: right; }
+  .ix-arrow { color: var(--ink-4); text-align: right; transition: color .14s, transform .14s; }
+  .ix-row[aria-selected="true"] .ix-arrow { color: var(--uv-bright); transform: translateX(2px); }
+  .ix-row:hover .ix-arrow { color: var(--ink-2); }
+
+  /* =========================================================
+     CAREER ARC (wide editorial chart)
+     ========================================================= */
+  .arc-sec { padding: 48px 0 0; }
+  .arc-h { display: flex; align-items: baseline; gap: 16px; margin-bottom: 22px; }
+  .arc-h h2 { margin: 0; font-family: var(--display); font-weight: 800; font-size: 23px; letter-spacing: -0.03em; }
+  .arc-h .meta { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+  .arc-h .legend { margin-left: auto; display: flex; gap: 18px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .arc-h .legend i { font-style: normal; display: inline-flex; align-items: center; gap: 7px; }
+  .arc-h .legend i::before { content: ''; width: 14px; height: 2px; background: var(--uv-bright); }
+  .arc-h .legend i.reg::before { background: linear-gradient(90deg, var(--ink-3) 0 50%, transparent 50%); background-size: 4px 100%; }
+  .arc-h .legend i.mile::before { width: 8px; height: 8px; border-radius: 50%; background: var(--uv-hot); }
+  .arc-chart { height: 280px; border-top: 1px solid var(--rule-strong); border-bottom: 1px solid var(--rule); position: relative; }
+  .arc-chart svg { width: 100%; height: 100%; display: block; }
+  .arc-line { fill: none; stroke: var(--uv-bright); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+  .arc-node { fill: var(--uv-hot); }
+  .arc-axis { display: flex; justify-content: space-between; padding: 10px 0 0; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-4); }
+  .arc-anno { position: absolute; transform: transl(-50%); font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; }
+  .arc-anno b { color: var(--uv-hot); display: block; font-size: 11px; }
+
+  /* type theme switch */
+  .uv-switch { position: fixed; right: 18px; bottom: 18px; z-index: 50; display: flex; align-items: center; gap: 9px; padding: 8px 12px; background: rgba(16,11,29,0.85); backdrop-filter: blur(14px); border: 1px solid var(--rule-strong); border-radius: 8px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .uv-switch:hover { color: var(--ink-2); border-color: var(--uv-line); }
+  .uv-switch b { color: var(--uv-hot); }
+
+  /* ===== living shader background ===== */
+  #bg-shader { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .sheet, .uv-switch { position: relative; z-index: 2; }
+
+  /* ===== cinematic loader (Midwam) ===== */
+  .loader { position: fixed; inset: 0; z-index: 200; background: #08060f; display: flex; align-items: center; justify-content: center; transition: opacity .9s cubic-bezier(.4,0,.1,1), visibility .9s; }
+  .loader.done { opacity: 0; visibility: hidden; }
+  .loader-inner { width: min(460px, 76vw); }
+  .loader-eye { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink-3); display: flex; justify-content: space-between; margin-bottom: 14px; }
+  .loader-eye b { color: var(--uv-bright); font-weight: 700; }
+  .loader-pct { font-family: var(--display); font-weight: 800; font-size: clamp(88px, 13vw, 170px); letter-spacing: -0.05em; line-height: 0.86; color: var(--ink); }
+  .loader-pct .u { color: var(--uv-bright); }
+  .loader-bar { margin-top: 22px; height: 2px; background: rgba(173,150,255,0.14); position: relative; overflow: hidden; }
+  .loader-bar span { position: absolute; inset: 0 auto 0 0; width: 0%; background: var(--uv); box-shadow: 0 0 14px var(--uv-glow); }
+  .loader-status { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); margin-top: 14px; }
+
+  /* hero data-ring (Predictive World) */
+  .orb { position: relative; width: 168px; height: 168px; flex-shrink: 0; }
+  .orb svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .orb .spin { transform-origin: 50% 50%; }
+  .orb-c { text-align: center; position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; }
+  .orb-c .lbl { font-family: var(--mono); font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-3); }
+  .orb-c .val { font-family: var(--display); font-weight: 800; font-size: 26px; letter-spacing: -0.02em; color: var(--uv-hot); line-height: 1; margin-top: 3px; }
+  .reveal-up { opacity: 0; }
+</style>
+</head>
+<body>
+
+<canvas id="bg-shader"></canvas>
+
+<div class="loader" id="loader">
+  <div class="loader-inner">
+    <div class="loader-eye"><span>Poker Analyzer</span><span>Local Edition <b>·</b> scorza23</span></div>
+    <div class="loader-pct" id="loader-pct">00</div>
+    <div class="loader-bar"><span id="loader-fill"></span></div>
+    <div class="loader-status" id="loader-status">Initialising engine</div>
+  </div>
+</div>
+
+<div class="sheet">
+
+  <!-- ===================== MASTHEAD ===================== -->
+  <header class="masthead" data-screen-label="Ledger Dashboard">
+    <div class="mast-top">
+      <div class="logo">
+        <span class="glyph">PA</span>
+        <h1>THE LEDGER</h1>
+        <span class="sub">Poker Analyzer · Local Edition</span>
+      </div>
+      <nav class="mast-nav">
+        <a class="on" href="Dashboard — Broadsheet.html">Desk</a>
+        <a href="Hands.html">Hands</a>
+        <a href="Leaks.html">Leaks</a>
+        <a href="Ranges.html">Ranges</a>
+        <a href="Sessions.html">Sessions</a>
+        <a href="Villains.html">Villains</a>
+      </nav>
+    </div>
+    <div class="dateline">
+      <span>No. <b>250</b></span>
+      <span>scorza23</span>
+      <span><b>$1.10</b> ABI</span>
+      <span><b>8</b> months</span>
+      <span><b>10,716</b> hands</span>
+      <span><b>37</b> sessions</span>
+      <span class="live">Reading — last import 2m ago</span>
+    </div>
+  </header>
+
+  <!-- ===================== THE MONUMENT ===================== -->
+  <section class="monument">
+    <div class="mon-left">
+      <div class="mon-kick">
+        <span class="dot"></span>
+        <span class="kick">Net — Lifetime · 250 tournaments</span>
+      </div>
+      <div class="mon-number"><span class="sign">+</span>$388<span class="cents">.85</span></div>
+      <div class="mon-delta">
+        <span class="big">+$24.30</span>
+        <span class="lbl">last 30 days · trend stable</span>
+      </div>
+    </div>
+    <div class="mon-right">
+      <div style="display:flex; gap:30px; align-items:flex-start; justify-content:space-between;">
+        <div class="mon-verdict" id="mon-verdict">You're up, and trending. <em>One wide-open button</em> is the whole story.</div>
+        <div class="orb" id="orb">
+          <svg viewBox="0 0 100 100">
+            <g class="spin" id="orb-ticks"></g>
+            <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(173,150,255,0.08)" stroke-width="2.4"/>
+            <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(173,150,255,0.08)" stroke-width="2.4"/>
+            <circle cx="50" cy="50" r="30" fill="none" stroke="rgba(173,150,255,0.08)" stroke-width="2.4"/>
+            <circle class="orb-ring" id="ring-1" cx="50" cy="50" r="46" fill="none" stroke="var(--uv)" stroke-width="2.6" stroke-linecap="round" transform="rotate(-90 50 50)"/>
+            <circle class="orb-ring" id="ring-2" cx="50" cy="50" r="38" fill="none" stroke="var(--uv-bright)" stroke-width="2.6" stroke-linecap="round" transform="rotate(-90 50 50)"/>
+            <circle class="orb-ring" id="ring-3" cx="50" cy="50" r="30" fill="none" stroke="var(--uv-hot)" stroke-width="2.6" stroke-linecap="round" transform="rotate(-90 50 50)"/>
+            <g class="spin" id="orb-sweep" style="animation-direction:reverse">
+              <line x1="50" y1="50" x2="50" y2="2" stroke="rgba(173,150,255,0.35)" stroke-width="0.6"/>
+            </g>
+          </svg>
+          <div class="orb-c"><span class="lbl">Form</span><span class="val" id="orb-val">72</span></div>
+        </div>
+      </div>
+      <div class="mon-ledger">
+        <div class="ml"><div class="l">ROI</div><div class="v uv">141.4%</div><div class="s">vs 0% breakeven</div></div>
+        <div class="ml"><div class="l">ITM rate</div><div class="v">35.6%</div><div class="s">field ~16%</div></div>
+        <div class="ml"><div class="l">BB / 100</div><div class="v">+8.4</div><div class="s">stable · 30d</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== THE WIRE ===================== -->
+  <section class="wire">
+    <div class="wire-badge">
+      <span class="pulse"></span>
+      <span class="t">The Wire<b id="wire-state">monitoring</b></span>
+    </div>
+    <div class="wire-tape"><div class="wire-track" id="wire-track"></div></div>
+  </section>
+
+  <!-- ===================== HEADLINE INCIDENT ===================== -->
+  <section class="incident" id="incident">
+    <div class="inc-kick">
+      <span class="inc-tag" id="inc-tag">Critical</span>
+      <span class="inc-meta" id="inc-meta">Top leak · 1 of 8 · <b>BTN · 100bb</b> · n=1,142</span>
+    </div>
+    <h2 class="inc-head" id="inc-head">The button is <span class="hot">bleeding.</span></h2>
+    <div class="inc-body">
+      <div>
+        <div class="inc-standfirst" id="inc-standfirst">You're opening <b>58%</b> on the button where the solver wants <b>48–52%</b>. The bottom 6% of that range — <em>K8s K7s Q6s Q5s J7s T7s</em> — gets punished hardest by late-position three-bets.</div>
+        <div class="inc-stats" id="inc-stats">
+          <div class="ist"><div class="l">Deviation</div><div class="v rose">+8%</div></div>
+          <div class="ist"><div class="l">Cost</div><div class="v rose">−28bb/100</div></div>
+          <div class="ist"><div class="l">Per tourney</div><div class="v rose">−$0.62</div></div>
+          <div class="ist"><div class="l">Recover</div><div class="v uv">+$60</div></div>
+        </div>
+        <div class="inc-actions">
+          <button class="btn-uv">Review the hands</button>
+          <button class="btn-line">Open in Ranges</button>
+        </div>
+      </div>
+      <div class="inc-matrix">
+        <div class="im-head">
+          <span class="im-title">The offending range</span>
+          <span class="im-pos" id="im-pos">BTN OPEN</span>
+        </div>
+        <div class="rg" id="rg"></div>
+        <div class="im-foot">
+          <span><span class="sw open"></span>open</span>
+          <span><span class="sw fold"></span>should fold</span>
+          <span id="im-n" style="margin-left:auto;color:var(--ink-3)">n=1,142</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== THE LEAK INDEX ===================== -->
+  <section class="index">
+    <div class="index-h">
+      <h2>The leak index</h2>
+      <span class="meta">ranked by $ impact · total <span style="color:var(--rose)">−$1.51/T</span></span>
+    </div>
+    <div class="index-cols">
+      <span>#</span><span>Leak</span><span>Severity</span><span class="r">Spot</span><span class="r">Cost</span><span></span>
+    </div>
+    <div id="ix-rows" role="listbox" aria-label="Leak index"></div>
+  </section>
+
+  <!-- ===================== CAREER ARC ===================== -->
+  <section class="arc-sec">
+    <div class="arc-h">
+      <h2>The arc</h2>
+      <span class="meta">250 tournaments · 8 months</span>
+      <div class="legend">
+        <i>cumulative $</i><i class="reg">regression</i><i class="mile">milestone</i>
+      </div>
+    </div>
+    <div class="arc-chart" id="arc-chart">
+      <svg viewBox="0 0 1000 280" preserveAspectRatio="none">
+        <line x1="0" y1="62" x2="1000" y2="62" stroke="rgba(173,150,255,0.07)"/>
+        <line x1="0" y1="124" x2="1000" y2="124" stroke="rgba(173,150,255,0.07)"/>
+        <line x1="0" y1="186" x2="1000" y2="186" stroke="rgba(173,150,255,0.07)"/>
+        <line x1="0" y1="248" x2="1000" y2="248" stroke="rgba(173,150,255,0.07)"/>
+        <line x1="0" y1="250" x2="1000" y2="64" stroke="rgba(173,150,255,0.28)" stroke-width="1.4" stroke-dasharray="5 5"/>
+        <path id="arc-line" class="arc-line" d="M0 250 L30 245 L60 246 L90 236 L120 240 L150 226 L180 214 L210 224 L240 208 L270 212 L300 197 L330 184 L360 193 L390 176 L420 181 L450 163 L480 151 L510 156 L540 141 L570 132 L600 138 L630 123 L660 114 L690 119 L720 102 L750 92 L780 97 L810 83 L840 78 L870 85 L900 67 L930 60 L960 66 L1000 52"/>
+        <circle class="arc-node" cx="180" cy="214" r="4"/>
+        <circle class="arc-node" cx="450" cy="163" r="4"/>
+        <circle class="arc-node" cx="780" cy="97" r="4"/>
+        <circle class="arc-node" cx="930" cy="60" r="4"/>
+      </svg>
+      <div class="arc-anno" style="left:18%; top:54%;">First cash<b>Mar</b></div>
+      <div class="arc-anno" style="left:45%; top:40%;">Break-even<b>Jun</b></div>
+      <div class="arc-anno" style="left:78%; top:18%;">Biggest win<b>+$22.50</b></div>
+    </div>
+    <div class="arc-axis">
+      <span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span>
+    </div>
+  </section>
+
+</div>
+
+<div class="uv-switch" id="uv-switch" title="Cycle type">Type — <b id="uv-type">Bricolage</b></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="broadsheet.js"></script>
+<script src="broadsheet-fx.js"></script>
+</body>
+</html>

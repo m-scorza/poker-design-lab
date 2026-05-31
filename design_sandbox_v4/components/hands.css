@@ -1,0 +1,214 @@
+     PAGE 4: HANDS (Archive & simulated filter database)
+     ========================================================= */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 12px 16px;
+    border-radius: 12px;
+    align-items: center;
+  }
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .filter-group label {
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+  .filter-bar select, .filter-bar input {
+    background: var(--bg-input);
+    border: 1px solid var(--border-strong);
+    color: var(--fg);
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    outline: none;
+  }
+  .filter-bar select:focus, .filter-bar input:focus {
+    border-color: var(--accent);
+  }
+  .btn-reset-db {
+    margin-left: auto;
+    background: rgba(255, 92, 138, 0.08);
+    border: 1px solid rgba(255, 92, 138, 0.25);
+    color: var(--loss);
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .btn-reset-db:hover {
+    background: rgba(255, 92, 138, 0.18);
+    border-color: var(--loss);
+  }
+
+  .hands-table-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .hands-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .hands-table th, .hands-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .hands-table th {
+    background: rgba(0,0,0,0.2);
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    font-weight: 600;
+  }
+  .hands-table tr {
+    transition: background 0.12s;
+  }
+  .hands-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.015);
+  }
+  .hands-table .card-pair {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+  }
+  .suit-s { color: var(--fg); }
+  .suit-h { color: var(--loss); }
+  .suit-d { color: var(--accent-2); }
+  .suit-c { color: var(--accent); }
+  
+  .compliance-badge {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+  .compliance-badge.ok {
+    background: rgba(193, 255, 18, 0.08);
+    border: 1px solid rgba(193, 255, 18, 0.2);
+    color: var(--accent);
+  }
+  .compliance-badge.dev {
+    background: rgba(255, 92, 138, 0.08);
+    border: 1px solid rgba(255, 92, 138, 0.2);
+    color: var(--loss);
+  }
+
+  .btn-replay {
+    background: var(--accent-soft);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    font-family: var(--mono);
+    font-size: 10.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-replay:hover {
+    border-color: var(--accent);
+    background: rgba(255,255,255,0.03);
+  }
+
+  /* Hands replayer Modal felt */
+  .replay-modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 10000;
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center; justify-content: center;
+  }
+  .replay-modal {
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    width: 680px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.8);
+    position: relative;
+  }
+  .replay-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .replay-modal-close {
+    background: none; border: 0;
+    color: var(--fg-muted);
+    font-size: 24px; cursor: pointer;
+  }
+  .replay-modal-close:hover { color: var(--fg); }
+  
+  .mini-felt-arena {
+    height: 280px;
+    background: #11141a;
+    position: relative;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mini-felt-surface {
+    position: absolute;
+    width: 440px; height: 180px;
+    border-radius: 90px;
+    border: 8px solid #222a36;
+    background: #19202a;
+    box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
+  }
+  .mini-felt-cards {
+    position: absolute;
+    display: flex;
+    gap: 8px;
+    z-index: 50;
+  }
+  
+  /* Mini dealing cards */
+  .poker-card-micro {
+    width: 45px; height: 65px;
+    background: #fff;
+    border-radius: 4px;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+    padding: 4px 6px;
+    color: #000;
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 13px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    opacity: 0;
+    transform: scale(0) rotate(90deg);
+  }
+  .poker-card-micro.red { color: #e11d48; }
+  .poker-card-micro .suit-symbol { align-self: flex-end; font-size: 15px; line-height: 1; }
+
+  .replay-modal-stats {
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    background: var(--bg-2);
+  }
+
+  /* =========================================================

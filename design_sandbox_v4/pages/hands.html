@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Modular Prototyping - Hands</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="../gsap.min.js"></script>
+  <style>
+    /* Injected layout CSS for standalone testing */
+    :root {
+      --bg: #06070a;
+      --bg-2: #0b0c10;
+      --bg-card: rgba(13, 16, 23, 0.65);
+      --bg-card-hover: rgba(20, 24, 33, 0.75);
+      --bg-input: #12131a;
+      --border: rgba(255, 255, 255, 0.05);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --accent-2: #00FF87;
+      --accent-soft: rgba(0, 240, 255, 0.06);
+      --accent-glow: rgba(0, 240, 255, 0.25);
+      --accent-line: rgba(0, 240, 255, 0.35);
+      --loss: #FF3B6B;
+      --loss-soft: rgba(255, 92, 138, 0.08);
+      --loss-line: rgba(255, 92, 138, 0.35);
+      --fg: #f3f4f6;
+      --fg-muted: #8892b0;
+      --fg-dim: #3a3f50;
+      --sans: 'Inter', -apple-system, sans-serif;
+      --display: 'Outfit', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.5);
+    }
+    body {
+      margin: 0; padding: 40px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+    }
+    /* Embed actual extracted styles below */
+    /* STYLES_INJECT_PLACEHOLDER */
+  </style>
+</head>
+<body>
+  <div style="max-width: 1480px; margin: 0 auto;">
+    <section class="page active" id="page-hands">
+      
+      <!-- Filter Tool Strip -->
+      <div class="filter-bar">
+        <div class="filter-group">
+          <label>Position</label>
+          <select id="filter-position">
+            <option value="">All positions</option>
+            <option value="BTN">BTN</option>
+            <option value="SB">SB</option>
+            <option value="BB">BB</option>
+            <option value="UTG">UTG</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Compliance</label>
+          <select id="filter-compliance">
+            <option value="">All hands</option>
+            <option value="ok">Compliant</option>
+            <option value="dev">Deviations</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Scenario</label>
+          <select id="filter-scenario">
+            <option value="">All scenarios</option>
+            <option value="RFI">RFI</option>
+            <option value="VS_OPEN">Facing Raise</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Search card</label>
+          <input type="text" id="filter-search" placeholder="e.g. AA, KQs..." style="width:120px;"/>
+        </div>
+        <button class="btn-reset-db" id="btn-reset-db">Reset Database</button>
+      </div>
+
+      <!-- Hands Archive Table -->
+      <div class="hands-table-wrap">
+        <table class="hands-table" id="hands-archive-table">
+          <thead>
+            <tr>
+              <th>Cards</th>
+              <th>Position</th>
+              <th>Scenario</th>
+              <th>Stack</th>
+              <th>Action</th>
+              <th>Net PnL</th>
+              <th>Compliance</th>
+              <th style="text-align:right;">Telemetry</th>
+            </tr>
+          </thead>
+          <tbody id="hands-table-body">
+            <!-- Simulated rows generated in JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Replayer Modal Backdrop -->
+      <div class="replay-modal-backdrop" id="replay-backdrop">
+        <div class="replay-modal">
+          <div class="replay-modal-header">
+            <span class="kick accent" id="replay-title">Replaying Hand #12,854</span>
+            <button class="replay-modal-close" id="btn-close-replay">&times;</button>
+          </div>
+          <!-- 3D Felt screen representation -->
+          <div class="mini-felt-arena">
+            <div class="mini-felt-surface"></div>
+            <div class="mini-felt-cards">
+              <div class="poker-card-micro" id="card-1">
+                <span>A</span>
+                <span class="suit-symbol">♠</span>
+              </div>
+              <div class="poker-card-micro" id="card-2">
+                <span>K</span>
+                <span class="suit-symbol">♠</span>
+              </div>
+            </div>
+            <div class="center-pot-box" style="opacity: 0.85;">
+              <span class="kick">Pot</span>
+              <div class="mon-number" style="font-size:24px; margin-top:2px;">12.4bb</div>
+            </div>
+          </div>
+          <!-- Hand summary statistics -->
+          <div class="replay-modal-stats">
+            <div>
+              <span class="kick">Position</span>
+              <div style="font-size:15px; font-weight:700; margin-top:2px;" id="replay-pos">BTN</div>
+            </div>
+            <div>
+              <span class="kick">GTO Action</span>
+              <div style="font-size:15px; font-weight:700; color:var(--accent); margin-top:2px;" id="replay-gto">RAISE</div>
+            </div>
+            <div>
+              <span class="kick">Hand Profit</span>
+              <div style="font-size:15px; font-weight:700; color:var(--accent); margin-top:2px;" id="replay-profit">+8.5 bb</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    </section>
+  </div>
+  
+  <script>
+    // Local script placeholder for standalone pages
+    /* SCRIPTS_INJECT_PLACEHOLDER */
+  </script>
+</body>
+</html>

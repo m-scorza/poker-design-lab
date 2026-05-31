@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Modular Prototyping - Overview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="../gsap.min.js"></script>
+  <style>
+    /* Injected layout CSS for standalone testing */
+    :root {
+      --bg: #06070a;
+      --bg-2: #0b0c10;
+      --bg-card: rgba(13, 16, 23, 0.65);
+      --bg-card-hover: rgba(20, 24, 33, 0.75);
+      --bg-input: #12131a;
+      --border: rgba(255, 255, 255, 0.05);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --accent-2: #00FF87;
+      --accent-soft: rgba(0, 240, 255, 0.06);
+      --accent-glow: rgba(0, 240, 255, 0.25);
+      --accent-line: rgba(0, 240, 255, 0.35);
+      --loss: #FF3B6B;
+      --loss-soft: rgba(255, 92, 138, 0.08);
+      --loss-line: rgba(255, 92, 138, 0.35);
+      --fg: #f3f4f6;
+      --fg-muted: #8892b0;
+      --fg-dim: #3a3f50;
+      --sans: 'Inter', -apple-system, sans-serif;
+      --display: 'Outfit', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.5);
+    }
+    body {
+      margin: 0; padding: 40px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+    }
+    /* Embed actual extracted styles below */
+    /* STYLES_INJECT_PLACEHOLDER */
+  </style>
+</head>
+<body>
+  <div style="max-width: 1480px; margin: 0 auto;">
+    <section class="page active" id="page-overview">
+      
+      <div class="desk-grid">
+        <div class="desk-left">
+          
+          <!-- Lifetime Winnings Card (The Monument) -->
+          <div class="card monument">
+            <span class="kick accent">Lifetime net profit · 250 tournaments</span>
+            <div class="mon-number"><span class="sign">+</span>$388<span class="cents">.85</span></div>
+            <div class="mon-verdict" id="mon-verdict">You're cash positive. <em>One button deviation</em> is the whole story.</div>
+          </div>
+          
+          <!-- Concentric Ring HUD Telemetry -->
+          <div class="card hud-block">
+            <div class="hud-circle-container">
+              <div class="circle-glow"></div>
+              <div class="hud-circle-wrap">
+                <svg viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.015)" stroke-width="2.5" />
+                  <circle class="hud-ring" id="ring-vpip" cx="50" cy="50" r="42" 
+                          stroke="var(--accent)" stroke-width="2.8" fill="none"
+                          stroke-dasharray="263.8" stroke-dashoffset="263.8" stroke-linecap="round" />
+                  
+                  <circle cx="50" cy="50" r="34" fill="none" stroke="rgba(255,255,255,0.015)" stroke-width="2.5" />
+                  <circle class="hud-ring" id="ring-pfr" cx="50" cy="50" r="34" 
+                          stroke="var(--accent-2)" stroke-width="2.8" fill="none"
+                          stroke-dasharray="213.6" stroke-dashoffset="213.6" stroke-linecap="round" />
+                  
+                  <circle cx="50" cy="50" r="26" fill="none" stroke="rgba(255,255,255,0.015)" stroke-width="2.5" />
+                  <circle class="hud-ring" id="ring-3bet" cx="50" cy="50" r="26" 
+                          stroke="var(--loss)" stroke-width="2.8" fill="none"
+                          stroke-dasharray="163.3" stroke-dashoffset="163.3" stroke-linecap="round" />
+                  
+                  <g id="radar-sweep">
+                    <line x1="50" y1="50" x2="50" y2="8" stroke="var(--border-strong)" stroke-width="0.75" />
+                  </g>
+                </svg>
+                <div class="hud-center-label">
+                  <div class="hud-center-lbl" id="center-lbl">vpip</div>
+                  <div class="hud-center-val" id="center-val">21.8%</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="hud-stats-list">
+              <button class="stat-trigger active" data-stat="vpip">
+                <span class="st-l">VPIP (Vol. Put in Pot)</span>
+                <span class="st-value">21.8%</span>
+              </button>
+              <button class="stat-trigger" data-stat="pfr">
+                <span class="st-l">PFR (Preflop Raise)</span>
+                <span class="st-value">17.2%</span>
+              </button>
+              <button class="stat-trigger" data-stat="3bet">
+                <span class="st-l">3-Bet Frequency</span>
+                <span class="st-value">8.4%</span>
+              </button>
+            </div>
+          </div>
+          
+        </div>
+        
+        <div class="desk-left">
+          
+          <!-- Volume & Chips Stack -->
+          <div class="card" style="display: grid; grid-template-columns: 1fr auto; gap: 20px;">
+            <div>
+              <span class="kick">Volume & Chips Performance</span>
+              <div class="mon-number" style="font-size: 38px; margin-top: 8px;">+324,580 <span class="cents" style="font-size: 20px;">chips</span></div>
+              <div class="kick" style="margin-top: 8px; color:var(--accent);">+8.24 bb/100 win rate</div>
+            </div>
+            <!-- SVG Chips Stack -->
+            <div style="display: flex; align-items: center; justify-content: center;">
+              <svg width="100" height="90" viewBox="0 0 100 90" style="overflow: visible;">
+                <g transform="translate(20, 15)">
+                  <ellipse cx="20" cy="50" rx="18" ry="6" fill="#030407" stroke="var(--border-strong)" stroke-width="1" />
+                  <path d="M 2 50 A 18 6 0 0 0 38 50 L 38 56 A 18 6 0 0 1 2 56 Z" fill="var(--c-chip-1)" opacity="0.8" stroke="var(--border-strong)" stroke-width="1"/>
+                  <ellipse cx="20" cy="44" rx="18" ry="6" fill="#030407" stroke="var(--border-strong)" stroke-width="1" />
+                  <path d="M 2 44 A 18 6 0 0 0 38 44 L 38 50 A 18 6 0 0 1 2 50 Z" fill="var(--c-chip-1)" opacity="0.9" stroke="var(--border-strong)" stroke-width="1"/>
+                  <ellipse cx="20" cy="38" rx="18" ry="6" fill="var(--c-chip-1)" stroke="#fff" stroke-width="0.75" />
+                </g>
+                <g transform="translate(40, 5)">
+                  <ellipse cx="20" cy="50" rx="18" ry="6" fill="#030407" stroke="var(--border-strong)" stroke-width="1" />
+                  <path d="M 2 50 A 18 6 0 0 0 38 50 L 38 56 A 18 6 0 0 1 2 56 Z" fill="var(--c-chip-2)" opacity="0.8" stroke="var(--border-strong)" stroke-width="1"/>
+                  <ellipse cx="20" cy="44" rx="18" ry="6" fill="#030407" stroke="var(--border-strong)" stroke-width="1" />
+                  <path d="M 2 44 A 18 6 0 0 0 38 44 L 38 50 A 18 6 0 0 1 2 50 Z" fill="var(--c-chip-2)" opacity="0.85" stroke="var(--border-strong)" stroke-width="1"/>
+                  <ellipse cx="20" cy="38" rx="18" ry="6" fill="#030407" stroke="var(--border-strong)" stroke-width="1" />
+                  <path d="M 2 38 A 18 6 0 0 0 38 38 L 38 44 A 18 6 0 0 1 2 44 Z" fill="var(--c-chip-2)" opacity="0.9" stroke="var(--border-strong)" stroke-width="1"/>
+                  <ellipse cx="20" cy="32" rx="18" ry="6" fill="var(--c-chip-2)" stroke="#fff" stroke-width="0.75" />
+                </g>
+                <g transform="translate(60, 20)">
+                  <ellipse cx="20" cy="50" rx="18" ry="6" fill="#030407" stroke="var(--border-strong)" stroke-width="1" />
+                  <path d="M 2 50 A 18 6 0 0 0 38 50 L 38 56 A 18 6 0 0 1 2 56 Z" fill="var(--c-chip-3)" opacity="0.8" stroke="var(--border-strong)" stroke-width="1"/>
+                  <ellipse cx="20" cy="44" rx="18" ry="6" fill="var(--c-chip-3)" stroke="#fff" stroke-width="0.75" />
+                </g>
+              </svg>
+            </div>
+          </div>
+          
+          <!-- Stack Depth Bands & Blocker -->
+          <div class="card">
+            <span class="kick">Stack Depth bands & top blockers</span>
+            <div class="blocker-leak-grid" style="margin-top: 14px;">
+              <div class="leak-kpi-cell loss">
+                <span class="kick loss">Top Leak spot</span>
+                <div class="leak-kpi-val loss">BTN Open</div>
+                <span class="kick" style="font-size:9.5px;">-28bb/100 impact</span>
+              </div>
+              <div class="leak-kpi-cell">
+                <span class="kick">GTO Compliance</span>
+                <div class="leak-kpi-val">87.5%</div>
+                <span class="kick" style="font-size:9.5px; color:var(--accent);">Target &ge; 85%</span>
+              </div>
+            </div>
+            
+            <div class="stack-band-list">
+              <div class="stack-band-row">
+                <span class="stack-band-lbl">&lt;10bb (push)</span>
+                <div class="stack-band-bar-outer"><span class="stack-band-bar-fill loss" style="width: 14%;"></span></div>
+                <span class="stack-band-val">-4,230</span>
+              </div>
+              <div class="stack-band-row">
+                <span class="stack-band-lbl">10-17bb (crit)</span>
+                <div class="stack-band-bar-outer"><span class="stack-band-bar-fill loss" style="width: 22%;"></span></div>
+                <span class="stack-band-val">-8,120</span>
+              </div>
+              <div class="stack-band-row">
+                <span class="stack-band-lbl">17-25bb (warn)</span>
+                <div class="stack-band-bar-outer"><span class="stack-band-bar-fill" style="width: 65%;"></span></div>
+                <span class="stack-band-val">+24,100</span>
+              </div>
+              <div class="stack-band-row">
+                <span class="stack-band-lbl">25-40bb (mid)</span>
+                <div class="stack-band-bar-outer"><span class="stack-band-bar-fill" style="width: 48%;"></span></div>
+                <span class="stack-band-val">+18,400</span>
+              </div>
+              <div class="stack-band-row">
+                <span class="stack-band-lbl">40bb+ (deep)</span>
+                <div class="stack-band-bar-outer"><span class="stack-band-bar-fill" style="width: 88%;"></span></div>
+                <span class="stack-band-val">+112,450</span>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      
+      <!-- Tactile Bottom Marquee Carousel -->
+      <div class="marquee-wrap" id="stats-marquee">
+        <div class="marquee-inner" id="marquee-track-1">
+          <span class="marquee-tag">VPIP: 21.8%</span>
+          <span class="marquee-tag">PFR: 17.2%</span>
+          <span class="marquee-tag">3-Bet: 8.4%</span>
+          <span class="marquee-tag">GTO Compliance: 87.5%</span>
+          <span class="marquee-tag critical">BTN Open: 58% (bleed)</span>
+          <span class="marquee-tag">C-Bet: 68.2%</span>
+          <span class="marquee-tag">C-Bet HU: 98.4%</span>
+          <span class="marquee-tag">AF: 3.1</span>
+          <!-- Duplicate to drift -->
+          <span class="marquee-tag duplicate">VPIP: 21.8%</span>
+          <span class="marquee-tag duplicate">PFR: 17.2%</span>
+          <span class="marquee-tag duplicate">3-Bet: 8.4%</span>
+          <span class="marquee-tag duplicate">GTO Compliance: 87.5%</span>
+          <span class="marquee-tag critical duplicate">BTN Open: 58% (bleed)</span>
+          <span class="marquee-tag duplicate">C-Bet: 68.2%</span>
+          <span class="marquee-tag duplicate">C-Bet HU: 98.4%</span>
+          <span class="marquee-tag duplicate">AF: 3.1</span>
+        </div>
+      </div>
+    
+    </section>
+  </div>
+  
+  <script>
+    // Local script placeholder for standalone pages
+    /* SCRIPTS_INJECT_PLACEHOLDER */
+  </script>
+</body>
+</html>

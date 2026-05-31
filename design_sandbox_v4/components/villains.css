@@ -1,0 +1,123 @@
+     PAGE 7: VILLAINS (Opponents obsidian dossiers grid)
+     ========================================================= */
+  .opponent-search-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .opponent-search-bar input {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--fg);
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 10px 16px;
+    width: 280px;
+    outline: none;
+  }
+  .opponent-search-bar input:focus { border-color: var(--accent); }
+  
+  .opponents-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .opponent-dossier-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    position: relative;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .opponent-dossier-card:hover {
+    border-color: var(--accent-line);
+    transform: translateY(-2px);
+  }
+  .opp-dossier-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+  }
+  .opp-dossier-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 18px;
+  }
+  .opp-dossier-hands {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-muted);
+  }
+  .opp-arch-badge {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 3px;
+  }
+  .opp-arch-badge.lag { background: rgba(255, 170, 0, 0.1); border: 1px solid rgba(255, 170, 0, 0.3); color: #ffaa00; }
+  .opp-arch-badge.passive { background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.3); color: var(--accent-2); }
+  .opp-arch-badge.reg { background: rgba(193, 255, 18, 0.1); border: 1px solid rgba(193, 255, 18, 0.3); color: var(--accent); }
+  
+  .opp-stats-inline {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    margin-top: 12px;
+  }
+  .opp-stat-cell {
+    text-align: center;
+    background: rgba(0,0,0,0.15);
+    padding: 6px;
+    border-radius: 6px;
+  }
+  .opp-stat-cell .v { font-weight: 700; color: #fff; margin-top: 2px; }
+  .opp-stat-cell .l { font-size: 8.5px; color: var(--fg-muted); }
+
+  /* Villain Hover dossier exploit cards */
+  .exploit-overlay-card {
+    position: absolute;
+    inset: 0;
+    background: var(--bg-card-hover);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.95);
+    transition: opacity 0.25s, transform 0.25s;
+    z-index: 50;
+    border: 1px solid var(--accent);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.8);
+  }
+  .opponent-dossier-card:hover .exploit-overlay-card {
+    opacity: 1;
+    pointer-events: all;
+    transform: scale(1);
+  }
+  .exploit-card-title {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .exploit-card-body {
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--fg);
+  }
+
+  /* =========================================================

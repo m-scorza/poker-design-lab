@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>UI Elements Showcase Catalog — Poker Analyzer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --bg-2: #0b0d12;
+      --bg-card: rgba(13, 17, 25, 0.65);
+      --border: rgba(255, 255, 255, 0.05);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --accent-soft: rgba(0, 240, 255, 0.06);
+      --fg: #f3f4f6;
+      --fg-muted: #8892b0;
+      --sans: 'Inter', -apple-system, sans-serif;
+      --display: 'Space Grotesk', sans-serif;
+      --mono: 'Space Mono', monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      overflow: hidden;
+    }
+    
+    /* Left Sidebar */
+    .sidebar {
+      background: var(--bg-2);
+      border-right: 1px solid var(--border);
+      padding: 30px 24px;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    .sb-header {
+      margin-bottom: 40px;
+    }
+    .sb-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+      margin: 0 0 6px 0;
+    }
+    .sb-sub {
+      font-family: var(--mono);
+      font-size: 9.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--fg-muted);
+    }
+    
+    .element-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+      overflow-y: auto;
+    }
+    .element-item {
+      display: flex;
+      flex-direction: column;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.01);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s ease;
+    }
+    .element-item:hover {
+      border-color: var(--border-strong);
+      background: rgba(255,255,255,0.03);
+    }
+    .element-item.active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .element-name {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--fg);
+    }
+    .element-file {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--fg-muted);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .element-item.active .element-name {
+      color: var(--accent);
+    }
+
+    .sb-footer {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--fg-muted);
+      line-height: 1.6;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      margin-top: 20px;
+    }
+
+    /* Right Viewport Content */
+    .viewport {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background: var(--bg);
+    }
+    .vp-header {
+      padding: 24px 40px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.01);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .vp-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 24px;
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+    .vp-desc {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--fg-muted);
+      margin-top: 6px;
+    }
+    .vp-actions {
+      display: flex;
+      gap: 12px;
+    }
+    .vp-btn {
+      padding: 10px 18px;
+      background: var(--bg-2);
+      border: 1px solid var(--border-strong);
+      color: var(--fg);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .vp-btn:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-soft);
+    }
+    
+    .iframe-container {
+      flex: 1;
+      width: 100%;
+      position: relative;
+      background: #000;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      position: absolute;
+      inset: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Left Sidebar catalog Navigation -->
+  <div class="sidebar">
+    <div class="sb-header">
+      <h2 class="sb-title">ELEMENTS</h2>
+      <div class="sb-sub">Telemetry Showroom</div>
+    </div>
+    
+    <div class="element-list" id="element-list">
+      <button class="element-item active" data-src="design_sandbox_v4/elements/background.html" data-desc="Mesh Wave Canvas Grid & custom deep color Scheme gradient orbs.">
+        <span class="element-name">Waving Background</span>
+        <span class="element-file">elements/background.html</span>
+      </button>
+      <button class="element-item" data-src="design_sandbox_v4/elements/follower.html" data-desc="Concentric tracking cursor halo & scaling mechanics.">
+        <span class="element-name">Cursor Follower</span>
+        <span class="element-file">elements/follower.html</span>
+      </button>
+      <button class="element-item" data-src="design_sandbox_v4/elements/tilt.html" data-desc="Calmed mousemove 3D card tilt & perspective logic.">
+        <span class="element-name">3D Perspective Tilt</span>
+        <span class="element-file">elements/tilt.html</span>
+      </button>
+      <button class="element-item" data-src="design_sandbox_v4/elements/border-glow.html" data-desc="SVG linear clipping outline border-glow hover drawing.">
+        <span class="element-name">Neon Draw Border</span>
+        <span class="element-file">elements/border-glow.html</span>
+      </button>
+      <button class="element-item" data-src="design_sandbox_v4/elements/button-glow.html" data-desc="Theme variables glowing hover box-shadow effects.">
+        <span class="element-name">Button Hover Glow</span>
+        <span class="element-file">elements/button-glow.html</span>
+      </button>
+      <button class="element-item" data-src="design_sandbox_v4/elements/scramble.html" data-desc="Dynamic random character matrix scramble text decoder.">
+        <span class="element-name">Text Scramble Decoder</span>
+        <span class="element-file">elements/scramble.html</span>
+      </button>
+      <button class="element-item" data-src="design_sandbox_v4/elements/radar-hud.html" data-desc="Animated stats concentric circles & linear sweep.">
+        <span class="element-name">Radar HUD Rings</span>
+        <span class="element-file">elements/radar-hud.html</span>
+      </button>
+      <button class="element-item" data-src="design_sandbox_v4/elements/replayer.html" data-desc="Replayer dealer logic & felt scale deck dealing animations.">
+        <span class="element-name">Cards Deal Replayer</span>
+        <span class="element-file">elements/replayer.html</span>
+      </button>
+    </div>
+    
+    <div class="sb-footer">
+      <span>Unified Design Sandbox v4</span><br/>
+      <span style="color: var(--fg-dim);">Isolated UI Library Showroom</span>
+    </div>
+  </div>
+
+  <!-- Right Viewport Display -->
+  <div class="viewport">
+    <div class="vp-header">
+      <div>
+        <h3 class="vp-title" id="vp-title">Waving Background</h3>
+        <div class="vp-desc" id="vp-desc">Mesh Wave Canvas Grid & custom deep color Scheme gradient orbs.</div>
+      </div>
+      <div class="vp-actions">
+        <a href="design_sandbox_v4/elements/background.html" class="vp-btn" id="vp-open-btn" target="_blank">Open Standalone</a>
+      </div>
+    </div>
+    
+    <div class="iframe-container">
+      <iframe src="design_sandbox_v4/elements/background.html" id="vp-iframe"></iframe>
+    </div>
+  </div>
+
+  <script>
+    // Tab switching scripting
+    const list = document.getElementById('element-list');
+    const iframe = document.getElementById('vp-iframe');
+    const vpTitle = document.getElementById('vp-title');
+    const vpDesc = document.getElementById('vp-desc');
+    const openBtn = document.getElementById('vp-open-btn');
+    
+    const items = list.querySelectorAll('.element-item');
+    items.forEach(item => {
+      item.addEventListener('click', () => {
+        items.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        
+        const src = item.getAttribute('data-src');
+        const desc = item.getAttribute('data-desc');
+        const name = item.querySelector('.element-name').innerText;
+        
+        iframe.src = src;
+        vpTitle.innerText = name;
+        vpDesc.innerText = desc;
+        openBtn.href = src;
+      });
+    });
+  </script>
+</body>
+</html>

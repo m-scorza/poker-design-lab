@@ -1,0 +1,75 @@
+/* =========================================================
+   CORE LAYOUT & RESET (Background Overlays and Canvas)
+   ========================================================= */
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  cursor: default;
+  transition: background 0.5s ease, color 0.3s ease;
+}
+
+/* Waving 3D math grid canvas background */
+#fluid-canvas {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.85;
+}
+
+/* Background Grid overlay */
+.bg-grid {
+  position: fixed; inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.007) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.007) 1px, transparent 1px);
+  background-size: 64px 64px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Background deep glow orbs */
+.glow-orb {
+  position: fixed;
+  width: 800px; height: 800px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(95px);
+  opacity: 0.5;
+  transition: background 0.6s ease;
+  will-change: background;
+}
+.orb-1 {
+  top: -300px; left: -250px;
+  background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+}
+.orb-2 {
+  bottom: -300px; right: -250px;
+  background: radial-gradient(circle, var(--loss-soft) 0%, transparent 70%);
+}
+
+.sheet {
+  max-width: 1560px;
+  margin: 0 auto;
+  padding: 0 46px 90px;
+  position: relative;
+  z-index: 2;
+}
+
+/* mono eyebrow label style */
+.kick {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.kick.accent { color: var(--accent); }
+.kick.loss { color: var(--loss); }

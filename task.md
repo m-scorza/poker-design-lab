@@ -1,0 +1,37 @@
+# Task Checklist: Modular Prototyping Refactoring (v4)
+
+- [x] Setup Modular Directories
+    - [x] Create `design_sandbox_v4/pages/` folder
+    - [x] Create `design_sandbox_v4/elements/` folder
+    - [x] Create `design_sandbox_v4/data/` folder
+- [x] Implement Modular Pages (complete standalone HTML files)
+    - [x] Create `pages/overview.html` (Desk UI dials, profit counters)
+    - [x] Create `pages/career.html` (Progression Arc, stats list)
+    - [x] Create `pages/sessions.html` (Sessions log, drawers)
+    - [x] Create `pages/hands.html` (Hands data grid, filters)
+    - [x] Create `pages/leaks.html` (Bleeds index ledger, 13x13 matrix)
+    - [x] Create `pages/ranges.html` (RFI chart grid)
+    - [x] Create `pages/villains.html` (Opponent profiles, exploit overlay)
+    - [x] Create `pages/arena.html` (Felt trainer drills game)
+- [x] Implement Showcase Elements (complete standalone HTML files)
+    - [x] Create `elements/background.html` (Canvas wave grid, glow orbs)
+    - [x] Create `elements/follower.html` (Halo cursor tracking)
+    - [x] Create `elements/tilt.html` (Gentle 3D card tilt)
+    - [x] Create `elements/border-glow.html` (Gradient outline hover drawings)
+    - [x] Create `elements/button-glow.html` (Micro-glow shadows)
+    - [x] Create `elements/scramble.html` (Text scramble decoder)
+    - [x] Create `elements/radar-hud.html` (Ring sweep dials)
+    - [x] Create `elements/replayer.html` (Cards replayer dealer modal)
+- [x] Implement Data Files
+    - [x] Create `data/hands.json`
+    - [x] Create `data/ticker.json`
+    - [x] Create `data/villains.json`
+    - [x] Create `data/arena-drills.json`
+- [x] Implement Navigation Shell Template
+    - [x] Create `design_sandbox_v4/shell.html` (Header, dateline, ticker tape, theme switches, and background overlays)
+- [x] Implement Node.js Build Script
+    - [x] Create `build.js` script to compile modular files into `design_sandbox_v4.html` and synchronize components
+- [x] Build and Verify Output
+    - [x] Run `node build.js` to compile the sandbox and elements showcase
+    - [x] Verify HTML tag structures and browser syntax correctness
+    - [x] Test interactions (tilt, follow, modal, tabs, switches, glows)

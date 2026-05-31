@@ -1,0 +1,72 @@
+[
+  {
+    "id": "12854",
+    "cards": "As Ks",
+    "pos": "BTN",
+    "scenario": "RFI",
+    "stack": "100bb",
+    "action": "raise",
+    "net": "+8.5bb",
+    "compliant": true,
+    "suits": [
+      "♠",
+      "♠"
+    ]
+  },
+  {
+    "id": "12853",
+    "cards": "Kh Qs",
+    "pos": "CO",
+    "scenario": "RFI",
+    "stack": "45bb",
+    "action": "fold",
+    "net": "0.0bb",
+    "compliant": true,
+    "suits": [
+      "♥",
+      "♠"
+    ]
+  },
+  {
+    "id": "12852",
+    "cards": "7d 6d",
+    "pos": "BB",
+    "scenario": "VS_OPEN",
+    "stack": "25bb",
+    "action": "call",
+    "net": "-1.0bb",
+    "compliant": true,
+    "suits": [
+      "♦",
+      "♦"
+    ]
+  },
+  {
+    "id": "12851",
+    "cards": "Qc Jc",
+    "pos": "BTN",
+    "scenario": "RFI",
+    "stack": "50bb",
+    "action": "raise",
+    "net": "+14.2bb",
+    "compliant": true,
+    "suits": [
+      "♣",
+      "♣"
+    ]
+  },
+  {
+    "id": "12850",
+    "cards": "Ad 5o",
+    "pos": "SB",
+    "scenario": "VS_OPEN",
+    "stack": "32bb",
+    "action": "call",
+    "net": "-3.5bb",
+    "compliant": false,
+    "suits": [
+      "♦",
+      "♥"
+    ]
+  }
+]
