@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=1480, initial-scale=1" />
   <title>Element Showcase - Cursor Follower Physics</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <script src="../gsap.min.js"></script>
   <style>
     :root {
       --bg: #050608;
@@ -49,7 +48,7 @@
   </style>
 </head>
 <body>
-  <a href="../elements_showcase.html" class="back-link">← Showcase Catalog</a>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
   <div class="container">
     <h1>Cursor Follower Physics</h1>
     
@@ -58,7 +57,8 @@
   <div class="hover-block">Hover Over Me</div>
   
   </div>
-  <script>
+  <script type="module">
+  import gsap from 'gsap';
     
   const follower = document.getElementById('cursor-follower');
   let mX = -100, mY = -100, fX = -100, fY = -100;

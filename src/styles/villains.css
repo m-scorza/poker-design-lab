@@ -1,4 +1,4 @@
-     PAGE 7: VILLAINS (Opponents obsidian dossiers grid)
+/*     PAGE 7: VILLAINS (Opponents obsidian dossiers grid)
      ========================================================= */
   .opponent-search-bar {
     display: flex;
@@ -120,4 +120,4 @@
     color: var(--fg);
   }
 
-  /* =========================================================
+  /* =========================================================*/

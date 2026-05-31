@@ -7,11 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<!-- Include GSAP Local Downloaded Script -->
-<script src="gsap.min.js"></script>
-<style>
-  /* <!-- INJECT_STYLES --> */
-</style>
 </head>
 <body data-color="obsidian" data-font="geometric">
 
@@ -85,45 +80,8 @@
       </div>
     </section>
 
-    <!-- =========================================================
-         PAGE 1: DESK (Overview Dashboard)
-         ========================================================= -->
-    <!-- PAGE_OVERVIEW -->
-
-    <!-- =========================================================
-         PAGE 2: CAREER (Career Arc & Progression milestones)
-         ========================================================= -->
-    <!-- PAGE_CAREER -->
-
-    <!-- =========================================================
-         PAGE 3: SESSIONS (Volume Timeline & predators)
-         ========================================================= -->
-    <!-- PAGE_SESSIONS -->
-
-    <!-- =========================================================
-         PAGE 4: HANDS (Archive & simulated filter database)
-         ========================================================= -->
-    <!-- PAGE_HANDS -->
-
-    <!-- =========================================================
-         PAGE 5: LEAKS (Leaks prioritized index & ledger swaps)
-         ========================================================= -->
-    <!-- PAGE_LEAKS -->
-
-    <!-- =========================================================
-         PAGE 6: RANGES (Preflop matrix & solver validation)
-         ========================================================= -->
-    <!-- PAGE_RANGES -->
-
-    <!-- =========================================================
-         PAGE 7: VILLAINS (Opponents obsidian dossiers grid)
-         ========================================================= -->
-    <!-- PAGE_VILLAINS -->
-
-    <!-- =========================================================
-         PAGE 8: ARENA (Simulated GTO trainer, 3D felt)
-         ========================================================= -->
-    <!-- PAGE_ARENA -->
+    <!-- Page partials are injected here by src/main.js (one .page per tab). -->
+    <main id="pages"></main>
 
   </div>
 
@@ -146,48 +104,6 @@
     </div>
   </div>
 
-  <!-- ===================== THREE JS & GSAP ===================== -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script>
-    // Safe mock fallbacks for GSAP if local or remote resources are offline
-    if (typeof gsap === 'undefined') {
-      window.gsap = {
-        to: (target, vars) => {
-          const els = typeof target === 'string' ? document.querySelectorAll(target) : [target];
-          els.forEach(el => {
-            if (!el) return;
-            if (vars.opacity !== undefined) el.style.opacity = vars.opacity;
-            if (vars.x !== undefined || vars.y !== undefined) {
-              const x = vars.x || 0; const y = vars.y || 0;
-              el.style.transform = `translate(${x}px, ${y}px)`;
-            }
-            if (vars.strokeDashoffset !== undefined) el.style.strokeDashoffset = vars.strokeDashoffset;
-          });
-        },
-        fromTo: (target, fromVars, toVars) => {
-          const els = typeof target === 'string' ? document.querySelectorAll(target) : [target];
-          els.forEach(el => {
-            if (!el) return;
-            if (toVars.left !== undefined) el.style.left = toVars.left;
-            if (toVars.opacity !== undefined) el.style.opacity = toVars.opacity;
-          });
-        },
-        set: (target, vars) => {
-          const els = typeof target === 'string' ? document.querySelectorAll(target) : [target];
-          els.forEach(el => {
-            if (vars.x !== undefined) el.style.transform = `translate(${vars.x}px, ${vars.y}px)`;
-          });
-        },
-        killTweensOf: () => {},
-        ticker: { add: () => {} }
-      };
-    }
-  </script>
-
-  <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    /* <!-- INJECT_SCRIPTS --> */
-  });
-</script>
+  <script type="module" src="/src/main.js"></script>
 </body>
 </html>

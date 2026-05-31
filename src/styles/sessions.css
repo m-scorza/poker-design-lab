@@ -1,4 +1,4 @@
-     PAGE 3: SESSIONS (Volume Timeline & predators)
+/*     PAGE 3: SESSIONS (Volume Timeline & predators)
      ========================================================= */
   .timeline-row-editorial {
     display: grid;
@@ -98,4 +98,4 @@
   .session-bar-fill.blue { background: var(--accent-2); }
   .session-bar-fill.amber { background: #ffaa00; }
 
-  /* =========================================================
+  /* =========================================================*/

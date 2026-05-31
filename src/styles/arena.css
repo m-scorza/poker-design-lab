@@ -1,4 +1,4 @@
-     PAGE 8: ARENA (Simulated GTO trainer, 3D felt)
+/*     PAGE 8: ARENA (Simulated GTO trainer, 3D felt)
      ========================================================= */
   .arena-grid {
     display: grid;
@@ -19,7 +19,7 @@
   
   /* 3D Tilted felt surface */
   .hologram-stage-3d {
-    flex-1;
+    flex: 1;
     position: relative;
     perspective: 1200px;
     display: flex; align-items: center; justify-content: center;

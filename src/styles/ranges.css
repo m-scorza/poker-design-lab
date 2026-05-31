@@ -1,4 +1,4 @@
-     PAGE 6: RANGES (Preflop workspace, chips & solver deltas)
+/*     PAGE 6: RANGES (Preflop workspace, chips & solver deltas)
      ========================================================= */
   .ranges-tab-menu {
     display: flex;
@@ -112,4 +112,4 @@
   .solver-delta-row .delta-lbl.wider { color: var(--accent); }
   .solver-delta-row .delta-lbl.tighter { color: var(--loss); }
 
-  /* =========================================================
+  /* =========================================================*/

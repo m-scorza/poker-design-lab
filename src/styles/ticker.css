@@ -1,4 +1,4 @@
-     THE WIRE (Horizontal Continuous Ticker Tape)
+/*     THE WIRE (Horizontal Continuous Ticker Tape)
      ========================================================= */
   .wire {
     display: grid;
@@ -94,4 +94,4 @@
     pointer-events: none;
   }
 
-  /* =========================================================
+  /* =========================================================*/
