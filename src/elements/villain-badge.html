@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Villain Profile Badges</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --panel: rgba(13, 17, 25, 0.65);
+      --panel-2: rgba(20, 26, 38, 0.6);
+      --border: rgba(255, 255, 255, 0.06);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --accent-soft: rgba(0, 240, 255, 0.06);
+      --accent-border: rgba(0, 240, 255, 0.3);
+      --pos: #5ec98f;
+      --neg: #ef7c74;
+      --warn: #d9a85a;
+      --info: #7eb6f0;
+      --money: #d8b066;
+      --fg: #f3f4f6;
+      --fg-3: #8892b0;
+      --fg-4: #5a607a;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(0,240,255,0.04), transparent 40%),
+        var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-3); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { max-width: 940px; width: 100%; }
+    h1 { font-family: var(--display); font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; text-align: center; }
+    .sub { color: var(--fg-3); text-align: center; margin: 0 0 36px; font-size: 14px; }
+
+    .profiles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .prof { padding: 22px 24px; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; cursor: pointer; transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease; display: flex; flex-direction: column; gap: 16px; backdrop-filter: blur(8px); }
+    .prof:hover { border-color: var(--border-strong); transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
+    .prof.active { border-color: var(--accent-border); background: linear-gradient(160deg, var(--accent-soft) 0%, var(--panel) 60%); }
+    .prof-head { display: flex; align-items: center; gap: 14px; }
+    .prof-avatar { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 17px; font-weight: 600; flex-shrink: 0; }
+    .prof-avatar.scorza { background: rgba(216,176,102,0.10); border: 1px solid rgba(216,176,102,0.30); color: var(--money); }
+    .prof-avatar.solid { background: rgba(94,201,143,0.10); border: 1px solid rgba(94,201,143,0.30); color: var(--pos); }
+    .prof-avatar.spewy { background: rgba(217,168,90,0.10); border: 1px solid rgba(217,168,90,0.30); color: var(--warn); }
+    .prof-avatar.nit { background: rgba(126,182,240,0.10); border: 1px solid rgba(126,182,240,0.30); color: var(--info); }
+    .prof-avatar.lag { background: rgba(239,124,116,0.10); border: 1px solid rgba(239,124,116,0.30); color: var(--neg); }
+    .prof-name { font-size: 15px; font-weight: 600; letter-spacing: -0.005em; }
+    .prof-sub { font-family: var(--mono); font-size: 10.5px; color: var(--fg-3); margin-top: 3px; }
+    .prof-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; padding: 14px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .prof-stat .l { font-family: var(--mono); font-size: 9px; color: var(--fg-4); letter-spacing: 0.10em; text-transform: uppercase; }
+    .prof-stat .v { font-family: var(--mono); font-size: 15px; color: var(--fg); margin-top: 3px; font-weight: 500; }
+    .prof-stat .v.pos { color: var(--pos); } .prof-stat .v.neg { color: var(--neg); } .prof-stat .v.warn { color: var(--warn); }
+    .prof-foot { display: flex; align-items: center; gap: 10px; }
+    .prof-tag { font-family: var(--mono); font-size: 10px; padding: 3px 9px; border-radius: 5px; background: var(--panel-2); border: 1px solid var(--border); color: var(--fg-3); letter-spacing: 0.04em; text-transform: uppercase; }
+    .prof-tag.solid { color: var(--pos); border-color: rgba(94,201,143,0.3); }
+    .prof-tag.spewy { color: var(--warn); border-color: rgba(217,168,90,0.3); }
+    .prof-tag.nit { color: var(--info); border-color: rgba(126,182,240,0.3); }
+    .prof-tag.lag { color: var(--neg); border-color: rgba(239,124,116,0.3); }
+    .prof-action { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--accent); }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Villain Profile Badges</h1>
+    <p class="sub">Archetype dossier cards: tinted avatar, exploit tag, and the core read (VPIP / PFR / 3-bet). Click to mark active.</p>
+
+    <div class="profiles-grid" id="grid">
+      <div class="prof active">
+        <div class="prof-head">
+          <div class="prof-avatar scorza">S</div>
+          <div><div class="prof-name">scorza23</div><div class="prof-sub">hero · reg life baseline</div></div>
+        </div>
+        <div class="prof-stats">
+          <div class="prof-stat"><div class="l">VPIP</div><div class="v">24.1</div></div>
+          <div class="prof-stat"><div class="l">PFR</div><div class="v">19.3</div></div>
+          <div class="prof-stat"><div class="l">3-Bet</div><div class="v">7.8</div></div>
+        </div>
+        <div class="prof-foot"><span class="prof-tag">hero</span><span class="prof-action">active ✓</span></div>
+      </div>
+
+      <div class="prof">
+        <div class="prof-head">
+          <div class="prof-avatar solid">SS</div>
+          <div><div class="prof-name">stoicSamurai</div><div class="prof-sub">canonical winning reg</div></div>
+        </div>
+        <div class="prof-stats">
+          <div class="prof-stat"><div class="l">VPIP</div><div class="v pos">22.4</div></div>
+          <div class="prof-stat"><div class="l">PFR</div><div class="v pos">18.9</div></div>
+          <div class="prof-stat"><div class="l">3-Bet</div><div class="v">8.1</div></div>
+        </div>
+        <div class="prof-foot"><span class="prof-tag solid">solid</span><span class="prof-action">dossier →</span></div>
+      </div>
+
+      <div class="prof">
+        <div class="prof-head">
+          <div class="prof-avatar spewy">SP</div>
+          <div><div class="prof-name">spinforfun</div><div class="prof-sub">loose-passive · spews</div></div>
+        </div>
+        <div class="prof-stats">
+          <div class="prof-stat"><div class="l">VPIP</div><div class="v warn">41.6</div></div>
+          <div class="prof-stat"><div class="l">PFR</div><div class="v">12.2</div></div>
+          <div class="prof-stat"><div class="l">3-Bet</div><div class="v neg">3.4</div></div>
+        </div>
+        <div class="prof-foot"><span class="prof-tag spewy">station</span><span class="prof-action">dossier →</span></div>
+      </div>
+
+      <div class="prof">
+        <div class="prof-head">
+          <div class="prof-avatar nit">NT</div>
+          <div><div class="prof-name">vault_keeper</div><div class="prof-sub">tight-passive · nit</div></div>
+        </div>
+        <div class="prof-stats">
+          <div class="prof-stat"><div class="l">VPIP</div><div class="v">13.0</div></div>
+          <div class="prof-stat"><div class="l">PFR</div><div class="v">11.4</div></div>
+          <div class="prof-stat"><div class="l">3-Bet</div><div class="v neg">2.1</div></div>
+        </div>
+        <div class="prof-foot"><span class="prof-tag nit">nit</span><span class="prof-action">dossier →</span></div>
+      </div>
+
+      <div class="prof">
+        <div class="prof-head">
+          <div class="prof-avatar lag">LB</div>
+          <div><div class="prof-name">leverBomber</div><div class="prof-sub">loose-aggressive · LAG</div></div>
+        </div>
+        <div class="prof-stats">
+          <div class="prof-stat"><div class="l">VPIP</div><div class="v warn">33.8</div></div>
+          <div class="prof-stat"><div class="l">PFR</div><div class="v warn">28.5</div></div>
+          <div class="prof-stat"><div class="l">3-Bet</div><div class="v warn">13.7</div></div>
+        </div>
+        <div class="prof-foot"><span class="prof-tag lag">lag</span><span class="prof-action">dossier →</span></div>
+      </div>
+
+      <div class="prof">
+        <div class="prof-head">
+          <div class="prof-avatar solid">RM</div>
+          <div><div class="prof-name">river_monk</div><div class="prof-sub">tight-aggressive · TAG</div></div>
+        </div>
+        <div class="prof-stats">
+          <div class="prof-stat"><div class="l">VPIP</div><div class="v pos">20.2</div></div>
+          <div class="prof-stat"><div class="l">PFR</div><div class="v pos">17.6</div></div>
+          <div class="prof-stat"><div class="l">3-Bet</div><div class="v">9.0</div></div>
+        </div>
+        <div class="prof-foot"><span class="prof-tag solid">tag</span><span class="prof-action">dossier →</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const grid = document.getElementById('grid');
+      grid.addEventListener('click', (e) => {
+        const card = e.target.closest('.prof');
+        if (!card) return;
+        grid.querySelectorAll('.prof').forEach((p) => {
+          p.classList.remove('active');
+          const a = p.querySelector('.prof-action');
+          if (a && a.textContent.includes('active')) a.textContent = 'dossier →';
+        });
+        card.classList.add('active');
+        const a = card.querySelector('.prof-action');
+        if (a) a.textContent = 'active ✓';
+      });
+    })();
+  </script>
+</body>
+</html>
