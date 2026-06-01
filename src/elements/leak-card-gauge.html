@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Leak Cards (Gauge + Sparkline)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --panel: rgba(13, 17, 25, 0.65);
+      --border: rgba(255, 255, 255, 0.06);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --pos: #5ec98f;
+      --neg: #ef7c74;
+      --warn: #e8c468;
+      --fg: #f3f4f6;
+      --fg-3: #8892b0;
+      --fg-4: #5a607a;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-3); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { width: 100%; max-width: 880px; }
+    h1 { font-family: var(--display); font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; text-align: center; }
+    .sub { color: var(--fg-3); text-align: center; margin: 0 0 32px; font-size: 14px; }
+    .replay { display: block; margin: 0 auto 26px; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); background: rgba(0,240,255,0.06); border: 1px solid rgba(0,240,255,0.25); padding: 9px 18px; border-radius: 7px; cursor: pointer; }
+    .replay:hover { background: rgba(0,240,255,0.12); }
+
+    .leaks { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .leak {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
+      padding: 20px 22px; backdrop-filter: blur(8px); position: relative; overflow: hidden;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    /* severity accent rail down the left edge */
+    .leak::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--sev); }
+    .leak.high { --sev: var(--neg); }
+    .leak.med  { --sev: var(--warn); }
+    .leak.low  { --sev: var(--pos); }
+
+    .leak .top { display: flex; align-items: flex-start; gap: 12px; }
+    .leak .name { font-family: var(--display); font-weight: 600; font-size: 16px; letter-spacing: -0.01em; }
+    .leak .scen { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-3); margin-top: 3px; }
+    .leak .sev-pill { margin-left: auto; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 8px; border-radius: 5px; color: var(--sev); background: color-mix(in srgb, var(--sev) 10%, transparent); border: 1px solid color-mix(in srgb, var(--sev) 28%, transparent); white-space: nowrap; }
+
+    /* gauge: value vs target on a track */
+    .gauge { display: flex; flex-direction: column; gap: 7px; }
+    .gauge .vals { display: flex; align-items: baseline; gap: 8px; font-family: var(--mono); }
+    .gauge .cur { font-size: 26px; font-weight: 500; font-variant-numeric: tabular-nums; color: var(--sev); line-height: 1; }
+    .gauge .tgt { font-size: 10.5px; color: var(--fg-4); margin-left: auto; }
+    .gauge .track { position: relative; height: 7px; border-radius: 4px; background: rgba(255,255,255,0.05); overflow: visible; }
+    .gauge .fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; background: var(--sev); width: 0; transition: width 0.9s cubic-bezier(0.22,1,0.36,1); }
+    /* the target marker tick */
+    .gauge .mark { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--fg); opacity: 0.55; border-radius: 1px; }
+    .gauge .mark::after { content: 'alvo'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 8px; letter-spacing: 0.05em; color: var(--fg-4); }
+
+    .leak .foot { display: flex; align-items: center; gap: 12px; margin-top: 2px; }
+    .leak .cost { font-family: var(--mono); font-size: 11px; color: var(--fg-3); }
+    .leak .cost b { color: var(--neg); font-weight: 600; }
+    .leak .trend { font-family: var(--mono); font-size: 10.5px; padding: 2px 7px; border-radius: 5px; }
+    .leak .trend.up { color: var(--pos); background: rgba(94,201,143,0.08); border: 1px solid rgba(94,201,143,0.22); }
+    .leak .trend.down { color: var(--neg); background: rgba(239,124,116,0.08); border: 1px solid rgba(239,124,116,0.22); }
+    .leak .spark { margin-left: auto; width: 86px; height: 28px; display: block; }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Leak Cards · Gauge + Sparkline</h1>
+    <p class="sub">Each leak shows its current frequency against the target on a gauge, a session trend sparkline, severity rail, and an estimated bb/100 cost.</p>
+    <button class="replay" id="replay">▶ replay gauges</button>
+
+    <div class="leaks" id="leaks"></div>
+  </div>
+
+  <script>
+    (function () {
+      // dir: 'low' = lower-is-better (value above target is bad), 'high' = higher-is-better.
+      // pos = where the marker/fill sit on the 0..max track.
+      const LEAKS = [
+        { name: 'Limping', scen: 'pré-flop · fora da BB', sev: 'high', dir: 'low',
+          cur: 4.2, target: 0, max: 8, unit: '%', cost: 3.1, trend: 'down', delta: '+1.4pts',
+          spark: '4,22 18,18 30,19 42,14 54,16 66,10 86,6' },
+        { name: 'C-bet HU baixo', scen: 'flop · PFR heads-up', sev: 'high', dir: 'high',
+          cur: 71, target: 100, max: 100, unit: '%', cost: 2.6, trend: 'up', delta: '+6pts',
+          spark: '4,20 18,17 30,18 42,12 54,11 66,8 86,5' },
+        { name: 'WTSD alto', scen: 'showdown · global', sev: 'med', dir: 'low',
+          cur: 38.5, target: 35, max: 50, unit: '%', cost: 1.4, trend: 'down', delta: '+0.9pts',
+          spark: '4,8 18,9 30,7 42,11 54,10 66,13 86,15' },
+        { name: 'Overfold CO', scen: 'pré-flop · compliance', sev: 'med', dir: 'high',
+          cur: 86.2, target: 90, max: 100, unit: '%', cost: 1.1, trend: 'up', delta: '+3.0pts',
+          spark: '4,18 18,16 30,15 42,12 54,13 66,9 86,7' },
+        { name: 'Cold-call', scen: 'pré-flop · MP/HJ/CO', sev: 'low', dir: 'low',
+          cur: 1.8, target: 0, max: 8, unit: '%', cost: 0.5, trend: 'up', delta: '-2.1pts',
+          spark: '4,6 18,8 30,7 42,9 54,8 66,11 86,13' },
+        { name: 'Missed c-bet', scen: 'flop · PFR check', sev: 'low', dir: 'low',
+          cur: 9, target: 0, max: 30, unit: '%', cost: 0.7, trend: 'up', delta: '-4pts',
+          spark: '4,5 18,7 30,6 42,8 54,9 66,11 86,12' },
+      ];
+
+      const wrap = document.getElementById('leaks');
+
+      function buildSpark(svg) {
+        const pts = svg.dataset.spark;
+        const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+        poly.setAttribute('points', pts);
+        poly.setAttribute('fill', 'none');
+        poly.setAttribute('stroke', 'currentColor');
+        poly.setAttribute('stroke-width', '1.5');
+        poly.setAttribute('stroke-linecap', 'round');
+        poly.setAttribute('stroke-linejoin', 'round');
+        poly.setAttribute('opacity', '0.6');
+        const last = pts.trim().split(/\s+/).pop().split(',');
+        const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        dot.setAttribute('cx', last[0]); dot.setAttribute('cy', last[1]); dot.setAttribute('r', '2');
+        dot.setAttribute('fill', 'currentColor');
+        svg.appendChild(poly); svg.appendChild(dot);
+      }
+
+      function render() {
+        wrap.innerHTML = '';
+        LEAKS.forEach((k) => {
+          const fillPct = Math.max(0, Math.min(100, (k.cur / k.max) * 100));
+          const markPct = Math.max(0, Math.min(100, (k.target / k.max) * 100));
+          const curTxt = (k.unit === '%' ? k.cur : k.cur) + k.unit;
+          const card = document.createElement('div');
+          card.className = 'leak ' + k.sev;
+          card.innerHTML =
+            '<div class="top">' +
+              '<div><div class="name">' + k.name + '</div><div class="scen">' + k.scen + '</div></div>' +
+              '<span class="sev-pill">' + (k.sev === 'high' ? 'severidade alta' : k.sev === 'med' ? 'média' : 'baixa') + '</span>' +
+            '</div>' +
+            '<div class="gauge">' +
+              '<div class="vals"><span class="cur">' + curTxt + '</span>' +
+                '<span class="tgt">alvo ' + k.target + k.unit + (k.dir === 'low' ? ' ou menos' : '+') + '</span></div>' +
+              '<div class="track"><span class="fill"></span><span class="mark" style="left:' + markPct + '%;"></span></div>' +
+            '</div>' +
+            '<div class="foot">' +
+              '<span class="cost">custo <b>' + k.cost.toFixed(1) + ' bb/100</b></span>' +
+              '<span class="trend ' + k.trend + '">' + (k.trend === 'up' ? '▲ ' : '▼ ') + k.delta + '</span>' +
+              '<svg class="spark" viewBox="0 0 90 28" data-spark="' + k.spark + '"></svg>' +
+            '</div>';
+          // color the sparkline to match severity
+          const svg = card.querySelector('.spark');
+          buildSpark(svg);
+          svg.style.color = getComputedStyle(card).getPropertyValue('--sev');
+          wrap.appendChild(card);
+          // animate the gauge fill on next frame (transition from 0 -> target width)
+          const fill = card.querySelector('.fill');
+          requestAnimationFrame(() => requestAnimationFrame(() => { fill.style.width = fillPct + '%'; }));
+          // Fallback: guarantee the final width even if rAF is paused (hidden tab).
+          setTimeout(() => { if (!fill.style.width) fill.style.width = fillPct + '%'; }, 120);
+        });
+      }
+
+      render();
+      document.getElementById('replay').addEventListener('click', render);
+    })();
+  </script>
+</body>
+</html>
