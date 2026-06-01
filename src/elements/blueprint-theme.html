@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Blueprint / CAD Theme</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #060a0f;
+      --blueprint: #00F0FF;
+      --line: rgba(0, 240, 255, 0.10);
+      --line-strong: rgba(0, 240, 255, 0.28);
+      --fg: #d6f3fb;
+      --fg-muted: #6b8fa0;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: #060a0f;
+      color: #d6f3fb;
+      font-family: var(--sans);
+      min-height: 100vh;
+      overflow: hidden;
+      cursor: none;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-muted); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; cursor: pointer; }
+    .back-link:hover { color: var(--blueprint); }
+
+    /* Dashed technical grid backdrop */
+    .bp-grid {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px),
+        linear-gradient(var(--line-strong) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line-strong) 1px, transparent 1px);
+      background-size: 32px 32px, 32px 32px, 160px 160px, 160px 160px;
+    }
+    /* Edge rulers */
+    .bp-ruler { position: fixed; z-index: 1; pointer-events: none; font-family: var(--mono); font-size: 8px; color: var(--fg-muted); }
+    .bp-ruler.top { top: 0; left: 0; right: 0; height: 16px; border-bottom: 1px solid var(--line-strong);
+      background-image: repeating-linear-gradient(90deg, var(--line-strong) 0 1px, transparent 1px 32px); }
+    .bp-ruler.left { top: 0; bottom: 0; left: 0; width: 16px; border-right: 1px solid var(--line-strong);
+      background-image: repeating-linear-gradient(0deg, var(--line-strong) 0 1px, transparent 1px 32px); }
+
+    /* Corner registration marks */
+    .bp-reg { position: fixed; width: 22px; height: 22px; z-index: 2; pointer-events: none; }
+    .bp-reg::before, .bp-reg::after { content: ''; position: absolute; background: var(--line-strong); }
+    .bp-reg::before { left: 50%; top: 0; bottom: 0; width: 1px; transform: translateX(-0.5px); }
+    .bp-reg::after { top: 50%; left: 0; right: 0; height: 1px; transform: translateY(-0.5px); }
+    .bp-reg.tl { top: 28px; left: 28px; } .bp-reg.tr { top: 28px; right: 28px; }
+    .bp-reg.bl { bottom: 28px; left: 28px; } .bp-reg.br { bottom: 28px; right: 28px; }
+
+    /* Cursor-tracking crosshair + coordinate readout */
+    #bp-cross { position: fixed; z-index: 5; pointer-events: none; top: 0; left: 0; will-change: transform; }
+    #bp-cross .h, #bp-cross .v { position: fixed; background: var(--line-strong); }
+    #bp-cross .h { left: 0; right: 0; height: 1px; }
+    #bp-cross .v { top: 0; bottom: 0; width: 1px; }
+    #bp-cross .ring { position: absolute; width: 38px; height: 38px; border: 1px dashed rgba(0,240,255,0.5); border-radius: 50%; transform: translate(-50%, -50%); }
+    #bp-cross .dot { position: absolute; width: 5px; height: 5px; background: var(--blueprint); border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 10px var(--blueprint); }
+    #bp-readout {
+      position: fixed; z-index: 6; pointer-events: none;
+      font-family: var(--mono); font-size: 10px; color: var(--blueprint);
+      text-shadow: 0 0 8px rgba(0,240,255,0.5);
+      background: rgba(0,240,255,0.05); border: 1px solid var(--line-strong);
+      padding: 5px 9px; border-radius: 4px; letter-spacing: 0.08em;
+      transform: translate(14px, 14px);
+    }
+
+    .content { position: relative; z-index: 3; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px; pointer-events: none; }
+    h1 { font-family: var(--display); font-weight: 700; font-size: 38px; margin: 0 0 12px; letter-spacing: -0.02em; }
+    h1 .spec { font-family: var(--mono); font-size: 12px; color: var(--blueprint); display: block; letter-spacing: 0.3em; margin-bottom: 10px; }
+    p { color: var(--fg-muted); max-width: 520px; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="bp-grid"></div>
+  <div class="bp-ruler top"></div>
+  <div class="bp-ruler left"></div>
+  <div class="bp-reg tl"></div><div class="bp-reg tr"></div><div class="bp-reg bl"></div><div class="bp-reg br"></div>
+
+  <div id="bp-cross">
+    <div class="h"></div><div class="v"></div>
+    <div class="ring"></div><div class="dot"></div>
+  </div>
+  <div id="bp-readout">X 0000 · Y 0000</div>
+
+  <div class="content">
+    <h1><span class="spec">DWG · REV 4 · SCALE 1:1</span>Blueprint / CAD Theme</h1>
+    <p>A technical-drawing surface: dashed measurement grid, edge rulers, corner registration marks,
+      and a cursor-locked crosshair with live coordinate telemetry. Move the cursor to read the plot.</p>
+  </div>
+
+  <script>
+    (function () {
+      const cross = document.getElementById('bp-cross');
+      const h = cross.querySelector('.h');
+      const v = cross.querySelector('.v');
+      const ring = cross.querySelector('.ring');
+      const dot = cross.querySelector('.dot');
+      const readout = document.getElementById('bp-readout');
+      let x = window.innerWidth / 2, y = window.innerHeight / 2;
+      let raf = null;
+
+      function place() {
+        h.style.top = y + 'px';
+        v.style.left = x + 'px';
+        ring.style.left = x + 'px'; ring.style.top = y + 'px';
+        dot.style.left = x + 'px'; dot.style.top = y + 'px';
+        readout.style.left = x + 'px'; readout.style.top = y + 'px';
+        readout.textContent = 'X ' + String(Math.round(x)).padStart(4, '0')
+          + ' · Y ' + String(Math.round(y)).padStart(4, '0');
+        raf = null;
+      }
+      function schedule() { if (raf == null) raf = requestAnimationFrame(place); }
+
+      window.addEventListener('pointermove', (e) => { x = e.clientX; y = e.clientY; schedule(); }, { passive: true });
+      window.addEventListener('resize', () => { schedule(); });
+      place();
+    })();
+  </script>
+</body>
+</html>
