@@ -78,7 +78,7 @@
       const y = e.clientY - rect.top;
       const xc = rect.width / 2;
       const yc = rect.height / 2;
-      const divisor = card.classList.contains('opponent-dossier-card') ? 120 : 60;
+      const divisor = card.classList.contains('opponent-dossier-card') ? 250 : 180;
       const angleX = (yc - y) / divisor;
       const angleY = (x - xc) / divisor;
       gsap.to(card, { rotationX: angleX, rotationY: angleY, ease: "power2.out", duration: 0.3 });

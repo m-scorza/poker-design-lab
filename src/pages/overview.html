@@ -1,5 +1,27 @@
 <section class="page" id="page-overview">
       
+      <!-- Desk Header with Scope Selector -->
+      <div class="desk-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 16px;">
+        <div>
+          <h2 style="font-family: var(--display); font-size: 26px; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 10px;">
+            Poker Career Snapshot
+            <span class="pnl-badge" id="overview-pnl-badge" style="font-family: var(--mono); font-size: 14px; font-weight: 700; padding: 2px 10px; border-radius: 99px; background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.2); color: var(--accent);">+$388.85</span>
+          </h2>
+          <p style="font-size: 12px; color: var(--fg-muted); margin: 4px 0 0;" id="overview-subtitle">
+            Stake-readiness verdict, top blocker, and tournament trend from imported histories.
+          </p>
+        </div>
+        <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; display: flex; align-items: center; gap: 8px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);">
+          <span class="kick" style="font-size: 8.5px; color: var(--fg-muted); letter-spacing: 0.1em; text-transform: uppercase;">SCOPE:</span>
+          <select id="overview-session-select" style="background: transparent; border: 0; color: #fff; font-family: var(--mono); font-size: 11px; outline: none; cursor: pointer; font-weight: 700; text-transform: uppercase;">
+            <option value="all" style="background: #0b0d12; color: #fff;">Full Database Overview</option>
+            <option value="session-37" style="background: #0b0d12; color: #fff;">Session #37 (30/05/2026)</option>
+            <option value="session-36" style="background: #0b0d12; color: #fff;">Session #36 (28/05/2026)</option>
+            <option value="session-35" style="background: #0b0d12; color: #fff;">Session #35 (25/05/2026)</option>
+          </select>
+        </div>
+      </div>
+
       <div class="desk-grid">
         <div class="desk-left">
           
@@ -57,6 +79,31 @@
               </button>
             </div>
           </div>
+
+          <!-- Tournament Financials Card -->
+          <div class="card">
+            <span class="kick">Tournament Financials & Tiers</span>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 14px;">
+              <div style="padding: 10px; border-left: 2px solid var(--accent-2);">
+                <span class="kick" style="font-size: 8.5px;">Avg Buy-in (ABI)</span>
+                <div id="overview-financials-abi" style="font-family: var(--mono); font-size: 18px; font-weight: 700; margin-top: 4px;">$1.10</div>
+                <span class="kick" style="font-size: 8px; color: var(--accent-2);">Stakes stable</span>
+              </div>
+              <div style="padding: 10px; border-left: 2px solid var(--accent-2);">
+                <span class="kick" style="font-size: 8.5px;">ITM Ratio</span>
+                <div id="overview-financials-itm" style="font-family: var(--mono); font-size: 18px; font-weight: 700; margin-top: 4px;">35.6%</div>
+                <span class="kick" style="font-size: 8px; color: var(--accent-2);">vs 16% field avg</span>
+              </div>
+              <div style="padding: 10px; border-left: 2px solid var(--border-strong);">
+                <span class="kick" style="font-size: 8.5px;">Total Invested</span>
+                <div id="overview-financials-invested" style="font-family: var(--mono); font-size: 18px; font-weight: 700; margin-top: 4px; color: var(--fg-muted);">$275.00</div>
+              </div>
+              <div style="padding: 10px; border-left: 2px solid var(--accent);">
+                <span class="kick" style="font-size: 8.5px;">Total Prizes</span>
+                <div id="overview-financials-prizes" style="font-family: var(--mono); font-size: 18px; font-weight: 700; margin-top: 4px; color: var(--accent);">+$663.85</div>
+              </div>
+            </div>
+          </div>
           
         </div>
         
@@ -66,8 +113,8 @@
           <div class="card" style="display: grid; grid-template-columns: 1fr auto; gap: 20px;">
             <div>
               <span class="kick">Volume & Chips Performance</span>
-              <div class="mon-number" style="font-size: 38px; margin-top: 8px;">+324,580 <span class="cents" style="font-size: 20px;">chips</span></div>
-              <div class="kick" style="margin-top: 8px; color:var(--accent);">+8.24 bb/100 win rate</div>
+              <div class="mon-number" id="overview-chips-value" style="font-size: 38px; margin-top: 8px;">+324,580 <span class="cents" style="font-size: 20px;">chips</span></div>
+              <div class="kick" id="overview-winrate-value" style="margin-top: 8px; color:var(--accent);">+8.24 bb/100 win rate</div>
             </div>
             <!-- SVG Chips Stack -->
             <div style="display: flex; align-items: center; justify-content: center;">
@@ -101,19 +148,19 @@
           <div class="card">
             <span class="kick">Stack Depth bands & top blockers</span>
             <div class="blocker-leak-grid" style="margin-top: 14px;">
-              <div class="leak-kpi-cell loss">
+              <div class="leak-kpi-cell loss" id="overview-leak-cell">
                 <span class="kick loss">Top Leak spot</span>
-                <div class="leak-kpi-val loss">BTN Open</div>
-                <span class="kick" style="font-size:9.5px;">-28bb/100 impact</span>
+                <div class="leak-kpi-val loss" id="overview-leak-title">BTN Open</div>
+                <span class="kick" id="overview-leak-impact" style="font-size:9.5px;">-28bb/100 impact</span>
               </div>
-              <div class="leak-kpi-cell">
+              <div class="leak-kpi-cell" id="overview-gto-cell">
                 <span class="kick">GTO Compliance</span>
-                <div class="leak-kpi-val">87.5%</div>
+                <div class="leak-kpi-val" id="overview-gto-compliance">87.5%</div>
                 <span class="kick" style="font-size:9.5px; color:var(--accent);">Target &ge; 85%</span>
               </div>
             </div>
             
-            <div class="stack-band-list">
+            <div class="stack-band-list" id="overview-stack-bands">
               <div class="stack-band-row">
                 <span class="stack-band-lbl">&lt;10bb (push)</span>
                 <div class="stack-band-bar-outer"><span class="stack-band-bar-fill loss" style="width: 14%;"></span></div>
@@ -141,8 +188,221 @@
               </div>
             </div>
           </div>
+
+          <!-- Blocker Calculator Widget -->
+          <div class="card" style="margin-top: 24px; padding: 20px;">
+            <span class="kick accent">Blocker Analysis HUD Simulator</span>
+            <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 12px;">
+              <p style="font-size: 11px; color: var(--fg-muted); margin: 0;">Select your cards and a board layout to calculate combinations you are blocking.</p>
+              
+              <!-- Cards Selector -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <div>
+                  <label style="font-family: var(--mono); font-size: 9px; text-transform: uppercase; color: var(--fg-muted); display: block; margin-bottom: 4px;">Hero Hand</label>
+                  <select id="blocker-hero-hand" style="width: 100%; background: var(--bg-input); border: 1px solid var(--border-strong); color: #fff; font-family: var(--mono); font-size: 11px; padding: 6px 10px; border-radius: 5px; outline: none; cursor: pointer;">
+                    <option value="AsKs">A♠ K♠</option>
+                    <option value="AhKh">A♥ K♥</option>
+                    <option value="AcKc">A♣ K♣</option>
+                    <option value="QQ">Q♥ Q♦</option>
+                    <option value="JTs">J♦ T♦</option>
+                    <option value="76s">7♠ 6♠</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-family: var(--mono); font-size: 9px; text-transform: uppercase; color: var(--fg-muted); display: block; margin-bottom: 4px;">Board Cards</label>
+                  <select id="blocker-board" style="width: 100%; background: var(--bg-input); border: 1px solid var(--border-strong); color: #fff; font-family: var(--mono); font-size: 11px; padding: 6px 10px; border-radius: 5px; outline: none; cursor: pointer;">
+                    <option value="JsTs4h">J♠ T♠ 4♥</option>
+                    <option value="Qs9s2h">Q♠ 9♠ 2♥</option>
+                    <option value="As8d3c">A♠ 8♦ 3♣</option>
+                    <option value="KdQd2c">K♦ Q♦ 2♣</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Blocker Math Results -->
+              <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 8px; padding: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div>
+                  <span class="kick" style="font-size: 8px;">Nut Flush Draws Blocked</span>
+                  <div id="blocker-flush-val" style="font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--accent); margin-top: 2px;">62.5%</div>
+                </div>
+                <div>
+                  <span class="kick" style="font-size: 8px;">Straight Combinations Blocked</span>
+                  <div id="blocker-straight-val" style="font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--accent-2); margin-top: 2px;">6 combos</div>
+                </div>
+                <div style="grid-column: span 2; border-top: 1px solid var(--border); padding-top: 8px; margin-top: 4px;">
+                  <span class="kick" style="font-size: 8px;">Combinatorial Blocker Rating</span>
+                  <div id="blocker-rating-desc" style="font-size: 11px; line-height: 1.45; color: var(--fg-muted); margin-top: 4px;">
+                    Having <span style="color: #fff; font-weight: 700;">A♠ K♠</span> blocks <span style="color: var(--accent);">62.5%</span> of villain's nut flush combos on a <span style="color: var(--accent-2);">J♠ T♠ 4♥</span> board. Elite exploit capability.
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
           
         </div>
+
+        <!-- Bankroll Progression SVG Chart Card -->
+        <div class="card" style="grid-column: span 2; padding: 24px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 14px;">
+            <div>
+              <span class="kick accent">Bankroll Progression</span>
+              <h3 style="font-family: var(--display); font-size: 20px; font-weight: 700; margin: 4px 0 0;">Cumulative Net PnL</h3>
+            </div>
+            <!-- Chart Filter Toggles -->
+            <div class="ranges-tab-menu" id="overview-chart-selector" style="margin: 0;">
+              <button class="ranges-tab-btn active" data-chart="lifetime">Lifetime</button>
+              <button class="ranges-tab-btn" data-chart="30d">30d</button>
+              <button class="ranges-tab-btn" data-chart="7d">7d</button>
+            </div>
+          </div>
+          <!-- Dynamic SVG container -->
+          <div style="position: relative; height: 180px; margin-top: 14px;" id="overview-chart-wrapper">
+            <div class="chart-tooltip" id="overview-chart-tooltip" style="display: none; position: absolute; background: rgba(11, 13, 18, 0.95); border: 1px solid var(--border-strong); padding: 8px 12px; border-radius: 8px; font-family: var(--mono); font-size: 10.5px; z-index: 100; pointer-events: none; box-shadow: 0 4px 20px rgba(0,0,0,0.5);"></div>
+            <svg id="overview-trend-svg" viewBox="0 0 1140 180" preserveAspectRatio="none" style="width: 100%; height: 100%; overflow: visible;">
+              <defs>
+                <linearGradient id="chart-glow-gradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.2"/>
+                  <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <line x1="0" y1="45" x2="1140" y2="45" stroke="rgba(255,255,255,0.015)" />
+              <line x1="0" y1="90" x2="1140" y2="90" stroke="rgba(255,255,255,0.015)" />
+              <line x1="0" y1="135" x2="1140" y2="135" stroke="rgba(255,255,255,0.015)" />
+              
+              <!-- Shaded neon background area -->
+              <path id="chart-area" d="M 0,160 Q 228,124 456,140 T 912,70 Q 1026,90 1140,30 L 1140,180 L 0,180 Z" fill="url(#chart-glow-gradient)" style="transition: d 0.5s ease-in-out;" />
+              <!-- Core glowing trendline path -->
+              <path id="chart-path" d="M 0,160 Q 228,124 456,140 T 912,70 Q 1026,90 1140,30" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" style="transition: d 0.5s ease-in-out;" />
+            </svg>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-top: 10px; font-family: var(--mono); font-size: 9px; color: var(--fg-muted);">
+            <span>Start Session</span>
+            <span>Linear Regression: Stable profit trend · R² = 0.94</span>
+            <span>Latest Session</span>
+          </div>
+        </div>
+
+        <!-- 6-Max felt seat heatmap ring -->
+        <div class="card position-heatmap-card" style="grid-column: span 2; padding: 24px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <div>
+              <span class="kick accent">6-Max Seat Ring Telemetry</span>
+              <h3 style="font-family: var(--display); font-size: 18px; margin: 4px 0 0; font-weight:700;">Positional Profitability Heatmap</h3>
+            </div>
+            <div style="text-align: right;">
+              <span class="kick">Click a seat to inspect stats</span>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1.25fr 1fr; gap: 24px; align-items: center;">
+            <!-- Felt ring representation -->
+            <div style="height: 180px; position: relative; background: rgba(0,0,0,0.15); border: 1px solid var(--border); border-radius: 100px; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 30px rgba(0,0,0,0.3);">
+              <div style="width: 160px; height: 70px; background: rgba(255,255,255,0.01); border: 4px solid var(--border-strong); border-radius: 35px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center;">
+                <span class="kick" style="font-size: 8.5px; color: var(--fg-muted); letter-spacing: 0.1em;">Table Felt</span>
+              </div>
+              
+              <!-- Seat positions absolutely positioned around ring -->
+              <button class="heatmap-seat-btn active" data-pos="BTN" style="position: absolute; bottom: 8px; right: 23%; padding: 6px 12px; background: rgba(255, 59, 107, 0.1); border: 1.5px solid var(--loss); color: var(--loss); border-radius: 8px; font-family: var(--mono); font-size: 10px; cursor: pointer; transition: transform 0.2s;">BTN<br>-28.0bb</button>
+              <button class="heatmap-seat-btn" data-pos="SB" style="position: absolute; bottom: 8px; left: 23%; padding: 6px 12px; background: rgba(255, 59, 107, 0.05); border: 1.5px solid rgba(255, 59, 107, 0.4); color: var(--loss); border-radius: 8px; font-family: var(--mono); font-size: 10px; cursor: pointer; transition: transform 0.2s;">SB<br>-8.4bb</button>
+              <button class="heatmap-seat-btn" data-pos="BB" style="position: absolute; top: 50%; transform: translateY(-50%); left: 8px; padding: 6px 12px; background: rgba(0, 240, 255, 0.05); border: 1.5px solid var(--accent); color: var(--accent-2); border-radius: 8px; font-family: var(--mono); font-size: 10px; cursor: pointer; transition: transform 0.2s;">BB<br>+1.2bb</button>
+              <button class="heatmap-seat-btn" data-pos="UTG" style="position: absolute; top: 8px; left: 23%; padding: 6px 12px; background: rgba(0, 240, 255, 0.05); border: 1.5px solid var(--accent); color: var(--accent-2); border-radius: 8px; font-family: var(--mono); font-size: 10px; cursor: pointer; transition: transform 0.2s;">UTG<br>+4.2bb</button>
+              <button class="heatmap-seat-btn" data-pos="HJ" style="position: absolute; top: 8px; right: 23%; padding: 6px 12px; background: rgba(0, 240, 255, 0.05); border: 1.5px solid var(--accent); color: var(--accent-2); border-radius: 8px; font-family: var(--mono); font-size: 10px; cursor: pointer; transition: transform 0.2s;">HJ<br>+8.1bb</button>
+              <button class="heatmap-seat-btn" data-pos="CO" style="position: absolute; top: 50%; transform: translateY(-50%); right: 8px; padding: 6px 12px; background: rgba(0, 240, 255, 0.05); border: 1.5px solid var(--accent); color: var(--accent-2); border-radius: 8px; font-family: var(--mono); font-size: 10px; cursor: pointer; transition: transform 0.2s;">CO<br>+14.8bb</button>
+            </div>
+
+            <!-- Seat detail stats panel -->
+            <div style="background: rgba(0,0,0,0.15); border: 1px solid var(--border); border-radius: 12px; padding: 18px;" id="seat-inspect-panel">
+              <span class="kick" id="inspect-pos-title" style="color: var(--loss);">BTN Stats</span>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;">
+                <div>
+                  <span class="kick" style="font-size: 7.5px;">VPIP</span>
+                  <div style="font-family: var(--mono); font-size: 15px; font-weight: 700;" id="inspect-vpip-val">28.4%</div>
+                </div>
+                <div>
+                  <span class="kick" style="font-size: 7.5px;">PFR</span>
+                  <div style="font-family: var(--mono); font-size: 15px; font-weight: 700;" id="inspect-pfr-val">22.1%</div>
+                </div>
+                <div>
+                  <span class="kick" style="font-size: 7.5px;">bb/100 Profit</span>
+                  <div style="font-family: var(--mono); font-size: 15px; font-weight: 700; color: var(--loss);" id="inspect-profit-val">-28.0 bb</div>
+                </div>
+                <div>
+                  <span class="kick" style="font-size: 7.5px;">Hands Volume</span>
+                  <div style="font-family: var(--mono); font-size: 15px; font-weight: 700;" id="inspect-volume-val">1,842 hands</div>
+                </div>
+              </div>
+              <div style="border-top: 1px solid var(--border); padding-top: 10px; margin-top: 10px;">
+                <span class="kick" style="font-size: 7.5px;">Coach Insight</span>
+                <p style="font-size: 11px; color: var(--fg-muted); margin: 4px 0 0; line-height: 1.45;" id="inspect-insight-val">
+                  Over-opening bottom-range holdings preflop. Blinds are squeezing aggressively. Cut K8s/Q6s opens.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Technical Focus & Alert Log Drawer -->
+        <div class="card alert-log-card" style="grid-column: span 2; padding: 20px;">
+          <span class="kick accent">Active Alert Log & Fixes</span>
+          <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 8px;" id="overview-alerts-list">
+            
+            <!-- Alert 1 -->
+            <div style="border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: rgba(255, 59, 107, 0.02);" class="alert-row">
+              <button class="alert-toggle-btn" style="width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: none; border: 0; text-align: left; cursor: pointer; color: var(--fg);">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--loss);"></span>
+                  <span style="font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em;">BTN RFI over-widening (+8.0% deviation)</span>
+                </div>
+                <span class="kick loss" style="font-size: 8.5px;">Expand Fix</span>
+              </button>
+              <div class="alert-body" style="display: none; padding: 0 16px 16px 30px; font-size: 11.5px; color: var(--fg-muted); line-height: 1.5; border-top: 1px solid var(--border); margin-top: -2px; padding-top: 12px;">
+                <p style="margin: 0 0 8px;">Your button open is currently 58% vs. the target 48-52% GTO benchmark. The bottom 8% of opens are losing an average of <b>-28bb/100</b> against active blinds.</p>
+                <b style="color: var(--fg);">Actionable fix:</b> Fold K7s, Q5s, and T7s preflop. Practice in Ranges lab to commit standard BTN boundaries to memory.
+              </div>
+            </div>
+
+            <!-- Alert 2 -->
+            <div style="border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: rgba(0, 240, 255, 0.01);" class="alert-row">
+              <button class="alert-toggle-btn" style="width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: none; border: 0; text-align: left; cursor: pointer; color: var(--fg);">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #ffaa00;"></span>
+                  <span style="font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em;">BB overfolding vs BTN open steal (-12.0% deviation)</span>
+                </div>
+                <span class="kick" style="font-size: 8.5px; color:#ffaa00;">Expand Fix</span>
+              </button>
+              <div class="alert-body" style="display: none; padding: 0 16px 16px 30px; font-size: 11.5px; color: var(--fg-muted); line-height: 1.5; border-top: 1px solid var(--border); margin-top: -2px; padding-top: 12px;">
+                <p style="margin: 0 0 8px;">You are folding the Big Blind 68% vs. late openings, giving button steals free chips. Optimal ranges require a defend rate of at least 52%.</p>
+                <b style="color: var(--fg);">Actionable fix:</b> Defend hands like T8o, 97o, and Q6s by flatting raises. Fold less to min-raises.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Recent Session Predators Card -->
+        <div class="card" style="grid-column: span 2; padding: 20px;">
+          <span class="kick">Recent Session Predators & Prey</span>
+          <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 8px;" id="overview-predators-list">
+            <div style="display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 11px; padding: 6px 0; border-bottom: 1px solid var(--border);">
+              <span style="color: var(--fg);"><span class="kick loss" style="font-size: 8px; margin-right: 8px; letter-spacing: 0.1em;">Nemesis</span>villain_crusher</span>
+              <span class="loss">-32.0 bb</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 11px; padding: 6px 0; border-bottom: 1px solid var(--border);">
+              <span style="color: var(--fg);"><span class="kick loss" style="font-size: 8px; margin-right: 8px; letter-spacing: 0.1em;">Nemesis</span>shark_reg</span>
+              <span class="loss">-18.4 bb</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 11px; padding: 6px 0; border-bottom: 1px solid var(--border);">
+              <span style="color: var(--fg);"><span class="kick accent" style="font-size: 8px; margin-right: 8px; letter-spacing: 0.1em;">Victim</span>fish_king_22</span>
+              <span class="accent-2">+42.3 bb</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 11px; padding: 6px 0;">
+              <span style="color: var(--fg);"><span class="kick accent" style="font-size: 8px; margin-right: 8px; letter-spacing: 0.1em;">Victim</span>whale_caller</span>
+              <span class="accent-2">+28.1 bb</span>
+            </div>
+          </div>
+        </div>
+
       </div>
       
       <!-- Tactile Bottom Marquee Carousel -->

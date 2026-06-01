@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Average Buy-In (ABI) Stakes Evolution</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --bg-2: #0b0d12;
+      --bg-card: rgba(13, 17, 25, 0.65);
+      --bg-card-hover: rgba(20, 26, 38, 0.75);
+      --border: rgba(255, 255, 255, 0.05);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --accent-2: #00FF87;
+      --accent-soft: rgba(0, 255, 135, 0.06);
+      --accent-glow: rgba(0, 255, 135, 0.15);
+      --accent-line: rgba(0, 255, 135, 0.35);
+      --loss: #FF3B6B;
+      --fg: #f3f4f6;
+      --fg-muted: #8892b0;
+      --fg-dim: #3a3f50;
+      --sans: 'Inter', -apple-system, sans-serif;
+      --display: 'Outfit', sans-serif;
+      --mono: 'Space Mono', monospace;
+    }
+    body {
+      margin: 0; padding: 40px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      overflow-x: hidden;
+    }
+    .container { max-width: 900px; width: 100%; text-align: center; z-index: 10; }
+    h1 { font-family: var(--display); font-weight: 700; margin-bottom: 20px; letter-spacing: -0.02em; }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-muted); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+
+    .chart-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      position: relative;
+      backdrop-filter: blur(10px);
+    }
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .chart-title {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+    }
+    
+    .ranges-tab-menu {
+      display: flex;
+      gap: 3px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
+      padding: 3px;
+      border-radius: 8px;
+    }
+    .ranges-tab-btn {
+      background: none; border: 0;
+      color: var(--fg-muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 5px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .ranges-tab-btn.active {
+      background: var(--bg-2);
+      color: var(--fg);
+      border: 1px solid var(--border);
+    }
+
+    .svg-container {
+      width: 100%;
+      height: 180px;
+      position: relative;
+    }
+    svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .chart-tooltip-dot {
+      fill: var(--accent-2);
+      stroke: #fff;
+      stroke-width: 2.5px;
+      filter: drop-shadow(0 0 6px var(--accent-glow));
+      cursor: pointer;
+      transition: r 0.15s ease;
+    }
+    .chart-tooltip-dot:hover {
+      r: 8px;
+    }
+
+    .chart-tooltip-bubble {
+      position: absolute;
+      background: var(--bg-2);
+      border: 1px solid var(--accent-line);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      pointer-events: none;
+      display: none;
+      z-index: 100;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+      transform: translate(-50%, -120%);
+      text-align: left;
+    }
+    .chart-tooltip-bubble span {
+      display: block;
+      margin-bottom: 2px;
+    }
+    .chart-tooltip-bubble span.title {
+      font-weight: 700;
+      color: #fff;
+    }
+    .chart-tooltip-bubble span.abi {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent-2);
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+    }
+    .meta-card {
+      background: rgba(0,0,0,0.15);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: left;
+    }
+    .kick {
+      font-family: var(--mono);
+      font-size: 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--fg-muted);
+    }
+    .meta-val {
+      font-family: var(--mono);
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Average Buy-In (ABI) Stakes Evolution</h1>
+    <p style="color: var(--fg-muted); margin-bottom: 30px; font-size: 13px;">GSAP path-morphing stakes transition chart tracks tournament buy-in progression over time.</p>
+    
+    <div class="chart-card">
+      <div class="chart-header">
+        <span class="chart-title">Stakes level evolution</span>
+        <div class="ranges-tab-menu" id="format-selector">
+          <button class="ranges-tab-btn active" data-filter="all">All Formats</button>
+          <button class="ranges-tab-btn" data-filter="freezeout">Freezeouts</button>
+          <button class="ranges-tab-btn" data-filter="pko">Turbo PKOs</button>
+        </div>
+      </div>
+
+      <div class="svg-container" id="abi-chart-container">
+        <!-- Tooltip Bubble -->
+        <div class="chart-tooltip-bubble" id="abi-tooltip">
+          <span class="title">Stake Level 1</span>
+          <span class="abi">ABI: $0.55</span>
+          <span style="opacity: 0.6; font-size: 9px;" class="tourneys">Tournaments 1-80</span>
+        </div>
+
+        <svg id="abi-svg" width="840" height="180" viewBox="0 0 840 180" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="abi-gradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--accent-2)" stop-opacity="0.25"/>
+              <stop offset="100%" stop-color="var(--accent-2)" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          
+          <!-- Grid lines -->
+          <line x1="0" y1="36" x2="840" y2="36" stroke="rgba(255,255,255,0.02)"/>
+          <line x1="0" y1="72" x2="840" y2="72" stroke="rgba(255,255,255,0.02)"/>
+          <line x1="0" y1="108" x2="840" y2="108" stroke="rgba(255,255,255,0.02)"/>
+          <line x1="0" y1="144" x2="840" y2="144" stroke="rgba(255,255,255,0.02)"/>
+          
+          <!-- Area & Path -->
+          <path id="abi-chart-area" d="" fill="url(#abi-gradient)" opacity="1"/>
+          <path id="abi-chart-path" d="" fill="none" stroke="var(--accent-2)" stroke-width="2.5" style="filter: drop-shadow(0 2px 8px var(--accent-glow));"/>
+          
+          <!-- Interaction Nodes Container -->
+          <g id="abi-chart-nodes"></g>
+        </svg>
+      </div>
+
+      <div class="meta-grid">
+        <div class="meta-card">
+          <span class="kick">Min Buy-in</span>
+          <div class="meta-val" id="meta-min">$0.55</div>
+        </div>
+        <div class="meta-card">
+          <span class="kick">Max Buy-in</span>
+          <div class="meta-val" id="meta-max">$2.20</div>
+        </div>
+        <div class="meta-card">
+          <span class="kick">Current ABI</span>
+          <div class="meta-val" id="meta-current">$2.20</div>
+        </div>
+        <div class="meta-card">
+          <span class="kick" style="color: var(--accent-2);">Stakes Trend</span>
+          <div class="meta-val" id="meta-trend" style="color: var(--accent-2);">UPWARDS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import gsap from 'gsap';
+
+    const CHART_DATA = {
+      all: [
+        { label: 'Stake Level 1', val: 0.55, tourneys: 'Tournaments 1-80', desc: 'Micro stakes starting point' },
+        { label: 'Stakes Stabilization', val: 1.10, tourneys: 'Tournaments 81-170', desc: 'ROI stable buy-in step-up' },
+        { label: 'Stakes Transition', val: 2.20, tourneys: 'Tournaments 171-240', desc: 'Shot-taking at next tier' },
+        { label: 'Current Level', val: 2.20, tourneys: 'Tournaments 241-250', desc: 'Consolidating ABI $2.20' }
+      ],
+      freezeout: [
+        { label: 'Freezeout Starter', val: 0.55, tourneys: 'Tournaments 1-40', desc: 'Initial bankroll builder' },
+        { label: 'Mid-Tier Step', val: 1.10, tourneys: 'Tournaments 41-110', desc: 'Testing mid stakes field sizes' },
+        { label: 'Stable Grind', val: 1.10, tourneys: 'Tournaments 111-180', desc: 'Consistent 15%+ ROI runs' },
+        { label: 'Current Level', val: 1.10, tourneys: 'Tournaments 181-200', desc: 'Maintained low volatility ABI' }
+      ],
+      pko: [
+        { label: 'PKO Starter', val: 1.10, tourneys: 'Tournaments 1-50', desc: 'High variance bounty structure' },
+        { label: 'Aggressive Shots', val: 2.20, tourneys: 'Tournaments 51-120', desc: 'Bounty hunting transition' },
+        { label: 'Premium Runs', val: 3.30, tourneys: 'Tournaments 121-200', desc: 'Excellent KO metrics shot-taking' },
+        { label: 'Current Level', val: 3.30, tourneys: 'Tournaments 201-210', desc: 'Active stakes consolidation' }
+      ]
+    };
+
+    const width = 840;
+    const height = 180;
+    const paddingBottom = 24;
+    const paddingTop = 24;
+
+    function generatePaths(points) {
+      if (points.length < 2) return { path: '', area: '' };
+
+      const minVal = 0; // Standardize baseline at 0 for ABI
+      const maxVal = Math.max(...points.map(p => p.val), 4.0);
+      const range = maxVal - minVal;
+
+      const mapped = points.map((p, i) => {
+        const x = (i / (points.length - 1)) * width;
+        const y = height - paddingBottom - ((p.val - minVal) / range) * (height - paddingTop - paddingBottom);
+        return { x, y, data: p };
+      });
+
+      const zeroY = height - paddingBottom;
+
+      let pathD = `M ${mapped[0].x.toFixed(1)},${mapped[0].y.toFixed(1)}`;
+      for (let i = 1; i < mapped.length; i++) {
+        pathD += ` L ${mapped[i].x.toFixed(1)},${mapped[i].y.toFixed(1)}`;
+      }
+
+      const areaD = `${pathD} L ${width},${zeroY} L 0,${zeroY} Z`;
+
+      return { path: pathD, area: areaD, mapped, zeroY };
+    }
+
+    function renderABIChart(filterKey) {
+      const pathEl = document.getElementById('abi-chart-path');
+      const areaEl = document.getElementById('abi-chart-area');
+      const nodesContainer = document.getElementById('abi-chart-nodes');
+      const tooltip = document.getElementById('abi-tooltip');
+
+      const minEl = document.getElementById('meta-min');
+      const maxEl = document.getElementById('meta-max');
+      const currentEl = document.getElementById('meta-current');
+      const trendEl = document.getElementById('meta-trend');
+
+      if (!pathEl || !areaEl || !nodesContainer) return;
+
+      const dataset = CHART_DATA[filterKey];
+      const { path, area, mapped } = generatePaths(dataset);
+
+      // Morph path and area
+      gsap.to(pathEl, { attr: { d: path }, duration: 0.5, ease: "power2.out" });
+      gsap.to(areaEl, { attr: { d: area }, duration: 0.5, ease: "power2.out" });
+
+      // Update telemetry card values
+      const vals = dataset.map(p => p.val);
+      const minVal = Math.min(...vals);
+      const maxVal = Math.max(...vals);
+      const currentVal = vals[vals.length - 1];
+
+      minEl.innerText = `$${minVal.toFixed(2)}`;
+      maxEl.innerText = `$${maxVal.toFixed(2)}`;
+      currentEl.innerText = `$${currentVal.toFixed(2)}`;
+
+      if (currentVal > vals[0]) {
+        trendEl.innerText = "UPWARDS";
+        trendEl.style.color = "var(--accent-2)";
+      } else if (currentVal < vals[0]) {
+        trendEl.innerText = "DOWNWARDS";
+        trendEl.style.color = "var(--loss)";
+      } else {
+        trendEl.innerText = "STABLE";
+        trendEl.style.color = "var(--accent)";
+      }
+
+      // Rebuild interactive nodes
+      nodesContainer.innerHTML = '';
+      mapped.forEach(pt => {
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('class', 'chart-tooltip-dot');
+        circle.setAttribute('cx', pt.x);
+        circle.setAttribute('cy', pt.y);
+        circle.setAttribute('r', '5.5');
+
+        circle.addEventListener('mouseenter', (e) => {
+          tooltip.style.display = 'block';
+          tooltip.style.left = `${pt.x}px`;
+          tooltip.style.top = `${pt.y}px`;
+          
+          tooltip.querySelector('.title').innerHTML = pt.data.label;
+          tooltip.querySelector('.abi').innerText = `ABI: $${pt.data.val.toFixed(2)}`;
+          tooltip.querySelector('.tourneys').innerText = `${pt.data.tourneys} • ${pt.data.desc}`;
+        });
+
+        circle.addEventListener('mouseleave', () => {
+          tooltip.style.display = 'none';
+        });
+
+        nodesContainer.appendChild(circle);
+      });
+    }
+
+    // Bind filters
+    const filterButtons = document.querySelectorAll('#format-selector button');
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.getAttribute('data-filter');
+        renderABIChart(filter);
+      });
+    });
+
+    // Initial load
+    renderABIChart('all');
+  </script>
+</body>
+</html>

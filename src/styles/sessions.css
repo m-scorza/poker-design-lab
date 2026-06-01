@@ -53,8 +53,8 @@
   }
   .expanded-card-grid {
     display: grid;
-    grid-template-columns: 1.1fr 1fr 1.2fr;
-    gap: 24px;
+    grid-template-columns: 1.1fr 1fr 1.2fr 1.5fr;
+    gap: 20px;
     padding: 24px;
   }
   .session-card {

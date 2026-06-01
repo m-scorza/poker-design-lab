@@ -10,7 +10,7 @@ function onMouseMove(e) {
   const xc = rect.width / 2;
   const yc = rect.height / 2;
 
-  const divisor = card.classList.contains('opponent-dossier-card') ? 120 : 60;
+  const divisor = card.classList.contains('opponent-dossier-card') ? 250 : 180;
 
   const angleX = (yc - y) / divisor;
   const angleY = (x - xc) / divisor;

@@ -1,7 +1,68 @@
 <section class="page" id="page-sessions">
       
+      <!-- Session Activity Calendar Heatmap -->
+      <div class="card" style="margin-bottom: 24px; padding: 20px;">
+        <span class="kick accent">Session Frequency & Volume Calendar</span>
+        <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-top: 14px;" id="calendar-heatmap-container">
+          <!-- Monthly grids for 35 days -->
+          <div style="width: 14px; height: 14px; background: rgba(0, 240, 255, 0.25); border-radius: 2px;" title="May 30: +12.4 bb (Session #37)"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 59, 107, 0.2); border-radius: 2px;" title="May 28: -4.8 bb (Session #36)"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 255, 255, 0.02); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(0, 240, 255, 0.4); border-radius: 2px;" title="May 25: +22.1 bb (Session #35)"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 255, 255, 0.02); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 255, 255, 0.02); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(0, 240, 255, 0.1); border-radius: 2px;" title="May 20: +2.1 bb"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 59, 107, 0.4); border-radius: 2px;" title="May 18: -15.2 bb"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 255, 255, 0.02); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(0, 240, 255, 0.3); border-radius: 2px;" title="May 15: +14.6 bb"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 255, 255, 0.02); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 255, 255, 0.02); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 255, 255, 0.02); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(0, 240, 255, 0.5); border-radius: 2px;" title="May 10: +32.0 bb"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 255, 255, 0.02); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(0, 240, 255, 0.25); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 59, 107, 0.15); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 255, 255, 0.02); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 255, 255, 0.02); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(0, 240, 255, 0.45); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 255, 255, 0.02); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 255, 255, 0.02); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 59, 107, 0.08); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 255, 255, 0.02); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(0, 240, 255, 0.35); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 255, 255, 0.02); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 255, 255, 0.02); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 255, 255, 0.02); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(0, 240, 255, 0.2); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 255, 255, 0.02); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(0, 240, 255, 0.4); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 255, 255, 0.02); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 255, 255, 0.02); border-radius: 2px;"></div>
+          <div style="width: 14px; height: 14px; background: rgba(0, 240, 255, 0.55); border-radius: 2px;" title="May 5: +55.0 bb"></div>
+          <div style="width: 14px; height: 14px; background: rgba(255, 255, 255, 0.02); border-radius: 2px;"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; font-family: var(--mono); font-size: 9px; color: var(--fg-muted);">
+          <span>Previous 35 active days</span>
+          <span style="display: flex; gap: 4px; align-items: center;">
+            Less <span style="width:8px; height:8px; background:rgba(255,255,255,0.02); border-radius:1px;"></span>
+            <span style="width:8px; height:8px; background:rgba(0,240,255,0.1); border-radius:1px;"></span>
+            <span style="width:8px; height:8px; background:rgba(0,240,255,0.3); border-radius:1px;"></span>
+            <span style="width:8px; height:8px; background:rgba(0,240,255,0.5); border-radius:1px;"></span> More
+          </span>
+        </div>
+      </div>
+
+      <!-- Action Strip & Table -->
       <div class="card" style="padding:0; overflow:hidden;">
-        <div class="timeline-row-editorial" style="background:rgba(0,0,0,0.2); font-family:var(--mono); font-size:10px; text-transform:uppercase; color:var(--fg-muted); cursor:default; border-bottom-width:2px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.15);">
+          <span class="kick">Volume Ledger timelines</span>
+          <div style="display: flex; gap: 8px;">
+            <button class="stat-trigger" style="padding: 4px 10px; font-size: 10.5px; font-family: var(--mono); cursor: pointer;" id="btn-export-csv">Export CSV</button>
+            <button class="stat-trigger" style="padding: 4px 10px; font-size: 10.5px; font-family: var(--mono); cursor: pointer;" id="btn-export-pdf">Export PDF</button>
+          </div>
+        </div>
+
+        <div class="timeline-row-editorial" style="background:rgba(0,0,0,0.2); font-family:var(--mono); font-size:10px; text-transform:uppercase; color:var(--fg-muted); cursor:default; border-bottom-width:2px; pointer-events: none;">
           <span>Date</span><span>Session details</span><span>Buy-ins</span><span>bb/100</span><span>GTO comp</span>
         </div>
         
@@ -41,6 +102,26 @@
               <p style="font-size:12px; line-height:1.5; color:var(--fg-muted); margin:0;">
                 <span style="color:var(--accent); font-weight:700;">Elite discipline.</span> You maintained GTO open compliance at 88.5%. Turn actions were stable, but check blind defenses against late opens.
               </p>
+            </div>
+            <div class="session-card chart-card">
+              <h4>Cumulative bb progression</h4>
+              <div class="mini-chart-container" style="height: 100px; position: relative; margin-top: 10px;">
+                <svg class="mini-trend-svg" id="mini-trend-37" width="100%" height="100%" viewBox="0 0 200 100" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="mini-gradient-win-37" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.3"/>
+                      <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+                    </linearGradient>
+                    <linearGradient id="mini-gradient-loss-37" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="var(--loss)" stop-opacity="0.3"/>
+                      <stop offset="100%" stop-color="var(--loss)" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <line x1="0" y1="50" x2="200" y2="50" stroke="rgba(255,255,255,0.05)" stroke-dasharray="2,2"/>
+                  <path class="mini-trend-path" d="" fill="none" stroke="var(--accent)" stroke-width="2"/>
+                  <path class="mini-trend-area" d="" fill="url(#mini-gradient-win-37)" opacity="1"/>
+                </svg>
+              </div>
             </div>
           </div>
         </div>
@@ -82,9 +163,120 @@
                 <span style="color:var(--loss); font-weight:700;">Low compliance.</span> Blinds defense was too wide vs HJ/CO openers. Re-evaluate SB fold criteria.
               </p>
             </div>
+            <div class="session-card chart-card">
+              <h4>Cumulative bb progression</h4>
+              <div class="mini-chart-container" style="height: 100px; position: relative; margin-top: 10px;">
+                <svg class="mini-trend-svg" id="mini-trend-36" width="100%" height="100%" viewBox="0 0 200 100" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="mini-gradient-win-36" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.3"/>
+                      <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+                    </linearGradient>
+                    <linearGradient id="mini-gradient-loss-36" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="var(--loss)" stop-opacity="0.3"/>
+                      <stop offset="100%" stop-color="var(--loss)" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <line x1="0" y1="50" x2="200" y2="50" stroke="rgba(255,255,255,0.05)" stroke-dasharray="2,2"/>
+                  <path class="mini-trend-path" d="" fill="none" stroke="var(--accent)" stroke-width="2"/>
+                  <path class="mini-trend-area" d="" fill="url(#mini-gradient-win-36)" opacity="1"/>
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
 
+        <!-- Row 3 -->
+        <div class="timeline-row-editorial" data-drawer="drawer-3" data-month="May 25">
+          <div class="timeline-date-block">25/05/2026<div class="timeline-date-sub">17:00 - 22:30</div></div>
+          <div class="timeline-title-block"><div class="editorial-title">Session #35</div><div class="editorial-desc">840 hands · 4 tournaments</div></div>
+          <div class="timeline-val-block">$4.40</div>
+          <div class="timeline-val-block pos">+22.1</div>
+          <div class="timeline-val-block pos">91.4%</div>
+        </div>
+        <!-- Drawer 3 -->
+        <div class="editorial-expand-panel" id="drawer-3">
+          <div class="expanded-card-grid">
+            <div class="session-card">
+              <h4>Session Nemesis</h4>
+              <p class="mon-number" style="font-size:22px; margin:0;">whale_caller</p>
+              <p style="font-size:11.5px; color:var(--fg-muted); margin:8px 0 0;">You won <span style="color:var(--accent-2); font-weight:700;">+98bb</span> from this player on bluff catches.</p>
+            </div>
+            <div class="session-card">
+              <h4>Consistency ratios</h4>
+              <div class="session-bar-row">
+                <div class="session-bar-lbl"><span>C-Bet Total</span><span>72.0%</span></div>
+                <div class="session-bar-track"><span class="session-bar-fill" style="width: 72%;"></span></div>
+              </div>
+              <div class="session-bar-row">
+                <div class="session-bar-lbl"><span>C-Bet HU</span><span>98.0%</span></div>
+                <div class="session-bar-track"><span class="session-bar-fill blue" style="width: 98%;"></span></div>
+              </div>
+              <div class="session-bar-row">
+                <div class="session-bar-lbl"><span>WTSD</span><span>22.0%</span></div>
+                <div class="session-bar-track"><span class="session-bar-fill amber" style="width: 22%;"></span></div>
+              </div>
+            </div>
+            <div class="session-card">
+              <h4>Session Intelligence</h4>
+              <p style="font-size:12px; line-height:1.5; color:var(--fg-muted); margin:0;">
+                <span style="color:var(--accent); font-weight:700;">Outstanding session.</span> Preflop ranges were followed perfectly. Value betting sizes were sized optimally.
+              </p>
+            </div>
+            <div class="session-card chart-card">
+              <h4>Cumulative bb progression</h4>
+              <div class="mini-chart-container" style="height: 100px; position: relative; margin-top: 10px;">
+                <svg class="mini-trend-svg" id="mini-trend-35" width="100%" height="100%" viewBox="0 0 200 100" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="mini-gradient-win-35" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.3"/>
+                      <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+                    </linearGradient>
+                    <linearGradient id="mini-gradient-loss-35" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="var(--loss)" stop-opacity="0.3"/>
+                      <stop offset="100%" stop-color="var(--loss)" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <line x1="0" y1="50" x2="200" y2="50" stroke="rgba(255,255,255,0.05)" stroke-dasharray="2,2"/>
+                  <path class="mini-trend-path" d="" fill="none" stroke="var(--accent)" stroke-width="2"/>
+                  <path class="mini-trend-area" d="" fill="url(#mini-gradient-win-35)" opacity="1"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      
+      <!-- Export Modal Backdrop -->
+      <div class="replay-modal-backdrop" id="export-backdrop" style="display: none; align-items: center; justify-content: center; z-index: 10000;">
+        <div class="replay-modal" style="max-width: 450px; width: 90%;">
+          <div class="replay-modal-header">
+            <span class="kick accent" id="export-modal-title">Exporting Database Ledger</span>
+            <button class="replay-modal-close" id="btn-close-export">&times;</button>
+          </div>
+          <div style="padding: 24px;">
+            <div class="export-progress-container" id="export-progress-area" style="margin-bottom: 20px;">
+              <div class="session-bar-lbl" style="margin-bottom: 8px;">
+                <span id="export-status-text" style="font-family: var(--mono); color: var(--accent);">Compiling hand history data...</span>
+                <span id="export-pct" style="font-family: var(--mono);">0%</span>
+              </div>
+              <div class="session-bar-track" style="height: 6px;">
+                <div class="session-bar-fill" id="export-progress-bar" style="width: 0%; background: var(--accent);"></div>
+              </div>
+            </div>
+            
+            <div class="terminal-log-window" id="export-terminal-logs" style="height: 120px; background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 6px; padding: 10px; font-family: var(--mono); font-size: 10px; color: #a2b4b7; overflow-y: auto; line-height: 1.5; margin-bottom: 20px;">
+              <!-- Simulated compilation logs -->
+            </div>
+            
+            <div id="export-success-msg" style="display: none; text-align: center; margin-top: 10px;">
+              <div style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; color: var(--accent); font-size: 24px;">✓</div>
+              <p style="font-size: 13px; color: var(--fg-muted); margin: 0;">Ledger file is ready for download.</p>
+              <button class="btn-reset-db" id="btn-download-file" style="margin-top: 15px; width: 100%; border: 1px solid var(--accent); background: rgba(0,240,255,0.1); color: var(--accent); font-family: var(--mono); font-size: 11px; padding: 8px; cursor: pointer; text-transform: uppercase;">Download File</button>
+            </div>
+          </div>
+        </div>
       </div>
     
     </section>

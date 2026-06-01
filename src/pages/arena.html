@@ -14,6 +14,11 @@
             <div class="hologram-felt-3d" id="arena-felt"></div>
             <canvas id="arena-felt-canvas"></canvas>
             
+            <!-- Hero Hole Cards on Hologram stage -->
+            <div class="arena-hole-cards" id="arena-hole-cards" style="position: absolute; display: flex; gap: 8px; z-index: 60; top: 110px; left: 50%; transform: translateX(-50%);">
+              <!-- Dealt cards injected dynamically -->
+            </div>
+            
             <!-- Dynamic feedback popup -->
             <div class="trainer-feedback-overlay" id="trainer-feedback">
               <h4 id="feedback-title">CORRECT</h4>
@@ -42,20 +47,53 @@
           
         </div>
         
-        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; padding: 20px;">
           <div>
             <span class="kick accent">Training telemetry</span>
-            <h3 style="font-family:var(--display); margin:12px 0 6px;">Fault Fixer</h3>
-            <p style="font-size:12px; line-height:1.55; color:var(--fg-muted); margin:0;">
-              This drill presents spots from your imported hands where you previously made GTO deviations. Master them to fix leaks.
+            <h3 style="font-family:var(--display); margin:8px 0 4px; font-size: 20px; font-weight:700;">Fault Fixer</h3>
+            <p style="font-size:11.5px; line-height:1.5; color:var(--fg-muted); margin:0;">
+              This drill deals real hands where you deviated from solver GTO preflop strategies. Repeat until compliance is 100%.
             </p>
+            
+            <!-- Streaks / Speed HUD -->
+            <div style="margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+              <div style="background: rgba(0,0,0,0.15); padding: 8px; border: 1px solid var(--border); border-radius: 6px; text-align: center;">
+                <span class="kick" style="font-size: 8px;">Streak</span>
+                <div style="font-family: var(--mono); font-weight: 700; font-size: 14px; color: var(--accent-2); margin-top: 2px;" id="arena-streak-val">0</div>
+              </div>
+              <div style="background: rgba(0,0,0,0.15); padding: 8px; border: 1px solid var(--border); border-radius: 6px; text-align: center;">
+                <span class="kick" style="font-size: 8px;">Best Streak</span>
+                <div style="font-family: var(--mono); font-weight: 700; font-size: 14px; color: var(--accent); margin-top: 2px;" id="arena-best-streak-val">0</div>
+              </div>
+            </div>
+
+            <!-- Time Limit Selector Controls -->
+            <div style="margin-top: 14px;">
+              <span class="kick" style="font-size: 8px;">Shot Clock Timer</span>
+              <div style="display: flex; gap: 4px; margin-top: 6px;" id="arena-speed-selector">
+                <button class="dock-btn active" style="font-size: 8.5px; padding: 2px 6px;" data-time="off">Off</button>
+                <button class="dock-btn" style="font-size: 8.5px; padding: 2px 6px;" data-time="15">15s</button>
+                <button class="dock-btn" style="font-size: 8.5px; padding: 2px 6px;" data-time="8">8s</button>
+              </div>
+            </div>
           </div>
           
-          <div style="border-top:1px solid var(--border); padding-top:14px;">
-            <span class="kick">Drill state</span>
-            <div style="font-family:var(--mono); font-size:11.5px; margin-top:6px; line-height:1.6;">
+          <div style="border-top:1px solid var(--border); padding-top:12px; margin-top:12px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+              <span class="kick">Drill state</span>
+              <span id="arena-timer-countdown" style="font-family: var(--mono); font-size: 10px; color: var(--loss); font-weight: 700;"></span>
+            </div>
+            <div style="font-family:var(--mono); font-size:11px; margin-top:6px; line-height:1.5;">
               Current spot: <b style="color:var(--accent);">BTN RFI</b><br>
-              Hand dealt: <b id="trainer-current-hand">AA</b>
+              Hand dealt: <b id="trainer-current-hand" style="font-size: 13px; color: #fff;">AA</b>
+            </div>
+          </div>
+
+          <!-- History Logs List -->
+          <div style="border-top:1px solid var(--border); padding-top:12px; margin-top:12px;">
+            <span class="kick">Action history log</span>
+            <div style="margin-top: 6px; display: flex; flex-direction: column; gap: 4px;" id="arena-history-log">
+              <div style="font-family: var(--mono); font-size: 9.5px; color: var(--fg-dim);">Drill started. No entries.</div>
             </div>
           </div>
         </div>

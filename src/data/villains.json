@@ -6,9 +6,10 @@
     "pfr": 12,
     "af": 1.1,
     "gap": 26,
-    "arch": "lag",
+    "arch": "passive",
     "label": "Fish",
-    "advice": "Stations river calls. Bluff rarely; value bet thin pairs heavily."
+    "advice": "Stations river calls. Bluff rarely; value bet thin pairs heavily.",
+    "tags": ["Showdown Station", "Passive"]
   },
   {
     "name": "nit_reg_37",
@@ -19,7 +20,8 @@
     "gap": 3,
     "arch": "passive",
     "label": "Nit",
-    "advice": "Folds to 3-bets at 80% rate. Attack their opens in late position constantly."
+    "advice": "Folds to 3-bets at 80% rate. Attack their opens in late position constantly.",
+    "tags": ["Fold to 3-Bet", "Tight"]
   },
   {
     "name": "solid_pro_scorza",
@@ -30,6 +32,91 @@
     "gap": 4,
     "arch": "reg",
     "label": "Solid Reg",
-    "advice": "Maintains GTO open baselines. Exploit via blind defense adjustments."
+    "advice": "Maintains GTO open baselines. Exploit via blind defense adjustments.",
+    "tags": ["GTO Capable", "Aggressive"]
+  },
+  {
+    "name": "villain_crusher",
+    "hands": 1150,
+    "vpip": 28,
+    "pfr": 23,
+    "af": 3.2,
+    "gap": 5,
+    "arch": "lag",
+    "label": "LAG Reg",
+    "advice": "Heavy 3-bettor from blinds. Tighten your BTN RFI range and 4-bet value hands.",
+    "tags": ["Nemesis", "3-Bet Happy"]
+  },
+  {
+    "name": "whale_caller",
+    "hands": 250,
+    "vpip": 54,
+    "pfr": 8,
+    "af": 0.8,
+    "gap": 46,
+    "arch": "passive",
+    "label": "Whale",
+    "advice": "Limp-calls preflop with 80% of hands. Isolate to 4x preflop, C-bet every flop.",
+    "tags": ["Limp Caller", "Station"]
+  },
+  {
+    "name": "loose_cannon",
+    "hands": 320,
+    "vpip": 44,
+    "pfr": 32,
+    "af": 4.1,
+    "gap": 12,
+    "arch": "lag",
+    "label": "Maniac",
+    "advice": "Over-bluffs postflop. Check-call top pairs and induce river jams. Never fold premium draws.",
+    "tags": ["Maniac", "Bluffer"]
+  },
+  {
+    "name": "sunday_grinder",
+    "hands": 1520,
+    "vpip": 22,
+    "pfr": 18,
+    "af": 2.2,
+    "gap": 4,
+    "arch": "reg",
+    "label": "Solid Reg",
+    "advice": "Tight preflop, respects large river action. Turn bluff-raises are effective here.",
+    "tags": ["Multi-tabler", "Respects Bets"]
+  },
+  {
+    "name": "shark_reg",
+    "hands": 980,
+    "vpip": 26,
+    "pfr": 22,
+    "af": 2.9,
+    "gap": 4,
+    "arch": "reg",
+    "label": "LAG Reg",
+    "advice": "Defends blinds wide. Steal smaller from BTN (2.0x) and check back low dry boards.",
+    "tags": ["Nemesis", "Wide Defender"]
+  },
+  {
+    "name": "muck_master",
+    "hands": 410,
+    "vpip": 18,
+    "pfr": 12,
+    "af": 1.6,
+    "gap": 6,
+    "arch": "passive",
+    "label": "Weak Tight",
+    "advice": "C-bets flop but folds to raises. Raise flop leads with backdoors to win pot.",
+    "tags": ["Weak Tight", "Flop Folder"]
+  },
+  {
+    "name": "tilt_machine",
+    "hands": 180,
+    "vpip": 35,
+    "pfr": 25,
+    "af": 3.6,
+    "gap": 10,
+    "arch": "lag",
+    "label": "Tilter",
+    "advice": "Opens wide under tilt pressure. Value bet big. Do not attempt to bluff him off pairs.",
+    "tags": ["Spewer", "Tilt Risk"]
   }
 ]

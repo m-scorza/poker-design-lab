@@ -112,4 +112,25 @@
   .solver-delta-row .delta-lbl.wider { color: var(--accent); }
   .solver-delta-row .delta-lbl.tighter { color: var(--loss); }
 
+  /* Flashing solver deviation overlay style */
+  @keyframes blink-border {
+    0%, 100% {
+      outline: 2px solid var(--loss);
+      outline-offset: -2px;
+      box-shadow: 0 0 8px rgba(255, 92, 138, 0.4);
+    }
+    50% {
+      outline: 1px solid rgba(255, 92, 138, 0.15);
+      outline-offset: -1px;
+      box-shadow: none;
+    }
+  }
+  .matrix-cell-node.blinking-deviation {
+    animation: blink-border 1.5s infinite;
+  }
+  .matrix-cell-node.mix-range {
+    background: rgba(255, 170, 0, 0.15);
+    color: #ffaa00;
+  }
+
   /* =========================================================*/

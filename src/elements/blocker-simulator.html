@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Blocker HUD Simulator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --bg-2: #0b0d12;
+      --bg-card: rgba(13, 17, 25, 0.65);
+      --border: rgba(255, 255, 255, 0.05);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --accent-2: #00FF87;
+      --accent-soft: rgba(0, 240, 255, 0.06);
+      --loss: #FF3B6B;
+      --fg: #f3f4f6;
+      --fg-muted: #8892b0;
+      --sans: 'Inter', -apple-system, sans-serif;
+      --display: 'Outfit', sans-serif;
+      --mono: 'Space Mono', monospace;
+    }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      overflow-x: hidden;
+    }
+    .container { max-width: 600px; width: 100%; z-index: 10; }
+    h1 { font-family: var(--display); font-weight: 700; text-align: center; margin-bottom: 10px; letter-spacing: -0.02em; }
+    p.intro { text-align: center; color: var(--fg-muted); margin-bottom: 30px; font-size: 13px; line-height: 1.5; }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-muted); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    }
+    .kick {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--fg-muted);
+    }
+    .kick.accent { color: var(--accent); }
+    .kick.accent-2 { color: var(--accent-2); }
+    
+    select {
+      width: 100%;
+      background: var(--bg-2);
+      border: 1px solid var(--border-strong);
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    select:focus {
+      border-color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Blocker HUD Simulator</h1>
+    <p class="intro">Calculates straight combinations blocked and nut flush draw blocker ratios in real time based on card choices.</p>
+    
+    <div class="card">
+      <span class="kick accent">Blocker Analysis HUD Simulator</span>
+      <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 14px;">
+        
+        <!-- Cards Selector -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div>
+            <label style="font-family: var(--mono); font-size: 9px; text-transform: uppercase; color: var(--fg-muted); display: block; margin-bottom: 6px;">Hero Hand</label>
+            <select id="blocker-hero-hand">
+              <option value="AsKs">A♠ K♠</option>
+              <option value="AhKh">A♥ K♥</option>
+              <option value="AcKc">A♣ K♣</option>
+              <option value="QQ">Q♥ Q♦</option>
+              <option value="JTs">J♦ T♦</option>
+              <option value="76s">7♠ 6♠</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-family: var(--mono); font-size: 9px; text-transform: uppercase; color: var(--fg-muted); display: block; margin-bottom: 6px;">Board Cards</label>
+            <select id="blocker-board">
+              <option value="JsTs4h">J♠ T♠ 4♥</option>
+              <option value="Qs9s2h">Q♠ 9♠ 2♥</option>
+              <option value="As8d3c">A♠ 8♦ 3♣</option>
+              <option value="KdQd2c">K♦ Q♦ 2♣</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Blocker Math Results -->
+        <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; padding: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div>
+            <span class="kick" style="font-size: 8px;">Nut Flush Draws Blocked</span>
+            <div id="blocker-flush-val" style="font-family: var(--mono); font-size: 18px; font-weight: 700; color: var(--accent); margin-top: 4px;">--</div>
+          </div>
+          <div>
+            <span class="kick" style="font-size: 8px;">Straight Combinations Blocked</span>
+            <div id="blocker-straight-val" style="font-family: var(--mono); font-size: 18px; font-weight: 700; color: var(--accent-2); margin-top: 4px;">--</div>
+          </div>
+          <div style="grid-column: span 2; border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px;">
+            <span class="kick" style="font-size: 8px;">Combinatorial Blocker Rating</span>
+            <div id="blocker-rating-desc" style="font-size: 11.5px; line-height: 1.5; color: var(--fg-muted); margin-top: 6px;">
+              Select cards to calculate blocker rating.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import gsap from 'gsap';
+
+    const heroSelect = document.getElementById('blocker-hero-hand');
+    const boardSelect = document.getElementById('blocker-board');
+
+    const updateBlockers = () => {
+      const handVal = heroSelect.value;
+      const boardVal = boardSelect.value;
+
+      const rankMap = "23456789TJQKA";
+      const suitNames = { s: '♠', h: '♥', d: '♦', c: '♣' };
+      
+      // Parse Hand
+      let handCards = [];
+      if (handVal === 'AsKs') handCards = ['As', 'Ks'];
+      else if (handVal === 'AhKh') handCards = ['Ah', 'Kh'];
+      else if (handVal === 'AcKc') handCards = ['Ac', 'Kc'];
+      else if (handVal === 'QQ') handCards = ['Qh', 'Qd'];
+      else if (handVal === 'JTs') handCards = ['Jd', 'Td'];
+      else if (handVal === '76s') handCards = ['7s', '6s'];
+
+      // Parse Board
+      let boardCards = [];
+      if (boardVal === 'JsTs4h') boardCards = ['Js', 'Ts', '4h'];
+      else if (boardVal === 'Qs9s2h') boardCards = ['Qs', '9s', '2h'];
+      else if (boardVal === 'As8d3c') boardCards = ['As', '8d', '3c'];
+      else if (boardVal === 'KdQd2c') boardCards = ['Kd', 'Qd', '2c'];
+
+      const flushValEl = document.getElementById('blocker-flush-val');
+      const straightValEl = document.getElementById('blocker-straight-val');
+      const descEl = document.getElementById('blocker-rating-desc');
+
+      // Check overlap
+      const overlapCard = handCards.find(c => boardCards.includes(c));
+      if (overlapCard) {
+        const formattedOverlap = overlapCard[0] + (suitNames[overlapCard[1]] || '');
+        flushValEl.innerText = 'Conflict';
+        straightValEl.innerText = 'Conflict';
+        descEl.innerHTML = `<span style="color: var(--loss); font-weight: 700;">Card Overlap:</span> Hero hand and board share the card <span style="color: #fff; font-weight:700;">${formattedOverlap}</span>. Choose a different board or hand.`;
+        return;
+      }
+
+      // Find flush draw suit on board
+      const boardSuits = boardCards.map(c => c[1]);
+      const suitCounts = {};
+      boardSuits.forEach(s => suitCounts[s] = (suitCounts[s] || 0) + 1);
+      let flushSuit = null;
+      for (const s in suitCounts) {
+        if (suitCounts[s] >= 2) {
+          flushSuit = s;
+          break;
+        }
+      }
+
+      // Calculate Nut Flush Blocked %
+      let flushValText = '0.0%';
+      if (flushSuit) {
+        const boardRanksOfSuit = boardCards.filter(c => c[1] === flushSuit).map(c => c[0]);
+        let nutRank = null;
+        for (let i = rankMap.length - 1; i >= 0; i--) {
+          const r = rankMap[i];
+          if (!boardRanksOfSuit.includes(r)) {
+            nutRank = r;
+            break;
+          }
+        }
+        const nutCard = nutRank + flushSuit;
+        const heroHasNut = handCards.includes(nutCard);
+        
+        if (heroHasNut) {
+          flushValText = '100%';
+        } else {
+          const heroSuitedCards = handCards.filter(c => c[1] === flushSuit).length;
+          if (heroSuitedCards === 1) {
+            flushValText = '10.0%';
+          } else if (heroSuitedCards === 2) {
+            flushValText = '20.0%';
+          } else {
+            flushValText = '0.0%';
+          }
+        }
+      } else {
+        flushValText = 'N/A';
+      }
+
+      // Straight calculations
+      function getRankVal(rankChar) {
+        return rankMap.indexOf(rankChar);
+      }
+
+      function hasStraight(ranksSet) {
+        for (let i = -1; i <= 8; i++) {
+          let count = 0;
+          for (let j = 0; j < 5; j++) {
+            let r = i + j;
+            if (r === -1) r = 12; // Ace
+            if (ranksSet.has(r)) count++;
+          }
+          if (count === 5) return true;
+        }
+        return false;
+      }
+
+      function isStraightDraw(ranksSet) {
+        if (hasStraight(ranksSet)) return false;
+        for (let r = 0; r < 13; r++) {
+          if (!ranksSet.has(r)) {
+            ranksSet.add(r);
+            const ok = hasStraight(ranksSet);
+            ranksSet.delete(r);
+            if (ok) return true;
+          }
+        }
+        return false;
+      }
+
+      const deck = [];
+      const suites = ['s', 'h', 'c', 'd'];
+      for (let r = 0; r < 13; r++) {
+        for (let s of suites) {
+          const cardStr = rankMap[r] + s;
+          if (!boardCards.includes(cardStr)) {
+            deck.push({ rank: r, suit: s, str: cardStr });
+          }
+        }
+      }
+
+      let totalStraightDrawCombos = 0;
+      let blockedStraightDrawCombos = 0;
+
+      for (let i = 0; i < deck.length; i++) {
+        for (let j = i + 1; j < deck.length; j++) {
+          const c1 = deck[i];
+          const c2 = deck[j];
+          
+          const combinedRanks = new Set();
+          boardCards.forEach(c => combinedRanks.add(getRankVal(c[0])));
+          combinedRanks.add(c1.rank);
+          combinedRanks.add(c2.rank);
+
+          if (isStraightDraw(combinedRanks)) {
+            totalStraightDrawCombos++;
+            if (handCards.includes(c1.str) || handCards.includes(c2.str)) {
+              blockedStraightDrawCombos++;
+            }
+          }
+        }
+      }
+
+      const straightValText = `${blockedStraightDrawCombos} combos`;
+
+      flushValEl.innerText = flushValText;
+      straightValEl.innerText = straightValText;
+
+      const handHtml = handCards.map(c => `${c[0]}<span style="font-size:12px; line-height:1;">${suitNames[c[1]]}</span>`).join(' ');
+      const boardHtml = boardCards.map(c => `${c[0]}<span style="font-size:12px; line-height:1;">${suitNames[c[1]]}</span>`).join(' ');
+
+      let ratingDesc = '';
+      const flushPercent = parseFloat(flushValText);
+      if (flushValText === '100%' || blockedStraightDrawCombos >= 15) {
+        ratingDesc = `Holding ${handHtml} blocks <span style="color: var(--accent); font-weight:700;">${flushValText}</span> of Villain's nut flush draws and <span style="color: var(--accent-2); font-weight:700;">${blockedStraightDrawCombos}</span> straight combinations on a ${boardHtml} board. Elite exploit capability.`;
+      } else if (flushPercent > 0 || blockedStraightDrawCombos > 5) {
+        ratingDesc = `Holding ${handHtml} blocks <span style="color: var(--accent); font-weight:700;">${flushValText}</span> of Villain's nut flush draws and <span style="color: var(--accent-2); font-weight:700;">${blockedStraightDrawCombos}</span> straight combinations on a ${boardHtml} board. Strong defensive blockers.`;
+      } else {
+        ratingDesc = `Holding ${handHtml} has minimal blocking impact on the ${boardHtml} board (<span style="color: var(--accent);">${flushValText}</span> nut flush, <span style="color: var(--accent-2);">${blockedStraightDrawCombos}</span> straight combos). Standard blocker profile.`;
+      }
+
+      descEl.innerHTML = ratingDesc;
+
+      // Animate layout entries slightly on change
+      gsap.fromTo([flushValEl, straightValEl, descEl], 
+        { opacity: 0, y: 5 }, 
+        { opacity: 1, y: 0, duration: 0.35, stagger: 0.05 }
+      );
+    };
+
+    heroSelect.addEventListener('change', updateBlockers);
+    boardSelect.addEventListener('change', updateBlockers);
+    updateBlockers();
+  </script>
+</body>
+</html>

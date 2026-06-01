@@ -1,10 +1,17 @@
 <section class="page" id="page-ranges">
       
-      <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px;">
         <h2 class="kick accent" style="margin:0;">Range compliance lab</h2>
-        <div class="ranges-tab-menu">
-          <button class="ranges-tab-btn active" data-mode="compliance">Compliance</button>
-          <button class="ranges-tab-btn" data-mode="edit">Edit Range</button>
+        <div style="display:flex; gap: 8px;">
+          <!-- Scenario Toggle -->
+          <div class="ranges-tab-menu" id="ranges-scenario-selector" style="margin: 0;">
+            <button class="ranges-tab-btn active" data-scenario="rfi">RFI Open</button>
+            <button class="ranges-tab-btn" data-scenario="pushfold">Push/Fold (10bb)</button>
+          </div>
+          <div class="ranges-tab-menu" style="margin: 0;">
+            <button class="ranges-tab-btn active" data-mode="compliance">Compliance</button>
+            <button class="ranges-tab-btn" data-mode="edit">Edit Range</button>
+          </div>
         </div>
       </div>
       
@@ -19,38 +26,94 @@
             <!-- Grid generated programmatically -->
           </div>
           
-          <div class="ranges-control-footer">
-            <div class="ranges-swatch-info">
-              <span><i class="play"></i>Played correctly</span>
-              <span><i class="dev"></i>Deviation spots</span>
+          <div class="ranges-control-footer" style="padding: 14px 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.1);">
+            <div class="ranges-swatch-info" style="display: flex; gap: 16px; align-items: center;">
+              <span style="display: flex; align-items: center; gap: 6px;"><i class="play" style="display: inline-block; width: 8px; height: 8px; background: var(--accent); border: 1px solid var(--accent); border-radius: 2px;"></i>Always Open</span>
+              <span style="display: flex; align-items: center; gap: 6px;"><i class="mix" style="display: inline-block; width: 8px; height: 8px; background: rgba(255,170,0,0.25); border: 1px solid #ffaa00; border-radius: 2px;"></i>Mixed Action</span>
+              <span style="display: flex; align-items: center; gap: 6px;"><i class="dev" style="display: inline-block; width: 8px; height: 8px; background: rgba(255,92,138,0.25); border: 1px solid var(--loss); border-radius: 2px;"></i>Deviation fold</span>
             </div>
-            <span class="kick" id="ranges-combos-lbl">169 combos</span>
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <input type="checkbox" id="toggle-deviations" checked style="cursor: pointer; width: 14px; height: 14px; accent-color: var(--accent);"/>
+                <label for="toggle-deviations" style="font-family: var(--mono); font-size: 10px; text-transform: uppercase; cursor: pointer; color: var(--fg-muted);">Solver Overlay</label>
+              </div>
+              <span class="kick" id="ranges-combos-lbl" style="font-size: 11px;">169 combos</span>
+            </div>
           </div>
         </div>
         
         <!-- Solver delta comparison list -->
-        <div class="card solver-delta-card">
+        <div class="card solver-delta-card" style="padding: 20px;">
           <span class="kick accent">Solver Delta Validation</span>
-          <div style="margin-top:14px;">
-            <div class="solver-delta-row">
-              <span class="pos-lbl">UTG Open</span>
-              <div class="val-group"><span class="ours">15.2%</span><span class="solver">15.0%</span></div>
-              <span class="delta-lbl wider">+0.2% OK</span>
+          <div style="margin-top:14px; display: flex; flex-direction: column; gap: 14px;">
+            <div id="validation-UTG">
+              <div style="display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:11px; margin-bottom:4px;">
+                <span class="pos-lbl" style="font-weight:700;">UTG Open</span>
+                <span class="delta-lbl val-delta" style="color: var(--accent-2);">+0.2% OK</span>
+              </div>
+              <div style="height: 6px; background: rgba(255,255,255,0.02); border-radius: 3px; overflow: hidden; display: flex;">
+                <span class="val-progress" style="width: 15.2%; background: var(--accent-2); height: 100%;"></span>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-family:var(--mono); font-size:9.5px; color:var(--fg-muted); margin-top:2px;">
+                <span class="val-player">Player: 15.2%</span>
+                <span class="val-solver">Solver: 15.0%</span>
+              </div>
             </div>
-            <div class="solver-delta-row">
-              <span class="pos-lbl">CO Open</span>
-              <div class="val-group"><span class="ours">28.4%</span><span class="solver">26.0%</span></div>
-              <span class="delta-lbl wider">+2.4% Wide</span>
+            
+            <div id="validation-HJ">
+              <div style="display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:11px; margin-bottom:4px;">
+                <span class="pos-lbl" style="font-weight:700;">HJ Open</span>
+                <span class="delta-lbl val-delta" style="color: var(--accent-2);">+0.0% OK</span>
+              </div>
+              <div style="height: 6px; background: rgba(255,255,255,0.02); border-radius: 3px; overflow: hidden; display: flex;">
+                <span class="val-progress" style="width: 20%; background: var(--accent-2); height: 100%;"></span>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-family:var(--mono); font-size:9.5px; color:var(--fg-muted); margin-top:2px;">
+                <span class="val-player">Player: 20.0%</span>
+                <span class="val-solver">Solver: 20.0%</span>
+              </div>
             </div>
-            <div class="solver-delta-row">
-              <span class="pos-lbl">BTN Open</span>
-              <div class="val-group"><span class="ours">58.0%</span><span class="solver">48.0%</span></div>
-              <span class="delta-lbl tighter">+10.0% Wide</span>
+
+            <div id="validation-CO">
+              <div style="display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:11px; margin-bottom:4px;">
+                <span class="pos-lbl" style="font-weight:700;">CO Open</span>
+                <span class="delta-lbl val-delta" style="color: #ffaa00;">+2.4% Wide</span>
+              </div>
+              <div style="height: 6px; background: rgba(255,255,255,0.02); border-radius: 3px; overflow: hidden; display: flex;">
+                <span class="val-progress" style="width: 28.4%; background: #ffaa00; height: 100%;"></span>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-family:var(--mono); font-size:9.5px; color:var(--fg-muted); margin-top:2px;">
+                <span class="val-player">Player: 28.4%</span>
+                <span class="val-solver">Solver: 26.0%</span>
+              </div>
             </div>
-            <div class="solver-delta-row">
-              <span class="pos-lbl">SB Open</span>
-              <div class="val-group"><span class="ours">38.0%</span><span class="solver">40.0%</span></div>
-              <span class="delta-lbl tighter">-2.0% Tight</span>
+            
+            <div id="validation-BTN">
+              <div style="display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:11px; margin-bottom:4px;">
+                <span class="pos-lbl" style="font-weight:700;">BTN Open</span>
+                <span class="delta-lbl val-delta" style="color: var(--loss); font-weight:700;">+10.0% Wide</span>
+              </div>
+              <div style="height: 6px; background: rgba(255,255,255,0.02); border-radius: 3px; overflow: hidden; display: flex;">
+                <span class="val-progress" style="width: 58%; background: var(--loss); height: 100%;"></span>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-family:var(--mono); font-size:9.5px; color:var(--fg-muted); margin-top:2px;">
+                <span class="val-player">Player: 58.0%</span>
+                <span class="val-solver">Solver: 48.0%</span>
+              </div>
+            </div>
+            
+            <div id="validation-SB">
+              <div style="display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:11px; margin-bottom:4px;">
+                <span class="pos-lbl" style="font-weight:700;">SB Open</span>
+                <span class="delta-lbl val-delta" style="color: #ffaa00;">-2.0% Tight</span>
+              </div>
+              <div style="height: 6px; background: rgba(255,255,255,0.02); border-radius: 3px; overflow: hidden; display: flex;">
+                <span class="val-progress" style="width: 38%; background: #ffaa00; height: 100%;"></span>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-family:var(--mono); font-size:9.5px; color:var(--fg-muted); margin-top:2px;">
+                <span class="val-player">Player: 38.0%</span>
+                <span class="val-solver">Solver: 40.0%</span>
+              </div>
             </div>
           </div>
         </div>

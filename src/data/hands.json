@@ -8,27 +8,64 @@
     "action": "raise",
     "net": "+8.5bb",
     "compliant": true,
-    "suits": [
-      "♠",
-      "♠"
-    ]
+    "suits": ["♠", "♠"],
+    "buyIn": "$1.10",
+    "gtoAccuracy": "100%"
   },
   {
     "id": "12853",
-    "cards": "Kh Qs",
-    "pos": "CO",
-    "scenario": "RFI",
-    "stack": "45bb",
-    "action": "fold",
-    "net": "0.0bb",
+    "cards": "Kh Kc",
+    "pos": "SB",
+    "scenario": "VS_OPEN",
+    "stack": "40bb",
+    "action": "3bet",
+    "net": "+22.0bb",
     "compliant": true,
-    "suits": [
-      "♥",
-      "♠"
-    ]
+    "suits": ["♥", "♣"],
+    "buyIn": "$1.10",
+    "gtoAccuracy": "98%"
   },
   {
     "id": "12852",
+    "cards": "Qd Jd",
+    "pos": "BTN",
+    "scenario": "RFI",
+    "stack": "12bb",
+    "action": "raise",
+    "net": "+4.5bb",
+    "compliant": true,
+    "suits": ["♦", "♦"],
+    "buyIn": "$0.55",
+    "gtoAccuracy": "95%"
+  },
+  {
+    "id": "12851",
+    "cards": "Tc 7d",
+    "pos": "BTN",
+    "scenario": "RFI",
+    "stack": "100bb",
+    "action": "raise",
+    "net": "-2.5bb",
+    "compliant": false,
+    "suits": ["♣", "♦"],
+    "buyIn": "$1.10",
+    "gtoAccuracy": "32%"
+  },
+  {
+    "id": "12850",
+    "cards": "As 8h",
+    "pos": "SB",
+    "scenario": "VS_OPEN",
+    "stack": "35bb",
+    "action": "call",
+    "net": "-3.5bb",
+    "compliant": false,
+    "suits": ["♠", "♥"],
+    "buyIn": "$2.20",
+    "gtoAccuracy": "40%"
+  },
+  {
+    "id": "12849",
     "cards": "7d 6d",
     "pos": "BB",
     "scenario": "VS_OPEN",
@@ -36,37 +73,125 @@
     "action": "call",
     "net": "-1.0bb",
     "compliant": true,
-    "suits": [
-      "♦",
-      "♦"
-    ]
+    "suits": ["♦", "♦"],
+    "buyIn": "$1.10",
+    "gtoAccuracy": "92%"
   },
   {
-    "id": "12851",
-    "cards": "Qc Jc",
-    "pos": "BTN",
+    "id": "12848",
+    "cards": "Ac Kc",
+    "pos": "UTG",
+    "scenario": "RFI",
+    "stack": "100bb",
+    "action": "raise",
+    "net": "+14.5bb",
+    "compliant": true,
+    "suits": ["♣", "♣"],
+    "buyIn": "$1.10",
+    "gtoAccuracy": "100%"
+  },
+  {
+    "id": "12847",
+    "cards": "Kh Js",
+    "pos": "CO",
+    "scenario": "VS_OPEN",
+    "stack": "15bb",
+    "action": "fold",
+    "net": "0.0bb",
+    "compliant": true,
+    "suits": ["♥", "♠"],
+    "buyIn": "$1.10",
+    "gtoAccuracy": "90%"
+  },
+  {
+    "id": "12846",
+    "cards": "9d 7c",
+    "pos": "HJ",
     "scenario": "RFI",
     "stack": "50bb",
     "action": "raise",
-    "net": "+14.2bb",
-    "compliant": true,
-    "suits": [
-      "♣",
-      "♣"
-    ]
+    "net": "-1.5bb",
+    "compliant": false,
+    "suits": ["♦", "♣"],
+    "buyIn": "$0.55",
+    "gtoAccuracy": "60%"
   },
   {
-    "id": "12850",
-    "cards": "Ad 5o",
-    "pos": "SB",
+    "id": "12845",
+    "cards": "Jh Th",
+    "pos": "BTN",
+    "scenario": "RFI",
+    "stack": "80bb",
+    "action": "raise",
+    "net": "+12.1bb",
+    "compliant": true,
+    "suits": ["♥", "♥"],
+    "buyIn": "$1.10",
+    "gtoAccuracy": "94%"
+  },
+  {
+    "id": "12844",
+    "cards": "2s 2c",
+    "pos": "UTG",
+    "scenario": "RFI",
+    "stack": "45bb",
+    "action": "fold",
+    "net": "0.0bb",
+    "compliant": true,
+    "suits": ["♠", "♣"],
+    "buyIn": "$2.20",
+    "gtoAccuracy": "88%"
+  },
+  {
+    "id": "12843",
+    "cards": "5h 4h",
+    "pos": "BB",
     "scenario": "VS_OPEN",
-    "stack": "32bb",
-    "action": "call",
-    "net": "-3.5bb",
+    "stack": "18bb",
+    "action": "fold",
+    "net": "-1.0bb",
     "compliant": false,
-    "suits": [
-      "♦",
-      "♥"
-    ]
+    "suits": ["♥", "♥"],
+    "buyIn": "$1.10",
+    "gtoAccuracy": "75%"
+  },
+  {
+    "id": "12842",
+    "cards": "Qd As",
+    "pos": "HJ",
+    "scenario": "RFI",
+    "stack": "60bb",
+    "action": "raise",
+    "net": "+6.2bb",
+    "compliant": true,
+    "suits": ["♦", "♠"],
+    "buyIn": "$1.10",
+    "gtoAccuracy": "96%"
+  },
+  {
+    "id": "12841",
+    "cards": "Ac 2c",
+    "pos": "BTN",
+    "scenario": "VS_OPEN",
+    "stack": "30bb",
+    "action": "raise",
+    "net": "+18.5bb",
+    "compliant": true,
+    "suits": ["♣", "♣"],
+    "buyIn": "$1.10",
+    "gtoAccuracy": "95%"
+  },
+  {
+    "id": "12840",
+    "cards": "Ts 9d",
+    "pos": "BB",
+    "scenario": "VS_OPEN",
+    "stack": "10bb",
+    "action": "fold",
+    "net": "-1.0bb",
+    "compliant": true,
+    "suits": ["♠", "♦"],
+    "buyIn": "$1.10",
+    "gtoAccuracy": "92%"
   }
 ]

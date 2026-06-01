@@ -1,8 +1,8 @@
 <section class="page" id="page-villains">
       
       <div class="opponent-search-bar">
-        <input type="text" id="villains-search-input" placeholder="Search opponent by name..." />
-        <div class="ranges-tab-menu" id="villains-filter-dock">
+        <input type="text" id="villains-search-input" placeholder="Search opponent by name..." style="width: 250px;"/>
+        <div class="ranges-tab-menu" id="villains-filter-dock" style="margin: 0;">
           <button class="ranges-tab-btn active" data-filter="all">All type</button>
           <button class="ranges-tab-btn" data-filter="lag">LAG</button>
           <button class="ranges-tab-btn" data-filter="passive">Passive</button>
@@ -10,8 +10,19 @@
         </div>
       </div>
       
-      <div class="opponents-cards-grid" id="villains-grid">
-        <!-- Cards generated programmatically in JS -->
+      <div class="villains-main-layout">
+        <!-- Opponents grid (left) -->
+        <div class="opponents-cards-grid" id="villains-grid">
+          <!-- Cards generated programmatically in JS -->
+        </div>
+        
+        <!-- Detail panel (right) -->
+        <div class="opponent-detail-card" id="villain-detail-panel">
+          <div style="text-align: center; padding: 60px 0; color: var(--fg-muted);">
+            <div style="font-size: 32px; margin-bottom: 12px; opacity: 0.6;">🗂</div>
+            <span style="font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;">Select an opponent to inspect dossier</span>
+          </div>
+        </div>
       </div>
     
     </section>
