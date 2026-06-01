@@ -20,6 +20,7 @@ export default defineConfig({
         'src/elements/trendline-morph': resolve(__dirname, 'src/elements/trendline-morph.html'),
         'src/elements/blocker-simulator': resolve(__dirname, 'src/elements/blocker-simulator.html'),
         'src/elements/abi-evolution': resolve(__dirname, 'src/elements/abi-evolution.html'),
+        'src/elements/calendar-heatmap': resolve(__dirname, 'src/elements/calendar-heatmap.html'),
         'src/elements/replayer': resolve(__dirname, 'src/elements/replayer.html'),
       },
     },

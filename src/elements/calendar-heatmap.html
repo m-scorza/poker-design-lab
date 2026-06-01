@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Session Calendar Heatmap</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --bg-2: #0b0d12;
+      --bg-card: rgba(13, 17, 25, 0.65);
+      --border: rgba(255, 255, 255, 0.05);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --pos: #5ec98f;
+      --loss: #ef7c74;
+      --fg: #f3f4f6;
+      --fg-muted: #8892b0;
+      --fg-3: #6b7390;
+      --fg-4: #4a5070;
+      --sans: 'Inter', -apple-system, sans-serif;
+      --display: 'Outfit', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      overflow-x: hidden;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-muted); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { max-width: 920px; width: 100%; }
+    h1 { font-family: var(--display); font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; text-align: center; }
+    .sub { color: var(--fg-muted); text-align: center; margin: 0 0 32px; font-size: 14px; }
+
+    .cal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 26px;
+      backdrop-filter: blur(8px);
+    }
+    .cal-h { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; flex-wrap: wrap; }
+    .cal-h h3 { margin: 0; font-size: 11px; font-family: var(--mono); color: var(--fg); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; }
+    .cal-h .note { font-family: var(--mono); font-size: 11px; color: var(--fg-3); }
+    .cal-h .legend { margin-left: auto; display: flex; gap: 12px; align-items: center; font-family: var(--mono); font-size: 10.5px; color: var(--fg-3); }
+    .cal-h .legend .sw { display: inline-flex; align-items: center; gap: 4px; }
+    .cal-h .legend .sw i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+    .cal-grid { display: grid; grid-template-columns: 32px repeat(35, 1fr); gap: 4px; }
+    .cal-day-label { font-family: var(--mono); font-size: 9.5px; color: var(--fg-4); display: flex; align-items: center; padding-right: 6px; height: 18px; }
+    .cal-cell { aspect-ratio: 1; border-radius: 2px; background: rgba(255,255,255,0.04); cursor: pointer; position: relative; transition: transform 0.12s ease, outline-color 0.12s ease; outline: 1px solid transparent; }
+    .cal-cell:hover { outline-color: var(--accent); transform: scale(1.18); z-index: 2; }
+    .cal-cell.empty { background: transparent; cursor: default; }
+    .cal-cell.empty:hover { outline-color: transparent; transform: none; }
+    .cal-cell.win1 { background: rgba(94,201,143,0.18); }
+    .cal-cell.win2 { background: rgba(94,201,143,0.38); }
+    .cal-cell.win3 { background: rgba(94,201,143,0.62); }
+    .cal-cell.win4 { background: rgba(94,201,143,0.88); }
+    .cal-cell.loss1 { background: rgba(239,124,116,0.20); }
+    .cal-cell.loss2 { background: rgba(239,124,116,0.45); }
+    .cal-cell.loss3 { background: rgba(239,124,116,0.70); }
+    .cal-cell.flat { background: rgba(255,255,255,0.12); }
+    .cal-month-row { display: grid; grid-template-columns: 32px repeat(35, 1fr); gap: 4px; margin-top: 10px; font-family: var(--mono); font-size: 9.5px; color: var(--fg-4); }
+    .cal-month-row span { grid-column: span 5; text-transform: uppercase; letter-spacing: 0.08em; }
+    .cal-month-row .spacer { grid-column: span 0; }
+
+    .cal-tip {
+      position: fixed; pointer-events: none; z-index: 50;
+      background: #0d1119; border: 1px solid var(--border-strong);
+      border-radius: 8px; padding: 8px 12px; font-family: var(--mono); font-size: 11px;
+      color: var(--fg); white-space: nowrap; opacity: 0; transform: translateY(4px);
+      transition: opacity 0.1s ease, transform 0.1s ease; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+    .cal-tip.show { opacity: 1; transform: translateY(0); }
+    .cal-tip .net { font-weight: 700; }
+    .cal-tip .net.pos { color: var(--pos); }
+    .cal-tip .net.neg { color: var(--loss); }
+    .cal-tip .meta { color: var(--fg-3); margin-top: 2px; }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Session Calendar Heatmap</h1>
+    <p class="sub">Last 8 months · density encodes volume, color encodes net result. Hover any day for its session detail.</p>
+
+    <div class="cal-card">
+      <div class="cal-h">
+        <h3>Session Calendar</h3>
+        <span class="note">density = volume · color = net result</span>
+        <div class="legend">
+          <span class="sw"><i style="background: rgba(239,124,116,0.70);"></i>−$5+</span>
+          <span class="sw"><i style="background: rgba(239,124,116,0.20);"></i>loss</span>
+          <span class="sw"><i class="cal-cell flat"></i>flat</span>
+          <span class="sw"><i style="background: rgba(94,201,143,0.38);"></i>win</span>
+          <span class="sw"><i style="background: rgba(94,201,143,0.88);"></i>+$5+</span>
+        </div>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+      <div class="cal-month-row" id="cal-months"></div>
+    </div>
+  </div>
+  <div class="cal-tip" id="cal-tip"></div>
+
+  <script>
+    (function () {
+      const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+      const MONTHS = ['Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'];
+      const WEEKS = 35;
+      const grid = document.getElementById('cal-grid');
+      const tip = document.getElementById('cal-tip');
+
+      // Deterministic PRNG so the heatmap is stable across reloads.
+      function mulberry32(a) {
+        return function () {
+          a |= 0; a = (a + 0x6D2B79F5) | 0;
+          let t = Math.imul(a ^ (a >>> 15), 1 | a);
+          t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+      }
+      const rand = mulberry32(0x5C0721);
+
+      // Map a synthetic net value (in $) to a cell class.
+      function classFor(net) {
+        if (net === null) return 'empty';
+        if (net === 0) return 'flat';
+        if (net > 0) return net >= 5 ? 'win4' : net >= 2 ? 'win3' : net >= 0.5 ? 'win2' : 'win1';
+        return net <= -5 ? 'loss3' : net <= -1.5 ? 'loss2' : 'loss1';
+      }
+
+      function buildDay(net, weekIdx, dayName) {
+        const cell = document.createElement('div');
+        const cls = classFor(net);
+        cell.className = 'cal-cell ' + cls;
+        if (cls === 'empty') return cell;
+        // ~ map week index across the 8 months for the tooltip date label.
+        const month = MONTHS[Math.min(MONTHS.length - 1, Math.floor((weekIdx / WEEKS) * MONTHS.length))];
+        const dom = 1 + (weekIdx % 4) * 7 + DAYS.indexOf(dayName);
+        const tourneys = 1 + Math.floor(Math.abs(net) * 1.4 + rand() * 5);
+        const itm = 25 + Math.floor(rand() * 40);
+        cell.dataset.date = `${dom} ${month}`;
+        cell.dataset.net = net.toFixed(2);
+        cell.dataset.tourneys = tourneys;
+        cell.dataset.itm = itm;
+        return cell;
+      }
+
+      DAYS.forEach((dayName, dayRow) => {
+        const label = document.createElement('div');
+        label.className = 'cal-day-label';
+        label.textContent = dayName;
+        grid.appendChild(label);
+        for (let w = 0; w < WEEKS; w++) {
+          const r = rand();
+          let net;
+          if (r < 0.34) net = null;            // no session that day
+          else if (r < 0.40) net = 0;          // flat
+          else if (r < 0.52) net = -(rand() * 7).toFixed(2) * 1; // a loss
+          else net = (rand() * 8).toFixed(2) * 1; // a win — wins more common
+          grid.appendChild(buildDay(net, w, dayName));
+        }
+      });
+
+      // Month row: 7 labels, each spanning 5 week-columns, offset past the day-label column.
+      const monthsRow = document.getElementById('cal-months');
+      const lead = document.createElement('span');
+      lead.style.gridColumn = '1';
+      monthsRow.appendChild(lead);
+      MONTHS.slice(0, 7).forEach((m) => {
+        const s = document.createElement('span');
+        s.textContent = m;
+        monthsRow.appendChild(s);
+      });
+
+      // Tooltip wiring.
+      grid.addEventListener('mouseover', (e) => {
+        const cell = e.target.closest('.cal-cell');
+        if (!cell || cell.classList.contains('empty') || !cell.dataset.date) { tip.classList.remove('show'); return; }
+        const net = parseFloat(cell.dataset.net);
+        const sign = net > 0 ? 'pos' : net < 0 ? 'neg' : '';
+        const netStr = net === 0 ? 'flat' : (net > 0 ? '+' : '−') + '$' + Math.abs(net).toFixed(2);
+        tip.innerHTML = `<div><span class="net ${sign}">${netStr}</span> · ${cell.dataset.date}</div>`
+          + `<div class="meta">${cell.dataset.tourneys} tourneys · ${cell.dataset.itm}% ITM</div>`;
+        tip.classList.add('show');
+      });
+      grid.addEventListener('mousemove', (e) => {
+        tip.style.left = Math.min(window.innerWidth - tip.offsetWidth - 12, e.clientX + 14) + 'px';
+        tip.style.top = (e.clientY - tip.offsetHeight - 12) + 'px';
+      });
+      grid.addEventListener('mouseleave', () => tip.classList.remove('show'));
+    })();
+  </script>
+</body>
+</html>
