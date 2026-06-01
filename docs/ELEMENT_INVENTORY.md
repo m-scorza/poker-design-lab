@@ -46,6 +46,7 @@ status calls; Claude defaults new bricks to `new`.
 | Cyber Neon Buttons (4 variants) | `cyber-btn.html` | Buttons & CTAs | new | `archive/sandboxes/design_sandbox_v2.html` |
 | 3D Perspective Tilt | `tilt.html` | Cards & Surfaces | keep | carried-forward |
 | Neon Draw Border | `border-glow.html` | Cards & Surfaces | keep | carried-forward |
+| Spotlight Gradient Cards | `spotlight-card.html` | Cards & Surfaces | new | net-new (cursor-tracked radial) |
 | Radar HUD Rings | `radar-hud.html` | Data Viz | keep | carried-forward |
 | Trendline Path Morph | `trendline-morph.html` | Data Viz | new | net-new (Antigravity) |
 | Stakes ABI Evolution | `abi-evolution.html` | Data Viz | new | net-new (Antigravity) |

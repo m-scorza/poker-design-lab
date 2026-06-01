@@ -25,6 +25,7 @@ export default defineConfig({
         'src/elements/leak-card-gauge': resolve(__dirname, 'src/elements/leak-card-gauge.html'),
         'src/elements/hand-replay-felt': resolve(__dirname, 'src/elements/hand-replay-felt.html'),
         'src/elements/aurora-bg': resolve(__dirname, 'src/elements/aurora-bg.html'),
+        'src/elements/spotlight-card': resolve(__dirname, 'src/elements/spotlight-card.html'),
         'src/elements/scramble': resolve(__dirname, 'src/elements/scramble.html'),
         'src/elements/radar-hud': resolve(__dirname, 'src/elements/radar-hud.html'),
         'src/elements/trendline-morph': resolve(__dirname, 'src/elements/trendline-morph.html'),

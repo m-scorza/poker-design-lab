@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Spotlight Gradient Cards</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --panel: rgba(13, 17, 25, 0.6);
+      --border: rgba(255, 255, 255, 0.07);
+      --accent: #00F0FF;
+      --pos: #5ec98f;
+      --money: #d8b066;
+      --fg: #f3f4f6;
+      --fg-3: #8892b0;
+      --fg-4: #5a607a;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-3); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { width: 100%; max-width: 860px; }
+    h1 { font-family: var(--display); font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; text-align: center; }
+    .sub { color: var(--fg-3); text-align: center; margin: 0 0 32px; font-size: 14px; }
+
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    /* the spotlight card: a radial highlight + border-glow tracks the cursor via --mx/--my */
+    .scard {
+      --mx: 50%; --my: 50%;
+      position: relative; border-radius: 16px; padding: 1px; /* padding hosts the gradient border */
+      background: var(--border);
+      transition: transform 0.18s ease;
+    }
+    .scard::before { /* the glowing border, revealed near the cursor */
+      content: ''; position: absolute; inset: 0; border-radius: 16px; padding: 1px; pointer-events: none;
+      background: radial-gradient(220px circle at var(--mx) var(--my), var(--glow, rgba(0,240,255,0.8)), transparent 45%);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      opacity: 0; transition: opacity 0.25s;
+    }
+    .scard:hover { transform: translateY(-3px); }
+    .scard:hover::before { opacity: 1; }
+    .scard .inner {
+      position: relative; border-radius: 15px; padding: 22px; height: 100%;
+      background: var(--panel); backdrop-filter: blur(8px); overflow: hidden;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .scard .inner::after { /* the interior spotlight wash */
+      content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.25s;
+      background: radial-gradient(300px circle at var(--mx) var(--my), color-mix(in srgb, var(--glow, var(--accent)) 14%, transparent), transparent 55%);
+    }
+    .scard:hover .inner::after { opacity: 1; }
+
+    .scard .tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-3); position: relative; z-index: 1; }
+    .scard .big { font-family: var(--mono); font-size: 28px; font-weight: 500; font-variant-numeric: tabular-nums; position: relative; z-index: 1; line-height: 1; }
+    .scard .big.cy { color: var(--accent); } .scard .big.pos { color: var(--pos); } .scard .big.money { color: var(--money); }
+    .scard .desc { font-size: 12.5px; color: var(--fg-4); position: relative; z-index: 1; line-height: 1.5; }
+    .hint { text-align: center; font-family: var(--mono); font-size: 10.5px; color: var(--fg-4); margin-top: 22px; letter-spacing: 0.04em; }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Spotlight Gradient Cards</h1>
+    <p class="sub">A radial highlight and a revealed gradient border track the cursor across each surface. One pointer handler drives every card via CSS custom properties.</p>
+
+    <div class="grid" id="grid">
+      <div class="scard" style="--glow: rgba(0,240,255,0.85);">
+        <div class="inner"><span class="tag">VPIP / PFR</span><span class="big cy">26 / 21</span><span class="desc">Voluntarily-in vs. raise-first gap stays tight — aggression in line with the game plan.</span></div>
+      </div>
+      <div class="scard" style="--glow: rgba(94,201,143,0.85);">
+        <div class="inner"><span class="tag">Compliance</span><span class="big pos">91.4%</span><span class="desc">In-range preflop decisions across all positions this sample.</span></div>
+      </div>
+      <div class="scard" style="--glow: rgba(216,176,102,0.9);">
+        <div class="inner"><span class="tag">Lucro vitalício</span><span class="big money">$2,847</span><span class="desc">Net result over 318 tracked tournaments — trending up 14%.</span></div>
+      </div>
+      <div class="scard" style="--glow: rgba(124,108,254,0.85);">
+        <div class="inner"><span class="tag">C-bet HU</span><span class="big" style="color:#a99bff;">71%</span><span class="desc">Heads-up flop continuation — target is 100%, the biggest open leak.</span></div>
+      </div>
+      <div class="scard" style="--glow: rgba(247,108,254,0.8);">
+        <div class="inner"><span class="tag">ITM %</span><span class="big" style="color:#f4a0f8;">41.9%</span><span class="desc">In-the-money rate vs. a 34% field average.</span></div>
+      </div>
+      <div class="scard" style="--glow: rgba(0,240,255,0.85);">
+        <div class="inner"><span class="tag">ROI</span><span class="big cy">38.4%</span><span class="desc">Return on investment, buy-in weighted across stakes.</span></div>
+      </div>
+    </div>
+    <p class="hint" id="hint">move o cursor sobre os cards</p>
+  </div>
+
+  <script>
+    (function () {
+      const cards = [...document.querySelectorAll('.scard')];
+      // single delegated pointer handler; each card reads its own bounding rect
+      function move(e) {
+        for (const card of cards) {
+          const r = card.getBoundingClientRect();
+          // only update cards under/near the pointer to skip offscreen math
+          if (e.clientX < r.left - 40 || e.clientX > r.right + 40 || e.clientY < r.top - 40 || e.clientY > r.bottom + 40) continue;
+          card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+          card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+        }
+      }
+      window.addEventListener('pointermove', move, { passive: true });
+    })();
+  </script>
+</body>
+</html>
