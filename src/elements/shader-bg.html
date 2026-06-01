@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - OBSIDIAN WebGL Shader Backdrop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --bg-2: #0b0d12;
+      --bg-card: rgba(13, 17, 25, 0.65);
+      --border: rgba(255, 255, 255, 0.05);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --accent-soft: rgba(0, 240, 255, 0.06);
+      --fg: #f3f4f6;
+      --fg-muted: #8892b0;
+      --fg-dim: #3a3f50;
+      --sans: 'Inter', -apple-system, sans-serif;
+      --display: 'Outfit', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+    html, body { height: 100%; }
+    body {
+      margin: 0; padding: 60px;
+      background: #010103;
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      overflow-x: hidden;
+    }
+    .container { max-width: 720px; width: 100%; text-align: center; z-index: 10; position: relative; }
+    h1 { font-family: var(--display); font-weight: 700; margin-bottom: 18px; letter-spacing: -0.02em; }
+    p { color: var(--fg-muted); line-height: 1.6; }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-muted); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+
+    #shader-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; display: block; background: transparent; }
+
+    .panel {
+      margin-top: 28px;
+      display: inline-flex; gap: 18px; flex-wrap: wrap; justify-content: center;
+    }
+    .chip {
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+      color: var(--fg-muted); padding: 10px 16px; border-radius: 8px;
+      border: 1px solid var(--border); background: rgba(8,10,16,0.5);
+      backdrop-filter: blur(4px);
+    }
+    .chip b { color: var(--accent); }
+    .fallback { display: none; color: #FFB020; font-family: var(--mono); font-size: 12px; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <canvas id="shader-bg" aria-hidden="true"></canvas>
+  <div class="container">
+    <h1>OBSIDIAN WebGL Backdrop</h1>
+    <p>A cinematic fragment-shader field: deep near-black FBM haze, a soft <b style="color:#8a86d6">indigo</b> light that
+      tracks your cursor, and a fixed <b style="color:#c79a4a">brass</b> warmth anchor in the lower-left. Additive blending,
+      DPR-capped at 1.5×, vignette + dither, and the render loop pauses when the tab is hidden.</p>
+    <div class="panel">
+      <span class="chip">blend · <b>additive</b></span>
+      <span class="chip">light · <b>cursor-tracked</b></span>
+      <span class="chip">fbm · <b>5 octaves</b></span>
+    </div>
+    <div class="fallback" id="fallback">WebGL unavailable — shader backdrop disabled.</div>
+  </div>
+  <script>
+    // OBSIDIAN cinematic WebGL backdrop — adapted from archive/legacy_dashboards/shader-bg.js
+    (function () {
+      const canvas = document.getElementById('shader-bg');
+      const gl = canvas.getContext('webgl', { antialias: true, alpha: true, depth: false, premultipliedAlpha: true, preserveDrawingBuffer: true });
+      if (!gl) { document.getElementById('fallback').style.display = 'block'; return; }
+
+      const VERT = 'attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }';
+      const FRAG = [
+        'precision highp float;',
+        'uniform vec2 res;',
+        'uniform float t;',
+        'uniform vec2 mouse;',
+        'float hash(vec2 p){ p = fract(p*vec2(123.34,345.45)); p += dot(p, p+34.345); return fract(p.x*p.y); }',
+        'float noise(vec2 p){',
+        '  vec2 i = floor(p), f = fract(p);',
+        '  f = f*f*(3.0-2.0*f);',
+        '  float a = hash(i), b = hash(i+vec2(1.0,0.0)), c = hash(i+vec2(0.0,1.0)), d = hash(i+vec2(1.0,1.0));',
+        '  return mix(mix(a,b,f.x), mix(c,d,f.x), f.y);',
+        '}',
+        'float fbm(vec2 p){ float s=0.0, a=0.5; for(int i=0;i<5;i++){ s += a*noise(p); p *= 2.03; a *= 0.5; } return s; }',
+        'void main(){',
+        '  vec2 uv = (gl_FragCoord.xy - 0.5*res) / res.y;',
+        '  float time = t*0.012;',
+        '  vec2 q = vec2(fbm(uv*0.9 + vec2(0.0, time)), fbm(uv*0.9 + vec2(4.2,1.3) - time));',
+        '  float f = fbm(uv*0.9 + 1.3*q + time*0.4);',
+        '  vec3 add = vec3(0.0);',
+        '  add += vec3(0.085,0.09,0.20) * smoothstep(0.45, 0.97, f) * 0.6;',
+        '  add += vec3(0.05,0.06,0.12) * smoothstep(0.40, 0.9, q.y) * 0.32;',
+        '  float md = length((uv - mouse));',
+        '  float glow = exp(-md*md*1.7);',
+        '  float halo = exp(-md*md*0.34);',
+        '  add += vec3(0.34,0.31,0.74) * glow * (0.52 + 0.48*f);',
+        '  add += vec3(0.13,0.12,0.30) * halo * 0.48;',
+        '  vec2 brassP = vec2(-0.78, -0.46);',
+        '  float bd = length((uv - brassP));',
+        '  float bglow = exp(-bd*bd*0.6);',
+        '  add += vec3(0.30,0.22,0.085) * bglow * (0.30 + 0.30*q.x);',
+        '  float vig = smoothstep(1.75, 0.3, length(uv*vec2(0.8,1.0)));',
+        '  add *= mix(0.68, 1.0, vig);',
+        '  add += (hash(gl_FragCoord.xy + t) - 0.5) * 0.011;',
+        '  gl_FragColor = vec4(max(add, 0.0), 1.0);',
+        '}'
+      ].join('\n');
+
+      function compile(type, src) {
+        const sh = gl.createShader(type);
+        gl.shaderSource(sh, src); gl.compileShader(sh);
+        if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) { console.warn('shader-bg:', gl.getShaderInfoLog(sh)); return null; }
+        return sh;
+      }
+      const vs = compile(gl.VERTEX_SHADER, VERT), fs = compile(gl.FRAGMENT_SHADER, FRAG);
+      if (!vs || !fs) { document.getElementById('fallback').style.display = 'block'; return; }
+      const prog = gl.createProgram();
+      gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
+      gl.useProgram(prog);
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.ONE, gl.ONE);
+
+      const buf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+      const loc = gl.getAttribLocation(prog, 'p');
+      gl.enableVertexAttribArray(loc);
+      gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+      const uRes = gl.getUniformLocation(prog, 'res');
+      const uT = gl.getUniformLocation(prog, 't');
+      const uMouse = gl.getUniformLocation(prog, 'mouse');
+
+      const DPR = Math.min(window.devicePixelRatio || 1, 1.5);
+      function resize() {
+        const w = Math.floor(innerWidth * DPR), h = Math.floor(innerHeight * DPR);
+        if (canvas.width !== w || canvas.height !== h) {
+          canvas.width = w; canvas.height = h;
+          gl.viewport(0, 0, w, h);
+        }
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      const tgt = [0.55, 0.32], cur = [0.55, 0.32];
+      let hasMouse = false;
+      function toUv(clientX, clientY) {
+        const w = canvas.width, h = canvas.height;
+        const px = clientX * DPR, py = clientY * DPR;
+        return [(px - 0.5*w)/h, ((h - py) - 0.5*h)/h];
+      }
+      window.addEventListener('pointermove', function (e) {
+        hasMouse = true;
+        const u = toUv(e.clientX, e.clientY);
+        tgt[0] = u[0]; tgt[1] = u[1];
+      }, { passive: true });
+
+      let visible = true;
+      document.addEventListener('visibilitychange', function () { visible = !document.hidden; if (visible) requestAnimationFrame(frame); });
+
+      const start = performance.now();
+      function frame(now) {
+        if (!visible) return;
+        const time = (now - start) / 1000;
+        if (!hasMouse) { tgt[0] = 0.5 + 0.35*Math.cos(time*0.18); tgt[1] = 0.18 + 0.22*Math.sin(time*0.13); }
+        cur[0] += (tgt[0]-cur[0]) * 0.06;
+        cur[1] += (tgt[1]-cur[1]) * 0.06;
+        gl.clearColor(0, 0, 0, 0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.uniform2f(uRes, canvas.width, canvas.height);
+        gl.uniform1f(uT, time);
+        gl.uniform2f(uMouse, cur[0], cur[1]);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    })();
+  </script>
+</body>
+</html>

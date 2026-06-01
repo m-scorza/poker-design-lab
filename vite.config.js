@@ -9,6 +9,7 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         elements: resolve(__dirname, 'elements.html'),
         'src/elements/background': resolve(__dirname, 'src/elements/background.html'),
+        'src/elements/shader-bg': resolve(__dirname, 'src/elements/shader-bg.html'),
         'src/elements/follower': resolve(__dirname, 'src/elements/follower.html'),
         'src/elements/tilt': resolve(__dirname, 'src/elements/tilt.html'),
         'src/elements/border-glow': resolve(__dirname, 'src/elements/border-glow.html'),
