@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Retro CLI Terminal Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --border: rgba(255, 255, 255, 0.05);
+      --accent: #00F0FF;
+      --c-lime: #C1FF12;
+      --fg: #f3f4f6;
+      --fg-muted: #8892b0;
+      --fg-dim: #5a607a;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-muted); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { max-width: 640px; width: 100%; }
+    h1 { font-family: var(--display); font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; text-align: center; }
+    .sub { color: var(--fg-muted); text-align: center; margin: 0 0 28px; font-size: 14px; }
+
+    .terminal-box {
+      background: rgba(3, 3, 5, 0.95);
+      border: 1px solid var(--border);
+      border-radius: 8px 8px 0 0;
+      padding: 22px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--c-lime);
+      height: 280px;
+      overflow-y: auto;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+      line-height: 1.6;
+      position: relative;
+    }
+    /* faint CRT scanlines */
+    .terminal-box::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0px, rgba(0,0,0,0.18) 1px, transparent 1px, transparent 3px);
+      opacity: 0.5; border-radius: 8px 8px 0 0;
+    }
+    .terminal-box::-webkit-scrollbar { width: 6px; }
+    .terminal-box::-webkit-scrollbar-thumb { background: rgba(193,255,18,0.2); border-radius: 3px; }
+    .term-line { margin: 2px 0; white-space: pre-wrap; word-break: break-word; }
+    .term-line .dim { color: var(--fg-dim); }
+    .term-line .cmd { color: #fff; }
+    .term-line .ok { color: var(--c-lime); }
+    .term-line .warn { color: #ffb020; }
+    .term-line .err { color: #ff6b6b; }
+    .term-line .cy { color: var(--accent); }
+
+    .retro-cli-bar {
+      background: #181920;
+      border: 2px solid #3c404f;
+      border-top: none;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-radius: 0 0 2px 2px;
+      box-shadow: 4px 4px 0px #000;
+    }
+    .retro-cli-prompt { font-family: var(--mono); color: var(--c-lime); font-size: 12px; font-weight: bold; }
+    .retro-cli-input {
+      background: none; border: none; outline: none;
+      color: var(--c-lime); font-family: var(--mono); font-size: 12px; flex: 1;
+      caret-color: var(--c-lime);
+    }
+    .retro-cli-input::placeholder { color: var(--fg-dim); }
+    .blink { display: inline-block; width: 8px; height: 14px; background: var(--c-lime); margin-left: 2px; vertical-align: text-bottom; animation: blink 1s step-end infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Retro CLI Terminal Panel</h1>
+    <p class="sub">A CRT-flavoured terminal with a typewriter boot sequence, blinking cursor, and a working command prompt — try <code>help</code>.</p>
+    <div class="terminal-box" id="terminal" aria-live="polite"></div>
+    <div class="retro-cli-bar">
+      <span class="retro-cli-prompt">scorza23@analyzer:~$</span>
+      <input type="text" class="retro-cli-input" id="cli" autocomplete="off" spellcheck="false"
+        placeholder="type a command and press Enter ('help')" />
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const term = document.getElementById('terminal');
+      const input = document.getElementById('cli');
+
+      function line(html, cls) {
+        const div = document.createElement('div');
+        div.className = 'term-line' + (cls ? ' ' + cls : '');
+        div.innerHTML = html;
+        term.appendChild(div);
+        term.scrollTop = term.scrollHeight;
+        return div;
+      }
+
+      // Typewriter for the boot sequence.
+      function typeLine(text, cls, speed) {
+        return new Promise((resolve) => {
+          const div = line('', cls);
+          let i = 0;
+          const tick = () => {
+            div.textContent = text.slice(0, ++i);
+            term.scrollTop = term.scrollHeight;
+            if (i < text.length) setTimeout(tick, speed || 12);
+            else resolve();
+          };
+          tick();
+        });
+      }
+
+      const COMMANDS = {
+        help() {
+          line('<span class="cy">available commands</span>');
+          line('  <span class="cmd">stats</span>    <span class="dim">— print aggregate HUD stats</span>');
+          line('  <span class="cmd">leaks</span>    <span class="dim">— list active leak alerts</span>');
+          line('  <span class="cmd">ranges</span>   <span class="dim">— RFI open % by position</span>');
+          line('  <span class="cmd">clear</span>    <span class="dim">— wipe the terminal</span>');
+          line('  <span class="cmd">help</span>     <span class="dim">— show this list</span>');
+        },
+        stats() {
+          line('VPIP <span class="ok">24.1%</span>   PFR <span class="ok">19.3%</span>   3-bet <span class="ok">7.8%</span>');
+          line('C-bet HU <span class="warn">86%</span> <span class="dim">(target 100%)</span>   WTSD <span class="ok">29%</span>');
+          line('Range compliance <span class="ok">91.4%</span>   AF <span class="ok">2.4</span>');
+        },
+        leaks() {
+          line('<span class="warn">[MED]</span> Missed c-bet HU as PFR — 14% of spots');
+          line('<span class="err">[HIGH]</span> SB limp behind — 6 hands this session');
+          line('<span class="ok">[LOW]</span> WTSD trending into target band');
+        },
+        ranges() {
+          line('UTG <span class="dim">13.1%</span>  HJ <span class="dim">24.7%</span>  CO <span class="dim">36.6%</span>  BTN <span class="dim">51.1%</span>');
+        },
+        clear() {
+          term.innerHTML = '';
+        },
+      };
+
+      function run(raw) {
+        const cmd = raw.trim().toLowerCase();
+        line('<span class="dim">scorza23@analyzer:~$</span> <span class="cmd">' + (raw || '') + '</span>');
+        if (!cmd) return;
+        if (COMMANDS[cmd]) COMMANDS[cmd]();
+        else line('command not found: <span class="cmd">' + cmd + '</span> — try <span class="cmd">help</span>', 'err');
+      }
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { run(input.value); input.value = ''; }
+      });
+
+      // Boot.
+      (async function boot() {
+        await typeLine('PokerStars Hand Analyzer — terminal interface v4', 'cy');
+        await typeLine('booting analysis engine ........ ok', 'dim');
+        await typeLine('loaded 12,840 hands across 318 tournaments', 'ok');
+        line('type <span class="cmd">help</span> to begin.<span class="blink"></span>');
+        input.focus();
+      })();
+    })();
+  </script>
+</body>
+</html>

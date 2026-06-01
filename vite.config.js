@@ -16,6 +16,7 @@ export default defineConfig({
         'src/elements/button-glow': resolve(__dirname, 'src/elements/button-glow.html'),
         'src/elements/magnetic-button': resolve(__dirname, 'src/elements/magnetic-button.html'),
         'src/elements/cyber-btn': resolve(__dirname, 'src/elements/cyber-btn.html'),
+        'src/elements/cli-panel': resolve(__dirname, 'src/elements/cli-panel.html'),
         'src/elements/scramble': resolve(__dirname, 'src/elements/scramble.html'),
         'src/elements/radar-hud': resolve(__dirname, 'src/elements/radar-hud.html'),
         'src/elements/trendline-morph': resolve(__dirname, 'src/elements/trendline-morph.html'),
