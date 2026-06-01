@@ -57,6 +57,7 @@ status calls; Claude defaults new bricks to `new`.
 | Career Arc + Milestones | `career-arc.html` | Data Viz | new | `archive/sketches/Career.html` |
 | Leak × Position Heatmap | `leak-heatmap.html` | Data Viz | new | `archive/sketches/Leaks.html` |
 | Scroll Reveal · Fade-Up | `scroll-reveal.html` | Scroll & Choreography | new | `archive/legacy_dashboards/shader-bg.js` |
+| Aa Type Switcher | `type-switcher.html` | Nav & Chrome | new | `archive/legacy_dashboards/shader-bg.js` |
 | Text Scramble Decoder | `scramble.html` | Text FX | keep | carried-forward |
 | 4-Color Card Render | `card-render.html` | Poker-Specific | new | net-new (deck primitive) |
 | Hand Replay · Felt | `hand-replay-felt.html` | Poker-Specific | new | net-new (HandReplay modal target) |

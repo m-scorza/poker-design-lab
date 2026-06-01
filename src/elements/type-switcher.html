@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Aa Type Switcher</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --panel: rgba(13, 17, 25, 0.65);
+      --border: rgba(255, 255, 255, 0.06);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --pos: #5ec98f;
+      --money: #d8b066;
+      --fg: #f3f4f6;
+      --fg-2: #c3cad9;
+      --fg-3: #8892b0;
+      --mono: 'JetBrains Mono', monospace;
+
+      /* type-theme variables — overridden by [data-type] */
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+      --display-weight: 900;
+      --display-spacing: -0.03em;
+    }
+    /* Techno: monospaced, technical, wide tracking */
+    html[data-type="techno"] {
+      --display: 'JetBrains Mono', monospace;
+      --sans: 'Space Grotesk', sans-serif;
+      --display-weight: 700;
+      --display-spacing: -0.01em;
+    }
+    /* Editorial: high-contrast serif headline, grotesk body */
+    html[data-type="editorial"] {
+      --display: 'Fraunces', Georgia, serif;
+      --sans: 'Space Grotesk', sans-serif;
+      --display-weight: 900;
+      --display-spacing: -0.015em;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px 40px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-3); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { width: 100%; max-width: 720px; }
+
+    .specimen { background: var(--panel); border: 1px solid var(--border); border-radius: 18px; padding: 44px 46px; backdrop-filter: blur(8px); }
+    .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 18px; }
+    .headline { font-family: var(--display); font-weight: var(--display-weight); letter-spacing: var(--display-spacing); font-size: clamp(40px, 7vw, 72px); line-height: 1.0; margin: 0 0 22px; transition: font-family 0.2s ease; }
+    .headline .money { color: var(--money); }
+    .body-copy { font-family: var(--sans); color: var(--fg-2); font-size: 15.5px; line-height: 1.7; max-width: 520px; margin: 0 0 28px; }
+    .numbers { display: flex; gap: 30px; padding-top: 24px; border-top: 1px solid var(--border); }
+    .numbers .stat .v { font-family: var(--mono); font-size: 26px; font-weight: 600; letter-spacing: -0.02em; }
+    .numbers .stat .v.pos { color: var(--pos); }
+    .numbers .stat .l { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-3); margin-top: 6px; }
+
+    .hint { text-align: center; margin-top: 26px; font-family: var(--mono); font-size: 11px; color: var(--fg-3); letter-spacing: 0.06em; }
+    .hint kbd { color: var(--fg); background: rgba(255,255,255,0.06); border: 1px solid var(--border-strong); border-radius: 4px; padding: 1px 6px; }
+
+    /* floating Aa switcher */
+    .aa-switch {
+      position: fixed; bottom: 26px; right: 26px; z-index: 200;
+      display: inline-flex; align-items: center; gap: 12px;
+      background: var(--panel); border: 1px solid var(--border-strong); border-radius: 12px;
+      padding: 10px 14px; cursor: pointer; backdrop-filter: blur(10px);
+      color: var(--fg); font-family: var(--sans); transition: border-color 0.2s ease, transform 0.15s ease;
+    }
+    .aa-switch:hover { border-color: var(--accent); transform: translateY(-1px); }
+    .aa-switch:active { transform: translateY(0); }
+    .aa-glyph { font-family: var(--display); font-weight: var(--display-weight); font-size: 22px; line-height: 1; letter-spacing: var(--display-spacing); }
+    .aa-name { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--fg-3); }
+    .aa-name b { color: var(--fg); font-weight: 500; }
+    .aa-kbd { font-family: var(--mono); font-size: 10px; color: var(--fg-3); background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 4px; padding: 2px 6px; }
+  </style>
+</head>
+<body>
+  <a class="back-link" href="../../elements.html">← Voltar ao catálogo</a>
+
+  <div class="container">
+    <div class="specimen">
+      <div class="eyebrow">Specimen · scorza23</div>
+      <h1 class="headline">Lucro vitalício <span class="money">+$388</span></h1>
+      <p class="body-copy">Três identidades tipográficas sobre os mesmos tokens: <b>Grotesk</b> (display geométrico), <b>Techno</b> (monoespaçado técnico) e <b>Editorial</b> (serifa de alto contraste). Alterne com o botão ou a tecla <kbd>T</kbd> — a escolha persiste em <code>localStorage</code>.</p>
+      <div class="numbers">
+        <div class="stat"><div class="v pos">141%</div><div class="l">ROI</div></div>
+        <div class="stat"><div class="v">250</div><div class="l">Torneios</div></div>
+        <div class="stat"><div class="v">$1.10</div><div class="l">ABI</div></div>
+      </div>
+    </div>
+    <div class="hint">Clique em <b>Aa</b> ou pressione <kbd>T</kbd> para alternar a tipografia</div>
+  </div>
+
+  <script type="module">
+    const THEMES = [
+      { id: 'grotesk',   name: 'Grotesk' },
+      { id: 'techno',    name: 'Techno' },
+      { id: 'editorial', name: 'Editorial' },
+    ];
+    const KEY = 'obsidian-type';
+
+    const current = () => {
+      try { return localStorage.getItem(KEY) || 'grotesk'; } catch { return 'grotesk'; }
+    };
+    const apply = (id) => {
+      if (id === 'grotesk') document.documentElement.removeAttribute('data-type');
+      else document.documentElement.setAttribute('data-type', id);
+      try { localStorage.setItem(KEY, id); } catch {}
+    };
+
+    const btn = document.createElement('button');
+    btn.id = 'aa-switch';
+    btn.className = 'aa-switch';
+    btn.setAttribute('aria-label', 'Alternar tipografia');
+
+    const render = () => {
+      const c = current();
+      const t = THEMES.find(x => x.id === c) || THEMES[0];
+      btn.innerHTML = `<span class="aa-glyph">Aa</span><span class="aa-name">Type · <b>${t.name}</b></span><span class="aa-kbd">T</span>`;
+    };
+    const cycle = () => {
+      const idx = THEMES.findIndex(x => x.id === current());
+      apply(THEMES[(idx + 1) % THEMES.length].id);
+      render();
+    };
+
+    btn.addEventListener('click', cycle);
+    document.addEventListener('keydown', (e) => {
+      if ((e.key === 't' || e.key === 'T') && !/input|textarea/i.test(e.target.tagName || '')) cycle();
+    });
+
+    apply(current());
+    render();
+    document.body.appendChild(btn);
+  </script>
+</body>
+</html>
