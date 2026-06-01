@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Range Grid Action Distribution</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --panel: rgba(13, 17, 25, 0.65);
+      --border: rgba(255, 255, 255, 0.06);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --raise: #F76CFE;
+      --call: #5ec98f;
+      --fold: rgba(255, 255, 255, 0.05);
+      --fg: #f3f4f6;
+      --fg-3: #8892b0;
+      --fg-4: #5a607a;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-3); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { width: 100%; max-width: 660px; }
+    h1 { font-family: var(--display); font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; text-align: center; }
+    .sub { color: var(--fg-3); text-align: center; margin: 0 0 24px; font-size: 14px; }
+
+    .grid-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 22px; backdrop-filter: blur(8px); }
+    .grid-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .grid-head .pos { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg); font-weight: 600; }
+    .grid-tabs { display: inline-flex; gap: 2px; padding: 2px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 6px; margin-left: auto; }
+    .grid-tabs button { background: none; border: 0; color: var(--fg-3); font: 500 10px var(--mono); padding: 4px 9px; border-radius: 4px; cursor: pointer; letter-spacing: 0.04em; text-transform: uppercase; }
+    .grid-tabs button[aria-pressed="true"] { background: rgba(0,240,255,0.1); color: var(--accent); }
+
+    .matrix { display: grid; grid-template-columns: repeat(13, 1fr); gap: 2px; }
+    .cell {
+      aspect-ratio: 1; border-radius: 3px; position: relative; overflow: hidden;
+      font-family: var(--mono); font-size: 8.5px; color: var(--fg); cursor: pointer;
+      display: flex; align-items: flex-start; justify-content: flex-start; padding: 2px 3px;
+      background: var(--fold); transition: transform 0.1s ease;
+    }
+    .cell:hover { transform: scale(1.16); z-index: 5; outline: 1px solid var(--accent); }
+    .cell .label { position: relative; z-index: 2; text-shadow: 0 1px 2px rgba(0,0,0,0.7); }
+    /* the action fills stack from the bottom of the cell */
+    .cell .fill { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; }
+    .cell .fill.raise { background: var(--raise); }
+    .cell .fill.call { background: var(--call); }
+
+    .legend { display: flex; gap: 18px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 10.5px; color: var(--fg-3); align-items: center; flex-wrap: wrap; }
+    .legend .sw { display: inline-flex; align-items: center; gap: 6px; }
+    .legend .sw i { width: 11px; height: 11px; border-radius: 2px; display: inline-block; }
+
+    .tip {
+      position: fixed; z-index: 50; pointer-events: none; opacity: 0; transform: translateY(4px);
+      background: #0d1119; border: 1px solid var(--border-strong); border-radius: 8px;
+      padding: 9px 12px; font-family: var(--mono); font-size: 11px; color: var(--fg);
+      white-space: nowrap; box-shadow: 0 8px 24px rgba(0,0,0,0.5); transition: opacity 0.1s ease, transform 0.1s ease;
+    }
+    .tip.show { opacity: 1; transform: translateY(0); }
+    .tip .hand { font-weight: 700; font-size: 13px; margin-bottom: 5px; }
+    .tip .row { display: flex; justify-content: space-between; gap: 16px; }
+    .tip .row .k { color: var(--fg-3); }
+    .tip .row .raise { color: var(--raise); } .tip .row .call { color: var(--call); } .tip .row .fold { color: var(--fg-4); }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Range Grid · Action Distribution</h1>
+    <p class="sub">13×13 matrix where each cell stacks its raise / call / fold frequency. Hover for the exact split. Switch positions to remix.</p>
+
+    <div class="grid-card">
+      <div class="grid-head">
+        <span class="pos" id="pos-label">BTN · RFI</span>
+        <div class="grid-tabs" id="tabs">
+          <button data-pos="UTG">UTG</button>
+          <button data-pos="CO">CO</button>
+          <button data-pos="BTN" aria-pressed="true">BTN</button>
+          <button data-pos="SB">SB</button>
+        </div>
+      </div>
+      <div class="matrix" id="matrix"></div>
+      <div class="legend">
+        <span class="sw"><i style="background: var(--raise);"></i>raise</span>
+        <span class="sw"><i style="background: var(--call);"></i>call</span>
+        <span class="sw"><i style="background: rgba(255,255,255,0.08);"></i>fold</span>
+        <span style="margin-left:auto;">169 combos · frequency-weighted</span>
+      </div>
+    </div>
+  </div>
+  <div class="tip" id="tip"></div>
+
+  <script>
+    (function () {
+      const RANKS = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'];
+      const matrix = document.getElementById('matrix');
+      const tip = document.getElementById('tip');
+      const posLabel = document.getElementById('pos-label');
+
+      // Approximate opening "tightness" per position — the fraction of the 169 combos that open.
+      const POS_WIDTH = { UTG: 0.16, CO: 0.40, BTN: 0.58, SB: 0.66 };
+      // Peak cold-call frequency for the thin band of marginal hands at the opening threshold.
+      // RFI is mostly raise-or-fold, so calling stays a sparse accent.
+      const POS_CALL = { UTG: 0.12, CO: 0.18, BTN: 0.26, SB: 0.30 };
+
+      function handKey(i, j) {
+        const a = RANKS[i], b = RANKS[j];
+        if (i === j) return a + b;            // pair
+        return i < j ? a + b + 's' : b + a + 'o'; // suited above diagonal, offsuit below
+      }
+
+      // A smooth "hand strength" proxy in [0,1]: pairs strongest, then high suited, etc.
+      function strength(i, j) {
+        const hi = Math.min(i, j), lo = Math.max(i, j);
+        const pair = i === j ? 0.34 : 0;
+        const suited = i < j ? 0.12 : 0;
+        const highCard = (1 - hi / 12) * 0.42;
+        const connect = (1 - (lo - hi) / 12) * 0.12;
+        return Math.min(1, pair + suited + highCard + connect);
+      }
+
+      function smoothstep(a, b, x) {
+        const t = Math.max(0, Math.min(1, (x - a) / (b - a)));
+        return t * t * (3 - 2 * t);
+      }
+
+      // Pre-sort all 169 strengths so the raise cutoff is a true percentile of the field —
+      // this guarantees the top `width%` of hands open (AA always raises, from every position).
+      const ALL_STRENGTHS = [];
+      for (let i = 0; i < 13; i++) for (let j = 0; j < 13; j++) ALL_STRENGTHS.push(strength(i, j));
+      ALL_STRENGTHS.sort((a, b) => b - a);
+
+      function dist(i, j, pos) {
+        const width = POS_WIDTH[pos];
+        const cutoff = ALL_STRENGTHS[Math.min(168, Math.floor(width * 169))];
+        const band = 0.022;
+        const s = strength(i, j);
+        let raise = smoothstep(cutoff - band, cutoff + band, s);   // top of the field opens
+        // a thin Gaussian cold-call bump centered just below the raising threshold (marginal hands)
+        const d = (s - (cutoff - band * 1.4)) / (band * 1.3);
+        let call = (1 - raise) * Math.exp(-d * d) * POS_CALL[pos];
+        raise = Math.round(raise * 100);
+        call = Math.round(Math.min(call, 1) * 100);
+        if (call < 8) call = 0;                 // drop invisible slivers → fold
+        if (raise + call > 100) call = 100 - raise;
+        const fold = 100 - raise - call;
+        return { raise, call, fold };
+      }
+
+      function render(pos) {
+        posLabel.textContent = pos + ' · RFI';
+        matrix.innerHTML = '';
+        for (let i = 0; i < 13; i++) {
+          for (let j = 0; j < 13; j++) {
+            const d = dist(i, j, pos);
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            cell.dataset.hand = handKey(i, j);
+            cell.dataset.raise = d.raise; cell.dataset.call = d.call; cell.dataset.fold = d.fold;
+            const total = d.raise + d.call;
+            cell.innerHTML =
+              '<span class="label">' + handKey(i, j) + '</span>' +
+              '<span class="fill raise" style="height:' + total + '%;"></span>' +
+              '<span class="fill call" style="height:' + d.call + '%;"></span>';
+            matrix.appendChild(cell);
+          }
+        }
+      }
+
+      matrix.addEventListener('mouseover', (e) => {
+        const cell = e.target.closest('.cell');
+        if (!cell) { tip.classList.remove('show'); return; }
+        tip.innerHTML = '<div class="hand">' + cell.dataset.hand + '</div>'
+          + '<div class="row"><span class="k raise">raise</span><span>' + cell.dataset.raise + '%</span></div>'
+          + '<div class="row"><span class="k call">call</span><span>' + cell.dataset.call + '%</span></div>'
+          + '<div class="row"><span class="k fold">fold</span><span>' + cell.dataset.fold + '%</span></div>';
+        tip.classList.add('show');
+      });
+      matrix.addEventListener('mousemove', (e) => {
+        tip.style.left = Math.min(window.innerWidth - tip.offsetWidth - 12, e.clientX + 14) + 'px';
+        tip.style.top = (e.clientY - tip.offsetHeight - 12) + 'px';
+      });
+      matrix.addEventListener('mouseleave', () => tip.classList.remove('show'));
+
+      document.getElementById('tabs').addEventListener('click', (e) => {
+        const btn = e.target.closest('button');
+        if (!btn) return;
+        document.querySelectorAll('#tabs button').forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+        render(btn.dataset.pos);
+      });
+
+      render('BTN');
+    })();
+  </script>
+</body>
+</html>

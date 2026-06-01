@@ -20,6 +20,7 @@ export default defineConfig({
         'src/elements/blueprint-theme': resolve(__dirname, 'src/elements/blueprint-theme.html'),
         'src/elements/villain-badge': resolve(__dirname, 'src/elements/villain-badge.html'),
         'src/elements/verdict-card': resolve(__dirname, 'src/elements/verdict-card.html'),
+        'src/elements/range-grid-action': resolve(__dirname, 'src/elements/range-grid-action.html'),
         'src/elements/scramble': resolve(__dirname, 'src/elements/scramble.html'),
         'src/elements/radar-hud': resolve(__dirname, 'src/elements/radar-hud.html'),
         'src/elements/trendline-morph': resolve(__dirname, 'src/elements/trendline-morph.html'),
