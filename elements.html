@@ -102,6 +102,24 @@
     .element-item.active .element-name {
       color: var(--accent);
     }
+    .element-group {
+      font-family: var(--mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--fg-muted);
+      padding: 14px 16px 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .element-group:first-child { padding-top: 2px; }
+    .element-group::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
 
     .sb-footer {
       font-family: var(--mono);
@@ -188,22 +206,19 @@
     </div>
     
     <div class="element-list" id="element-list">
+      <div class="element-group">Backgrounds</div>
       <button class="element-item active" data-src="src/elements/background.html" data-desc="Mesh Wave Canvas Grid & custom deep color Scheme gradient orbs.">
         <span class="element-name">Waving Background</span>
         <span class="element-file">elements/background.html</span>
       </button>
+
+      <div class="element-group">Cursors</div>
       <button class="element-item" data-src="src/elements/follower.html" data-desc="Concentric tracking cursor halo & scaling mechanics.">
         <span class="element-name">Cursor Follower</span>
         <span class="element-file">elements/follower.html</span>
       </button>
-      <button class="element-item" data-src="src/elements/tilt.html" data-desc="Calmed mousemove 3D card tilt & perspective logic.">
-        <span class="element-name">3D Perspective Tilt</span>
-        <span class="element-file">elements/tilt.html</span>
-      </button>
-      <button class="element-item" data-src="src/elements/border-glow.html" data-desc="SVG linear clipping outline border-glow hover drawing.">
-        <span class="element-name">Neon Draw Border</span>
-        <span class="element-file">elements/border-glow.html</span>
-      </button>
+
+      <div class="element-group">Buttons &amp; CTAs</div>
       <button class="element-item" data-src="src/elements/button-glow.html" data-desc="Glow bloom + Noomo magnetic pull paired on standard buttons.">
         <span class="element-name">Button Hover Glow</span>
         <span class="element-file">elements/button-glow.html</span>
@@ -212,10 +227,18 @@
         <span class="element-name">Magnetic CTA</span>
         <span class="element-file">elements/magnetic-button.html</span>
       </button>
-      <button class="element-item" data-src="src/elements/scramble.html" data-desc="Dynamic random character matrix scramble text decoder.">
-        <span class="element-name">Text Scramble Decoder</span>
-        <span class="element-file">elements/scramble.html</span>
+
+      <div class="element-group">Cards &amp; Surfaces</div>
+      <button class="element-item" data-src="src/elements/tilt.html" data-desc="Calmed mousemove 3D card tilt & perspective logic.">
+        <span class="element-name">3D Perspective Tilt</span>
+        <span class="element-file">elements/tilt.html</span>
       </button>
+      <button class="element-item" data-src="src/elements/border-glow.html" data-desc="SVG linear clipping outline border-glow hover drawing.">
+        <span class="element-name">Neon Draw Border</span>
+        <span class="element-file">elements/border-glow.html</span>
+      </button>
+
+      <div class="element-group">Data Viz</div>
       <button class="element-item" data-src="src/elements/radar-hud.html" data-desc="Animated stats concentric circles & linear sweep.">
         <span class="element-name">Radar HUD Rings</span>
         <span class="element-file">elements/radar-hud.html</span>
@@ -224,13 +247,21 @@
         <span class="element-name">Trendline Path Morph</span>
         <span class="element-file">elements/trendline-morph.html</span>
       </button>
-      <button class="element-item" data-src="src/elements/blocker-simulator.html" data-desc="Interactive real-time card blocker HUD simulator.">
-        <span class="element-name">Blocker HUD Simulator</span>
-        <span class="element-file">elements/blocker-simulator.html</span>
-      </button>
       <button class="element-item" data-src="src/elements/abi-evolution.html" data-desc="Stakes average buy-in (ABI) progressive trendline.">
         <span class="element-name">Stakes ABI Evolution</span>
         <span class="element-file">elements/abi-evolution.html</span>
+      </button>
+
+      <div class="element-group">Text FX</div>
+      <button class="element-item" data-src="src/elements/scramble.html" data-desc="Dynamic random character matrix scramble text decoder.">
+        <span class="element-name">Text Scramble Decoder</span>
+        <span class="element-file">elements/scramble.html</span>
+      </button>
+
+      <div class="element-group">Poker-Specific</div>
+      <button class="element-item" data-src="src/elements/blocker-simulator.html" data-desc="Interactive real-time card blocker HUD simulator.">
+        <span class="element-name">Blocker HUD Simulator</span>
+        <span class="element-file">elements/blocker-simulator.html</span>
       </button>
       <button class="element-item" data-src="src/elements/replayer.html" data-desc="Replayer dealer logic & felt scale deck dealing animations.">
         <span class="element-name">Cards Deal Replayer</span>
