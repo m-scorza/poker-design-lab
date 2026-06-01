@@ -55,6 +55,7 @@ status calls; Claude defaults new bricks to `new`.
 | Odometer StatCards | `odometer-statcard.html` | Data Viz | new | net-new (LifetimeScorecard target) |
 | Leak Cards · Gauge | `leak-card-gauge.html` | Data Viz | new | net-new (LeaksPage target) |
 | Career Arc + Milestones | `career-arc.html` | Data Viz | new | `archive/sketches/Career.html` |
+| Leak × Position Heatmap | `leak-heatmap.html` | Data Viz | new | `archive/sketches/Leaks.html` |
 | Text Scramble Decoder | `scramble.html` | Text FX | keep | carried-forward |
 | 4-Color Card Render | `card-render.html` | Poker-Specific | new | net-new (deck primitive) |
 | Hand Replay · Felt | `hand-replay-felt.html` | Poker-Specific | new | net-new (HandReplay modal target) |

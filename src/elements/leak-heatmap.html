@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Leak × Position Severity Heatmap</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --panel: rgba(13, 17, 25, 0.65);
+      --border: rgba(255, 255, 255, 0.06);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --pos: #5ec98f;
+      --neg: #ef7c74;
+      --warn: #e8c468;
+      --money: #d8b066;
+      --magenta: #F76CFE;
+      --fg: #f3f4f6;
+      --fg-2: #c3cad9;
+      --fg-3: #8892b0;
+      --fg-4: #5a607a;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px 40px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-3); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { width: 100%; max-width: 920px; }
+    h1 { font-family: var(--display); font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; text-align: center; }
+    .sub { color: var(--fg-3); text-align: center; margin: 0 0 32px; font-size: 14px; }
+
+    .card {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
+      padding: 22px 24px; backdrop-filter: blur(8px);
+    }
+
+    .hm-h { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+    .hm-t { font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--fg); font-family: var(--mono); }
+    .hm-sub { font-family: var(--mono); font-size: 11px; color: var(--fg-3); }
+    .hm-legend { margin-left: auto; display: flex; gap: 14px; align-items: center; font-family: var(--mono); font-size: 10.5px; color: var(--fg-3); }
+    .hm-legend .swatch { display: inline-flex; gap: 5px; align-items: center; }
+    .hm-legend .sw { width: 12px; height: 12px; border-radius: 2px; }
+    .sw.crit { background: var(--money); box-shadow: 0 0 8px rgba(216,176,102,0.5); }
+    .sw.high { background: rgba(247,108,254,0.6); }
+    .sw.med  { background: rgba(139,124,255,0.7); }
+    .sw.ok   { background: rgba(255,255,255,0.06); }
+
+    .hm-grid {
+      display: grid;
+      grid-template-columns: 168px repeat(6, 1fr);
+      gap: 3px;
+    }
+    .hm-grid > div { padding: 9px 10px; font-family: var(--mono); font-size: 10.5px; }
+    .hm-corner { background: transparent; }
+    .hm-col-h { color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.10em; text-align: center; }
+    .hm-row-h { color: var(--fg-2); text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .hm-cell {
+      background: rgba(255,255,255,0.04); text-align: center; color: var(--fg-4);
+      cursor: pointer; transition: transform 0.2s cubic-bezier(0.19,1,0.22,1), box-shadow 0.2s ease, background 0.2s ease;
+      border-radius: 3px; min-height: 38px;
+    }
+    .hm-cell:hover { transform: scale(1.09); z-index: 10; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.55); }
+    .hm-cell.crit { background: var(--money); color: #1a1205; font-weight: 600; box-shadow: 0 0 10px rgba(216,176,102,0.4); }
+    .hm-cell.high { background: rgba(247,108,254,0.6); color: #fff; }
+    .hm-cell.med  { background: rgba(139,124,255,0.6); color: #fff; }
+    .hm-cell.low  { background: rgba(255,255,255,0.08); color: var(--fg-2); }
+    .hm-cell.empty { cursor: default; pointer-events: none; }
+    .hm-cell.empty:hover { transform: none; box-shadow: none; }
+    .hm-cell.sel { outline: 2px solid var(--accent); outline-offset: 1px; }
+    .hm-cell .v { display: block; font-size: 9px; opacity: 0.85; margin-top: 2px; letter-spacing: 0.04em; }
+
+    .hm-caption {
+      margin-top: 18px; padding: 14px 16px; border-radius: 9px;
+      background: rgba(0,240,255,0.05); border: 1px solid rgba(0,240,255,0.18);
+      font-family: var(--mono); font-size: 12px; color: var(--fg-2); min-height: 44px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .hm-caption .pin { color: var(--accent); }
+    .hm-caption b { color: var(--fg); font-weight: 600; }
+    .hm-caption .amt { color: var(--neg); margin-left: auto; }
+  </style>
+</head>
+<body>
+  <a class="back-link" href="../../elements.html">← Voltar ao catálogo</a>
+  <div class="container">
+    <h1>Mapa de Severidade · Leak × Posição</h1>
+    <p class="sub">Grade de calor cruzando cada vazamento contra a posição — clique numa célula para focar.</p>
+
+    <div class="card">
+      <div class="hm-h">
+        <span class="hm-t">SEVERIDADE · LEAK × POSIÇÃO</span>
+        <span class="hm-sub">clique numa célula para detalhar</span>
+        <div class="hm-legend">
+          <span class="swatch"><span class="sw crit"></span>crítico</span>
+          <span class="swatch"><span class="sw high"></span>alto</span>
+          <span class="swatch"><span class="sw med"></span>médio</span>
+          <span class="swatch"><span class="sw ok"></span>—</span>
+        </div>
+      </div>
+      <div class="hm-grid" id="grid"></div>
+      <div class="hm-caption" id="caption">
+        <span class="pin">◇</span>
+        <span>Passe o mouse e clique numa célula para isolar o vazamento por posição.</span>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    const COLS = ['UTG / MP', 'HJ', 'CO', 'BTN', 'SB', 'BB'];
+    // null = empty cell; otherwise [severity, ev-lost-bb]
+    const ROWS = [
+      { name: 'Defesa BB vs ~2.5x', cells: [null, null, ['crit', 8.4], ['high', 3.2], ['med', 1.4], null] },
+      { name: '3-bet light',        cells: [['low', 0.8], null, ['med', 2.1], ['low', 1.2], ['high', 3.1], null] },
+      { name: 'River over-bet',     cells: [null, ['med', 2.4], ['crit', 5.2], ['high', 1.8], null, null] },
+      { name: 'Steal baixa freq.',  cells: [null, ['low', 0.4], ['med', 1.2], ['high', 3.2], ['low', 0.3], null] },
+      { name: 'Turn float bluff',   cells: [null, null, ['low', 0.6], ['med', 1.4], ['low', 0.6], null] },
+      { name: 'Banda push / fold',  cells: [['low', 0.2], ['low', 0.4], ['low', 0.5], ['med', 0.6], ['low', 0.2], ['low', 0.2]] },
+      { name: 'Stall ITM',          cells: [null, ['low', 0.3], ['low', 0.4], ['med', 0.5], null, ['low', 0.2]] },
+      { name: 'Limp re-iso pós-flop', cells: [['low', 0.8], ['med', 1.4], ['med', 1.2], ['med', 1.4], null, null] },
+    ];
+    const SEV_LABEL = { crit: 'crítico', high: 'alto', med: 'médio', low: 'baixo' };
+
+    const grid = document.getElementById('grid');
+    const caption = document.getElementById('caption');
+
+    // header row
+    grid.appendChild(div('hm-corner'));
+    COLS.forEach(c => grid.appendChild(div('hm-col-h', c)));
+
+    // data rows
+    ROWS.forEach(row => {
+      grid.appendChild(div('hm-row-h', row.name));
+      row.cells.forEach((cell, ci) => {
+        if (!cell) {
+          grid.appendChild(div('hm-cell empty'));
+          return;
+        }
+        const [sev, amt] = cell;
+        const el = document.createElement('div');
+        el.className = `hm-cell ${sev}`;
+        el.innerHTML = `−${amt.toFixed(1)}bb${sev !== 'low' ? `<span class="v">${SEV_LABEL[sev]}</span>` : ''}`;
+        el.addEventListener('click', () => select(el, row.name, COLS[ci], sev, amt));
+        grid.appendChild(el);
+      });
+    });
+
+    function select(el, rowName, colName, sev, amt) {
+      grid.querySelectorAll('.hm-cell.sel').forEach(c => c.classList.remove('sel'));
+      el.classList.add('sel');
+      caption.innerHTML = `<span class="pin">◆</span><span><b>${rowName}</b> · posição <b>${colName}</b> — severidade <b>${SEV_LABEL[sev]}</b></span><span class="amt">−${amt.toFixed(1)} bb/100</span>`;
+    }
+
+    function div(cls, text) {
+      const d = document.createElement('div');
+      d.className = cls;
+      if (text != null) d.textContent = text;
+      return d;
+    }
+  </script>
+</body>
+</html>
