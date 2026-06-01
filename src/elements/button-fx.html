@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Button FX Lab</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --border: rgba(255, 255, 255, 0.1);
+      --accent: #00F0FF;
+      --pos: #5ec98f;
+      --money: #d8b066;
+      --magenta: #F76CFE;
+      --fg: #f3f4f6;
+      --fg-3: #8892b0;
+      --fg-4: #5a607a;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-3); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { width: 100%; max-width: 760px; }
+    h1 { font-family: var(--display); font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; text-align: center; }
+    .sub { color: var(--fg-3); text-align: center; margin: 0 0 36px; font-size: 14px; }
+
+    .row { display: flex; flex-direction: column; gap: 8px; margin-bottom: 30px; }
+    .row .label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-4); }
+    .row .bset { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+
+    .btn {
+      font-family: var(--sans); font-size: 14px; font-weight: 600; color: var(--fg);
+      padding: 13px 26px; border-radius: 10px; cursor: pointer; border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03); position: relative; overflow: hidden; isolation: isolate;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* 1 — border-draw: two pseudo edges sweep around on hover */
+    .draw { background: transparent; }
+    .draw::before, .draw::after {
+      content: ''; position: absolute; inset: 0; border-radius: 10px; pointer-events: none;
+    }
+    .draw::before { border-top: 1px solid var(--accent); border-right: 1px solid var(--accent); width: 0; height: 0; }
+    .draw::after { border-bottom: 1px solid var(--accent); border-left: 1px solid var(--accent); width: 0; height: 0; right: 0; bottom: 0; left: auto; top: auto; }
+    .draw:hover::before { width: 100%; height: 100%; transition: width 0.18s ease, height 0.18s ease 0.18s; }
+    .draw:hover::after { width: 100%; height: 100%; transition: width 0.18s ease, height 0.18s ease 0.18s; }
+
+    /* 2 — shimmer / sheen sweep */
+    .shimmer { background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); }
+    .shimmer::before {
+      content: ''; position: absolute; top: 0; bottom: 0; width: 60%; left: -80%;
+      background: linear-gradient(100deg, transparent, rgba(255,255,255,0.35), transparent);
+      transform: skewX(-18deg); pointer-events: none;
+    }
+    .shimmer:hover::before { animation: sheen 0.75s ease; }
+    @keyframes sheen { to { left: 140%; } }
+
+    /* 3 — ripple on click (JS spawns the circle) */
+    .ripple { background: rgba(0,240,255,0.08); border-color: rgba(0,240,255,0.3); color: var(--accent); }
+    .ripple .rp { position: absolute; border-radius: 50%; background: rgba(0,240,255,0.4); transform: translate(-50%,-50%) scale(0); pointer-events: none; animation: rip 0.6s ease-out forwards; }
+    @keyframes rip { to { transform: translate(-50%,-50%) scale(1); opacity: 0; } }
+
+    /* 4 — press-squash */
+    .squash { background: var(--pos); color: #06140d; border-color: transparent; transition: transform 0.12s cubic-bezier(0.3,0.7,0.4,1.5); }
+    .squash:hover { transform: translateY(-2px); }
+    .squash:active { transform: scale(0.93); }
+
+    /* 5 — rotating gradient border (conic spins behind a masked edge) */
+    .rotor { background: #0c0f15; border: 0; padding: 0; }
+    .rotor .face { display: block; padding: 13px 26px; border-radius: 9px; background: #0c0f15; position: relative; z-index: 1; }
+    .rotor::before {
+      content: ''; position: absolute; inset: -150%; z-index: 0;
+      background: conic-gradient(from 0deg, transparent 0 70%, var(--magenta) 85%, var(--accent) 100%);
+      animation: spin 2.6s linear infinite;
+    }
+    .rotor { position: relative; border-radius: 10px; padding: 1px; overflow: hidden; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* 6 — fill-up: color floods from the bottom on hover */
+    .fillup { border-color: rgba(216,176,102,0.4); color: var(--money); }
+    .fillup .t { position: relative; z-index: 1; transition: color 0.25s; }
+    .fillup::before { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 0; background: var(--money); transition: height 0.28s ease; z-index: 0; }
+    .fillup:hover::before { height: 100%; }
+    .fillup:hover .t { color: #1a1206; }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Button FX Lab</h1>
+    <p class="sub">Six hover/press treatments in one place — border-draw, sheen sweep, click ripple, press-squash, rotating gradient border, and bottom fill-up. Hover and click to feel each.</p>
+
+    <div class="row">
+      <span class="label">border-draw</span>
+      <div class="bset">
+        <button class="btn draw">Analisar mão</button>
+        <button class="btn draw">Exportar sessão</button>
+      </div>
+    </div>
+    <div class="row">
+      <span class="label">sheen sweep</span>
+      <div class="bset"><button class="btn shimmer">Importar histórico</button><button class="btn shimmer">Ver ranges</button></div>
+    </div>
+    <div class="row">
+      <span class="label">click ripple</span>
+      <div class="bset"><button class="btn ripple" data-ripple>Detectar leaks</button><button class="btn ripple" data-ripple>Recalcular</button></div>
+    </div>
+    <div class="row">
+      <span class="label">press-squash</span>
+      <div class="bset"><button class="btn squash">Confirmar</button><button class="btn squash">Salvar nota</button></div>
+    </div>
+    <div class="row">
+      <span class="label">rotating gradient border</span>
+      <div class="bset"><button class="btn rotor"><span class="face">Upgrade Pro</span></button><button class="btn rotor"><span class="face">Gerar relatório</span></button></div>
+    </div>
+    <div class="row">
+      <span class="label">bottom fill-up</span>
+      <div class="bset"><button class="btn fillup"><span class="t">Marcar revisão</span></button><button class="btn fillup"><span class="t">Adicionar tag</span></button></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      // ripple: spawn a circle sized to cover the button from the click point
+      document.querySelectorAll('[data-ripple]').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          const r = btn.getBoundingClientRect();
+          const d = Math.max(r.width, r.height) * 2;
+          const rp = document.createElement('span');
+          rp.className = 'rp';
+          rp.style.width = rp.style.height = d + 'px';
+          rp.style.left = (e.clientX - r.left) + 'px';
+          rp.style.top = (e.clientY - r.top) + 'px';
+          btn.appendChild(rp);
+          rp.addEventListener('animationend', () => rp.remove());
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

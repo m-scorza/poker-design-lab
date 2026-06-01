@@ -44,6 +44,7 @@ status calls; Claude defaults new bricks to `new`.
 | Button Hover Glow | `button-glow.html` | Buttons & CTAs | keep | carried-forward |
 | Magnetic CTA (liquid-fill) | `magnetic-button.html` | Buttons & CTAs | new | net-new (Noomo ref) |
 | Cyber Neon Buttons (4 variants) | `cyber-btn.html` | Buttons & CTAs | new | `archive/sandboxes/design_sandbox_v2.html` |
+| Button FX Lab (6 treatments) | `button-fx.html` | Buttons & CTAs | new | net-new (hover/press FX) |
 | 3D Perspective Tilt | `tilt.html` | Cards & Surfaces | keep | carried-forward |
 | Neon Draw Border | `border-glow.html` | Cards & Surfaces | keep | carried-forward |
 | Spotlight Gradient Cards | `spotlight-card.html` | Cards & Surfaces | new | net-new (cursor-tracked radial) |
