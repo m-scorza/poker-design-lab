@@ -23,6 +23,7 @@ export default defineConfig({
         'src/elements/range-grid-action': resolve(__dirname, 'src/elements/range-grid-action.html'),
         'src/elements/odometer-statcard': resolve(__dirname, 'src/elements/odometer-statcard.html'),
         'src/elements/leak-card-gauge': resolve(__dirname, 'src/elements/leak-card-gauge.html'),
+        'src/elements/hand-replay-felt': resolve(__dirname, 'src/elements/hand-replay-felt.html'),
         'src/elements/scramble': resolve(__dirname, 'src/elements/scramble.html'),
         'src/elements/radar-hud': resolve(__dirname, 'src/elements/radar-hud.html'),
         'src/elements/trendline-morph': resolve(__dirname, 'src/elements/trendline-morph.html'),

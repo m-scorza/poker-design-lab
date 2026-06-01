@@ -52,6 +52,7 @@ status calls; Claude defaults new bricks to `new`.
 | Odometer StatCards | `odometer-statcard.html` | Data Viz | new | net-new (LifetimeScorecard target) |
 | Leak Cards · Gauge | `leak-card-gauge.html` | Data Viz | new | net-new (LeaksPage target) |
 | Text Scramble Decoder | `scramble.html` | Text FX | keep | carried-forward |
+| Hand Replay · Felt | `hand-replay-felt.html` | Poker-Specific | new | net-new (HandReplay modal target) |
 | Blocker HUD Simulator | `blocker-simulator.html` | Poker-Specific | new | net-new (Antigravity) |
 | Cards Deal Replayer | `replayer.html` | Poker-Specific | keep | carried-forward |
 | Villain Profile Badges | `villain-badge.html` | Poker-Specific | new | `archive/sketches/Demo.html` |

@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Hand Replay Felt</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --panel: rgba(13, 17, 25, 0.65);
+      --border: rgba(255, 255, 255, 0.06);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --pos: #5ec98f;
+      --neg: #ef7c74;
+      --money: #d8b066;
+      --fg: #f3f4f6;
+      --fg-3: #8892b0;
+      --fg-4: #5a607a;
+      /* 4-color deck (CLAUDE.md): spades white, hearts red, diamonds blue, clubs green */
+      --s-spade: #f3f4f6;
+      --s-heart: #ef6b6b;
+      --s-diamond: #5aa2ff;
+      --s-club: #5ec98f;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-3); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { width: 100%; max-width: 760px; }
+    h1 { font-family: var(--display); font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; text-align: center; }
+    .sub { color: var(--fg-3); text-align: center; margin: 0 0 28px; font-size: 14px; }
+
+    .felt-card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 22px; backdrop-filter: blur(8px); }
+
+    /* table surface */
+    .table { position: relative; width: 100%; aspect-ratio: 16 / 10; margin: 0 auto; }
+    .felt {
+      position: absolute; inset: 8% 4%; border-radius: 50% / 50%;
+      background: radial-gradient(ellipse at 50% 42%, #143027 0%, #0c1f19 55%, #081511 100%);
+      border: 2px solid rgba(94,201,143,0.18);
+      box-shadow: inset 0 0 60px rgba(0,0,0,0.6), 0 0 0 10px rgba(255,255,255,0.015);
+    }
+    .felt::after { /* rail line */
+      content: ''; position: absolute; inset: 7px; border-radius: 50% / 50%;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+
+    /* center: board + pot */
+    .center { position: absolute; left: 50%; top: 44%; transform: translate(-50%,-50%); display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 3; }
+    .board { display: flex; gap: 5px; min-height: 50px; }
+    .pot { font-family: var(--mono); font-size: 12px; color: var(--money); letter-spacing: 0.04em; }
+    .pot b { font-weight: 600; }
+    .street-tag { font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--fg-4); }
+
+    /* playing card */
+    .card {
+      width: 34px; height: 48px; border-radius: 5px; background: #f7f8fa;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+      font-family: var(--display); font-weight: 700; line-height: 1;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.45); position: relative;
+      animation: deal 0.32s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .card .r { font-size: 17px; }
+    .card .p { font-size: 13px; margin-top: -1px; }
+    .card.spade { color: #1a1d24; } .card.spade .p { color: #1a1d24; }
+    .card.heart { color: var(--s-heart); } .card.heart .p { color: var(--s-heart); }
+    .card.diamond { color: var(--s-diamond); } .card.diamond .p { color: var(--s-diamond); }
+    .card.club { color: var(--s-club); } .card.club .p { color: var(--s-club); }
+    .card.mini { width: 26px; height: 37px; }
+    .card.mini .r { font-size: 13px; } .card.mini .p { font-size: 10px; }
+    .card.back { background: repeating-linear-gradient(45deg, #1b2a44 0 5px, #16233a 5px 10px); border: 1px solid rgba(0,240,255,0.18); }
+    @keyframes deal { from { opacity: 0; transform: translateY(-10px) scale(0.9); } to { opacity: 1; transform: none; } }
+
+    /* seats */
+    .seat {
+      position: absolute; transform: translate(-50%,-50%); z-index: 2;
+      display: flex; flex-direction: column; align-items: center; gap: 5px; width: 116px;
+    }
+    .seat .holecards { display: flex; gap: 3px; min-height: 37px; }
+    .seat .plate {
+      background: rgba(8,11,16,0.85); border: 1px solid var(--border); border-radius: 9px;
+      padding: 6px 10px; text-align: center; width: 100%; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .seat .nm { font-family: var(--sans); font-size: 11px; font-weight: 600; color: var(--fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .seat .stk { font-family: var(--mono); font-size: 10px; color: var(--fg-3); margin-top: 1px; }
+    .seat .posch { position: absolute; top: -7px; right: 8px; font-family: var(--mono); font-size: 8px; letter-spacing: 0.08em; padding: 1px 5px; border-radius: 4px; background: rgba(0,240,255,0.12); border: 1px solid rgba(0,240,255,0.3); color: var(--accent); }
+    .seat.hero .plate { border-color: rgba(0,240,255,0.45); box-shadow: 0 0 0 1px rgba(0,240,255,0.25), 0 0 22px rgba(0,240,255,0.12); }
+    .seat.acting .plate { border-color: rgba(216,176,102,0.6); box-shadow: 0 0 18px rgba(216,176,102,0.2); }
+    .seat.folded { opacity: 0.34; filter: grayscale(0.6); }
+    .seat .act {
+      font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.04em; padding: 2px 7px; border-radius: 5px;
+      min-height: 17px; opacity: 0; transition: opacity 0.18s; white-space: nowrap;
+    }
+    .seat .act.show { opacity: 1; }
+    .seat .act.raise, .seat .act.bet { color: #ffd9a0; background: rgba(216,176,102,0.12); border: 1px solid rgba(216,176,102,0.3); }
+    .seat .act.call, .seat .act.check { color: var(--pos); background: rgba(94,201,143,0.1); border: 1px solid rgba(94,201,143,0.26); }
+    .seat .act.fold { color: var(--neg); background: rgba(239,124,116,0.1); border: 1px solid rgba(239,124,116,0.26); }
+    .dealer-btn {
+      position: absolute; transform: translate(-50%,-50%); z-index: 4; width: 19px; height: 19px; border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #fff, #cfd4dc); color: #14171d;
+      font-family: var(--mono); font-weight: 700; font-size: 9px; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.5); transition: left 0.3s ease, top 0.3s ease;
+    }
+
+    /* controls */
+    .controls { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 18px; }
+    .controls button {
+      font-family: var(--mono); font-size: 13px; color: var(--fg); background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border); border-radius: 8px; width: 40px; height: 36px; cursor: pointer; transition: all 0.15s;
+    }
+    .controls button:hover { border-color: var(--border-strong); background: rgba(255,255,255,0.08); }
+    .controls button.play { width: 52px; color: var(--accent); border-color: rgba(0,240,255,0.3); background: rgba(0,240,255,0.07); }
+    .controls .scrub { flex: 1; max-width: 240px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.08); position: relative; overflow: hidden; }
+    .controls .scrub .prog { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); width: 0; transition: width 0.2s; }
+    .controls .idx { font-family: var(--mono); font-size: 10px; color: var(--fg-4); min-width: 44px; text-align: right; }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Hand Replay · Felt</h1>
+    <p class="sub">Step-through visual replay: per-street card reveal, pot progression, dealer button, position highlight and per-seat action callouts. Built for the HandReplay modal.</p>
+
+    <div class="felt-card">
+      <div class="table" id="table">
+        <div class="felt"></div>
+        <div class="center">
+          <div class="board" id="board"></div>
+          <div class="pot" id="pot">pote <b>0</b></div>
+          <div class="street-tag" id="streetTag">pré-flop</div>
+        </div>
+        <div class="dealer-btn" id="dbtn">D</div>
+        <!-- seats injected -->
+      </div>
+      <div class="controls">
+        <button id="first" title="início">⏮</button>
+        <button id="prev" title="anterior">◀</button>
+        <button class="play" id="play" title="reproduzir">▶</button>
+        <button id="next" title="próximo">▶▏</button>
+        <button id="last" title="fim">⏭</button>
+        <div class="scrub"><span class="prog" id="prog"></span></div>
+        <span class="idx" id="idx">0 / 0</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      // --- hand script: hero scorza23 on BTN with AhKh, 6-max, plays a single-raised pot to the river ---
+      // Seats laid out around the oval (% of table box). Hero anchored bottom-center.
+      const SEATS = [
+        { id: 'co',  name: 'villain_CO', pos: 'CO',  stack: 4200, x: 12, y: 30, cards: ['back','back'] },
+        { id: 'btn', name: 'scorza23',   pos: 'BTN', stack: 5380, x: 50, y: 90, cards: ['Ah','Kh'], hero: true },
+        { id: 'sb',  name: 'villain_SB', pos: 'SB',  stack: 3110, x: 88, y: 30, cards: ['back','back'] },
+        { id: 'bb',  name: 'villain_BB', pos: 'BB',  stack: 6750, x: 88, y: 64, cards: ['back','back'] },
+      ];
+      const DEALER_AT = { x: 56, y: 78 }; // near hero (BTN)
+
+      // Each step is a snapshot delta. board = cards visible; acting = seat id; act = {seat,kind,text};
+      // folded = set of seat ids folded so far; stacks override; reveal = hole cards to flip up.
+      const STEPS = [
+        { street: 'pré-flop', board: [], pot: 130, acting: 'co', act: { seat: 'co', kind: 'fold', text: 'fold' }, folded: ['co'] },
+        { street: 'pré-flop', board: [], pot: 130, acting: 'btn', act: { seat: 'btn', kind: 'raise', text: 'raise 250' }, pot2: 380 },
+        { street: 'pré-flop', board: [], pot: 380, acting: 'sb', act: { seat: 'sb', kind: 'fold', text: 'fold' }, folded: ['co','sb'] },
+        { street: 'pré-flop', board: [], pot: 380, acting: 'bb', act: { seat: 'bb', kind: 'call', text: 'call 250' }, pot2: 530 },
+        { street: 'flop', board: ['Qh','7c','2d'], pot: 530, acting: 'bb', act: { seat: 'bb', kind: 'check', text: 'check' } },
+        { street: 'flop', board: ['Qh','7c','2d'], pot: 530, acting: 'btn', act: { seat: 'btn', kind: 'bet', text: 'c-bet 175 (33%)' }, pot2: 705 },
+        { street: 'flop', board: ['Qh','7c','2d'], pot: 705, acting: 'bb', act: { seat: 'bb', kind: 'call', text: 'call 175' }, pot2: 880 },
+        { street: 'turn', board: ['Qh','7c','2d','Jd'], pot: 880, acting: 'bb', act: { seat: 'bb', kind: 'check', text: 'check' } },
+        { street: 'turn', board: ['Qh','7c','2d','Jd'], pot: 880, acting: 'btn', act: { seat: 'btn', kind: 'bet', text: 'barrel 580 (66%)' }, pot2: 1460 },
+        { street: 'turn', board: ['Qh','7c','2d','Jd'], pot: 1460, acting: 'bb', act: { seat: 'bb', kind: 'call', text: 'call 580' }, pot2: 2040 },
+        { street: 'river', board: ['Qh','7c','2d','Jd','Th'], pot: 2040, acting: 'bb', act: { seat: 'bb', kind: 'check', text: 'check' } },
+        { street: 'river', board: ['Qh','7c','2d','Jd','Th'], pot: 2040, acting: 'btn', act: { seat: 'btn', kind: 'bet', text: 'bet 1100 (Broadway)' }, pot2: 3140 },
+        { street: 'river', board: ['Qh','7c','2d','Jd','Th'], pot: 3140, acting: 'bb', act: { seat: 'bb', kind: 'call', text: 'call 1100' }, pot2: 4240, reveal: { bb: ['Qs','Jc'] } },
+        { street: 'showdown', board: ['Qh','7c','2d','Jd','Th'], pot: 4240, acting: 'btn', act: { seat: 'btn', kind: 'bet', text: 'scorza23 vence — sequência ás-alto' }, reveal: { bb: ['Qs','Jc'] }, win: 'btn' },
+      ];
+
+      const SUIT = { s: { cls: 'spade', g: '♠' }, h: { cls: 'heart', g: '♥' }, d: { cls: 'diamond', g: '♦' }, c: { cls: 'club', g: '♣' } };
+      const table = document.getElementById('table');
+      const boardEl = document.getElementById('board');
+      const potEl = document.getElementById('pot');
+      const streetTag = document.getElementById('streetTag');
+      const dbtn = document.getElementById('dbtn');
+      const progEl = document.getElementById('prog');
+      const idxEl = document.getElementById('idx');
+
+      function cardEl(code, mini) {
+        const el = document.createElement('div');
+        if (code === 'back') { el.className = 'card back' + (mini ? ' mini' : ''); return el; }
+        const r = code.slice(0, -1), s = code.slice(-1);
+        const su = SUIT[s];
+        el.className = 'card ' + su.cls + (mini ? ' mini' : '');
+        el.innerHTML = '<span class="r">' + r + '</span><span class="p">' + su.g + '</span>';
+        return el;
+      }
+
+      // build seats once
+      const seatEls = {};
+      SEATS.forEach((s) => {
+        const seat = document.createElement('div');
+        seat.className = 'seat' + (s.hero ? ' hero' : '');
+        seat.style.left = s.x + '%'; seat.style.top = s.y + '%';
+        const hc = document.createElement('div'); hc.className = 'holecards';
+        const plate = document.createElement('div'); plate.className = 'plate';
+        plate.innerHTML = '<span class="posch">' + s.pos + '</span><div class="nm">' + s.name + '</div><div class="stk">' + s.stack.toLocaleString('en-US') + '</div>';
+        const act = document.createElement('div'); act.className = 'act';
+        seat.appendChild(hc); seat.appendChild(plate); seat.appendChild(act);
+        table.appendChild(seat);
+        seatEls[s.id] = { seat, hc, plate, act, def: s };
+      });
+      dbtn.style.left = DEALER_AT.x + '%'; dbtn.style.top = DEALER_AT.y + '%';
+
+      let cur = -1, timer = null;
+
+      function renderHoleCards(upTo) {
+        // accumulate any reveals up to this step
+        const reveals = {};
+        for (let k = 0; k <= upTo; k++) { if (STEPS[k] && STEPS[k].reveal) Object.assign(reveals, STEPS[k].reveal); }
+        SEATS.forEach((s) => {
+          const e = seatEls[s.id];
+          e.hc.innerHTML = '';
+          let cards = s.cards;
+          if (s.hero) cards = s.cards;                 // hero always face-up
+          else if (reveals[s.id]) cards = reveals[s.id]; // villain shown at showdown
+          else cards = ['back', 'back'];
+          cards.forEach(c => e.hc.appendChild(cardEl(c, true)));
+        });
+      }
+
+      function apply(i) {
+        const st = STEPS[i];
+        // board
+        boardEl.innerHTML = '';
+        st.board.forEach(c => boardEl.appendChild(cardEl(c, false)));
+        // pot (use post-action pot2 if present)
+        const potVal = st.pot2 != null ? st.pot2 : st.pot;
+        potEl.innerHTML = 'pote <b>' + potVal.toLocaleString('en-US') + '</b>';
+        streetTag.textContent = st.street;
+        // folded + acting + action callouts
+        const folded = new Set(st.folded || []);
+        SEATS.forEach((s) => {
+          const e = seatEls[s.id];
+          e.seat.classList.toggle('folded', folded.has(s.id));
+          e.seat.classList.toggle('acting', s.id === st.acting && st.street !== 'showdown');
+          if (st.act && st.act.seat === s.id) {
+            e.act.className = 'act show ' + st.act.kind;
+            e.act.textContent = st.act.text;
+          } else {
+            e.act.className = 'act';
+            e.act.textContent = '';
+          }
+          // winner glow
+          e.seat.classList.toggle('hero', s.hero || (st.win === s.id));
+        });
+        renderHoleCards(i);
+        progEl.style.width = (((i + 1) / STEPS.length) * 100) + '%';
+        idxEl.textContent = (i + 1) + ' / ' + STEPS.length;
+        cur = i;
+      }
+
+      function go(i) { if (i < 0 || i >= STEPS.length) return; apply(i); }
+      function next() { if (cur < STEPS.length - 1) go(cur + 1); else stop(); }
+      function prev() { if (cur > 0) go(cur - 1); }
+
+      const playBtn = document.getElementById('play');
+      function stop() { if (timer) { clearInterval(timer); timer = null; } playBtn.textContent = '▶'; }
+      function play() {
+        if (timer) { stop(); return; }
+        if (cur >= STEPS.length - 1) go(0);
+        playBtn.textContent = '⏸';
+        timer = setInterval(() => { if (cur >= STEPS.length - 1) { stop(); return; } next(); }, 1150);
+      }
+
+      document.getElementById('first').addEventListener('click', () => { stop(); go(0); });
+      document.getElementById('prev').addEventListener('click', () => { stop(); prev(); });
+      document.getElementById('next').addEventListener('click', () => { stop(); next(); });
+      document.getElementById('last').addEventListener('click', () => { stop(); go(STEPS.length - 1); });
+      playBtn.addEventListener('click', play);
+
+      go(0);
+    })();
+  </script>
+</body>
+</html>
