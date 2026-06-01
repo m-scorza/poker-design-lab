@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - 4-Color Card Render</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --panel: rgba(13, 17, 25, 0.6);
+      --border: rgba(255, 255, 255, 0.07);
+      --accent: #00F0FF;
+      --pos: #5ec98f;
+      --neg: #ef7c74;
+      /* 4-color deck per CLAUDE.md: spades white, hearts red, diamonds blue, clubs green */
+      --s-spade: #e9edf4;
+      --s-heart: #ef6b6b;
+      --s-diamond: #5aa2ff;
+      --s-club: #5ec98f;
+      --fg: #f3f4f6;
+      --fg-3: #8892b0;
+      --fg-4: #5a607a;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-3); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { width: 100%; max-width: 920px; }
+    h1 { font-family: var(--display); font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; text-align: center; }
+    .sub { color: var(--fg-3); text-align: center; margin: 0 0 32px; font-size: 14px; }
+
+    .block { margin-bottom: 30px; }
+    .block .label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-4); margin-bottom: 12px; }
+    .deck-row { display: flex; flex-direction: column; gap: 5px; }
+    .suit-row { display: flex; gap: 5px; flex-wrap: wrap; }
+
+    /* playing card — index pip top-left, large center glyph */
+    .pc {
+      position: relative; width: 46px; height: 64px; border-radius: 6px;
+      background: linear-gradient(160deg, #fbfcfe, #eef1f6);
+      box-shadow: 0 3px 9px rgba(0,0,0,0.45), inset 0 0 0 1px rgba(0,0,0,0.06);
+      font-family: var(--display); font-weight: 700; cursor: default; flex: 0 0 auto;
+      transition: transform 0.12s ease;
+    }
+    .pc:hover { transform: translateY(-4px) rotate(-2deg); z-index: 2; }
+    .pc .corner { position: absolute; top: 4px; left: 5px; display: flex; flex-direction: column; align-items: center; line-height: 0.9; }
+    .pc .corner .r { font-size: 14px; }
+    .pc .corner .s { font-size: 11px; }
+    .pc .pip { position: absolute; left: 50%; top: 56%; transform: translate(-50%,-50%); font-size: 26px; opacity: 0.9; }
+    .pc.spade { color: #20242c; } .pc.heart { color: var(--s-heart); }
+    .pc.diamond { color: var(--s-diamond); } .pc.club { color: var(--s-club); }
+
+    /* sizes */
+    .pc.lg { width: 70px; height: 98px; } .pc.lg .corner .r { font-size: 20px; } .pc.lg .corner .s { font-size: 15px; } .pc.lg .pip { font-size: 40px; }
+    .pc.sm { width: 30px; height: 42px; border-radius: 4px; } .pc.sm .corner { top: 2px; left: 3px; } .pc.sm .corner .r { font-size: 9px; } .pc.sm .corner .s { font-size: 7px; } .pc.sm .pip { font-size: 16px; }
+
+    /* states */
+    .pc.back { background: repeating-linear-gradient(45deg, #1b2a44 0 6px, #16233a 6px 12px); box-shadow: 0 3px 9px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(0,240,255,0.18); }
+    .pc.back .corner, .pc.back .pip { display: none; }
+    .pc.back::after { content: ''; position: absolute; inset: 6px; border-radius: 4px; border: 1px solid rgba(0,240,255,0.22); }
+    .pc.muck { opacity: 0.32; filter: grayscale(0.7); }
+    .pc.win { box-shadow: 0 0 0 2px var(--pos), 0 0 20px rgba(94,201,143,0.45); }
+    .pc.dead { box-shadow: 0 0 0 2px var(--neg), 0 0 18px rgba(239,124,116,0.35); }
+
+    .hand-set { display: flex; gap: 6px; align-items: flex-end; }
+    .legend { display: flex; gap: 18px; flex-wrap: wrap; font-family: var(--mono); font-size: 11px; color: var(--fg-3); margin-top: 6px; }
+    .legend .sw { display: inline-flex; align-items: center; gap: 6px; }
+    .legend .sw i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>4-Color Card Render</h1>
+    <p class="sub">The canonical card primitive: spades white, hearts red, diamonds blue, clubs green (per CLAUDE.md). Index pip + center glyph, three sizes, and table states — face-down, mucked, winning, dead.</p>
+
+    <div class="block">
+      <div class="label">full deck · 4-color</div>
+      <div class="deck-row" id="deck"></div>
+      <div class="legend">
+        <span class="sw"><i style="background:var(--s-spade)"></i>♠ paus brancos</span>
+        <span class="sw"><i style="background:var(--s-heart)"></i>♥ copas vermelhas</span>
+        <span class="sw"><i style="background:var(--s-diamond)"></i>♦ ouros azuis</span>
+        <span class="sw"><i style="background:var(--s-club)"></i>♣ paus verdes</span>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="label">sizes — sm / md / lg</div>
+      <div class="hand-set" id="sizes"></div>
+    </div>
+
+    <div class="block">
+      <div class="label">states — face-down · winning · dead · mucked</div>
+      <div class="hand-set" id="states"></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const RANKS = ['A','K','Q','J','T','9','8','7','6','5','4','3','2'];
+      const SUITS = [
+        { c: 'spade', g: '♠' }, { c: 'heart', g: '♥' }, { c: 'diamond', g: '♦' }, { c: 'club', g: '♣' },
+      ];
+      function card(rank, suit, extra) {
+        const el = document.createElement('div');
+        el.className = 'pc ' + suit.c + (extra ? ' ' + extra : '');
+        if (!/\bback\b/.test(extra || '')) {
+          el.innerHTML = '<span class="corner"><span class="r">' + rank + '</span><span class="s">' + suit.g + '</span></span>'
+            + '<span class="pip">' + suit.g + '</span>';
+        }
+        return el;
+      }
+      // full deck: one row per suit
+      const deck = document.getElementById('deck');
+      SUITS.forEach((su) => {
+        const row = document.createElement('div'); row.className = 'suit-row';
+        RANKS.forEach(r => row.appendChild(card(r, su, 'sm')));
+        deck.appendChild(row);
+      });
+      // sizes demo
+      const sizes = document.getElementById('sizes');
+      sizes.appendChild(card('A', SUITS[1], 'sm'));
+      sizes.appendChild(card('K', SUITS[3], ''));
+      sizes.appendChild(card('Q', SUITS[2], 'lg'));
+      // states demo
+      const states = document.getElementById('states');
+      states.appendChild(card('', SUITS[0], 'back'));
+      states.appendChild(card('A', SUITS[1], 'win'));
+      states.appendChild(card('K', SUITS[1], 'win'));
+      states.appendChild(card('7', SUITS[0], 'dead'));
+      states.appendChild(card('2', SUITS[3], 'muck'));
+    })();
+  </script>
+</body>
+</html>
