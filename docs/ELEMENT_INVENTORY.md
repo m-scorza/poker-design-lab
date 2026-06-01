@@ -39,6 +39,7 @@ status calls; Claude defaults new bricks to `new`.
 |---|---|---|---|---|
 | Waving Background (mesh + orbs) | `background.html` | Backgrounds | keep | carried-forward |
 | OBSIDIAN Shader BG (WebGL) | `shader-bg.html` | Backgrounds | new | `archive/legacy_dashboards/shader-bg.js` |
+| Aurora Field (drifting blooms) | `aurora-bg.html` | Backgrounds | new | net-new (palette-remix toggles) |
 | Cursor Follower halo | `follower.html` | Cursors | keep | carried-forward |
 | Button Hover Glow | `button-glow.html` | Buttons & CTAs | keep | carried-forward |
 | Magnetic CTA (liquid-fill) | `magnetic-button.html` | Buttons & CTAs | new | net-new (Noomo ref) |
