@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Cyber Neon Buttons</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --bg-2: #0b0d12;
+      --border: rgba(255, 255, 255, 0.05);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --c-magenta: #F76CFE;
+      --c-lime: #C1FF12;
+      --fg: #f3f4f6;
+      --fg-muted: #8892b0;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(247,108,254,0.05), transparent 45%),
+        radial-gradient(circle at 80% 80%, rgba(0,240,255,0.05), transparent 45%),
+        var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-muted); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { max-width: 760px; width: 100%; text-align: center; }
+    h1 { font-family: var(--display); font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; }
+    .sub { color: var(--fg-muted); margin: 0 0 44px; font-size: 14px; }
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; align-items: center; justify-items: center; }
+    .slot { display: flex; flex-direction: column; gap: 14px; align-items: center; }
+    .slot .tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-muted); }
+
+    .cyber-btn {
+      background: transparent;
+      border: 1.5px solid var(--c-magenta);
+      color: var(--c-magenta);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 16px 32px;
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .cyber-btn:hover {
+      background: rgba(247, 108, 254, 0.1);
+      box-shadow: 0 0 25px rgba(247, 108, 254, 0.4);
+      color: #fff;
+      border-color: #fff;
+    }
+
+    /* Variant: lime channel */
+    .cyber-btn.lime { border-color: var(--c-lime); color: var(--c-lime); }
+    .cyber-btn.lime:hover { background: rgba(193,255,18,0.1); box-shadow: 0 0 25px rgba(193,255,18,0.4); }
+
+    /* Variant: cyan channel */
+    .cyber-btn.cyan { border-color: var(--accent); color: var(--accent); }
+    .cyber-btn.cyan:hover { background: rgba(0,240,255,0.1); box-shadow: 0 0 25px rgba(0,240,255,0.4); }
+
+    /* Variant: scanline sweep — a diagonal sheen wipes across on hover */
+    .cyber-btn.sweep::before {
+      content: '';
+      position: absolute; top: 0; left: -120%;
+      width: 80%; height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.55s ease;
+    }
+    .cyber-btn.sweep:hover::before { left: 130%; }
+
+    /* Variant: corner brackets — animated targeting reticle frame */
+    .bracket-wrap { position: relative; display: inline-block; padding: 6px; }
+    .bracket-wrap .b { position: absolute; width: 14px; height: 14px; border: 2px solid var(--accent); opacity: 0.5; transition: all 0.3s ease; }
+    .bracket-wrap .b.tl { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+    .bracket-wrap .b.tr { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+    .bracket-wrap .b.bl { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+    .bracket-wrap .b.br { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+    .bracket-wrap:hover .b { opacity: 1; width: 18px; height: 18px; }
+    .bracket-wrap:hover .b.tl { top: -4px; left: -4px; }
+    .bracket-wrap:hover .b.tr { top: -4px; right: -4px; }
+    .bracket-wrap:hover .b.bl { bottom: -4px; left: -4px; }
+    .bracket-wrap:hover .b.br { bottom: -4px; right: -4px; }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Cyber Neon Buttons</h1>
+    <p class="sub">Transparent neon-border CTAs with channel tints, a diagonal sweep, and an animated targeting-bracket frame.</p>
+    <div class="grid">
+      <div class="slot">
+        <span class="tag">base · magenta</span>
+        <button class="cyber-btn">Calibrate Engine</button>
+      </div>
+      <div class="slot">
+        <span class="tag">sweep · cyan</span>
+        <button class="cyber-btn cyan sweep">Run Solver</button>
+      </div>
+      <div class="slot">
+        <span class="tag">lime channel</span>
+        <button class="cyber-btn lime sweep">Confirm Push</button>
+      </div>
+      <div class="slot">
+        <span class="tag">targeting brackets</span>
+        <div class="bracket-wrap">
+          <span class="b tl"></span><span class="b tr"></span><span class="b bl"></span><span class="b br"></span>
+          <button class="cyber-btn cyan">Deploy HUD</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
