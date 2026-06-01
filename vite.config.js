@@ -2,7 +2,12 @@ import { resolve } from 'path';
 import { defineConfig } from 'vite';
 
 // Multi-page design lab: the unified sandbox (index) and the element catalog (elements).
-export default defineConfig({
+// `base` resolves per environment:
+//   - local dev (`npm run dev`) → '/' (serves at http://localhost:5173/)
+//   - Vercel build → '/' (Vercel sets the VERCEL env var; site is served at the domain root)
+//   - GitHub Pages build (default) → '/poker-design-lab/' (repo-name subpath)
+export default defineConfig(({ command }) => ({
+  base: command === 'build' && !process.env.VERCEL ? '/poker-design-lab/' : '/',
   build: {
     rollupOptions: {
       input: {
@@ -38,4 +43,4 @@ export default defineConfig({
       },
     },
   },
-});
+}));
