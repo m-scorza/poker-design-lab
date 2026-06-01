@@ -33,6 +33,7 @@ export default defineConfig(({ command }) => ({
         'src/elements/spotlight-card': resolve(__dirname, 'src/elements/spotlight-card.html'),
         'src/elements/button-fx': resolve(__dirname, 'src/elements/button-fx.html'),
         'src/elements/card-render': resolve(__dirname, 'src/elements/card-render.html'),
+        'src/elements/career-arc': resolve(__dirname, 'src/elements/career-arc.html'),
         'src/elements/scramble': resolve(__dirname, 'src/elements/scramble.html'),
         'src/elements/radar-hud': resolve(__dirname, 'src/elements/radar-hud.html'),
         'src/elements/trendline-morph': resolve(__dirname, 'src/elements/trendline-morph.html'),
