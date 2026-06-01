@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Tournament Lab SaaS Shell</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07080b;
+      --bg-deep: #010103;
+      --panel: #0e1016;
+      --panel-2: #14161e;
+      --panel-3: #1b1e28;
+      --border: rgba(255,255,255,0.04);
+      --border-strong: rgba(255,255,255,0.12);
+      --fg: #f3f4f6;
+      --fg-2: #adb0bc;
+      --fg-3: #8892b0;
+      --fg-4: #3a3f50;
+      --accent: #00F0FF;
+      --accent-2: #7df6ff;
+      --accent-soft: rgba(0,240,255,0.08);
+      --accent-border: rgba(0,240,255,0.25);
+      --accent-glow: rgba(0,240,255,0.45);
+      --magenta: #F76CFE;
+      --pos: #5ec98f;
+      --money: #d8b066;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', -apple-system, sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+      --r: 16px;
+    }
+    * { box-sizing: border-box; }
+    html { background: var(--bg-deep); }
+    body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); -webkit-font-smoothing: antialiased; min-height: 100vh; }
+    a { color: inherit; text-decoration: none; }
+    .back-link { position: fixed; top: 14px; right: 18px; color: var(--fg-3); font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 200; }
+    .back-link:hover { color: var(--accent); }
+
+    /* ===== CHROME (sticky top bar) ===== */
+    .chrome { position: sticky; top: 0; z-index: 100; background: rgba(1,1,3,0.66); backdrop-filter: blur(18px) saturate(1.15); border-bottom: 1px solid var(--border); }
+    .chrome-inner { max-width: 1380px; margin: 0 auto; padding: 13px 36px; display: flex; align-items: center; gap: 24px; }
+    .chrome-brand { display: flex; align-items: center; gap: 11px; font-size: 13px; color: #cfd1d6; }
+    .chrome-mark { width: 23px; height: 23px; border-radius: 7px; background: linear-gradient(150deg,#1b1c24,#08090d); border: 1px solid var(--border-strong); display: flex; align-items: center; justify-content: center; color: var(--accent); box-shadow: 0 0 16px -4px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.08); }
+    .chrome-mark svg { width: 12px; height: 12px; }
+    .chrome-brand b { font-weight: 600; color: var(--fg); letter-spacing: -0.01em; }
+    .chrome-brand span { color: var(--fg-3); font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; }
+    .chrome-spacer { flex: 1; }
+    .chrome-note { font-size: 11.5px; color: var(--fg-3); font-family: var(--mono); }
+
+    /* ===== FRAME ===== */
+    .frame { max-width: 1380px; margin: 0 auto; padding: 22px 36px 60px; display: grid; grid-template-columns: 246px 1fr; gap: 40px; transition: grid-template-columns .25s ease; }
+    .frame.collapsed { grid-template-columns: 0px 1fr; }
+    .frame.collapsed .sb { opacity: 0; pointer-events: none; }
+
+    /* ===== SIDEBAR ===== */
+    .sb { padding-top: 8px; transition: opacity .2s ease; min-width: 0; }
+    .sb-brand { display: flex; align-items: center; gap: 12px; padding: 6px 10px 22px; }
+    .sb-mark { width: 32px; height: 32px; border-radius: 9px; background: linear-gradient(155deg,#1b1c24,#08090d); border: 1px solid var(--border-strong); display: flex; align-items: center; justify-content: center; color: var(--accent); box-shadow: 0 0 22px -6px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.08); }
+    .sb-mark svg { width: 15px; height: 15px; }
+    .sb-name { font-size: 14.5px; font-weight: 600; letter-spacing: -0.015em; }
+    .sb-name-sub { font-size: 10px; color: var(--fg-3); font-family: var(--mono); margin-top: 2px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .sb-search { display: flex; align-items: center; gap: 8px; padding: 8px 11px; background: rgba(255,255,255,0.01); border: 1px solid var(--border); border-radius: 9px; color: var(--fg-3); font-size: 12px; margin-bottom: 16px; transition: border-color .15s, background .15s; cursor: text; }
+    .sb-search:hover { border-color: var(--border-strong); background: rgba(255,255,255,0.03); }
+    .sb-search svg { width: 12px; height: 12px; }
+    .sb-search .key { margin-left: auto; font-family: var(--mono); font-size: 10px; color: var(--fg-4); padding: 1px 5px; border: 1px solid var(--border); border-radius: 4px; }
+    .sb-section { font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--fg-4); padding: 0 10px; margin: 16px 0 5px; font-weight: 600; font-family: var(--mono); }
+    .sb-item { display: flex; align-items: center; gap: 12px; padding: 8px 11px; border-radius: 9px; font-size: 13px; color: var(--fg-2); cursor: pointer; position: relative; border: 0; background: none; width: 100%; text-align: left; transition: background .14s, color .14s; }
+    .sb-item:hover { background: rgba(255,255,255,0.03); color: var(--fg); }
+    .sb-item[aria-current="page"] { background: linear-gradient(90deg, var(--accent-soft) 0%, rgba(0,240,255,0.01) 100%); color: var(--accent-2); }
+    .sb-item[aria-current="page"]::before { content: ''; position: absolute; left: -4px; top: 7px; bottom: 7px; width: 3px; background: var(--accent); border-radius: 2px; box-shadow: 0 0 12px 0 var(--accent-glow); }
+    .sb-item svg { width: 15px; height: 15px; color: var(--fg-3); flex-shrink: 0; }
+    .sb-item[aria-current="page"] svg { color: var(--accent); }
+    .sb-count { margin-left: auto; font-family: var(--mono); font-size: 10px; color: var(--fg-4); }
+
+    .sb-stake { margin-top: 24px; padding: 16px; background: linear-gradient(160deg, rgba(0,240,255,0.03), rgba(7,8,11,0.5)); border: 1px solid var(--accent-border); border-radius: 12px; position: relative; overflow: hidden; box-shadow: inset 0 1px 0 rgba(255,255,255,0.05); }
+    .sb-stake::after { content: ''; position: absolute; right: -44px; top: -34px; width: 130px; height: 130px; background: radial-gradient(circle, var(--accent-glow) 0%, transparent 62%); opacity: 0.3; pointer-events: none; }
+    .sb-stake-eyebrow { font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--accent); margin-bottom: 9px; font-family: var(--mono); position: relative; z-index: 1; }
+    .sb-stake-val { font-family: var(--mono); font-size: 23px; color: var(--money); font-weight: 600; line-height: 1; letter-spacing: -0.02em; position: relative; z-index: 1; }
+    .sb-stake-row { display: flex; align-items: center; gap: 8px; margin-top: 9px; font-family: var(--mono); font-size: 10.5px; color: var(--fg-3); position: relative; z-index: 1; }
+    .sb-stake-row .dot { width: 5px; height: 5px; background: var(--pos); border-radius: 50%; box-shadow: 0 0 0 3px rgba(94,201,143,0.14); }
+    .sb-stake-tiny { margin-top: 11px; padding-top: 11px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 10px; color: var(--fg-3); display: flex; justify-content: space-between; position: relative; z-index: 1; }
+    .sb-stake-tiny b { color: var(--fg-2); font-weight: 600; }
+
+    .sb-foot { margin-top: 18px; }
+    .sb-collapse { background: rgba(255,255,255,0.01); border: 1px solid var(--border); color: var(--fg-3); font-size: 11.5px; padding: 9px 11px; border-radius: 8px; display: flex; align-items: center; gap: 8px; cursor: pointer; font-family: var(--mono); width: 100%; transition: border-color .15s, color .15s; }
+    .sb-collapse:hover { color: var(--fg-2); border-color: var(--border-strong); }
+    .sb-collapse svg { width: 12px; height: 12px; }
+    .sb-collapse .k { margin-left: auto; font-size: 10px; padding: 1px 4px; border: 1px solid var(--border); border-radius: 4px; }
+
+    /* ===== MAIN / TOPBAR ===== */
+    .main { min-width: 0; padding-top: 8px; }
+    .topbar { display: flex; align-items: flex-end; justify-content: space-between; padding-bottom: 24px; border-bottom: 1px solid var(--border); margin-bottom: 24px; gap: 18px; position: relative; }
+    .topbar::after { content: ''; position: absolute; left: 0; bottom: -1px; width: 140px; height: 2px; background: linear-gradient(90deg, var(--accent) 0%, var(--magenta) 100%); }
+    .topbar h1 { margin: 0; font-size: 38px; font-weight: 900; letter-spacing: -0.03em; line-height: 1.03; font-family: var(--display); text-transform: uppercase; }
+    .topbar .crumb { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 12px; }
+    .topbar .meta { display: flex; gap: 24px; margin-top: 12px; font-size: 12px; color: var(--fg-3); flex-wrap: wrap; }
+    .topbar .meta b { color: var(--fg-2); font-family: var(--mono); font-weight: 500; }
+    .top-actions { display: flex; gap: 10px; align-items: center; }
+    .seg { display: inline-flex; background: rgba(255,255,255,0.015); border: 1px solid var(--border); border-radius: 9px; padding: 3px; }
+    .seg button { background: none; border: 0; color: var(--fg-3); font: 500 12px var(--sans); padding: 6px 13px; border-radius: 6px; cursor: pointer; transition: color .12s; }
+    .seg button:hover { color: var(--fg-2); }
+    .seg button[aria-pressed="true"] { background: var(--panel-3); color: var(--fg); box-shadow: 0 1px 0 rgba(255,255,255,0.05) inset, 0 2px 6px -2px rgba(0,0,0,0.5); }
+    .btn-ghost { background: rgba(255,255,255,0.01); border: 1px solid var(--border-strong); color: var(--fg-2); padding: 8px 14px; border-radius: 8px; font: 500 12.5px var(--sans); cursor: pointer; }
+    .btn-ghost:hover { color: var(--fg); border-color: var(--fg-3); }
+
+    /* content placeholder cards */
+    .row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px; }
+    .card { background: rgba(8,10,15,0.85); border: 1px solid var(--border); border-radius: var(--r); padding: 20px 22px; box-shadow: 0 4px 30px rgba(0,0,0,0.4); backdrop-filter: blur(20px); }
+    .card-eye { font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--fg-3); font-family: var(--mono); margin-bottom: 12px; }
+    .card .v { font-family: var(--mono); font-size: 26px; font-weight: 600; letter-spacing: -0.02em; }
+    .card .v.money { color: var(--money); }
+    .card .v.pos { color: var(--pos); }
+    .card .s { font-family: var(--mono); font-size: 11px; color: var(--fg-3); margin-top: 6px; }
+    .panel-wide { background: rgba(8,10,15,0.85); border: 1px solid var(--border); border-radius: var(--r); padding: 22px 24px; box-shadow: 0 4px 30px rgba(0,0,0,0.4); }
+    .panel-wide .ph { height: 9px; border-radius: 5px; background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.015)); margin-bottom: 12px; }
+    .panel-wide .ph.w70 { width: 70%; } .panel-wide .ph.w90 { width: 90%; } .panel-wide .ph.w50 { width: 50%; }
+  </style>
+</head>
+<body>
+  <a class="back-link" href="../../elements.html">← Catálogo</a>
+
+  <!-- CHROME -->
+  <div class="chrome">
+    <div class="chrome-inner">
+      <div class="chrome-brand">
+        <div class="chrome-mark"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M7 1.5 C9.5 4.5, 11.5 6, 11.5 8.5 C11.5 10.5, 10 11.5, 8.5 11.5 C7.8 11.5, 7 11.2, 7 11.2 C7 11.2, 6.2 11.5, 5.5 11.5 C4 11.5, 2.5 10.5, 2.5 8.5 C2.5 6, 4.5 4.5, 7 1.5 Z" fill="currentColor"/></svg></div>
+        <b>Poker Analyzer</b><span>· scorza23</span>
+      </div>
+      <div class="chrome-spacer"></div>
+      <div class="chrome-note">250 torneios · +$388.85 lucro · última análise há 2 min</div>
+    </div>
+  </div>
+
+  <!-- FRAME -->
+  <div class="frame" id="frame">
+    <!-- SIDEBAR -->
+    <aside class="sb">
+      <div class="sb-brand">
+        <div class="sb-mark"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M7 1.5 C9.5 4.5, 11.5 6, 11.5 8.5 C11.5 10.5, 10 11.5, 8.5 11.5 C7.8 11.5, 7 11.2, 7 11.2 C7 11.2, 6.2 11.5, 5.5 11.5 C4 11.5, 2.5 10.5, 2.5 8.5 C2.5 6, 4.5 4.5, 7 1.5 Z" fill="currentColor"/></svg></div>
+        <div><div class="sb-name">Poker Analyzer</div><div class="sb-name-sub">scorza23 · local</div></div>
+      </div>
+      <div class="sb-search"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="5"/><line x1="11" y1="11" x2="14" y2="14"/></svg>Buscar mãos, leaks…<span class="key">⌘K</span></div>
+
+      <div class="sb-section">Revisão</div>
+      <button class="sb-item" aria-current="page"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="2" width="5" height="5" rx="0.8"/><rect x="9" y="2" width="5" height="5" rx="0.8"/><rect x="2" y="9" width="5" height="5" rx="0.8"/><rect x="9" y="9" width="5" height="5" rx="0.8"/></svg>Dashboard</button>
+      <button class="sb-item"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="4.5"/><line x1="10.5" y1="10.5" x2="14" y2="14"/></svg>Mãos<span class="sb-count">10.716</span></button>
+      <button class="sb-item"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 1.5 L14 13.5 L2 13.5 Z"/><line x1="8" y1="6" x2="8" y2="10"/><circle cx="8" cy="11.5" r="0.6" fill="currentColor"/></svg>Leaks<span class="sb-count">8</span></button>
+      <button class="sb-item"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="2" width="12" height="12" rx="1"/><line x1="6" y1="2" x2="6" y2="14"/><line x1="10" y1="2" x2="10" y2="14"/><line x1="2" y1="6" x2="14" y2="6"/><line x1="2" y1="10" x2="14" y2="10"/></svg>Ranges</button>
+
+      <div class="sb-section">Relatórios</div>
+      <button class="sb-item"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 2 L11 2 L11 5 L13 5 L13 14 L3 14 L3 5 L5 5 Z"/><circle cx="8" cy="7" r="1.5" fill="currentColor"/></svg>Carreira</button>
+      <button class="sb-item"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="3" width="12" height="11" rx="1"/><line x1="2" y1="6" x2="14" y2="6"/><line x1="5" y1="1.5" x2="5" y2="4.5"/><line x1="11" y1="1.5" x2="11" y2="4.5"/></svg>Sessões<span class="sb-count">37</span></button>
+
+      <div class="sb-section">Prática</div>
+      <button class="sb-item"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="3"/></svg>Arena</button>
+      <button class="sb-item"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5" r="2.5"/><path d="M3 14 C3 11, 5 9.5, 8 9.5 C11 9.5, 13 11, 13 14"/></svg>Vilões<span class="sb-count">44</span></button>
+
+      <div class="sb-stake">
+        <div class="sb-stake-eyebrow">Lucro vitalício</div>
+        <div class="sb-stake-val">+$388.85</div>
+        <div class="sb-stake-row"><span class="dot"></span>141.4% ROI · 250 torneios</div>
+        <div class="sb-stake-tiny"><span>30d <b style="color:var(--pos)">+$24.30</b></span><span>$1.10 ABI</span></div>
+      </div>
+
+      <div class="sb-foot">
+        <button class="sb-collapse" id="collapse"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M10 4 L6 8 L10 12"/><line x1="2.5" y1="3" x2="2.5" y2="13"/></svg>Recolher<span class="k">⌘\</span></button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <div class="crumb">REVISÃO · DASHBOARD · scorza23</div>
+          <h1>Centro de comando.</h1>
+          <div class="meta">
+            <span><b>10.716</b> mãos</span>
+            <span><b>+$388.85</b> lucro vitalício</span>
+            <span><b>141.4%</b> ROI</span>
+            <span>baseline <b>GTO · 8-max MTT</b></span>
+          </div>
+        </div>
+        <div class="top-actions">
+          <div class="seg">
+            <button aria-pressed="true">Vitalício</button>
+            <button>30d</button>
+            <button>Sessão</button>
+          </div>
+          <button class="btn-ghost">Reanalisar</button>
+        </div>
+      </div>
+
+      <div class="row-3">
+        <div class="card"><div class="card-eye">VPIP</div><div class="v pos">24.1%</div><div class="s">alvo 20–30% · ok</div></div>
+        <div class="card"><div class="card-eye">Conformidade</div><div class="v money">91.4%</div><div class="s">+1.2 vs últimas 30</div></div>
+        <div class="card"><div class="card-eye">EV perdido</div><div class="v" style="color:var(--magenta)">−$43.80</div><div class="s">8 leaks ativos</div></div>
+      </div>
+
+      <div class="panel-wide">
+        <div class="card-eye">TENDÊNCIA · LUCRO POR SESSÃO</div>
+        <div class="ph w90"></div><div class="ph w70"></div><div class="ph w50"></div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+    // sidebar nav active-state switching
+    const items = [...document.querySelectorAll('.sb-item')];
+    items.forEach(it => it.addEventListener('click', () => {
+      items.forEach(x => x.removeAttribute('aria-current'));
+      it.setAttribute('aria-current', 'page');
+    }));
+
+    // segmented control
+    const segBtns = [...document.querySelectorAll('.seg button')];
+    segBtns.forEach(b => b.addEventListener('click', () => {
+      segBtns.forEach(x => x.setAttribute('aria-pressed', 'false'));
+      b.setAttribute('aria-pressed', 'true');
+    }));
+
+    // collapse rail
+    const frame = document.getElementById('frame');
+    document.getElementById('collapse').addEventListener('click', () => {
+      frame.classList.toggle('collapsed');
+    });
+  </script>
+</body>
+</html>

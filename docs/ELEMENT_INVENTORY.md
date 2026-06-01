@@ -58,6 +58,7 @@ status calls; Claude defaults new bricks to `new`.
 | Leak × Position Heatmap | `leak-heatmap.html` | Data Viz | new | `archive/sketches/Leaks.html` |
 | Scroll Reveal · Fade-Up | `scroll-reveal.html` | Scroll & Choreography | new | `archive/legacy_dashboards/shader-bg.js` |
 | Aa Type Switcher | `type-switcher.html` | Nav & Chrome | new | `archive/legacy_dashboards/shader-bg.js` |
+| Tournament Lab Shell | `tournament-lab-shell.html` | Layout & Showcase | new | `archive/legacy_dashboards/Tournament Lab - System.html` + `v8-shell.css` |
 | Text Scramble Decoder | `scramble.html` | Text FX | keep | carried-forward |
 | 4-Color Card Render | `card-render.html` | Poker-Specific | new | net-new (deck primitive) |
 | Hand Replay · Felt | `hand-replay-felt.html` | Poker-Specific | new | net-new (HandReplay modal target) |

@@ -37,6 +37,7 @@ export default defineConfig(({ command }) => ({
         'src/elements/leak-heatmap': resolve(__dirname, 'src/elements/leak-heatmap.html'),
         'src/elements/scroll-reveal': resolve(__dirname, 'src/elements/scroll-reveal.html'),
         'src/elements/type-switcher': resolve(__dirname, 'src/elements/type-switcher.html'),
+        'src/elements/tournament-lab-shell': resolve(__dirname, 'src/elements/tournament-lab-shell.html'),
         'src/elements/scramble': resolve(__dirname, 'src/elements/scramble.html'),
         'src/elements/radar-hud': resolve(__dirname, 'src/elements/radar-hud.html'),
         'src/elements/trendline-morph': resolve(__dirname, 'src/elements/trendline-morph.html'),
