@@ -53,15 +53,27 @@
   <div class="container">
     <h1>Button Hover Micro-Glows</h1>
     
-  <p style="color: var(--fg-muted);">Premium UI buttons expand a soft glowing box-shadow bloom on hover.</p>
+  <p style="color: var(--fg-muted);">Two paired hover treatments: a soft glowing box-shadow bloom (CSS) plus a Noomo-style magnetic pull that elastically tracks the cursor (GSAP).</p>
   <div class="btn-deck">
     <button class="show-btn">Standard Action</button>
     <button class="show-btn loss-btn">Reset Database</button>
   </div>
-  
+
   </div>
-  <script>
-    // Button glows are styled in pure CSS
+  <script type="module">
+    import gsap from 'gsap';
+    // Magnetic pull: buttons drift toward the cursor, then spring back on leave.
+    document.querySelectorAll('.show-btn').forEach((btn) => {
+      btn.addEventListener('pointermove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        gsap.to(btn, { x: x * 0.25, y: y * 0.25, duration: 0.3 });
+      });
+      btn.addEventListener('pointerleave', () => {
+        gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.3)' });
+      });
+    });
   </script>
 </body>
 </html>

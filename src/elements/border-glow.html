@@ -42,7 +42,7 @@
     .back-link:hover { color: var(--accent); }
     
   .card-deck { display: flex; gap: 30px; justify-content: center; margin-top: 40px; }
-  .card { width: 260px; height: 180px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; position: relative; overflow: hidden; box-shadow: var(--shadow-card); transition: background 0.3s, border-color 0.3s; }
+  .card { width: 260px; height: 180px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; position: relative; box-shadow: var(--shadow-card); transition: background 0.3s, border-color 0.3s; }
   .card:hover { border-color: var(--border-strong); background: var(--bg-card-hover); }
   .card::after { content: ''; position: absolute; inset: -1.5px; border-radius: 16px; padding: 1.5px; background: linear-gradient(90deg, transparent, var(--accent), var(--loss), transparent); background-size: 200% 200%; -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; opacity: 0; transition: opacity 0.5s ease; z-index: 5; }
   .card:hover::after { opacity: 1; animation: border-glow-cycle 4s linear infinite; }

@@ -20,7 +20,6 @@
     border-radius: 16px;
     padding: 24px;
     position: relative;
-    overflow: hidden;
     box-shadow: var(--shadow-card);
     transition: background 0.3s, border-color 0.3s;
     transform-style: preserve-3d;

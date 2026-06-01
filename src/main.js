@@ -44,6 +44,7 @@ import { initVillains } from './modules/villains.js';
 import { initArena } from './modules/arena.js';
 import { initCardTilt } from './modules/3d-tilt.js';
 import { initCursorFollower } from './modules/cursor-follower.js';
+import { initMagneticButtons } from './modules/magnetic-buttons.js';
 
 const PAGES = { overview, career, sessions, hands, leaks, ranges, villains, arena };
 
@@ -72,6 +73,7 @@ function boot() {
   initArena();
   initCardTilt();
   initCursorFollower();
+  initMagneticButtons();
 }
 
 if (document.readyState === 'loading') {

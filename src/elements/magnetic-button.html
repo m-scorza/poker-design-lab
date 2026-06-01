@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Liquid-Fill Magnetic CTA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --bg-2: #0b0d12;
+      --bg-card: rgba(13, 17, 25, 0.65);
+      --bg-card-hover: rgba(20, 26, 38, 0.75);
+      --border: rgba(255, 255, 255, 0.05);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --accent-2: #00FF87;
+      --accent-soft: rgba(0, 240, 255, 0.06);
+      --accent-glow: rgba(0, 240, 255, 0.25);
+      --accent-line: rgba(0, 240, 255, 0.35);
+      --loss: #FF3B6B;
+      --loss-soft: rgba(255, 59, 107, 0.08);
+      --fg: #f3f4f6;
+      --fg-muted: #8892b0;
+      --fg-dim: #3a3f50;
+      --sans: 'Inter', -apple-system, sans-serif;
+      --display: 'Outfit', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      overflow-x: hidden;
+    }
+    .container { max-width: 800px; width: 100%; text-align: center; z-index: 10; }
+    h1 { font-family: var(--display); font-weight: 700; margin-bottom: 30px; letter-spacing: -0.02em; }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-muted); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+
+  .btn-deck { display: flex; gap: 28px; justify-content: center; margin-top: 40px; flex-wrap: wrap; }
+  .btn-wrapper { position: relative; display: inline-block; }
+  .magnetic-btn {
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    color: #fff;
+    font-family: var(--display);
+    font-size: 16px;
+    font-weight: 700;
+    padding: 20px 42px;
+    border-radius: 35px;
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: border-color 0.3s, color 0.3s;
+    z-index: 10;
+  }
+  .btn-fill {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 140%; height: 300%;
+    background: linear-gradient(135deg, var(--accent-2) 0%, var(--loss) 100%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    z-index: -1;
+    pointer-events: none;
+    transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .magnetic-btn:hover { border-color: transparent; color: #000; }
+  .magnetic-btn:hover .btn-fill { transform: translate(-50%, -50%) scale(1); }
+  .btn-label { position: relative; z-index: 2; display: flex; align-items: center; gap: 8px; }
+  .btn-label svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2.5; transition: transform 0.3s; }
+  .magnetic-btn:hover svg { transform: translateX(5px); }
+
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Liquid-Fill Magnetic CTA</h1>
+
+  <p style="color: var(--fg-muted);">A hero call-to-action: the button drifts toward the cursor (GSAP elastic pull) while a radial gradient fill wipes in, the label flips to black, and the arrow slides forward.</p>
+  <div class="btn-deck">
+    <div class="btn-wrapper">
+      <button class="magnetic-btn" id="btn-mag-1">
+        <div class="btn-fill"></div>
+        <span class="btn-label">
+          Analyze Hand History
+          <svg viewBox="0 0 14 14"><path d="M2 7 h10 M8 3 l4 4 l-4 4"></path></svg>
+        </span>
+      </button>
+    </div>
+    <div class="btn-wrapper">
+      <button class="magnetic-btn" id="btn-mag-2">
+        <div class="btn-fill"></div>
+        <span class="btn-label">
+          Import Session
+          <svg viewBox="0 0 14 14"><path d="M2 7 h10 M8 3 l4 4 l-4 4"></path></svg>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  </div>
+  <script type="module">
+    import gsap from 'gsap';
+    // Magnetic pull: button drifts toward cursor, then springs back on leave.
+    document.querySelectorAll('.magnetic-btn').forEach((btn) => {
+      btn.addEventListener('pointermove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        gsap.to(btn, { x: x * 0.3, y: y * 0.3, duration: 0.3 });
+      });
+      btn.addEventListener('pointerleave', () => {
+        gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.3)' });
+      });
+    });
+  </script>
+</body>
+</html>
