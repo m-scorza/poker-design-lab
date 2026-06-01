@@ -49,6 +49,7 @@ status calls; Claude defaults new bricks to `new`.
 | Trendline Path Morph | `trendline-morph.html` | Data Viz | new | net-new (Antigravity) |
 | Stakes ABI Evolution | `abi-evolution.html` | Data Viz | new | net-new (Antigravity) |
 | Session Calendar Heatmap | `calendar-heatmap.html` | Data Viz | new | `archive/sketches/Sessions.html` |
+| Odometer StatCards | `odometer-statcard.html` | Data Viz | new | net-new (LifetimeScorecard target) |
 | Text Scramble Decoder | `scramble.html` | Text FX | keep | carried-forward |
 | Blocker HUD Simulator | `blocker-simulator.html` | Poker-Specific | new | net-new (Antigravity) |
 | Cards Deal Replayer | `replayer.html` | Poker-Specific | keep | carried-forward |
