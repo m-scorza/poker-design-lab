@@ -37,6 +37,8 @@ export const state = {
     steal: 34,
     chips: 324580,
     bb100: 8.24,
+    bestResult: 112.50,
+    worstResult: -32.40,
     // "30-second answer" verdict (modelled on the real ValueSnapshotCard)
     verdict: {
       reco: 'Subir de stake',

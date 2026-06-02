@@ -54,7 +54,7 @@ status calls; Claude defaults new bricks to `new`.
 | Session Calendar Heatmap | `calendar-heatmap.html` | Data Viz | new | `archive/sketches/Sessions.html` |
 | Odometer StatCards | `odometer-statcard.html` | Data Viz | keep | folded into Desk financials/chips count-up (B1) |
 | Leak Cards · Gauge | `leak-card-gauge.html` | Data Viz | new | net-new (LeaksPage target) |
-| Career Arc + Milestones | `career-arc.html` | Data Viz | new | `archive/sketches/Career.html` |
+| Career Arc + Milestones | `career-arc.html` | Data Viz | keep | folded into Career overview — arc curve + milestone rail + node tooltips (B2) |
 | Leak × Position Heatmap | `leak-heatmap.html` | Data Viz | new | `archive/sketches/Leaks.html` |
 | Scroll Reveal · Fade-Up | `scroll-reveal.html` | Scroll & Choreography | new | `archive/legacy_dashboards/shader-bg.js` |
 | Aa Type Switcher | `type-switcher.html` | Nav & Chrome | new | `archive/legacy_dashboards/shader-bg.js` |

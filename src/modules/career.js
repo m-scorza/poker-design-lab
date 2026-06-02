@@ -5,8 +5,51 @@ import { state } from '../state.js';
 import handsData from '../data/hands.json';
 
 // Hour Heatmap mock database (7 days x 24 hours)
-const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const DAYS = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
+const DAYS_FULL = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
 const HEATMAP_DATA = [];
+
+// Count-up animation for the Lifetime Scorecard tiles (mirrors radar.js countUp)
+function countUp(el, to, { prefix = '', suffix = '', decimals = 0, sign = false } = {}) {
+  if (!el) return;
+  const dur = 900;
+  const start = performance.now();
+  const from = 0;
+  const render = (val) => {
+    const signStr = sign && val > 0 ? '+' : '';
+    const body = Math.abs(val).toLocaleString('en-US', {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    });
+    el.innerText = `${signStr}${val < 0 ? '-' : ''}${prefix}${body}${suffix}`;
+  };
+  function frame(now) {
+    const t = Math.min(1, (now - start) / dur);
+    const eased = 1 - Math.pow(1 - t, 3);
+    render(from + (to - from) * eased);
+    if (t < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  // Fallback: guarantee the final value lands even if rAF is paused (hidden tab)
+  setTimeout(() => render(to), dur + 80);
+}
+
+// Populate the Lifetime Scorecard from the reactive store
+function fillScorecard() {
+  const L = state.lifetime;
+  countUp(document.getElementById('sc-hands'), L.hands, {});
+  countUp(document.getElementById('sc-compliance'), L.compliance, { decimals: 1, suffix: '%' });
+  countUp(document.getElementById('sc-best'), L.bestResult, { prefix: '$', decimals: 2, sign: true });
+  countUp(document.getElementById('sc-worst'), L.worstResult, { prefix: '$', decimals: 2, sign: true });
+  countUp(document.getElementById('sc-vpip'), L.vpip, { decimals: 1, suffix: '%' });
+  countUp(document.getElementById('sc-pfr'), L.pfr, { decimals: 1, suffix: '%' });
+  countUp(document.getElementById('sc-abi'), L.abi, { prefix: '$', decimals: 2 });
+  countUp(document.getElementById('sc-roi'), L.roi, { decimals: 1, suffix: '%', sign: true });
+
+  // Compliance color: emerald if >=85, amber otherwise (faithful to React LifetimeScorecard)
+  const compEl = document.getElementById('sc-compliance');
+  if (compEl) compEl.className = 'sc-v ' + (L.compliance >= 85 ? 'pos' : 'warn');
+}
 
 // Seed the 7x24 heatmap data with realistic volume and profitability spikes
 function seedHeatmapData() {
@@ -88,37 +131,9 @@ export function initCareer() {
     });
   });
 
-  // 2. Arc Milestone Nodes tooltips
-  const arcContainer = document.getElementById('career-arc-container');
-  const arcNodes = document.querySelectorAll('.chart-node');
-  const arcTooltip = document.getElementById('career-arc-tooltip');
-
-  if (arcTooltip && arcContainer) {
-    arcNodes.forEach(node => {
-      node.addEventListener('mouseenter', (e) => {
-        const info = node.getAttribute('data-info');
-        const cx = parseFloat(node.getAttribute('cx'));
-        const cy = parseFloat(node.getAttribute('cy'));
-        
-        arcTooltip.innerHTML = info;
-        arcTooltip.style.display = 'block';
-        
-        // Calculate coordinate offsets relative to container
-        const rect = arcContainer.getBoundingClientRect();
-        const tooltipWidth = arcTooltip.offsetWidth;
-        const xPos = (cx / 1000) * rect.width - (tooltipWidth / 2);
-        const yPos = (cy / 250) * rect.height - 65;
-
-        arcTooltip.style.left = `${xPos}px`;
-        arcTooltip.style.top = `${yPos}px`;
-        gsap.fromTo(arcTooltip, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.15 });
-      });
-
-      node.addEventListener('mouseleave', () => {
-        arcTooltip.style.display = 'none';
-      });
-    });
-  }
+  // 2. Career Arc — fill scorecard, wire node tooltips, metric switch + path redraw
+  fillScorecard();
+  initCareerArc();
 
   // 2.2 ABI Chart Node Tooltips
   const abiContainer = document.getElementById('career-abi-container');
@@ -158,6 +173,91 @@ export function initCareer() {
   drawHeatmap();
 }
 
+// Career Arc hero: node tooltips, metric-switch scramble + path redraw, milestone fill
+function initCareerArc() {
+  const wrap = document.getElementById('career-arc-wrap');
+  const tip = document.getElementById('career-arc-tip');
+  const path = document.getElementById('career-arc-path');
+  const nodes = [...document.querySelectorAll('#career-arc-wrap .chart-node')];
+
+  // Draw the line via stroke-dashoffset on load + on metric switch
+  let len = 1000;
+  if (path) { try { len = path.getTotalLength(); } catch (e) { len = 1000; } }
+  function drawPath() {
+    if (!path) return;
+    path.style.transition = 'none';
+    path.style.strokeDasharray = len;
+    path.style.strokeDashoffset = len;
+    void path.getBoundingClientRect();
+    path.style.transition = 'stroke-dashoffset 1.4s cubic-bezier(0.22,1,0.36,1)';
+    path.style.strokeDashoffset = '0';
+    // fallback: guarantee fully drawn even if transitions are paused (hidden tab)
+    setTimeout(() => { if (path) path.style.strokeDashoffset = '0'; }, 1600);
+  }
+
+  // Node tooltips (bounding-rect positioning — survives any viewBox)
+  if (wrap && tip) {
+    nodes.forEach(node => {
+      node.addEventListener('mouseenter', () => {
+        tip.style.display = 'block';
+        tip.textContent = node.getAttribute('data-info');
+        const cr = wrap.getBoundingClientRect();
+        const nr = node.getBoundingClientRect();
+        tip.style.left = `${nr.left - cr.left + 15}px`;
+        tip.style.top = `${nr.top - cr.top - 34}px`;
+        node.setAttribute('r', '8');
+        gsap.fromTo(tip, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.15 });
+      });
+      node.addEventListener('mouseleave', () => {
+        tip.style.display = 'none';
+        node.setAttribute('r', '5');
+      });
+    });
+  }
+
+  // Scramble the headline metric on segment switch
+  function scramble(el, finalString, dur = 0.7) {
+    if (!el) return;
+    const chars = '0123456789$#@+-./%';
+    const length = finalString.length;
+    let frame = 0; const total = dur * 60;
+    const iv = setInterval(() => {
+      let s = '';
+      for (let i = 0; i < length; i++) {
+        s += Math.random() < frame / total ? finalString[i] : chars[(Math.random() * chars.length) | 0];
+      }
+      el.textContent = s; frame++;
+      if (frame >= total) { clearInterval(iv); el.textContent = finalString; }
+    }, 1000 / 60);
+  }
+
+  const money = document.getElementById('career-arc-money');
+  const L = state.lifetime;
+  const VALS = {
+    'Lucro': `+$${L.netProfit.toFixed(2)}`,
+    'ROI': `+${L.roi.toFixed(1)}%`,
+    'bb/100': `+${L.bb100.toFixed(1)} bb`,
+  };
+  const seg = document.getElementById('career-arc-seg');
+  if (seg) {
+    seg.addEventListener('click', (e) => {
+      const btn = e.target.closest('button'); if (!btn) return;
+      seg.querySelectorAll('button').forEach(b => b.removeAttribute('aria-pressed'));
+      btn.setAttribute('aria-pressed', 'true');
+      scramble(money, VALS[btn.textContent.trim()] || VALS['Lucro']);
+      drawPath();
+    });
+  }
+
+  // Kick off the line draw + milestone progress fill
+  drawPath();
+  const mLine = document.getElementById('career-milestone-line');
+  if (mLine) {
+    requestAnimationFrame(() => requestAnimationFrame(() => { mLine.style.width = '82%'; }));
+    setTimeout(() => { mLine.style.width = '82%'; }, 150);
+  }
+}
+
 // 3. Draw 7x24 hour/day density heatmap
 function drawHeatmap() {
   const container = document.getElementById('hour-heatmap-rows');
@@ -190,19 +290,17 @@ function drawHeatmap() {
       block.style.cursor = 'pointer';
       block.style.transition = 'transform 0.1s, box-shadow 0.1s';
       
-      // Determine coloring based on profit/loss/neutral
+      // Determine coloring based on profit/loss/neutral (token-driven via color-mix)
       const hasVolume = cell.volume > 0;
       if (!hasVolume) {
-        block.style.background = 'rgba(255,255,255,0.015)';
-        block.style.border = '1px solid rgba(255,255,255,0.03)';
+        block.style.background = 'var(--bg-input)';
+        block.style.border = '1px solid var(--border)';
       } else {
         const isPos = cell.profit >= 0;
-        block.style.background = isPos 
-          ? `rgba(0, 240, 255, ${cell.shade})` 
-          : `rgba(255, 59, 107, ${cell.shade})`;
-        block.style.border = isPos 
-          ? '1px solid rgba(0, 240, 255, 0.2)' 
-          : '1px solid rgba(255, 59, 107, 0.2)';
+        const baseVar = isPos ? 'var(--accent)' : 'var(--loss)';
+        const pct = Math.round(cell.shade * 100);
+        block.style.background = `color-mix(in srgb, ${baseVar} ${pct}%, transparent)`;
+        block.style.border = `1px solid ${isPos ? 'var(--accent-line)' : 'var(--loss-line)'}`;
       }
 
       // Hover enlargement
@@ -211,13 +309,13 @@ function drawHeatmap() {
         block.style.zIndex = '10';
         block.style.position = 'relative';
 
-        const dayName = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][dayIdx];
+        const dayName = DAYS_FULL[dayIdx];
         const hourStr = `${hrIdx.toString().padStart(2, '0')}:00`;
         const profitStr = cell.profit >= 0 ? `+${cell.profit.toFixed(1)} bb` : `${cell.profit.toFixed(1)} bb`;
 
         tooltip.innerHTML = `
           <b>${dayName} ${hourStr}</b>
-          Volume: ${cell.volume} sessions<br>
+          Volume: ${cell.volume} sessões<br>
           <span style="color: ${cell.profit >= 0 ? 'var(--accent)' : 'var(--loss)'}">${profitStr} PnL</span>
         `;
         tooltip.style.display = 'block';
@@ -271,8 +369,8 @@ function drawOpponentLedgers() {
         <div style="display:flex; align-items:center; gap: 10px;">
           <span style="font-family:var(--mono); font-size:13px; color:var(--loss); opacity:0.35;">#${idx+1}</span>
           <div>
-            <div style="font-family:var(--mono); font-weight:700; color:#fff; text-transform:uppercase;">${v.name}</div>
-            <div style="font-size:10px; color:var(--fg-muted); margin-top:2px;">${v.hands} hands observed · <span class="opp-arch-badge ${v.arch}" style="font-size:8px; padding:0 3px;">${v.label}</span></div>
+            <div style="font-family:var(--mono); font-weight:700; color:var(--fg); text-transform:uppercase;">${v.name}</div>
+            <div style="font-size:10px; color:var(--fg-muted); margin-top:2px;">${v.hands} mãos observadas ·<span class="opp-arch-badge ${v.arch}" style="font-size:8px; padding:0 3px;">${v.label}</span></div>
           </div>
         </div>
         <span style="font-family:var(--mono); color:var(--loss); font-size:14px; font-weight:700;">-${v.bb.toFixed(1)} bb</span>
@@ -304,8 +402,8 @@ function drawOpponentLedgers() {
         <div style="display:flex; align-items:center; gap: 10px;">
           <span style="font-family:var(--mono); font-size:13px; color:var(--accent); opacity:0.35;">#${idx+1}</span>
           <div>
-            <div style="font-family:var(--mono); font-weight:700; color:#fff; text-transform:uppercase;">${v.name}</div>
-            <div style="font-size:10px; color:var(--fg-muted); margin-top:2px;">${v.hands} hands observed · <span class="opp-arch-badge ${v.arch}" style="font-size:8px; padding:0 3px;">${v.label}</span></div>
+            <div style="font-family:var(--mono); font-weight:700; color:var(--fg); text-transform:uppercase;">${v.name}</div>
+            <div style="font-size:10px; color:var(--fg-muted); margin-top:2px;">${v.hands} mãos observadas ·<span class="opp-arch-badge ${v.arch}" style="font-size:8px; padding:0 3px;">${v.label}</span></div>
           </div>
         </div>
         <span style="font-family:var(--mono); color:var(--accent-2); font-size:14px; font-weight:700;">+${v.bb.toFixed(1)} bb</span>
@@ -332,13 +430,13 @@ function drawOpponentLedgers() {
 
       card.innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-          <span style="font-family:var(--mono); font-weight:700; color:#fff; text-transform:uppercase;">${v.name}</span>
+          <span style="font-family:var(--mono); font-weight:700; color:var(--fg); text-transform:uppercase;">${v.name}</span>
           <span class="opp-arch-badge ${v.arch}" style="font-size:8px; padding:0 4px;">${v.label}</span>
         </div>
         <div style="display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:11px; color:var(--fg-muted);">
           <span>VPIP/PFR: ${v.vpip}/${v.pfr}</span>
-          <span>${v.hands} hands</span>
-          <span style="color:var(--accent);">✏️ ${v.notes} notes</span>
+          <span>${v.hands} mãos</span>
+          <span style="color:var(--accent);">✏️ ${v.notes} notas</span>
         </div>
       `;
       overlapGrid.appendChild(card);
@@ -383,9 +481,9 @@ function drawHighImpactHands() {
       <td style="padding:14px 24px; text-align:center; color:var(--accent-2);">${h.pos}</td>
       <td style="padding:14px 24px; text-align:center; color:var(--fg-muted);">${h.scenario.replace('_', ' ')}</td>
       <td style="padding:14px 24px; text-align:center;">${h.stack}</td>
-      <td style="padding:14px 24px; text-align:center;"><span class="compliance-badge ${h.compliant ? 'ok' : 'dev'}">${h.compliant ? 'ok' : 'deviation'}</span></td>
+      <td style="padding:14px 24px; text-align:center;"><span class="compliance-badge ${h.compliant ? 'ok' : 'dev'}">${h.compliant ? 'ok' : 'desvio'}</span></td>
       <td style="padding:14px 24px; text-align:right; color: ${isPos ? 'var(--accent-2)' : 'var(--loss)'};">${h.net}</td>
-      <td style="padding:14px 24px; text-align:center;"><button class="btn-replay-career" data-id="${h.id}" style="padding:4px 10px; font-size:10.5px; border-radius:4px; background:rgba(0, 240, 255, 0.1); border:1px solid rgba(0, 240, 255, 0.2); color:var(--accent); cursor:pointer;">Replay</button></td>
+      <td style="padding:14px 24px; text-align:center;"><button class="btn-replay-career" data-id="${h.id}" style="padding:4px 10px; font-size:10.5px; border-radius:4px; background:var(--accent-soft); border:1px solid var(--accent-line); color:var(--accent); cursor:pointer;">Replay</button></td>
     `;
     container.appendChild(tr);
   });

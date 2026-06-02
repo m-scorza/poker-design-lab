@@ -94,4 +94,110 @@
     color: var(--loss);
   }
 
+  /* ===== Lifetime Scorecard (faithful to React LifetimeScorecard) ===== */
+  .scorecard-card { padding: 26px 28px; margin-bottom: 24px; }
+  .scorecard-head {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 22px;
+  }
+  .scorecard-head .sc-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .scorecard-head h3 {
+    margin: 0; font-family: var(--mono); font-size: 11px; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg);
+  }
+  .scorecard-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+  }
+  .sc-metric { display: flex; flex-direction: column; gap: 6px; }
+  .sc-metric .sc-k {
+    font-family: var(--mono); font-size: 9.5px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-dim);
+    display: flex; align-items: center; gap: 5px;
+  }
+  .sc-metric .sc-v {
+    font-family: var(--mono); font-size: 24px; font-weight: 700;
+    letter-spacing: -0.01em; color: var(--fg); line-height: 1;
+  }
+  .sc-metric .sc-v.pos { color: var(--accent); }
+  .sc-metric .sc-v.neg { color: var(--loss); }
+  .sc-metric .sc-v.warn { color: var(--warn); }
+  .scorecard-foot {
+    margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--border);
+    display: flex; gap: 36px;
+  }
+  .scorecard-foot .sc-k { margin-bottom: 4px; }
+  .scorecard-foot .sc-sv {
+    font-family: var(--mono); font-size: 14px; font-weight: 600; color: var(--fg);
+  }
+
+  /* ===== Career Arc hero (ported from career-arc brick, tokenized) ===== */
+  .arc-hero { padding: 26px 28px; position: relative; overflow: hidden; margin-bottom: 24px; }
+  .arc-hero::after {
+    content: ''; position: absolute; right: -100px; top: -60px;
+    width: 340px; height: 340px;
+    background: radial-gradient(circle, var(--accent-soft) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .arc-top { display: flex; align-items: flex-start; gap: 32px; margin-bottom: 20px; position: relative; flex-wrap: wrap; }
+  .arc-eyebrow {
+    font-family: var(--mono); font-size: 10.5px; color: var(--fg-muted);
+    letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .arc-eyebrow .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 0 3px var(--accent-soft); }
+  .arc-money { font-family: var(--mono); font-size: 46px; color: var(--c-chip-1, var(--accent)); font-weight: 500; letter-spacing: -0.02em; line-height: 1; }
+  .arc-money .cents { font-size: 24px; opacity: 0.6; }
+  .arc-money-meta { font-family: var(--mono); font-size: 11.5px; color: var(--fg-muted); margin-top: 10px; }
+  .arc-money-meta b { color: var(--fg); font-weight: 500; }
+  .arc-money-meta b.pos { color: var(--accent); }
+  .arc-seg { margin-left: auto; display: inline-flex; gap: 2px; padding: 2px; background: var(--bg-input); border: 1px solid var(--border); border-radius: 7px; }
+  .arc-seg button { background: none; border: 0; color: var(--fg-muted); font: 500 11px var(--mono); padding: 6px 12px; border-radius: 5px; cursor: pointer; letter-spacing: 0.03em; transition: background 0.2s, color 0.2s; }
+  .arc-seg button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
+  .arc-wrap { position: relative; height: 280px; }
+  .arc-wrap svg { width: 100%; height: 100%; display: block; }
+  .arc-y-labels { position: absolute; left: 0; top: 6px; bottom: 30px; font-family: var(--mono); font-size: 10px; color: var(--fg-dim); display: flex; flex-direction: column; justify-content: space-between; padding-right: 8px; }
+  .arc-x-labels { display: flex; justify-content: space-between; padding-left: 38px; padding-top: 8px; font-family: var(--mono); font-size: 10px; color: var(--fg-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .arc-tip {
+    display: none; position: absolute; background: var(--bg-card);
+    border: 1px solid var(--border-strong); padding: 8px 12px; border-radius: 5px;
+    font-family: var(--mono); font-size: 10px; pointer-events: none; z-index: 100; color: var(--fg);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5); white-space: nowrap;
+  }
+
+  /* ===== Milestone Rail ===== */
+  .milestones { padding: 22px 26px; margin-bottom: 24px; }
+  .milestone-h { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+  .milestone-h .eye { font-family: var(--mono); font-size: 10.5px; color: var(--accent); letter-spacing: 0.16em; text-transform: uppercase; }
+  .milestone-h .sub { font-family: var(--mono); font-size: 11px; color: var(--fg-muted); }
+  .milestone-track { position: relative; padding: 18px 0 10px; }
+  .milestone-line { position: absolute; left: 0; right: 0; top: 30px; height: 1px; background: var(--border); }
+  .milestone-line span { position: absolute; left: 0; height: 1px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 1px; width: 0; transition: width 1.1s cubic-bezier(0.22,1,0.36,1); }
+  .milestone-items { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; position: relative; }
+  .milestone-item { display: flex; flex-direction: column; align-items: center; gap: 6px; position: relative; padding-top: 30px; text-align: center; }
+  .milestone-item .marker { position: absolute; top: 22px; left: 50%; transform: translate(-50%, -50%); width: 17px; height: 17px; border-radius: 50%; background: var(--bg-card); border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; z-index: 2; }
+  .milestone-item .marker.money { border-color: var(--accent-2); }
+  .milestone-item .marker .inner { width: 5px; height: 5px; background: var(--accent); border-radius: 50%; }
+  .milestone-item .marker.money .inner { background: var(--accent-2); }
+  .milestone-item .marker.pending { border-color: var(--accent-2); animation: ms-pulse 2s infinite ease-in-out; }
+  .milestone-item .marker.pending .inner { background: var(--accent-2); }
+  .milestone-item .date { font-family: var(--mono); font-size: 9.5px; color: var(--fg-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .milestone-item .t { font-size: 12px; font-weight: 500; color: var(--fg); line-height: 1.3; max-width: 130px; }
+  .milestone-item.pending .t { color: var(--fg-muted); }
+  .milestone-item .v { font-family: var(--mono); font-size: 10.5px; color: var(--accent); margin-top: 1px; }
+  .milestone-item.pending .v { color: var(--fg-dim); }
+  @keyframes ms-pulse {
+    0% { box-shadow: 0 0 0 0 var(--accent-line); }
+    70% { box-shadow: 0 0 0 8px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
+
+  @media (max-width: 1100px) {
+    .career-top-kpis { grid-template-columns: repeat(2, 1fr); }
+    .scorecard-grid { grid-template-columns: repeat(2, 1fr); }
+    .career-bottom-grid { grid-template-columns: 1fr; }
+    .milestone-items { grid-template-columns: repeat(3, 1fr); }
+  }
+
   /* =========================================================*/
