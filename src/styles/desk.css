@@ -79,6 +79,9 @@
     flex-direction: column;
     gap: 24px;
   }
+  /* Let each column's cards share the equalized column height so the
+     two stacks (2 vs 3 cards) end flush and spacing reads consistent. */
+  .desk-left > .card { flex: 1 0 auto; }
   .span-2 { grid-column: span 2; }
 
   /* THE MONUMENT */
