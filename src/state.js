@@ -118,7 +118,7 @@ export const state = {
       chips: 14200,
       nemesis: 'villain_crusher',
       nemesisLoss: -32.0,
-      insight: 'Elite discipline. You maintained GTO open compliance at 88.5%. Turn actions were stable, but check blind defenses against late opens.',
+      insight: 'Você manteve a compliance de abertura GTO em 88,5%. As ações no turn ficaram estáveis, mas revise as defesas de blind contra aberturas tardias.',
       alerts: [
         {
           id: 'alert-sb-def',
@@ -161,7 +161,7 @@ export const state = {
       chips: -24800,
       nemesis: 'fish_king_22',
       nemesisLoss: -78.0,
-      insight: 'Low compliance. Blinds defense was too wide vs HJ/CO openers. Re-evaluate SB fold criteria.',
+      insight: 'A defesa de blinds foi ampla demais contra aberturas de HJ/CO. Reavalie os critérios de fold no SB.',
       alerts: [
         {
           id: 'alert-btn-rfi',
@@ -204,7 +204,7 @@ export const state = {
       chips: 38400,
       nemesis: 'shark_reg',
       nemesisLoss: -18.4,
-      insight: 'Outstanding session. Preflop ranges were followed perfectly. Value betting sizes were sized optimally.',
+      insight: 'Os ranges de pré-flop foram seguidos perfeitamente e os sizings de aposta por valor foram ótimos.',
       alerts: [],
       stackBands: [
         { label: '<10bb (push)', value: 500, width: 10, class: '' },

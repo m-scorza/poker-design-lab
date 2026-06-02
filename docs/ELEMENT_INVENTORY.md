@@ -51,7 +51,7 @@ status calls; Claude defaults new bricks to `new`.
 | Radar HUD Rings | `radar-hud.html` | Data Viz | keep | carried-forward |
 | Trendline Path Morph | `trendline-morph.html` | Data Viz | new | net-new (Antigravity) |
 | Stakes ABI Evolution | `abi-evolution.html` | Data Viz | new | net-new (Antigravity) |
-| Session Calendar Heatmap | `calendar-heatmap.html` | Data Viz | new | `archive/sketches/Sessions.html` |
+| Session Calendar Heatmap | `calendar-heatmap.html` | Data Viz | keep | folded into Sessions — 7×35 day/week density grid, tokenized via color-mix + hover tooltip (B3) |
 | Odometer StatCards | `odometer-statcard.html` | Data Viz | keep | folded into Desk financials/chips count-up (B1) |
 | Leak Cards · Gauge | `leak-card-gauge.html` | Data Viz | new | net-new (LeaksPage target) |
 | Career Arc + Milestones | `career-arc.html` | Data Viz | keep | folded into Career overview — arc curve + milestone rail + node tooltips (B2) |

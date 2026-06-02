@@ -96,6 +96,90 @@
     background: var(--accent);
   }
   .session-bar-fill.blue { background: var(--accent-2); }
-  .session-bar-fill.amber { background: #ffaa00; }
+  .session-bar-fill.amber { background: var(--warn); }
+
+  /* ===== Session-over-session delta pill ===== */
+  .delta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    margin-top: 4px;
+    padding: 1px 6px;
+    border-radius: 20px;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+    border: 1px solid transparent;
+  }
+  .delta-pill.up {
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-color: var(--accent-line);
+  }
+  .delta-pill.down {
+    color: var(--loss);
+    background: var(--loss-soft);
+    border-color: var(--loss-line);
+  }
+  .delta-pill.flat {
+    color: var(--fg-dim);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  /* ===== Session Calendar Heatmap (ported from calendar-heatmap brick, tokenized) ===== */
+  .cal-h {
+    display: flex; align-items: center; gap: 14px; margin-bottom: 16px; flex-wrap: wrap;
+  }
+  .cal-h .note { font-family: var(--mono); font-size: 11px; color: var(--fg-dim); }
+  .cal-h .legend {
+    margin-left: auto; display: flex; gap: 12px; align-items: center;
+    font-family: var(--mono); font-size: 10.5px; color: var(--fg-dim);
+  }
+  .cal-h .legend .sw { display: inline-flex; align-items: center; gap: 4px; }
+  .cal-h .legend .sw i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+  .cal-grid { display: grid; grid-template-columns: 32px repeat(35, 1fr); gap: 4px; }
+  .cal-day-label {
+    font-family: var(--mono); font-size: 9.5px; color: var(--fg-dim);
+    display: flex; align-items: center; padding-right: 6px; height: 18px;
+  }
+  .cal-cell {
+    aspect-ratio: 1; border-radius: 2px;
+    background: rgba(255, 255, 255, 0.04); cursor: pointer; position: relative;
+    transition: transform 0.12s ease, outline-color 0.12s ease;
+    outline: 1px solid transparent;
+  }
+  .cal-cell:hover { outline-color: var(--accent); transform: scale(1.18); z-index: 2; }
+  .cal-cell.empty { background: transparent; cursor: default; }
+  .cal-cell.empty:hover { outline-color: transparent; transform: none; }
+  .cal-cell.win1 { background: color-mix(in srgb, var(--accent) 18%, transparent); }
+  .cal-cell.win2 { background: color-mix(in srgb, var(--accent) 38%, transparent); }
+  .cal-cell.win3 { background: color-mix(in srgb, var(--accent) 62%, transparent); }
+  .cal-cell.win4 { background: color-mix(in srgb, var(--accent) 88%, transparent); }
+  .cal-cell.loss1 { background: color-mix(in srgb, var(--loss) 20%, transparent); }
+  .cal-cell.loss2 { background: color-mix(in srgb, var(--loss) 45%, transparent); }
+  .cal-cell.loss3 { background: color-mix(in srgb, var(--loss) 70%, transparent); }
+  .cal-cell.flat { background: color-mix(in srgb, var(--fg) 12%, transparent); }
+  .cal-month-row {
+    display: grid; grid-template-columns: 32px repeat(35, 1fr); gap: 4px; margin-top: 10px;
+    font-family: var(--mono); font-size: 9.5px; color: var(--fg-dim);
+  }
+  .cal-month-row span { grid-column: span 5; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .cal-tip {
+    position: fixed; pointer-events: none; z-index: 50;
+    background: var(--bg-card); border: 1px solid var(--border-strong);
+    border-radius: 8px; padding: 8px 12px; font-family: var(--mono); font-size: 11px;
+    color: var(--fg); white-space: nowrap; opacity: 0; transform: translateY(4px);
+    transition: opacity 0.1s ease, transform 0.1s ease; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+  }
+  .cal-tip.show { opacity: 1; transform: translateY(0); }
+  .cal-tip .net { font-weight: 700; }
+  .cal-tip .net.pos { color: var(--accent); }
+  .cal-tip .net.neg { color: var(--loss); }
+  .cal-tip .meta { color: var(--fg-dim); margin-top: 2px; }
 
   /* =========================================================*/
