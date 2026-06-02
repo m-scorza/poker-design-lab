@@ -53,9 +53,9 @@ status calls; Claude defaults new bricks to `new`.
 | Stakes ABI Evolution | `abi-evolution.html` | Data Viz | new | net-new (Antigravity) |
 | Session Calendar Heatmap | `calendar-heatmap.html` | Data Viz | keep | folded into Sessions — 7×35 day/week density grid, tokenized via color-mix + hover tooltip (B3) |
 | Odometer StatCards | `odometer-statcard.html` | Data Viz | keep | folded into Desk financials/chips count-up (B1) |
-| Leak Cards · Gauge | `leak-card-gauge.html` | Data Viz | new | net-new (LeaksPage target) |
+| Leak Cards · Gauge | `leak-card-gauge.html` | Data Viz | keep | folded into Leaks — 6 monitored-leak gauges (value-vs-target track + target tick + trend sparkline + severity rail), tokenized via `--sev` + color-mix (B4) |
 | Career Arc + Milestones | `career-arc.html` | Data Viz | keep | folded into Career overview — arc curve + milestone rail + node tooltips (B2) |
-| Leak × Position Heatmap | `leak-heatmap.html` | Data Viz | new | `archive/sketches/Leaks.html` |
+| Leak × Position Heatmap | `leak-heatmap.html` | Data Viz | keep | folded into Leaks — 8×6 leak×position severity grid, tokenized (crit→loss, high→warn, med→accent-2 via color-mix) + click-to-isolate caption (B4) |
 | Scroll Reveal · Fade-Up | `scroll-reveal.html` | Scroll & Choreography | new | `archive/legacy_dashboards/shader-bg.js` |
 | Aa Type Switcher | `type-switcher.html` | Nav & Chrome | new | `archive/legacy_dashboards/shader-bg.js` |
 | Tournament Lab Shell | `tournament-lab-shell.html` | Layout & Showcase | new | `archive/legacy_dashboards/Tournament Lab - System.html` + `v8-shell.css` |
@@ -81,7 +81,7 @@ intact and openable.
 | **Scroll-reveal** (fade/rise blocks into view) | `archive/legacy_dashboards/shader-bg.js` | Bundled in shader-bg.js; not in v4 (sandbox has no scroll). Still to harvest. |
 | **CLI / terminal "retro" theme** (command-line parser panel) | `archive/sandboxes/design_sandbox.html`, `_v2.html`, `_v3.html`; `archive/legacy_dashboards/Dashboard v8.html`, `Dashboard Directions v2.html` | ✅ **Harvested** → `src/elements/cli-panel.html` (interactive prompt, status `new`). |
 | **Blueprint / CAD theme** (crosshair guideline tracker) | `archive/sandboxes/design_sandbox_v2.html`, `_v3.html` | ✅ **Harvested** → `src/elements/blueprint-theme.html` (status `new`). |
-| **Day/Hour heatmap** | `archive/sketches/Leaks.html`, `Sessions.html`; `archive/legacy_dashboards/Tournament Lab - System.html` | ✅ **Harvested** (calendar variant) → `src/elements/calendar-heatmap.html` (status `new`). Leak×position severity grid still to harvest. |
+| **Day/Hour heatmap** | `archive/sketches/Leaks.html`, `Sessions.html`; `archive/legacy_dashboards/Tournament Lab - System.html` | ✅ **Harvested** (calendar variant) → `src/elements/calendar-heatmap.html` (folded into Sessions, B3). Leak×position severity grid → `src/elements/leak-heatmap.html` (folded into Leaks, B4). |
 | **Tournament Lab system layout** | `archive/legacy_dashboards/Tournament Lab - System.html` | A distinct full-system layout direction. |
 | **Three.js usage** | `archive/broadsheet/Dashboard - Broadsheet.html` | Broadsheet referenced three.js; v4 dropped it (unused). |
 

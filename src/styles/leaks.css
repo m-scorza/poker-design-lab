@@ -23,7 +23,7 @@
   }
   .inc-headline-text span.leak-highlight {
     color: var(--loss);
-    text-shadow: 0 0 20px rgba(255, 92, 138, 0.2);
+    text-shadow: 0 0 20px var(--loss-line);
   }
   .inc-desc {
     font-family: var(--sans);
@@ -108,7 +108,7 @@
   .matrix-cell-node.fold-range {
     background: var(--loss-soft);
     color: var(--loss);
-    outline: 1px solid rgba(255, 92, 138, 0.15);
+    outline: 1px solid var(--loss-line);
   }
   
   .leak-index-cols {
@@ -174,8 +174,8 @@
   }
   .leak-sev-badge.crit { color: var(--loss); }
   .leak-sev-badge.crit::before { background: var(--loss); }
-  .leak-sev-badge.high { color: #ffaa00; }
-  .leak-sev-badge.high::before { background: #ffaa00; }
+  .leak-sev-badge.high { color: var(--warn); }
+  .leak-sev-badge.high::before { background: var(--warn); }
   .leak-sev-badge.med { color: var(--fg-muted); }
   .leak-sev-badge.med::before { background: var(--fg-muted); }
   
@@ -199,5 +199,89 @@
     border-bottom: 1px solid var(--border);
     box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
   }
+
+  /* ---- Leak × Position severity heatmap (folded from leak-heatmap brick) ---- */
+  .hm-h { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+  .hm-h .hm-sub { font-family: var(--mono); font-size: 11px; color: var(--fg-muted); }
+  .hm-legend { margin-left: auto; display: flex; gap: 14px; align-items: center; font-family: var(--mono); font-size: 10.5px; color: var(--fg-muted); }
+  .hm-legend .swatch { display: inline-flex; gap: 5px; align-items: center; }
+  .hm-legend .sw { width: 12px; height: 12px; border-radius: 2px; }
+  .hm-legend .sw.crit { background: var(--loss); box-shadow: 0 0 8px var(--loss-line); }
+  .hm-legend .sw.high { background: color-mix(in srgb, var(--warn) 65%, transparent); }
+  .hm-legend .sw.med  { background: color-mix(in srgb, var(--accent-2) 60%, transparent); }
+  .hm-legend .sw.ok   { background: rgba(255,255,255,0.06); }
+
+  .hm-grid {
+    display: grid;
+    grid-template-columns: 168px repeat(6, 1fr);
+    gap: 3px;
+  }
+  .hm-grid > div { padding: 9px 10px; font-family: var(--mono); font-size: 10.5px; }
+  .hm-corner { background: transparent; }
+  .hm-col-h { color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.10em; text-align: center; }
+  .hm-row-h { color: var(--fg); text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hm-cell {
+    background: rgba(255,255,255,0.04); text-align: center; color: var(--fg-dim);
+    cursor: pointer; transition: transform 0.2s cubic-bezier(0.19,1,0.22,1), box-shadow 0.2s ease, background 0.2s ease;
+    border-radius: 3px; min-height: 38px;
+  }
+  .hm-cell:hover { transform: scale(1.09); z-index: 10; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.55); }
+  .hm-cell.crit { background: var(--loss); color: var(--bg); font-weight: 600; box-shadow: 0 0 10px var(--loss-line); }
+  .hm-cell.high { background: color-mix(in srgb, var(--warn) 60%, transparent); color: var(--fg); }
+  .hm-cell.med  { background: color-mix(in srgb, var(--accent-2) 55%, transparent); color: var(--fg); }
+  .hm-cell.low  { background: rgba(255,255,255,0.08); color: var(--fg-muted); }
+  .hm-cell.empty { cursor: default; pointer-events: none; }
+  .hm-cell.empty:hover { transform: none; box-shadow: none; }
+  .hm-cell.sel { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .hm-cell .v { display: block; font-size: 9px; opacity: 0.85; margin-top: 2px; letter-spacing: 0.04em; }
+
+  .hm-caption {
+    margin-top: 18px; padding: 14px 16px; border-radius: 9px;
+    background: var(--accent-soft); border: 1px solid var(--accent-line);
+    font-family: var(--mono); font-size: 12px; color: var(--fg-muted); min-height: 44px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .hm-caption .pin { color: var(--accent); }
+  .hm-caption b { color: var(--fg); font-weight: 600; }
+  .hm-caption .amt { color: var(--loss); margin-left: auto; }
+
+  /* ---- Monitored leak gauges (folded from leak-card-gauge brick) ---- */
+  .leak-gauge-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .lg-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px;
+    padding: 20px 22px; position: relative; overflow: hidden;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .lg-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--sev); }
+  .lg-card.high { --sev: var(--loss); }
+  .lg-card.med  { --sev: var(--warn); }
+  .lg-card.low  { --sev: var(--accent); }
+
+  .lg-top { display: flex; align-items: flex-start; gap: 12px; }
+  .lg-name { font-family: var(--display); font-weight: 600; font-size: 16px; letter-spacing: -0.01em; }
+  .lg-scen { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-muted); margin-top: 3px; }
+  .lg-sev-pill {
+    margin-left: auto; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 5px; color: var(--sev);
+    background: color-mix(in srgb, var(--sev) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--sev) 28%, transparent); white-space: nowrap;
+  }
+
+  .lg-gauge { display: flex; flex-direction: column; gap: 7px; }
+  .lg-vals { display: flex; align-items: baseline; gap: 8px; font-family: var(--mono); }
+  .lg-cur { font-size: 26px; font-weight: 500; font-variant-numeric: tabular-nums; color: var(--sev); line-height: 1; }
+  .lg-tgt { font-size: 10.5px; color: var(--fg-dim); margin-left: auto; }
+  .lg-track { position: relative; height: 7px; border-radius: 4px; background: rgba(255,255,255,0.05); overflow: visible; }
+  .lg-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; background: var(--sev); width: 0; transition: width 0.9s cubic-bezier(0.22,1,0.36,1); }
+  .lg-mark { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--fg); opacity: 0.55; border-radius: 1px; }
+  .lg-mark::after { content: 'alvo'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 8px; letter-spacing: 0.05em; color: var(--fg-dim); }
+
+  .lg-foot { display: flex; align-items: center; gap: 12px; margin-top: 2px; }
+  .lg-cost { font-family: var(--mono); font-size: 11px; color: var(--fg-muted); }
+  .lg-cost b { color: var(--loss); font-weight: 600; }
+  .lg-trend { font-family: var(--mono); font-size: 10.5px; padding: 2px 7px; border-radius: 5px; }
+  .lg-trend.up { color: var(--accent); background: var(--accent-soft); border: 1px solid var(--accent-line); }
+  .lg-trend.down { color: var(--loss); background: var(--loss-soft); border: 1px solid var(--loss-line); }
+  .lg-spark { margin-left: auto; width: 86px; height: 28px; display: block; }
 
   /* =========================================================*/
