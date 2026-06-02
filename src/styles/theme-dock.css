@@ -57,8 +57,11 @@
   border-radius: 16px;
   background: var(--bg-card);
   border: 1px solid var(--border-strong);
-  backdrop-filter: blur(16px);
   box-shadow: var(--shadow-card);
+  /* NO backdrop-filter while hidden: Chromium keeps compositing a blurred dark
+     region even at opacity:0/visibility:hidden, leaving a dark "blob" over every
+     page after the picker is closed. Apply the blur only while .open. */
+  backdrop-filter: none;
   /* hidden until .open */
   opacity: 0;
   visibility: hidden;
@@ -69,6 +72,7 @@
 .theme-dock.open .dock-panel {
   opacity: 1;
   visibility: visible;
+  backdrop-filter: blur(16px);
   transform: translateY(0) scale(1);
 }
 
