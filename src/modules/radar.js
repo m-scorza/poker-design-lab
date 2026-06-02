@@ -451,8 +451,8 @@ function renderOverview() {
 
   if (verdictEl) {
     verdictEl.innerHTML = isAll 
-      ? `You're cash positive. <em>One button deviation</em> is the whole story.`
-      : `Session verdict: <em>${data.insight}</em>`;
+      ? `Você está no positivo. <em>Um desvio de botão</em> é a história inteira.`
+      : `Veredito da sessão: <em>${data.insight}</em>`;
   }
 
   // 2. HUD Concentric stat rings animation
