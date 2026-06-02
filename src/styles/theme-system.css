@@ -65,9 +65,144 @@ body[data-color="ultraviolet"] {
   --c-chip-3: #FF4B72;
 }
 
-/* --- TYPOGRAPHY THEME: EDITORIAL OVERRIDES --- */
+/* --- COLOR THEME: LIME OLED --- (true black + acid lime + magenta deviation) */
+body[data-color="lime"] {
+  --bg: #010103; --bg-2: #07080b; --bg-card: rgba(10, 14, 10, 0.65);
+  --bg-card-hover: rgba(16, 22, 14, 0.75); --bg-input: #0a0e0a;
+  --border: rgba(193, 255, 18, 0.10); --border-strong: rgba(193, 255, 18, 0.28);
+  --accent: #C1FF12; --accent-2: #8FE000;
+  --accent-soft: rgba(193, 255, 18, 0.08); --accent-glow: rgba(193, 255, 18, 0.28); --accent-line: rgba(193, 255, 18, 0.40);
+  --loss: #F76CFE; --loss-soft: rgba(247, 108, 254, 0.10); --loss-line: rgba(247, 108, 254, 0.38);
+  --c-indigo: #8B7CFF; --c-chip-1: #8FE000; --c-chip-2: #C1FF12; --c-chip-3: #F76CFE;
+  --fg: #f4f7ec; --fg-muted: #9aa888; --fg-dim: #3a4030;
+}
+
+/* --- COLOR THEME: BROADSHEET --- (warm ink + parchment + editorial red) */
+body[data-color="broadsheet"] {
+  --bg: #14110d; --bg-2: #1c1813; --bg-card: rgba(32, 27, 20, 0.65);
+  --bg-card-hover: rgba(42, 36, 27, 0.75); --bg-input: #1a1610;
+  --border: rgba(232, 220, 200, 0.10); --border-strong: rgba(232, 220, 200, 0.26);
+  --accent: #E8DCC8; --accent-2: #C9A24B;
+  --accent-soft: rgba(232, 220, 200, 0.07); --accent-glow: rgba(232, 220, 200, 0.20); --accent-line: rgba(232, 220, 200, 0.35);
+  --loss: #C0463B; --loss-soft: rgba(192, 70, 59, 0.12); --loss-line: rgba(192, 70, 59, 0.40);
+  --c-indigo: #9a8c6a; --c-chip-1: #C9A24B; --c-chip-2: #E8DCC8; --c-chip-3: #C0463B;
+  --fg: #f3ead9; --fg-muted: #b3a585; --fg-dim: #4a4234;
+}
+
+/* --- COLOR THEME: EMBER --- (warm amber on near-black) */
+body[data-color="ember"] {
+  --bg: #0c0805; --bg-2: #140d07; --bg-card: rgba(26, 17, 10, 0.65);
+  --bg-card-hover: rgba(36, 24, 14, 0.75); --bg-input: #160f08;
+  --border: rgba(255, 140, 60, 0.12); --border-strong: rgba(255, 140, 60, 0.30);
+  --accent: #FF8C3C; --accent-2: #FFC15E;
+  --accent-soft: rgba(255, 140, 60, 0.10); --accent-glow: rgba(255, 140, 60, 0.30); --accent-line: rgba(255, 140, 60, 0.42);
+  --loss: #FF3B6B; --loss-soft: rgba(255, 59, 107, 0.10); --loss-line: rgba(255, 59, 107, 0.38);
+  --c-indigo: #FF6B3C; --c-chip-1: #FFC15E; --c-chip-2: #FF8C3C; --c-chip-3: #FF3B6B;
+  --fg: #fdf1e7; --fg-muted: #b9a08c; --fg-dim: #473827;
+}
+
+/* --- COLOR THEME: SAKURA --- (soft rose + gold) */
+body[data-color="sakura"] {
+  --bg: #100a0d; --bg-2: #180f14; --bg-card: rgba(30, 18, 24, 0.65);
+  --bg-card-hover: rgba(42, 26, 34, 0.75); --bg-input: #1a1016;
+  --border: rgba(255, 143, 177, 0.12); --border-strong: rgba(255, 143, 177, 0.30);
+  --accent: #FF8FB1; --accent-2: #F2C14E;
+  --accent-soft: rgba(255, 143, 177, 0.10); --accent-glow: rgba(255, 143, 177, 0.28); --accent-line: rgba(255, 143, 177, 0.40);
+  --loss: #E0537A; --loss-soft: rgba(224, 83, 122, 0.12); --loss-line: rgba(224, 83, 122, 0.40);
+  --c-indigo: #C98BD6; --c-chip-1: #F2C14E; --c-chip-2: #FF8FB1; --c-chip-3: #E0537A;
+  --fg: #fdeef3; --fg-muted: #bfa0ad; --fg-dim: #4a3540;
+}
+
+/* --- COLOR THEME: FOREST --- (deep green-black + emerald) */
+body[data-color="forest"] {
+  --bg: #04100b; --bg-2: #071811; --bg-card: rgba(10, 28, 20, 0.65);
+  --bg-card-hover: rgba(14, 38, 27, 0.75); --bg-input: #08180f;
+  --border: rgba(60, 220, 150, 0.12); --border-strong: rgba(60, 220, 150, 0.30);
+  --accent: #3CDC96; --accent-2: #A6E22E;
+  --accent-soft: rgba(60, 220, 150, 0.10); --accent-glow: rgba(60, 220, 150, 0.28); --accent-line: rgba(60, 220, 150, 0.40);
+  --loss: #FF6B6B; --loss-soft: rgba(255, 107, 107, 0.10); --loss-line: rgba(255, 107, 107, 0.38);
+  --c-indigo: #5BD6A8; --c-chip-1: #A6E22E; --c-chip-2: #3CDC96; --c-chip-3: #FF6B6B;
+  --fg: #e9f7ef; --fg-muted: #8aa899; --fg-dim: #2c4034;
+}
+
+/* --- COLOR THEME: SYNTHWAVE --- (indigo night + hot magenta + cyan) */
+body[data-color="synthwave"] {
+  --bg: #0d0726; --bg-2: #140a33; --bg-card: rgba(26, 16, 56, 0.65);
+  --bg-card-hover: rgba(36, 22, 74, 0.75); --bg-input: #170d3a;
+  --border: rgba(255, 60, 200, 0.14); --border-strong: rgba(255, 60, 200, 0.32);
+  --accent: #FF3CC8; --accent-2: #00E5FF;
+  --accent-soft: rgba(255, 60, 200, 0.10); --accent-glow: rgba(255, 60, 200, 0.30); --accent-line: rgba(255, 60, 200, 0.42);
+  --loss: #FF4B72; --loss-soft: rgba(255, 75, 114, 0.12); --loss-line: rgba(255, 75, 114, 0.40);
+  --c-indigo: #7A5CFF; --c-chip-1: #00E5FF; --c-chip-2: #FF3CC8; --c-chip-3: #FF4B72;
+  --fg: #f3ecff; --fg-muted: #a294c9; --fg-dim: #3a3160;
+}
+
+/* --- COLOR THEME: MONO SLATE --- (desaturated steel, minimal accent) */
+body[data-color="slate"] {
+  --bg: #0b0e12; --bg-2: #11151b; --bg-card: rgba(20, 26, 34, 0.65);
+  --bg-card-hover: rgba(28, 36, 46, 0.75); --bg-input: #12171e;
+  --border: rgba(180, 200, 220, 0.10); --border-strong: rgba(180, 200, 220, 0.24);
+  --accent: #7CA3C9; --accent-2: #9FB8CE;
+  --accent-soft: rgba(124, 163, 201, 0.08); --accent-glow: rgba(124, 163, 201, 0.22); --accent-line: rgba(124, 163, 201, 0.35);
+  --loss: #E06A6A; --loss-soft: rgba(224, 106, 106, 0.10); --loss-line: rgba(224, 106, 106, 0.36);
+  --c-indigo: #8C9CC9; --c-chip-1: #9FB8CE; --c-chip-2: #7CA3C9; --c-chip-3: #E06A6A;
+  --fg: #eef2f6; --fg-muted: #8b97a5; --fg-dim: #39414c;
+}
+
+/* --- COLOR THEME: GOLD NOIR --- (black + champagne gold + crimson) */
+body[data-color="gold"] {
+  --bg: #0a0805; --bg-2: #12100a; --bg-card: rgba(24, 20, 12, 0.65);
+  --bg-card-hover: rgba(34, 28, 16, 0.75); --bg-input: #16130b;
+  --border: rgba(212, 175, 95, 0.12); --border-strong: rgba(212, 175, 95, 0.30);
+  --accent: #D4AF5F; --accent-2: #EBD08A;
+  --accent-soft: rgba(212, 175, 95, 0.09); --accent-glow: rgba(212, 175, 95, 0.26); --accent-line: rgba(212, 175, 95, 0.40);
+  --loss: #D24B4B; --loss-soft: rgba(210, 75, 75, 0.12); --loss-line: rgba(210, 75, 75, 0.40);
+  --c-indigo: #B89B6A; --c-chip-1: #EBD08A; --c-chip-2: #D4AF5F; --c-chip-3: #D24B4B;
+  --fg: #f7f0e2; --fg-muted: #b5a584; --fg-dim: #473e2b;
+}
+
+/* =========================================================
+   TYPOGRAPHY THEMES (font pairings — display / sans / mono)
+   ========================================================= */
+
+/* --- EDITORIAL --- (premium grotesk headline + humanist body + mono numerals) */
 body[data-font="editorial"] {
   --sans: 'Hanken Grotesk', system-ui, sans-serif;
-  --display: 'Space Grotesk', system-ui, sans-serif; /* Replaced Bricolage with premium Space Grotesk */
+  --display: 'Space Grotesk', system-ui, sans-serif;
   --mono: 'Space Mono', ui-monospace, monospace;
+}
+
+/* --- GROTESQUE --- (optical Bricolage display, newspaper energy) */
+body[data-font="grotesque"] {
+  --display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --sans: 'Hanken Grotesk', system-ui, sans-serif;
+  --mono: 'Space Mono', ui-monospace, monospace;
+}
+
+/* --- SERIF --- (high-contrast Fraunces headline, geometric body) */
+body[data-font="serif"] {
+  --display: 'Fraunces', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* --- TECHNO --- (monospaced display, technical) */
+body[data-font="techno"] {
+  --display: 'JetBrains Mono', ui-monospace, monospace;
+  --sans: 'Space Grotesk', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* --- CLASSIC --- (serif headline + grotesk body + mono) */
+body[data-font="classic"] {
+  --display: 'Fraunces', Georgia, serif;
+  --sans: 'Hanken Grotesk', system-ui, sans-serif;
+  --mono: 'Space Mono', ui-monospace, monospace;
+}
+
+/* --- NEO-GROTESK --- (Space Grotesk display + Inter body) */
+body[data-font="neogrotesk"] {
+  --display: 'Space Grotesk', system-ui, sans-serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
 }
