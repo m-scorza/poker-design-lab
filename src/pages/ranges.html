@@ -1,122 +1,109 @@
 <section class="page" id="page-ranges">
-      
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px;">
-        <h2 class="kick accent" style="margin:0;">Range compliance lab</h2>
-        <div style="display:flex; gap: 8px;">
-          <!-- Scenario Toggle -->
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+        <h2 class="kick accent" style="margin:0;">Laboratório de ranges · teoria vs. realidade</h2>
+        <div style="display:flex; gap: 8px; flex-wrap: wrap;">
+          <!-- Scenario toggle -->
           <div class="ranges-tab-menu" id="ranges-scenario-selector" style="margin: 0;">
-            <button class="ranges-tab-btn active" data-scenario="rfi">RFI Open</button>
+            <button class="ranges-tab-btn active" data-scenario="rfi">Abertura RFI</button>
             <button class="ranges-tab-btn" data-scenario="pushfold">Push/Fold (10bb)</button>
           </div>
-          <div class="ranges-tab-menu" style="margin: 0;">
-            <button class="ranges-tab-btn active" data-mode="compliance">Compliance</button>
-            <button class="ranges-tab-btn" data-mode="edit">Edit Range</button>
+          <!-- View mode toggle -->
+          <div class="ranges-tab-menu" id="ranges-mode-selector" style="margin: 0;">
+            <button class="ranges-tab-btn active" data-mode="oracle">Oráculo (GTO)</button>
+            <button class="ranges-tab-btn" data-mode="mirror">Espelho</button>
+            <button class="ranges-tab-btn" data-mode="edit">Editar</button>
           </div>
         </div>
       </div>
-      
+
       <div class="ranges-main-layout">
         <!-- Range Matrix workspace -->
         <div class="card">
           <div class="position-select-grid" id="ranges-pos-selector">
-            <!-- Programmatic button triggers UTG to BB -->
+            <!-- Position buttons UTG to BB injected by JS -->
           </div>
-          
-          <div class="matrix-grid-box" id="ranges-matrix-grid" style="max-width: 440px; margin: 0 auto;">
-            <!-- Grid generated programmatically -->
+
+          <div class="rg-matrix-head">
+            <span class="rg-matrix-mode-lbl" id="ranges-mode-label">O Oráculo · range teórico GTO</span>
+            <span class="rg-matrix-spot" id="ranges-spot-label">ABERTURA BTN · 100bb</span>
           </div>
-          
-          <div class="ranges-control-footer" style="padding: 14px 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.1);">
-            <div class="ranges-swatch-info" style="display: flex; gap: 16px; align-items: center;">
-              <span style="display: flex; align-items: center; gap: 6px;"><i class="play" style="display: inline-block; width: 8px; height: 8px; background: var(--accent); border: 1px solid var(--accent); border-radius: 2px;"></i>Always Open</span>
-              <span style="display: flex; align-items: center; gap: 6px;"><i class="mix" style="display: inline-block; width: 8px; height: 8px; background: rgba(255,170,0,0.25); border: 1px solid #ffaa00; border-radius: 2px;"></i>Mixed Action</span>
-              <span style="display: flex; align-items: center; gap: 6px;"><i class="dev" style="display: inline-block; width: 8px; height: 8px; background: rgba(255,92,138,0.25); border: 1px solid var(--loss); border-radius: 2px;"></i>Deviation fold</span>
+
+          <div class="matrix-grid-box rg-grid" id="ranges-matrix-grid" style="max-width: 460px; margin: 0 auto;">
+            <!-- 13×13 grid generated programmatically -->
+          </div>
+
+          <div class="ranges-control-footer">
+            <div class="ranges-swatch-info" id="ranges-legend">
+              <!-- Legend swatches injected by JS (depend on view mode) -->
             </div>
             <div style="display: flex; align-items: center; gap: 14px;">
               <div style="display: flex; align-items: center; gap: 6px;">
                 <input type="checkbox" id="toggle-deviations" checked style="cursor: pointer; width: 14px; height: 14px; accent-color: var(--accent);"/>
-                <label for="toggle-deviations" style="font-family: var(--mono); font-size: 10px; text-transform: uppercase; cursor: pointer; color: var(--fg-muted);">Solver Overlay</label>
+                <label for="toggle-deviations" style="font-family: var(--mono); font-size: 10px; text-transform: uppercase; cursor: pointer; color: var(--fg-muted);">Marcar desvios</label>
               </div>
               <span class="kick" id="ranges-combos-lbl" style="font-size: 11px;">169 combos</span>
             </div>
           </div>
         </div>
-        
-        <!-- Solver delta comparison list -->
-        <div class="card solver-delta-card" style="padding: 20px;">
-          <span class="kick accent">Solver Delta Validation</span>
-          <div style="margin-top:14px; display: flex; flex-direction: column; gap: 14px;">
-            <div id="validation-UTG">
-              <div style="display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:11px; margin-bottom:4px;">
-                <span class="pos-lbl" style="font-weight:700;">UTG Open</span>
-                <span class="delta-lbl val-delta" style="color: var(--accent-2);">+0.2% OK</span>
-              </div>
-              <div style="height: 6px; background: rgba(255,255,255,0.02); border-radius: 3px; overflow: hidden; display: flex;">
-                <span class="val-progress" style="width: 15.2%; background: var(--accent-2); height: 100%;"></span>
-              </div>
-              <div style="display:flex; justify-content:space-between; font-family:var(--mono); font-size:9.5px; color:var(--fg-muted); margin-top:2px;">
-                <span class="val-player">Player: 15.2%</span>
-                <span class="val-solver">Solver: 15.0%</span>
-              </div>
-            </div>
-            
-            <div id="validation-HJ">
-              <div style="display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:11px; margin-bottom:4px;">
-                <span class="pos-lbl" style="font-weight:700;">HJ Open</span>
-                <span class="delta-lbl val-delta" style="color: var(--accent-2);">+0.0% OK</span>
-              </div>
-              <div style="height: 6px; background: rgba(255,255,255,0.02); border-radius: 3px; overflow: hidden; display: flex;">
-                <span class="val-progress" style="width: 20%; background: var(--accent-2); height: 100%;"></span>
-              </div>
-              <div style="display:flex; justify-content:space-between; font-family:var(--mono); font-size:9.5px; color:var(--fg-muted); margin-top:2px;">
-                <span class="val-player">Player: 20.0%</span>
-                <span class="val-solver">Solver: 20.0%</span>
-              </div>
-            </div>
 
-            <div id="validation-CO">
-              <div style="display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:11px; margin-bottom:4px;">
-                <span class="pos-lbl" style="font-weight:700;">CO Open</span>
-                <span class="delta-lbl val-delta" style="color: #ffaa00;">+2.4% Wide</span>
+        <!-- Right column: master-detail insight + solver delta validation -->
+        <div class="rg-side">
+
+          <!-- Master-detail insight pane (folded from DualRangeMatrix) -->
+          <div class="card rg-insight-card" id="ranges-insight">
+            <!-- Default empty state -->
+            <div class="rg-insight-empty" id="ranges-insight-empty">
+              <div class="rg-insight-empty-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+                  <path d="M3 9h18"></path><path d="M3 15h18"></path>
+                  <path d="M9 3v18"></path><path d="M15 3v18"></path>
+                </svg>
               </div>
-              <div style="height: 6px; background: rgba(255,255,255,0.02); border-radius: 3px; overflow: hidden; display: flex;">
-                <span class="val-progress" style="width: 28.4%; background: #ffaa00; height: 100%;"></span>
-              </div>
-              <div style="display:flex; justify-content:space-between; font-family:var(--mono); font-size:9.5px; color:var(--fg-muted); margin-top:2px;">
-                <span class="val-player">Player: 28.4%</span>
-                <span class="val-solver">Solver: 26.0%</span>
-              </div>
+              <h4 class="rg-insight-empty-title">Selecione uma mão</h4>
+              <p class="rg-insight-empty-sub">Passe o mouse ou clique numa célula para comparar teoria vs. realidade.</p>
             </div>
-            
-            <div id="validation-BTN">
-              <div style="display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:11px; margin-bottom:4px;">
-                <span class="pos-lbl" style="font-weight:700;">BTN Open</span>
-                <span class="delta-lbl val-delta" style="color: var(--loss); font-weight:700;">+10.0% Wide</span>
+            <!-- Detail body, populated by JS -->
+            <div class="rg-insight-body" id="ranges-insight-body" style="display:none;"></div>
+          </div>
+
+          <!-- Solver delta validation -->
+          <div class="card solver-delta-card">
+            <span class="kick accent">Validação Δ vs. solver</span>
+            <div style="margin-top:14px; display: flex; flex-direction: column; gap: 14px;" id="ranges-validation-stack">
+              <div id="validation-UTG" class="rg-val-row">
+                <div class="rg-val-top"><span class="pos-lbl">UTG abre</span><span class="delta-lbl val-delta">+0.0% OK</span></div>
+                <div class="rg-val-track"><span class="val-progress"></span></div>
+                <div class="rg-val-foot"><span class="val-player">Você: 0%</span><span class="val-solver">Solver: 0%</span></div>
               </div>
-              <div style="height: 6px; background: rgba(255,255,255,0.02); border-radius: 3px; overflow: hidden; display: flex;">
-                <span class="val-progress" style="width: 58%; background: var(--loss); height: 100%;"></span>
+              <div id="validation-HJ" class="rg-val-row">
+                <div class="rg-val-top"><span class="pos-lbl">HJ abre</span><span class="delta-lbl val-delta">+0.0% OK</span></div>
+                <div class="rg-val-track"><span class="val-progress"></span></div>
+                <div class="rg-val-foot"><span class="val-player">Você: 0%</span><span class="val-solver">Solver: 0%</span></div>
               </div>
-              <div style="display:flex; justify-content:space-between; font-family:var(--mono); font-size:9.5px; color:var(--fg-muted); margin-top:2px;">
-                <span class="val-player">Player: 58.0%</span>
-                <span class="val-solver">Solver: 48.0%</span>
+              <div id="validation-CO" class="rg-val-row">
+                <div class="rg-val-top"><span class="pos-lbl">CO abre</span><span class="delta-lbl val-delta">+0.0% OK</span></div>
+                <div class="rg-val-track"><span class="val-progress"></span></div>
+                <div class="rg-val-foot"><span class="val-player">Você: 0%</span><span class="val-solver">Solver: 0%</span></div>
               </div>
-            </div>
-            
-            <div id="validation-SB">
-              <div style="display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:11px; margin-bottom:4px;">
-                <span class="pos-lbl" style="font-weight:700;">SB Open</span>
-                <span class="delta-lbl val-delta" style="color: #ffaa00;">-2.0% Tight</span>
+              <div id="validation-BTN" class="rg-val-row">
+                <div class="rg-val-top"><span class="pos-lbl">BTN abre</span><span class="delta-lbl val-delta">+0.0% OK</span></div>
+                <div class="rg-val-track"><span class="val-progress"></span></div>
+                <div class="rg-val-foot"><span class="val-player">Você: 0%</span><span class="val-solver">Solver: 0%</span></div>
               </div>
-              <div style="height: 6px; background: rgba(255,255,255,0.02); border-radius: 3px; overflow: hidden; display: flex;">
-                <span class="val-progress" style="width: 38%; background: #ffaa00; height: 100%;"></span>
-              </div>
-              <div style="display:flex; justify-content:space-between; font-family:var(--mono); font-size:9.5px; color:var(--fg-muted); margin-top:2px;">
-                <span class="val-player">Player: 38.0%</span>
-                <span class="val-solver">Solver: 40.0%</span>
+              <div id="validation-SB" class="rg-val-row">
+                <div class="rg-val-top"><span class="pos-lbl">SB abre</span><span class="delta-lbl val-delta">+0.0% OK</span></div>
+                <div class="rg-val-track"><span class="val-progress"></span></div>
+                <div class="rg-val-foot"><span class="val-player">Você: 0%</span><span class="val-solver">Solver: 0%</span></div>
               </div>
             </div>
           </div>
+
         </div>
       </div>
-    
+
+      <!-- Floating per-cell tooltip -->
+      <div class="rg-tip" id="ranges-tip"></div>
+
     </section>

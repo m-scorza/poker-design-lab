@@ -23,7 +23,7 @@ Generated during the Vite restructure (baseline commit preserves all originals).
 | Skew/slide page transitions | `src/modules/transitions.js` | design_sandbox v3 |
 | Cards-deal replayer modal | `src/elements/replayer.html`, `src/modules/hands.js` | Hands sketch, v6 |
 | Career "THE ARC" SVG chart | `src/pages/career.html` | Career sketch, Directions |
-| 13×13 range matrix | `src/pages/ranges.html`, `src/pages/leaks.html` | Ranges sketch |
+| 13×13 range matrix | `src/pages/ranges.html`, `src/pages/leaks.html` | Ranges sketch (Ranges page rebuilt B5 → Oracle/Mirror + action-distribution + master-detail insight, mirroring real `DualRangeMatrix`) |
 | Sessions expandable rows | `src/pages/sessions.html`, `src/modules/sessions.js` | Sessions sketch |
 | Villains dossier grid | `src/pages/villains.html`, `src/modules/villains.js` | Villains sketch |
 | Arena 3D felt trainer | `src/pages/arena.html`, `src/modules/arena.js` | Arena sketch |
@@ -61,6 +61,7 @@ status calls; Claude defaults new bricks to `new`.
 | Tournament Lab Shell | `tournament-lab-shell.html` | Layout & Showcase | new | `archive/legacy_dashboards/Tournament Lab - System.html` + `v8-shell.css` |
 | Text Scramble Decoder | `scramble.html` | Text FX | keep | carried-forward |
 | 4-Color Card Render | `card-render.html` | Poker-Specific | new | net-new (deck primitive) |
+| Range Grid · Action Distribution | `range-grid-action.html` | Poker-Specific | keep | folded into Ranges — per-cell raise/call/fold stacked fills + hover tooltip; basis for the Mirror matrix (B5) |
 | Hand Replay · Felt | `hand-replay-felt.html` | Poker-Specific | new | net-new (HandReplay modal target) |
 | Blocker HUD Simulator | `blocker-simulator.html` | Poker-Specific | new | net-new (Antigravity) |
 | Cards Deal Replayer | `replayer.html` | Poker-Specific | keep | carried-forward |
