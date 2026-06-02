@@ -86,7 +86,7 @@ export function initThemeDock() {
     btn.className = 'dock-swatch';
     btn.dataset.id = p.id;
     btn.title = p.name;
-    btn.setAttribute('aria-label', `Paleta ${p.name}`);
+    btn.setAttribute('aria-label', `Palette ${p.name}`);
     btn.innerHTML =
       `<span class="sw-chips">${p.swatch.map((c) => `<i style="background:${c}"></i>`).join('')}</span>` +
       `<span class="sw-name">${p.name}</span>`;

@@ -1,0 +1,10 @@
+{
+  "_comment": "Portuguese (BR) UI string snapshot. The live UI was switched to English (see CLAUDE.md); these originals are preserved here as the seed for future multi-language support. Grouped by source area. Keep in sync when EN strings change in a way that matters for re-translation.",
+  "chrome": {
+    "dock.toggleLabel": "Paleta & tipografia",
+    "dock.header": "Paleta & Tipografia",
+    "dock.colorLabel": "Cor",
+    "dock.fontLabel": "Fonte",
+    "dock.swatchAria": "Paleta {name}"
+  }
+}
