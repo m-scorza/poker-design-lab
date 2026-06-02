@@ -55,6 +55,40 @@ let radarAnimation = null;
 // Active Inspect Seat Pos
 let activeInspectPos = 'BTN';
 
+// 13x13 matrix rank order (high -> low), shared with the Ranges lab convention
+const MATRIX_RANKS = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'];
+
+// Lightweight odometer count-up: tweens a numeric value and writes formatted text each tick.
+function countUp(el, to, { prefix = '', suffix = '', suffixHtml = '', decimals = 0, sign = false } = {}) {
+  if (!el) return;
+  const proxy = { v: 0 };
+  gsap.to(proxy, {
+    v: to,
+    duration: 0.9,
+    ease: 'power2.out',
+    onUpdate: () => {
+      const n = proxy.v;
+      const signStr = sign && n >= 0 ? '+' : '';
+      const body = Math.abs(n).toLocaleString('en-US', {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals,
+      });
+      const text = `${signStr}${n < 0 ? '-' : ''}${prefix}${body}${suffix}`;
+      if (suffixHtml) {
+        el.innerHTML = `${text}${suffixHtml}`;
+      } else {
+        el.innerText = text;
+      }
+    },
+  });
+}
+
+// Map a recommendation class to a Portuguese label fallback.
+function navigateToTab(tab) {
+  const link = document.querySelector(`.mast-nav a[data-tab="${tab}"]`);
+  if (link) link.click();
+}
+
 export function initRadar() {
   const sessionSelect = document.getElementById('overview-session-select');
   const chartSelector = document.getElementById('overview-chart-selector');
@@ -119,6 +153,22 @@ export function initRadar() {
     });
   });
 
+  // Wire Verdict + Headline CTAs (navigate to the relevant results tab)
+  const verdictAction = document.getElementById('verdict-action');
+  if (verdictAction) {
+    verdictAction.addEventListener('click', () => {
+      const tab = (state.lifetime.verdict && state.lifetime.verdict.actionTab) || 'leaks';
+      navigateToTab(tab);
+    });
+  }
+  const headlineCta = document.getElementById('headline-cta');
+  if (headlineCta) {
+    headlineCta.addEventListener('click', () => {
+      const tab = (state.lifetime.headline && state.lifetime.headline.actionTab) || 'ranges';
+      navigateToTab(tab);
+    });
+  }
+
   // Wire Blocker Calculator
   const heroHandSelect = document.getElementById('blocker-hero-hand');
   const boardSelect = document.getElementById('blocker-board');
@@ -163,10 +213,10 @@ function calculateBlockers(handVal, boardVal) {
     const flushValEl = document.getElementById('blocker-flush-val');
     const straightValEl = document.getElementById('blocker-straight-val');
     const descEl = document.getElementById('blocker-rating-desc');
-    if (flushValEl) flushValEl.innerText = 'Conflict';
-    if (straightValEl) straightValEl.innerText = 'Conflict';
+    if (flushValEl) flushValEl.innerText = 'Conflito';
+    if (straightValEl) straightValEl.innerText = 'Conflito';
     if (descEl) {
-      descEl.innerHTML = `<span style="color: var(--loss); font-weight: 700;">Card Overlap:</span> Hero hand and board share the card <span style="color: #fff; font-weight:700;">${formattedOverlap}</span>. Please choose a different board or hand.`;
+      descEl.innerHTML = `<span style="color: var(--loss); font-weight: 700;">Carta duplicada:</span> a mão do herói e o board compartilham a carta <span style="color: var(--fg); font-weight:700;">${formattedOverlap}</span>. Escolha um board ou mão diferente.`;
     }
     return;
   }
@@ -302,11 +352,11 @@ function calculateBlockers(handVal, boardVal) {
   let ratingDesc = '';
   const flushPercent = parseFloat(flushValText);
   if (flushValText === '100%' || blockedStraightDrawCombos >= 15) {
-    ratingDesc = `Holding ${handHtml} blocks <span style="color: var(--accent); font-weight:700;">${flushValText}</span> of Villain's nut flush draws and <span style="color: var(--accent-2); font-weight:700;">${blockedStraightDrawCombos}</span> straight combinations on a ${boardHtml} board. Elite exploit capability.`;
+    ratingDesc = `${handHtml} bloqueia <span style="color: var(--accent); font-weight:700;">${flushValText}</span> dos draws de nut flush do vilão e <span style="color: var(--accent-2); font-weight:700;">${blockedStraightDrawCombos}</span> combinações de sequência no board ${boardHtml}. Capacidade de exploração elite.`;
   } else if (flushPercent > 0 || blockedStraightDrawCombos > 5) {
-    ratingDesc = `Holding ${handHtml} blocks <span style="color: var(--accent); font-weight:700;">${flushValText}</span> of Villain's nut flush draws and <span style="color: var(--accent-2); font-weight:700;">${blockedStraightDrawCombos}</span> straight combinations on a ${boardHtml} board. Strong defensive blockers.`;
+    ratingDesc = `${handHtml} bloqueia <span style="color: var(--accent); font-weight:700;">${flushValText}</span> dos draws de nut flush do vilão e <span style="color: var(--accent-2); font-weight:700;">${blockedStraightDrawCombos}</span> combinações de sequência no board ${boardHtml}. Bloqueadores defensivos fortes.`;
   } else {
-    ratingDesc = `Holding ${handHtml} has minimal blocking impact on the ${boardHtml} board (<span style="color: var(--accent);">${flushValText}</span> nut flush, <span style="color: var(--accent-2);">${blockedStraightDrawCombos}</span> straight combos). Standard blocker profile.`;
+    ratingDesc = `${handHtml} tem impacto mínimo de bloqueio no board ${boardHtml} (<span style="color: var(--accent);">${flushValText}</span> nut flush, <span style="color: var(--accent-2);">${blockedStraightDrawCombos}</span> combos de sequência). Perfil de bloqueio padrão.`;
   }
 
   if (ratingDescEl) ratingDescEl.innerHTML = ratingDesc;
@@ -374,20 +424,20 @@ function renderOverview() {
     const formatted = `${data.pnl >= 0 ? '+' : ''}$${data.pnl ? data.pnl.toFixed(2) : data.netProfit.toFixed(2)}`;
     pnlBadge.innerText = formatted;
     pnlBadge.style.color = (data.pnl >= 0 || data.netProfit >= 0) ? 'var(--accent)' : 'var(--loss)';
-    pnlBadge.style.borderColor = (data.pnl >= 0 || data.netProfit >= 0) ? 'rgba(0, 240, 255, 0.2)' : 'rgba(255, 59, 107, 0.2)';
-    pnlBadge.style.background = (data.pnl >= 0 || data.netProfit >= 0) ? 'rgba(0, 240, 255, 0.08)' : 'rgba(255, 59, 107, 0.08)';
+    pnlBadge.style.borderColor = (data.pnl >= 0 || data.netProfit >= 0) ? 'var(--accent-line)' : 'var(--loss-line)';
+    pnlBadge.style.background = (data.pnl >= 0 || data.netProfit >= 0) ? 'var(--accent-soft)' : 'var(--loss-soft)';
   }
 
   if (subtitleEl) {
-    subtitleEl.innerText = isAll 
-      ? 'Stake-readiness verdict, top blocker, and tournament trend from imported histories.'
-      : `Granular session deep-dive: ${data.date} (${data.time})`;
+    subtitleEl.innerText = isAll
+      ? 'Veredito de readiness de stake, leak nº1 e tendência do torneio a partir dos históricos importados.'
+      : `Análise granular da sessão: ${data.date} (${data.time})`;
   }
 
   if (pnlKick) {
-    pnlKick.innerText = isAll 
-      ? `Lifetime net profit · ${data.tournaments} tournaments`
-      : `Session net profit · ${data.tournaments} tournaments`;
+    pnlKick.innerText = isAll
+      ? `Lucro líquido vitalício · ${data.tournaments} torneios`
+      : `Lucro líquido da sessão · ${data.tournaments} torneios`;
   }
 
   if (pnlNum) {
@@ -396,7 +446,7 @@ function renderOverview() {
     const absVal = Math.abs(val).toFixed(2);
     const parts = absVal.split('.');
     pnlNum.innerHTML = `<span class="sign">${sign}</span>$${parts[0]}<span class="cents">.${parts[1]}</span>`;
-    pnlNum.style.textShadow = val >= 0 ? '0 0 44px var(--accent-glow)' : '0 0 44px rgba(255, 59, 107, 0.3)';
+    pnlNum.style.textShadow = val >= 0 ? '0 0 44px var(--accent-glow)' : '0 0 44px var(--loss-line)';
   }
 
   if (verdictEl) {
@@ -448,28 +498,24 @@ function renderOverview() {
   const investedEl = document.getElementById('overview-financials-invested');
   const prizesEl = document.getElementById('overview-financials-prizes');
 
-  if (abiEl) abiEl.innerText = `$${(isAll ? data.abi : data.buyIns / data.tournaments).toFixed(2)}`;
-  if (itmEl) {
-    const itmVal = isAll ? data.itm : (data.pnl > 0 ? 100 : 0);
-    itmEl.innerText = `${itmVal.toFixed(1)}%`;
-  }
-  if (investedEl) investedEl.innerText = `$${(isAll ? data.totalInvested : data.buyIns).toFixed(2)}`;
-  if (prizesEl) prizesEl.innerText = `+$${(isAll ? data.totalPrizes : data.prizes).toFixed(2)}`;
+  if (abiEl) countUp(abiEl, isAll ? data.abi : data.buyIns / data.tournaments, { prefix: '$', decimals: 2 });
+  if (itmEl) countUp(itmEl, isAll ? data.itm : (data.pnl > 0 ? 100 : 0), { suffix: '%', decimals: 1 });
+  if (investedEl) countUp(investedEl, isAll ? data.totalInvested : data.buyIns, { prefix: '$', decimals: 2 });
+  if (prizesEl) countUp(prizesEl, isAll ? data.totalPrizes : data.prizes, { prefix: '$', decimals: 2, sign: true });
 
   // 4. Volume & Chips Performance
   const chipsEl = document.getElementById('overview-chips-value');
   const winrateEl = document.getElementById('overview-winrate-value');
   if (chipsEl) {
-    const displayVal = data.chips >= 0 ? `+${data.chips.toLocaleString()}` : data.chips.toLocaleString();
-    chipsEl.innerHTML = `${displayVal} <span class="cents" style="font-size: 20px;">chips</span>`;
+    countUp(chipsEl, data.chips, { sign: true, suffixHtml: ' <span class="cents">fichas</span>' });
   }
   if (winrateEl) {
     if (isAll) {
-      winrateEl.innerText = `+${data.bb100.toFixed(2)} bb/100 win rate`;
+      winrateEl.innerText = `+${data.bb100.toFixed(2)} bb/100 de win rate`;
       winrateEl.style.color = 'var(--accent)';
     } else {
       const isPos = data.bb100 >= 0;
-      winrateEl.innerText = `${isPos ? '+' : ''}${data.bb100.toFixed(1)} bb delta`;
+      winrateEl.innerText = `${isPos ? '+' : ''}${data.bb100.toFixed(1)} bb na sessão`;
       winrateEl.style.color = isPos ? 'var(--accent)' : 'var(--loss)';
     }
   }
@@ -482,17 +528,17 @@ function renderOverview() {
 
   if (leakTitle && leakImpact) {
     if (isAll) {
-      leakTitle.innerText = 'BTN Open';
-      leakImpact.innerText = '-28bb/100 impact';
+      leakTitle.innerText = 'Abertura BTN';
+      leakImpact.innerText = '-28bb/100 de impacto';
       if (leakCell) leakCell.style.borderLeftColor = 'var(--loss)';
     } else if (data.alerts && data.alerts.length > 0) {
       const topAlert = data.alerts[0];
       leakTitle.innerText = topAlert.title.split(' ')[0] + ' ' + topAlert.title.split(' ')[1];
       leakImpact.innerText = topAlert.title.substring(topAlert.title.indexOf('('));
-      if (leakCell) leakCell.style.borderLeftColor = topAlert.severity === 'loss' ? 'var(--loss)' : '#ffaa00';
+      if (leakCell) leakCell.style.borderLeftColor = topAlert.severity === 'loss' ? 'var(--loss)' : 'var(--warn)';
     } else {
-      leakTitle.innerText = 'None';
-      leakImpact.innerText = 'Zero Leaks';
+      leakTitle.innerText = 'Nenhum';
+      leakImpact.innerText = 'Zero leaks';
       if (leakCell) leakCell.style.borderLeftColor = 'var(--accent)';
     }
   }
@@ -524,27 +570,23 @@ function renderOverview() {
     alertsContainer.innerHTML = '';
     const alertsToDraw = isAll ? state.lifetime.alerts : data.alerts;
     if (!alertsToDraw || alertsToDraw.length === 0) {
-      alertsContainer.innerHTML = `<div style="text-align:center; padding: 14px; font-family:var(--mono); color:var(--fg-muted); font-size:11px;">Zero active preflop leaks detected this session.</div>`;
+      alertsContainer.innerHTML = `<div class="alerts-empty">Nenhum leak pré-flop ativo nesta sessão.</div>`;
     } else {
       alertsToDraw.forEach(alert => {
         const row = document.createElement('div');
-        row.style.border = '1px solid var(--border)';
-        row.style.borderRadius = '8px';
-        row.style.overflow = 'hidden';
         const isLoss = alert.severity === 'loss';
-        row.style.background = isLoss ? 'rgba(255, 59, 107, 0.02)' : 'rgba(0, 240, 255, 0.01)';
-        row.className = 'alert-row';
+        row.className = `alert-row ${isLoss ? 'sev-loss' : 'sev-warn'}`;
 
         row.innerHTML = `
-          <button class="alert-toggle-btn" style="width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: none; border: 0; text-align: left; cursor: pointer; color: var(--fg);">
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: ${isLoss ? 'var(--loss)' : '#ffaa00'};"></span>
-              <span style="font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em;">${alert.title}</span>
+          <button class="alert-toggle-btn">
+            <div class="alert-toggle-head">
+              <span class="alert-dot"></span>
+              <span class="alert-title">${alert.title}</span>
             </div>
-            <span class="kick" style="font-size: 8.5px; color: ${isLoss ? 'var(--loss)' : '#ffaa00'};">Expand Fix</span>
+            <span class="kick alert-expand">Expandir correção</span>
           </button>
-          <div class="alert-body" style="display: none; padding: 0 16px 16px 30px; font-size: 11.5px; color: var(--fg-muted); line-height: 1.5; border-top: 1px solid var(--border); margin-top: -2px; padding-top: 12px;">
-            <p style="margin: 0 0 8px;">${alert.body}</p>
+          <div class="alert-body">
+            <p>${alert.body}</p>
           </div>
         `;
         alertsContainer.appendChild(row);
@@ -554,18 +596,18 @@ function renderOverview() {
       alertsContainer.querySelectorAll('.alert-toggle-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const body = btn.parentElement.querySelector('.alert-body');
-          const isHidden = body.style.display === 'none';
+          const isHidden = body.style.display === 'none' || !body.style.display;
           if (isHidden) {
             body.style.display = 'block';
             gsap.fromTo(body, { height: 0, opacity: 0 }, { height: 'auto', opacity: 1, duration: 0.3 });
-            btn.querySelector('.kick').innerText = 'Collapse';
+            btn.querySelector('.kick').innerText = 'Recolher';
           } else {
             gsap.to(body, {
               height: 0, opacity: 0, duration: 0.2, onComplete: () => {
                 body.style.display = 'none';
               }
             });
-            btn.querySelector('.kick').innerText = 'Expand Fix';
+            btn.querySelector('.kick').innerText = 'Expandir correção';
           }
         });
       });
@@ -607,8 +649,8 @@ function renderOverview() {
       btn.innerHTML = `${pos}<br>${stat.profit}`;
       const isLoss = stat.profit.includes('-');
       btn.style.color = isLoss ? 'var(--loss)' : 'var(--accent-2)';
-      btn.style.borderColor = isLoss ? 'rgba(255, 59, 107, 0.4)' : 'rgba(0, 240, 255, 0.4)';
-      btn.style.background = isLoss ? 'rgba(255, 59, 107, 0.05)' : 'rgba(0, 240, 255, 0.05)';
+      btn.style.borderColor = isLoss ? 'var(--loss-line)' : 'var(--accent-line)';
+      btn.style.background = isLoss ? 'var(--loss-soft)' : 'var(--accent-soft)';
     }
 
     // Bind click to inspect seat details
@@ -623,8 +665,140 @@ function renderOverview() {
   // Re-draw inspect panel
   updateInspectPanel(activeInspectPos);
 
-  // 9. Redraw trend chart
+  // 9. Render the "30-second answer" verdict + the Headline Incident story
+  renderVerdict(isAll, data);
+  renderHeadline(isAll, data);
+
+  // 10. Redraw trend chart
   morphTrendChart(state.activeSession);
+}
+
+// Small DOM text helper
+function setText(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.innerText = text;
+}
+
+// Render the ValueSnapshotCard-style "30-second answer" verdict
+function renderVerdict(isAll, data) {
+  const card = document.getElementById('overview-verdict-card');
+  if (!card) return;
+
+  let v;
+  if (isAll) {
+    v = state.lifetime.verdict;
+  } else {
+    const topAlert = data.alerts && data.alerts[0];
+    const good = data.pnl >= 0 && data.compliance >= 85;
+    v = {
+      reco: good ? 'Sessão dentro do plano' : 'Sessão para revisar',
+      recoClass: good ? 'hold' : 'down',
+      readiness: Math.round(data.compliance),
+      confidence: good ? 'Compliance forte' : 'Compliance abaixo do alvo',
+      roiLabel: `${data.bb100 >= 0 ? '+' : ''}${data.bb100.toFixed(1)} bb/100`,
+      profitLabel: `${data.pnl >= 0 ? '+' : ''}$${data.pnl.toFixed(2)} na sessão`,
+      blockerTitle: topAlert ? topAlert.title : 'Sem leaks pré-flop',
+      blockerDetail: topAlert ? topAlert.body : data.insight,
+      action: topAlert ? 'Abrir o laboratório de leaks' : 'Continuar o plano atual',
+    };
+  }
+
+  const recoEl = document.getElementById('verdict-reco');
+  if (recoEl) {
+    recoEl.innerText = v.reco;
+    recoEl.className = `verdict-reco ${v.recoClass}`;
+  }
+  const readyEl = document.getElementById('verdict-readiness');
+  if (readyEl) readyEl.innerHTML = `${v.readiness}<small>/100</small>`;
+  setText('verdict-confidence', `Confiança: ${v.confidence}`);
+  setText('verdict-roi', v.roiLabel);
+  setText('verdict-profit', v.profitLabel);
+  setText('verdict-blocker-title', v.blockerTitle);
+  setText('verdict-blocker-detail', v.blockerDetail);
+  setText('verdict-action-text', v.action);
+}
+
+// Render the Headline Incident — #1 leak as editorial prose + the 13x13 grid of offending hands
+function renderHeadline(isAll, data) {
+  const card = document.querySelector('.headline-card');
+  if (!card) return;
+
+  let h;
+  if (isAll) {
+    h = state.lifetime.headline;
+  } else {
+    const topAlert = data.alerts && data.alerts[0];
+    if (!topAlert) {
+      h = {
+        kick: 'Incidente de destaque · Sessão limpa',
+        title: 'Nenhum leak pré-flop nesta sessão',
+        pos: 'BTN', scenario: 'rfi',
+        prose: data.insight,
+        costBb: '0bb',
+        offending: [],
+        metaLeft: `Compliance ${data.compliance.toFixed(1)}%`,
+        metaRight: `${data.hands} mãos`,
+      };
+    } else {
+      h = {
+        kick: 'Incidente de destaque · Leak da sessão',
+        title: topAlert.title,
+        pos: 'BTN', scenario: 'rfi',
+        prose: topAlert.body,
+        costBb: '—',
+        offending: state.lifetime.headline.offending,
+        metaLeft: `Sessão #${data.num}`,
+        metaRight: `${data.hands} mãos`,
+      };
+    }
+  }
+
+  setText('headline-kick', h.kick);
+  setText('headline-title', h.title);
+  const proseEl = document.getElementById('headline-prose');
+  if (proseEl) proseEl.innerHTML = h.prose;
+  setText('headline-cost', h.costBb);
+  setText('headline-meta-left', h.metaLeft);
+  setText('headline-meta-right', h.metaRight);
+  setText('headline-grid-pos', h.pos);
+
+  buildHeadlineGrid(h.pos, h.scenario, h.offending || []);
+}
+
+// Build the 13x13 matrix into the Headline Incident card, highlighting offending hands.
+function buildHeadlineGrid(pos, scenario, offending) {
+  const container = document.getElementById('overview-headline-grid');
+  if (!container) return;
+
+  const range = (state.customRanges[pos] && state.customRanges[pos][scenario]) || { Always: [], Mix: [] };
+  const offSet = new Set(offending);
+  container.innerHTML = '';
+
+  for (let r = 0; r < 13; r++) {
+    for (let c = 0; c < 13; c++) {
+      const cell = document.createElement('div');
+      cell.className = 'matrix-cell-node';
+
+      let hand = '';
+      if (r === c) hand = MATRIX_RANKS[r] + MATRIX_RANKS[c];
+      else if (r < c) hand = MATRIX_RANKS[r] + MATRIX_RANKS[c] + 's';
+      else hand = MATRIX_RANKS[c] + MATRIX_RANKS[r] + 'o';
+
+      cell.innerText = hand;
+
+      if (offSet.has(hand)) cell.classList.add('dev-range', 'blinking-deviation');
+      else if (range.Always.includes(hand)) cell.classList.add('open-range');
+      else if (range.Mix.includes(hand)) cell.classList.add('mix-range');
+
+      container.appendChild(cell);
+    }
+  }
+
+  gsap.fromTo(
+    container.querySelectorAll('.matrix-cell-node'),
+    { scale: 0.6, opacity: 0 },
+    { scale: 1, opacity: 1, stagger: 0.001, duration: 0.3, ease: 'power2.out' }
+  );
 }
 
 // Update seat details panel on click

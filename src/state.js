@@ -37,6 +37,32 @@ export const state = {
     steal: 34,
     chips: 324580,
     bb100: 8.24,
+    // "30-second answer" verdict (modelled on the real ValueSnapshotCard)
+    verdict: {
+      reco: 'Subir de stake',
+      recoClass: 'up',          // up | hold | down | sample
+      readiness: 78,            // 0-100
+      confidence: 'Alta',
+      roiLabel: '+141.4% ROI',
+      profitLabel: '+$388.85 acumulado',
+      blockerTitle: 'Abertura de BTN ampla demais',
+      blockerDetail: 'O fundo do range de botão custa -28bb/100 contra blinds ativos.',
+      action: 'Fold K7s, Q5s e T7s no botão',
+      actionTab: 'leaks'
+    },
+    // "Headline Incident" — the #1 leak told as editorial prose + the offending hands
+    headline: {
+      kick: 'Incidente de destaque · O leak nº1',
+      title: 'O botão abriu amplo demais',
+      pos: 'BTN',
+      scenario: 'rfi',
+      prose: 'Seu open de botão está em <em>58%</em> contra o alvo GTO de 48–52%. Os 8% inferiores de aberturas — mãos como <em>K7s, Q5s e T7s</em> — sangram em média <em>-28bb/100</em> contra blinds que reagem. Corte essas mãos e o gráfico vira de vez.',
+      costBb: '-28bb/100',
+      offending: ['K7s', 'Q5s', 'T7s', 'Q4s', 'J6s', 'T6s', 'K3o', 'Q7o'],
+      metaLeft: '58% open vs 48–52% alvo',
+      metaRight: '1.842 mãos · BTN',
+      actionTab: 'ranges'
+    },
     nemeses: [
       { name: 'villain_crusher', amountBb: -32.0, type: 'Nemesis' },
       { name: 'shark_reg', amountBb: -18.4, type: 'Nemesis' },
