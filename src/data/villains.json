@@ -8,7 +8,7 @@
     "gap": 26,
     "arch": "passive",
     "label": "Fish",
-    "advice": "Stations river calls. Bluff rarely; value bet thin pairs heavily.",
+    "advice": "Paga rios com qualquer coisa. Blefe pouco; aposte valor fino com pares medianos.",
     "tags": ["Showdown Station", "Passive"]
   },
   {
@@ -20,7 +20,7 @@
     "gap": 3,
     "arch": "passive",
     "label": "Nit",
-    "advice": "Folds to 3-bets at 80% rate. Attack their opens in late position constantly.",
+    "advice": "Dá fold a 3-bets ~80% das vezes. Ataque as aberturas dele em posição constantemente.",
     "tags": ["Fold to 3-Bet", "Tight"]
   },
   {
@@ -32,7 +32,7 @@
     "gap": 4,
     "arch": "reg",
     "label": "Solid Reg",
-    "advice": "Maintains GTO open baselines. Exploit via blind defense adjustments.",
+    "advice": "Mantém aberturas GTO. Explore via ajustes na defesa de blinds.",
     "tags": ["GTO Capable", "Aggressive"]
   },
   {
@@ -44,7 +44,7 @@
     "gap": 5,
     "arch": "lag",
     "label": "LAG Reg",
-    "advice": "Heavy 3-bettor from blinds. Tighten your BTN RFI range and 4-bet value hands.",
+    "advice": "3-betta muito dos blinds. Aperte sua abertura no BTN e dê valor com 4-bet.",
     "tags": ["Nemesis", "3-Bet Happy"]
   },
   {
@@ -56,7 +56,7 @@
     "gap": 46,
     "arch": "passive",
     "label": "Whale",
-    "advice": "Limp-calls preflop with 80% of hands. Isolate to 4x preflop, C-bet every flop.",
+    "advice": "Limp-calla 80% das mãos no preflop. Isole para 4x e dê c-bet em todo flop.",
     "tags": ["Limp Caller", "Station"]
   },
   {
@@ -68,7 +68,7 @@
     "gap": 12,
     "arch": "lag",
     "label": "Maniac",
-    "advice": "Over-bluffs postflop. Check-call top pairs and induce river jams. Never fold premium draws.",
+    "advice": "Super-blefa no postflop. Check-call top pairs e induza shoves no rio. Nunca foldar draws premium.",
     "tags": ["Maniac", "Bluffer"]
   },
   {
@@ -80,7 +80,7 @@
     "gap": 4,
     "arch": "reg",
     "label": "Solid Reg",
-    "advice": "Tight preflop, respects large river action. Turn bluff-raises are effective here.",
+    "advice": "Tight no preflop, respeita ação grande no rio. Check-raises de blefe no turn funcionam.",
     "tags": ["Multi-tabler", "Respects Bets"]
   },
   {
@@ -92,7 +92,7 @@
     "gap": 4,
     "arch": "reg",
     "label": "LAG Reg",
-    "advice": "Defends blinds wide. Steal smaller from BTN (2.0x) and check back low dry boards.",
+    "advice": "Defende blinds amplo. Roube menor do BTN (2.0x) e dê check back em flops secos baixos.",
     "tags": ["Nemesis", "Wide Defender"]
   },
   {
@@ -104,7 +104,7 @@
     "gap": 6,
     "arch": "passive",
     "label": "Weak Tight",
-    "advice": "C-bets flop but folds to raises. Raise flop leads with backdoors to win pot.",
+    "advice": "C-betta o flop mas dá fold a raises. Suba os leads de flop com backdoors para levar o pote.",
     "tags": ["Weak Tight", "Flop Folder"]
   },
   {
@@ -116,7 +116,7 @@
     "gap": 10,
     "arch": "lag",
     "label": "Tilter",
-    "advice": "Opens wide under tilt pressure. Value bet big. Do not attempt to bluff him off pairs.",
+    "advice": "Abre amplo sob tilt. Aposte valor grande. Não tente blefá-lo de pares.",
     "tags": ["Spewer", "Tilt Risk"]
   }
 ]

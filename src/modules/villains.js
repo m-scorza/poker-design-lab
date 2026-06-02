@@ -1,11 +1,56 @@
 // Villains dossier grid generator + exploit detail panel
+// Folds in the villain-badge brick (tinted archetype avatars + telemetry)
+// and a predator/prey "Nemesis" framing modelled on the real Nemesis block.
 import { state } from '../state.js';
+
+// --- Archetype → avatar tint class (mirrors villain-badge brick) ---
+function avatarClass(v) {
+  if (v.arch === 'reg') return 'av-reg';
+  if (v.arch === 'lag') return 'av-lag';
+  // passive: split loose-passive (fish/whale) vs tight-passive (nit)
+  return v.vpip >= 30 ? 'av-fish' : 'av-nit';
+}
+
+function initials(name) {
+  const parts = name.split(/[_\s]+/).filter(Boolean);
+  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+  return name.slice(0, 2).toUpperCase();
+}
+
+// Short PT descriptor under the name
+function archDescriptor(v) {
+  if (v.arch === 'reg') return 'regular sólido';
+  if (v.arch === 'lag') return 'agressivo solto · LAG';
+  return v.vpip >= 30 ? 'passivo solto · paga demais' : 'passivo tight · nit';
+}
+
+// --- Predator / prey / neutral classification (the "Nemesis" framing) ---
+// Predator = a real threat to hero's bottom line (Nemesis-tagged, or an
+// aggressive winning reg/LAG). Prey = exploitable leak machine (loose-passive
+// with a big VPIP/PFR gap). Neutral = neither.
+function classifyThreat(v) {
+  const tags = v.tags || [];
+  if (tags.includes('Nemesis')) return 'pred';
+  if ((v.arch === 'lag' || v.arch === 'reg') && v.af >= 3.0 && v.gap <= 8) return 'pred';
+  if (v.arch === 'passive' && v.gap >= 15) return 'prey';
+  if (v.vpip >= 40) return 'prey';
+  return 'neutral';
+}
+
+const THREAT_LABEL = { pred: 'Predador', prey: 'Presa', neutral: 'Neutro' };
+const THREAT_ICON = { pred: '🎯', prey: '🐟', neutral: '•' };
+const THREAT_DESC = {
+  pred: 'Ameaça real ao seu resultado. Aperte contra ele e evite guerras marginais.',
+  prey: 'Máquina de leaks. Maximize valor — é daqui que vem o lucro.',
+  neutral: 'Sem ângulo dominante. Jogue sólido e colete dados.',
+};
 
 export function initVillains() {
   const villainsGrid = document.getElementById('villains-grid');
   const villainsSearch = document.getElementById('villains-search-input');
   const villainsFilters = document.querySelectorAll('#villains-filter-dock button');
   const detailPanel = document.getElementById('villain-detail-panel');
+  const countLbl = document.getElementById('villains-count-lbl');
 
   let selectedVillainName = 'fish_player_99'; // Default to first villain on load
 
@@ -23,26 +68,32 @@ export function initVillains() {
       return true;
     });
 
+    if (countLbl) {
+      countLbl.textContent = `${filtered.length} oponente${filtered.length === 1 ? '' : 's'} rastreado${filtered.length === 1 ? '' : 's'}`;
+    }
+
     filtered.forEach(v => {
       const card = document.createElement('div');
       const isActive = v.name === selectedVillainName;
       card.className = `opponent-dossier-card ${isActive ? 'active' : ''}`;
-      
-      if (isActive) {
-        card.style.borderColor = 'var(--accent)';
-        card.style.boxShadow = '0 0 10px rgba(0, 240, 255, 0.15)';
-      }
 
-      const tagsMarkup = v.tags ? v.tags.slice(0, 2).map(t => `
-        <span class="opp-tag-badge" style="font-family: var(--mono); font-size: 8px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 1px 5px; border-radius: 3px; color: var(--fg-muted); margin-left: 4px; display: inline-block;">${t}</span>
-      `).join('') : '';
+      const threat = classifyThreat(v);
+      const gapBad = v.gap >= 15;
+
+      const tagsMarkup = v.tags ? v.tags.slice(0, 2).map(t =>
+        `<span class="opp-tag-badge">${t}</span>`
+      ).join('') : '';
 
       card.innerHTML = `
-        <div class="opp-dossier-header" style="margin-bottom: 6px;">
-          <span class="opp-dossier-name">${v.name}</span>
-          <span class="opp-dossier-hands">${v.hands} hands</span>
+        <div class="opp-dossier-header">
+          <div class="opp-avatar ${avatarClass(v)}">${initials(v.name)}</div>
+          <div class="opp-head-meta">
+            <span class="opp-dossier-name">${v.name}</span>
+            <span class="opp-dossier-sub">${archDescriptor(v)} · ${v.hands} mãos</span>
+          </div>
+          <span class="opp-threat ${threat}">${THREAT_LABEL[threat]}</span>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 4px;">
+        <div class="opp-card-row">
           <span class="opp-arch-badge ${v.arch}">${v.label}</span>
           <div style="display: flex; align-items: center;">${tagsMarkup}</div>
         </div>
@@ -50,11 +101,11 @@ export function initVillains() {
           <div class="opp-stat-cell"><div class="l">VPIP</div><div class="v">${v.vpip}%</div></div>
           <div class="opp-stat-cell"><div class="l">PFR</div><div class="v">${v.pfr}%</div></div>
           <div class="opp-stat-cell"><div class="l">AF</div><div class="v">${v.af}</div></div>
-          <div class="opp-stat-cell"><div class="l">Gap</div><div class="v">${v.gap}</div></div>
+          <div class="opp-stat-cell"><div class="l">Gap</div><div class="v ${gapBad ? 'bad' : ''}">${v.gap}</div></div>
         </div>
 
         <div class="exploit-overlay-card">
-          <div class="exploit-card-title">Exploit advice</div>
+          <div class="exploit-card-title">Plano de exploração</div>
           <div class="exploit-card-body">${v.advice}</div>
         </div>
       `;
@@ -70,7 +121,7 @@ export function initVillains() {
 
     // Sync detail panel representation
     const activeVillain = state.villains.find(v => v.name === selectedVillainName);
-    if (activeVillain) {
+    if (activeVillain && filtered.includes(activeVillain)) {
       renderDetailPanel(activeVillain);
     } else if (filtered.length > 0) {
       selectedVillainName = filtered[0].name;
@@ -78,9 +129,9 @@ export function initVillains() {
     } else {
       if (detailPanel) {
         detailPanel.innerHTML = `
-          <div style="text-align: center; padding: 60px 0; color: var(--fg-muted);">
-            <div style="font-size: 32px; margin-bottom: 12px; opacity: 0.6;">🗂</div>
-            <span style="font-family: var(--mono); font-size: 11px; text-transform: uppercase;">No matching opponents found</span>
+          <div class="villains-empty-state">
+            <div class="ico">🗂</div>
+            <span class="lbl">Nenhum oponente corresponde ao filtro</span>
           </div>
         `;
       }
@@ -103,53 +154,67 @@ export function initVillains() {
       return `<button class="tag-bubble-node active" data-tag="${tag}">${tag} <span class="remove-tag" style="opacity:0.6; margin-left:4px;">&times;</span></button>`;
     }).join('');
 
+    const threat = classifyThreat(v);
+
     detailPanel.innerHTML = `
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border); padding-bottom: 14px; margin-bottom: 16px;">
-        <div>
-          <h3 style="font-family: var(--display); font-size: 20px; margin: 0; font-weight: 700; color: var(--fg);">${v.name}</h3>
-          <div style="font-family: var(--mono); font-size: 10px; color: var(--fg-muted); margin-top: 4px;">
-            ${v.hands} hands tracked · <span style="color: var(--accent);">${v.label}</span>
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 14px; margin-bottom: 16px;">
+        <div style="display: flex; align-items: center; gap: 13px; min-width: 0;">
+          <div class="opp-avatar ${avatarClass(v)}">${initials(v.name)}</div>
+          <div style="min-width: 0;">
+            <h3 style="font-family: var(--display); font-size: 20px; margin: 0; font-weight: 700; color: var(--fg);">${v.name}</h3>
+            <div style="font-family: var(--mono); font-size: 10px; color: var(--fg-muted); margin-top: 4px;">
+              ${v.hands} mãos rastreadas · <span style="color: var(--accent);">${v.label}</span>
+            </div>
           </div>
         </div>
         <span class="opp-arch-badge ${v.arch}">${v.label}</span>
       </div>
 
+      <!-- Predator/prey verdict -->
+      <div class="villain-threat-strip ${threat}">
+        <span class="vt-icon">${THREAT_ICON[threat]}</span>
+        <div>
+          <div class="vt-label">${THREAT_LABEL[threat]}</div>
+          <div class="vt-desc">${THREAT_DESC[threat]}</div>
+        </div>
+      </div>
+
       <!-- Quick Stats Grid -->
-      <span class="kick" style="margin-bottom: 8px; display: block; font-size: 9px;">Telemetry metrics</span>
+      <span class="kick" style="margin-bottom: 8px; display: block; font-size: 9px;">Métricas de telemetria</span>
       <div class="opp-stats-inline" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 18px;">
         <div class="opp-stat-cell"><div class="l">VPIP</div><div class="v">${v.vpip}%</div></div>
         <div class="opp-stat-cell"><div class="l">PFR</div><div class="v">${v.pfr}%</div></div>
         <div class="opp-stat-cell"><div class="l">AF</div><div class="v">${v.af}</div></div>
-        <div class="opp-stat-cell"><div class="l">Gap</div><div class="v">${v.gap}</div></div>
+        <div class="opp-stat-cell"><div class="l">Gap</div><div class="v ${v.gap >= 15 ? 'bad' : ''}">${v.gap}</div></div>
       </div>
 
       <!-- Exploit advice card -->
-      <div class="session-card" style="margin-bottom: 18px; background: rgba(0,240,255,0.02); border-color: rgba(0,240,255,0.15); padding: 12px 16px;">
-        <h4 style="margin: 0 0 6px; color: var(--accent); font-size: 9px; font-family: var(--mono); text-transform: uppercase;">Exploit advice</h4>
-        <p style="font-size: 12px; line-height: 1.45; color: var(--fg-muted); margin: 0;">${v.advice}</p>
+      <div class="villain-exploit-card">
+        <h4>Plano de exploração</h4>
+        <p>${v.advice}</p>
       </div>
 
       <!-- Notes field -->
       <div style="margin-bottom: 18px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-          <span class="kick" style="font-size: 9px;">Strategic notes dossier</span>
-          <span id="note-save-status" style="font-family: var(--mono); font-size: 9px; color: var(--accent); opacity: 0; transition: opacity 0.2s;">Saved</span>
+          <span class="kick" style="font-size: 9px;">Notas estratégicas do dossiê</span>
+          <span id="note-save-status" style="font-family: var(--mono); font-size: 9px; color: var(--accent); opacity: 0; transition: opacity 0.2s;">Salvo</span>
         </div>
-        <textarea id="villain-note-input" placeholder="Enter custom notes on play style, patterns, tells, sizing rules..." style="width: 100%; height: 75px; background: var(--bg-input); border: 1px solid var(--border); border-radius: 6px; color: var(--fg); font-family: var(--sans); font-size: 12px; padding: 10px; resize: none; outline: none; box-sizing: border-box;"></textarea>
+        <textarea id="villain-note-input" class="villain-note-input" placeholder="Anote padrões, tells, regras de sizing, ângulos de blefe..."></textarea>
       </div>
 
       <!-- Tag picker -->
       <div>
-        <span class="kick" style="margin-bottom: 6px; display: block; font-size: 9px;">Dossier tagging</span>
+        <span class="kick" style="margin-bottom: 6px; display: block; font-size: 9px;">Etiquetas do dossiê</span>
         <div class="tag-bubble-list" id="villain-tag-list">
           ${tagsHtml}
           ${customTagsHtml}
         </div>
-        
+
         <!-- Custom Tag Add -->
         <div style="display: flex; gap: 6px; margin-top: 10px;">
-          <input type="text" id="input-add-tag" placeholder="Add custom tag..." style="flex: 1; background: var(--bg-input); border: 1px solid var(--border); border-radius: 5px; color: var(--fg); font-family: var(--mono); font-size: 10px; padding: 5px 8px; outline: none;"/>
-          <button class="btn-replay" id="btn-add-tag" style="padding: 4px 10px; font-size: 10px; cursor: pointer;">+ Add</button>
+          <input type="text" id="input-add-tag" placeholder="Adicionar etiqueta..." style="flex: 1; background: var(--bg-input); border: 1px solid var(--border); border-radius: 5px; color: var(--fg); font-family: var(--mono); font-size: 10px; padding: 5px 8px; outline: none;"/>
+          <button class="btn-replay" id="btn-add-tag" style="padding: 4px 10px; font-size: 10px; cursor: pointer;">+ Adicionar</button>
         </div>
       </div>
     `;
@@ -158,22 +223,22 @@ export function initVillains() {
     const noteInput = document.getElementById('villain-note-input');
     if (noteInput) {
       noteInput.value = v.note || '';
-      
+
       let saveTimeout;
       noteInput.addEventListener('input', () => {
         clearTimeout(saveTimeout);
         const statusLabel = document.getElementById('note-save-status');
         if (statusLabel) {
-          statusLabel.innerText = 'Saving...';
+          statusLabel.innerText = 'Salvando...';
           statusLabel.style.opacity = '0.6';
         }
-        
+
         saveTimeout = setTimeout(() => {
           v.note = noteInput.value;
           // Notify listeners of changes
           state.notify();
           if (statusLabel) {
-            statusLabel.innerText = 'Saved';
+            statusLabel.innerText = 'Salvo';
             statusLabel.style.opacity = '1';
             setTimeout(() => {
               statusLabel.style.opacity = '0';
@@ -188,6 +253,7 @@ export function initVillains() {
     tagButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         const tag = btn.getAttribute('data-tag');
+        if (!v.tags) v.tags = [];
         const hasTag = v.tags.includes(tag);
         if (hasTag) {
           v.tags = v.tags.filter(t => t !== tag);
@@ -195,20 +261,21 @@ export function initVillains() {
           v.tags.push(tag);
         }
         state.notify();
-        renderDetailPanel(v);
+        renderVillains();
       });
     });
 
     // Custom Tag input bindings
     const inputAddTag = document.getElementById('input-add-tag');
     const btnAddTag = document.getElementById('btn-add-tag');
-    
+
     function triggerAddTag() {
       const text = inputAddTag.value.trim();
+      if (!v.tags) v.tags = [];
       if (text && !v.tags.includes(text)) {
         v.tags.push(text);
         state.notify();
-        renderDetailPanel(v);
+        renderVillains();
       }
     }
 

@@ -25,7 +25,7 @@ Generated during the Vite restructure (baseline commit preserves all originals).
 | Career "THE ARC" SVG chart | `src/pages/career.html` | Career sketch, Directions |
 | 13×13 range matrix | `src/pages/ranges.html`, `src/pages/leaks.html` | Ranges sketch (Ranges page rebuilt B5 → Oracle/Mirror + action-distribution + master-detail insight, mirroring real `DualRangeMatrix`) |
 | Sessions expandable rows | `src/pages/sessions.html`, `src/modules/sessions.js` | Sessions sketch |
-| Villains dossier grid | `src/pages/villains.html`, `src/modules/villains.js` | Villains sketch |
+| Villains dossier grid | `src/pages/villains.html`, `src/modules/villains.js` | Villains sketch (Villains page rebuilt B6 → villain-badge archetype avatars + predator/prey "Nemesis" framing modelled on real DashboardPage Nemesis block, fully tokenized + PT-BR) |
 | Arena 3D felt trainer | `src/pages/arena.html`, `src/modules/arena.js` | Arena sketch |
 
 ## Catalog bricks library (showcase — `elements.html` + `src/elements/`)
@@ -65,7 +65,7 @@ status calls; Claude defaults new bricks to `new`.
 | Hand Replay · Felt | `hand-replay-felt.html` | Poker-Specific | new | net-new (HandReplay modal target) |
 | Blocker HUD Simulator | `blocker-simulator.html` | Poker-Specific | new | net-new (Antigravity) |
 | Cards Deal Replayer | `replayer.html` | Poker-Specific | keep | carried-forward |
-| Villain Profile Badges | `villain-badge.html` | Poker-Specific | new | `archive/sketches/Demo.html` |
+| Villain Profile Badges | `villain-badge.html` | Poker-Specific | keep | folded into Villains — tinted archetype avatars (reg/lag/fish/nit) + telemetry + threat framing (B6) |
 | Verdict Diagnosis Card | `verdict-card.html` | Poker-Specific | new | `archive/legacy_dashboards/Dashboard v7.html` |
 | Retro CLI Terminal | `cli-panel.html` | Nav & Chrome | new | `archive/sandboxes/design_sandbox_v2.html` |
 | Blueprint / CAD Theme | `blueprint-theme.html` | Nav & Chrome | new | `archive/sandboxes/design_sandbox_v3.html` |
