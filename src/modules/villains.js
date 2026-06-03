@@ -17,11 +17,11 @@ function initials(name) {
   return name.slice(0, 2).toUpperCase();
 }
 
-// Short PT descriptor under the name
+// Short descriptor under the name
 function archDescriptor(v) {
-  if (v.arch === 'reg') return 'regular sólido';
-  if (v.arch === 'lag') return 'agressivo solto · LAG';
-  return v.vpip >= 30 ? 'passivo solto · paga demais' : 'passivo tight · nit';
+  if (v.arch === 'reg') return 'solid regular';
+  if (v.arch === 'lag') return 'loose aggressive · LAG';
+  return v.vpip >= 30 ? 'loose passive · calls too much' : 'tight passive · nit';
 }
 
 // --- Predator / prey / neutral classification (the "Nemesis" framing) ---
@@ -37,12 +37,12 @@ function classifyThreat(v) {
   return 'neutral';
 }
 
-const THREAT_LABEL = { pred: 'Predador', prey: 'Presa', neutral: 'Neutro' };
+const THREAT_LABEL = { pred: 'Predator', prey: 'Prey', neutral: 'Neutral' };
 const THREAT_ICON = { pred: '🎯', prey: '🐟', neutral: '•' };
 const THREAT_DESC = {
-  pred: 'Ameaça real ao seu resultado. Aperte contra ele e evite guerras marginais.',
-  prey: 'Máquina de leaks. Maximize valor — é daqui que vem o lucro.',
-  neutral: 'Sem ângulo dominante. Jogue sólido e colete dados.',
+  pred: 'A real threat to your bottom line. Tighten up against him and avoid marginal wars.',
+  prey: 'A leak machine. Maximize value — this is where the profit comes from.',
+  neutral: 'No dominant angle. Play solid and collect data.',
 };
 
 export function initVillains() {
@@ -69,7 +69,7 @@ export function initVillains() {
     });
 
     if (countLbl) {
-      countLbl.textContent = `${filtered.length} oponente${filtered.length === 1 ? '' : 's'} rastreado${filtered.length === 1 ? '' : 's'}`;
+      countLbl.textContent = `${filtered.length} opponent${filtered.length === 1 ? '' : 's'} tracked`;
     }
 
     filtered.forEach(v => {
@@ -89,7 +89,7 @@ export function initVillains() {
           <div class="opp-avatar ${avatarClass(v)}">${initials(v.name)}</div>
           <div class="opp-head-meta">
             <span class="opp-dossier-name">${v.name}</span>
-            <span class="opp-dossier-sub">${archDescriptor(v)} · ${v.hands} mãos</span>
+            <span class="opp-dossier-sub">${archDescriptor(v)} · ${v.hands} hands</span>
           </div>
           <span class="opp-threat ${threat}">${THREAT_LABEL[threat]}</span>
         </div>
@@ -105,7 +105,7 @@ export function initVillains() {
         </div>
 
         <div class="exploit-overlay-card">
-          <div class="exploit-card-title">Plano de exploração</div>
+          <div class="exploit-card-title">Exploit plan</div>
           <div class="exploit-card-body">${v.advice}</div>
         </div>
       `;
@@ -131,7 +131,7 @@ export function initVillains() {
         detailPanel.innerHTML = `
           <div class="villains-empty-state">
             <div class="ico">🗂</div>
-            <span class="lbl">Nenhum oponente corresponde ao filtro</span>
+            <span class="lbl">No opponent matches the filter</span>
           </div>
         `;
       }
@@ -163,7 +163,7 @@ export function initVillains() {
           <div style="min-width: 0;">
             <h3 style="font-family: var(--display); font-size: 20px; margin: 0; font-weight: 700; color: var(--fg);">${v.name}</h3>
             <div style="font-family: var(--mono); font-size: 10px; color: var(--fg-muted); margin-top: 4px;">
-              ${v.hands} mãos rastreadas · <span style="color: var(--accent);">${v.label}</span>
+              ${v.hands} hands tracked · <span style="color: var(--accent);">${v.label}</span>
             </div>
           </div>
         </div>
@@ -180,7 +180,7 @@ export function initVillains() {
       </div>
 
       <!-- Quick Stats Grid -->
-      <span class="kick" style="margin-bottom: 8px; display: block; font-size: 9px;">Métricas de telemetria</span>
+      <span class="kick" style="margin-bottom: 8px; display: block; font-size: 9px;">Telemetry metrics</span>
       <div class="opp-stats-inline" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 18px;">
         <div class="opp-stat-cell"><div class="l">VPIP</div><div class="v">${v.vpip}%</div></div>
         <div class="opp-stat-cell"><div class="l">PFR</div><div class="v">${v.pfr}%</div></div>
@@ -190,22 +190,22 @@ export function initVillains() {
 
       <!-- Exploit advice card -->
       <div class="villain-exploit-card">
-        <h4>Plano de exploração</h4>
+        <h4>Exploit plan</h4>
         <p>${v.advice}</p>
       </div>
 
       <!-- Notes field -->
       <div style="margin-bottom: 18px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-          <span class="kick" style="font-size: 9px;">Notas estratégicas do dossiê</span>
-          <span id="note-save-status" style="font-family: var(--mono); font-size: 9px; color: var(--accent); opacity: 0; transition: opacity 0.2s;">Salvo</span>
+          <span class="kick" style="font-size: 9px;">Strategic dossier notes</span>
+          <span id="note-save-status" style="font-family: var(--mono); font-size: 9px; color: var(--accent); opacity: 0; transition: opacity 0.2s;">Saved</span>
         </div>
-        <textarea id="villain-note-input" class="villain-note-input" placeholder="Anote padrões, tells, regras de sizing, ângulos de blefe..."></textarea>
+        <textarea id="villain-note-input" class="villain-note-input" placeholder="Note patterns, tells, sizing rules, bluff angles..."></textarea>
       </div>
 
       <!-- Tag picker -->
       <div>
-        <span class="kick" style="margin-bottom: 6px; display: block; font-size: 9px;">Etiquetas do dossiê</span>
+        <span class="kick" style="margin-bottom: 6px; display: block; font-size: 9px;">Dossier tags</span>
         <div class="tag-bubble-list" id="villain-tag-list">
           ${tagsHtml}
           ${customTagsHtml}
@@ -213,8 +213,8 @@ export function initVillains() {
 
         <!-- Custom Tag Add -->
         <div style="display: flex; gap: 6px; margin-top: 10px;">
-          <input type="text" id="input-add-tag" placeholder="Adicionar etiqueta..." style="flex: 1; background: var(--bg-input); border: 1px solid var(--border); border-radius: 5px; color: var(--fg); font-family: var(--mono); font-size: 10px; padding: 5px 8px; outline: none;"/>
-          <button class="btn-replay" id="btn-add-tag" style="padding: 4px 10px; font-size: 10px; cursor: pointer;">+ Adicionar</button>
+          <input type="text" id="input-add-tag" placeholder="Add tag..." style="flex: 1; background: var(--bg-input); border: 1px solid var(--border); border-radius: 5px; color: var(--fg); font-family: var(--mono); font-size: 10px; padding: 5px 8px; outline: none;"/>
+          <button class="btn-replay" id="btn-add-tag" style="padding: 4px 10px; font-size: 10px; cursor: pointer;">+ Add</button>
         </div>
       </div>
     `;
@@ -229,7 +229,7 @@ export function initVillains() {
         clearTimeout(saveTimeout);
         const statusLabel = document.getElementById('note-save-status');
         if (statusLabel) {
-          statusLabel.innerText = 'Salvando...';
+          statusLabel.innerText = 'Saving...';
           statusLabel.style.opacity = '0.6';
         }
 
@@ -238,7 +238,7 @@ export function initVillains() {
           // Notify listeners of changes
           state.notify();
           if (statusLabel) {
-            statusLabel.innerText = 'Salvo';
+            statusLabel.innerText = 'Saved';
             statusLabel.style.opacity = '1';
             setTimeout(() => {
               statusLabel.style.opacity = '0';
