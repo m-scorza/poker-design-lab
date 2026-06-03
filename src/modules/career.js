@@ -5,8 +5,8 @@ import { state } from '../state.js';
 import handsData from '../data/hands.json';
 
 // Hour Heatmap mock database (7 days x 24 hours)
-const DAYS = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
-const DAYS_FULL = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const DAYS_FULL = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const HEATMAP_DATA = [];
 
 // Count-up animation for the Lifetime Scorecard tiles (mirrors radar.js countUp)
@@ -234,7 +234,7 @@ function initCareerArc() {
   const money = document.getElementById('career-arc-money');
   const L = state.lifetime;
   const VALS = {
-    'Lucro': `+$${L.netProfit.toFixed(2)}`,
+    'Profit': `+$${L.netProfit.toFixed(2)}`,
     'ROI': `+${L.roi.toFixed(1)}%`,
     'bb/100': `+${L.bb100.toFixed(1)} bb`,
   };
@@ -244,7 +244,7 @@ function initCareerArc() {
       const btn = e.target.closest('button'); if (!btn) return;
       seg.querySelectorAll('button').forEach(b => b.removeAttribute('aria-pressed'));
       btn.setAttribute('aria-pressed', 'true');
-      scramble(money, VALS[btn.textContent.trim()] || VALS['Lucro']);
+      scramble(money, VALS[btn.textContent.trim()] || VALS['Profit']);
       drawPath();
     });
   }
@@ -315,7 +315,7 @@ function drawHeatmap() {
 
         tooltip.innerHTML = `
           <b>${dayName} ${hourStr}</b>
-          Volume: ${cell.volume} sessões<br>
+          Volume: ${cell.volume} sessions<br>
           <span style="color: ${cell.profit >= 0 ? 'var(--accent)' : 'var(--loss)'}">${profitStr} PnL</span>
         `;
         tooltip.style.display = 'block';
@@ -370,7 +370,7 @@ function drawOpponentLedgers() {
           <span style="font-family:var(--mono); font-size:13px; color:var(--loss); opacity:0.35;">#${idx+1}</span>
           <div>
             <div style="font-family:var(--mono); font-weight:700; color:var(--fg); text-transform:uppercase;">${v.name}</div>
-            <div style="font-size:10px; color:var(--fg-muted); margin-top:2px;">${v.hands} mãos observadas ·<span class="opp-arch-badge ${v.arch}" style="font-size:8px; padding:0 3px;">${v.label}</span></div>
+            <div style="font-size:10px; color:var(--fg-muted); margin-top:2px;">${v.hands} hands observed ·<span class="opp-arch-badge ${v.arch}" style="font-size:8px; padding:0 3px;">${v.label}</span></div>
           </div>
         </div>
         <span style="font-family:var(--mono); color:var(--loss); font-size:14px; font-weight:700;">-${v.bb.toFixed(1)} bb</span>
@@ -403,7 +403,7 @@ function drawOpponentLedgers() {
           <span style="font-family:var(--mono); font-size:13px; color:var(--accent); opacity:0.35;">#${idx+1}</span>
           <div>
             <div style="font-family:var(--mono); font-weight:700; color:var(--fg); text-transform:uppercase;">${v.name}</div>
-            <div style="font-size:10px; color:var(--fg-muted); margin-top:2px;">${v.hands} mãos observadas ·<span class="opp-arch-badge ${v.arch}" style="font-size:8px; padding:0 3px;">${v.label}</span></div>
+            <div style="font-size:10px; color:var(--fg-muted); margin-top:2px;">${v.hands} hands observed ·<span class="opp-arch-badge ${v.arch}" style="font-size:8px; padding:0 3px;">${v.label}</span></div>
           </div>
         </div>
         <span style="font-family:var(--mono); color:var(--accent-2); font-size:14px; font-weight:700;">+${v.bb.toFixed(1)} bb</span>
@@ -435,7 +435,7 @@ function drawOpponentLedgers() {
         </div>
         <div style="display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:11px; color:var(--fg-muted);">
           <span>VPIP/PFR: ${v.vpip}/${v.pfr}</span>
-          <span>${v.hands} mãos</span>
+          <span>${v.hands} hands</span>
           <span style="color:var(--accent);">✏️ ${v.notes} notas</span>
         </div>
       `;

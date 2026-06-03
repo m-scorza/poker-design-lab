@@ -4,17 +4,17 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 16px;">
         <div>
           <h2 style="font-family: var(--display); font-size: 26px; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 8px;">
-            Perfil de carreira
+            Career profile
           </h2>
           <p style="font-size: 12px; color: var(--fg-muted); margin: 4px 0 0;">
-            Visão cronológica da sua jornada nos torneios, evolução de formatos e dossiê de adversários.
+            A chronological view of your tournament journey, format evolution and opponent dossier.
           </p>
         </div>
         <div class="ranges-tab-menu" id="career-tab-selector" style="margin: 0;">
-          <button class="ranges-tab-btn active" data-tab="overview">Visão geral</button>
-          <button class="ranges-tab-btn" data-tab="tiers">Stakes & Formatos</button>
-          <button class="ranges-tab-btn" data-tab="nemesis">Nêmeses & Adversários</button>
-          <button class="ranges-tab-btn" data-tab="hands">Mãos de alto impacto</button>
+          <button class="ranges-tab-btn active" data-tab="overview">Overview</button>
+          <button class="ranges-tab-btn" data-tab="tiers">Stakes & Formats</button>
+          <button class="ranges-tab-btn" data-tab="nemesis">Nemeses & Opponents</button>
+          <button class="ranges-tab-btn" data-tab="hands">High-impact hands</button>
         </div>
       </div>
 
@@ -25,23 +25,23 @@
         <div class="card scorecard-card">
           <div class="scorecard-head">
             <span class="sc-dot"></span>
-            <h3>Scorecard vitalício</h3>
+            <h3>Lifetime scorecard</h3>
           </div>
           <div class="scorecard-grid">
             <div class="sc-metric">
-              <span class="sc-k">Mãos totais</span>
+              <span class="sc-k">Total hands</span>
               <span class="sc-v" id="sc-hands">0</span>
             </div>
             <div class="sc-metric">
-              <span class="sc-k">Compliance GTO</span>
+              <span class="sc-k">GTO compliance</span>
               <span class="sc-v" id="sc-compliance">0%</span>
             </div>
             <div class="sc-metric">
-              <span class="sc-k">Melhor resultado</span>
+              <span class="sc-k">Best result</span>
               <span class="sc-v pos" id="sc-best">+$0</span>
             </div>
             <div class="sc-metric">
-              <span class="sc-k">Pior resultado</span>
+              <span class="sc-k">Worst result</span>
               <span class="sc-v neg" id="sc-worst">$0</span>
             </div>
           </div>
@@ -55,11 +55,11 @@
               <div class="sc-sv" id="sc-pfr">0%</div>
             </div>
             <div>
-              <span class="sc-k">ABI médio</span>
+              <span class="sc-k">Average ABI</span>
               <div class="sc-sv" id="sc-abi">$0</div>
             </div>
             <div>
-              <span class="sc-k">ROI total</span>
+              <span class="sc-k">Total ROI</span>
               <div class="sc-sv" id="sc-roi" style="color: var(--accent);">0%</div>
             </div>
           </div>
@@ -69,12 +69,12 @@
         <div class="card arc-hero">
           <div class="arc-top">
             <div>
-              <div class="arc-eyebrow"><span class="dot"></span>Lucro vitalício · 28 fev → 30 mai</div>
+              <div class="arc-eyebrow"><span class="dot"></span>Lifetime profit · Feb 28 → May 30</div>
               <div class="arc-money" id="career-arc-money">+$388<span class="cents">.85</span></div>
-              <div class="arc-money-meta">banca inicial <b>$275</b> · atual <b>$663.85</b> · ROI <b class="pos" id="arc-meta-roi">+141.4%</b> · 250 torneios</div>
+              <div class="arc-money-meta">starting bankroll <b>$275</b> · current <b>$663.85</b> · ROI <b class="pos" id="arc-meta-roi">+141.4%</b> · 250 tournaments</div>
             </div>
             <div class="arc-seg" id="career-arc-seg">
-              <button aria-pressed="true">Lucro</button>
+              <button aria-pressed="true">Profit</button>
               <button>ROI</button>
               <button>bb/100</button>
             </div>
@@ -95,37 +95,37 @@
               <line x1="0" y1="252" x2="1000" y2="252" stroke="var(--border-strong)"/>
               <path d="M 0,250 L 30,248 L 90,244 L 150,236 L 200,242 L 250,248 L 300,244 L 360,228 L 430,212 L 500,194 L 560,182 L 620,168 L 690,148 L 760,128 L 820,108 L 890,80 L 950,52 L 1000,42 L 1000,280 L 0,280 Z" fill="url(#careerArcGrad)" opacity="0.45"/>
               <path id="career-arc-path" d="M 0,250 L 30,248 L 90,244 L 150,236 L 200,242 L 250,248 L 300,244 L 360,228 L 430,212 L 500,194 L 560,182 L 620,168 L 690,148 L 760,128 L 820,108 L 890,80 L 950,52 L 1000,42" stroke="var(--accent)" stroke-width="3" fill="none" stroke-linecap="round" />
-              <circle class="chart-node" cx="0" cy="250" r="5" data-info="28 fev · Banca inicial $275.00"/>
-              <circle class="chart-node" cx="90" cy="244" r="5" data-info="14 mar · Primeiro cash de mesa final +$8.20"/>
-              <circle class="chart-node" cx="200" cy="242" r="5" data-info="12 abr · Downswing −$18.40"/>
-              <circle class="chart-node" cx="500" cy="194" r="5" data-info="22 jun · Primeiro lucro de $100 (+$104.10)"/>
-              <circle class="chart-node" cx="760" cy="128" r="5" data-info="3 ago · Pico de 11 ITM seguidos"/>
-              <circle class="chart-node" cx="1000" cy="42" r="5" data-info="30 mai · Pico de lucro +$388.85"/>
+              <circle class="chart-node" cx="0" cy="250" r="5" data-info="Feb 28 · Starting bankroll $275.00"/>
+              <circle class="chart-node" cx="90" cy="244" r="5" data-info="Mar 14 · First final-table cash +$8.20"/>
+              <circle class="chart-node" cx="200" cy="242" r="5" data-info="Apr 12 · Downswing −$18.40"/>
+              <circle class="chart-node" cx="500" cy="194" r="5" data-info="Jun 22 · First $100 profit (+$104.10)"/>
+              <circle class="chart-node" cx="760" cy="128" r="5" data-info="Aug 3 · Peak of 11 ITM in a row"/>
+              <circle class="chart-node" cx="1000" cy="42" r="5" data-info="May 30 · Profit peak +$388.85"/>
             </svg>
             <div id="career-arc-tip" class="arc-tip"></div>
-            <div class="arc-x-labels"><span>Fev</span><span>Mar</span><span>Abr</span><span>Mai</span><span>Jun</span><span>Jul</span><span>Ago</span><span>Set</span><span>Out</span></div>
+            <div class="arc-x-labels"><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span></div>
           </div>
         </div>
 
         <!-- Milestone Rail -->
         <div class="card milestones">
-          <div class="milestone-h"><span class="eye">Trilho de marcos</span><span class="sub">5 desbloqueados · 1 em andamento</span></div>
+          <div class="milestone-h"><span class="eye">Milestone rail</span><span class="sub">5 unlocked · 1 in progress</span></div>
           <div class="milestone-track">
             <div class="milestone-line"><span id="career-milestone-line"></span></div>
             <div class="milestone-items">
-              <div class="milestone-item"><div class="marker"><div class="inner"></div></div><div class="date">28 fev</div><div class="t">Primeiro cash</div><div class="v">+$0.40</div></div>
-              <div class="milestone-item"><div class="marker"><div class="inner"></div></div><div class="date">14 mar</div><div class="t">Primeira mesa final</div><div class="v">+$8.20</div></div>
-              <div class="milestone-item"><div class="marker"><div class="inner"></div></div><div class="date">22 jun</div><div class="t">Primeiro lucro de $100</div><div class="v">+$104.10</div></div>
-              <div class="milestone-item"><div class="marker"><div class="inner"></div></div><div class="date">3 ago</div><div class="t">Sequência de 11 ITM</div><div class="v">maior série</div></div>
-              <div class="milestone-item"><div class="marker money"><div class="inner"></div></div><div class="date">30 mai</div><div class="t">Melhor cash · 1º de 89</div><div class="v">+$22.50</div></div>
-              <div class="milestone-item pending"><div class="marker pending"><div class="inner"></div></div><div class="date">em breve</div><div class="t">250º torneio</div><div class="v">faltam 2</div></div>
+              <div class="milestone-item"><div class="marker"><div class="inner"></div></div><div class="date">Feb 28</div><div class="t">First cash</div><div class="v">+$0.40</div></div>
+              <div class="milestone-item"><div class="marker"><div class="inner"></div></div><div class="date">Mar 14</div><div class="t">First final table</div><div class="v">+$8.20</div></div>
+              <div class="milestone-item"><div class="marker"><div class="inner"></div></div><div class="date">Jun 22</div><div class="t">First $100 profit</div><div class="v">+$104.10</div></div>
+              <div class="milestone-item"><div class="marker"><div class="inner"></div></div><div class="date">Aug 3</div><div class="t">11 ITM streak</div><div class="v">longest run</div></div>
+              <div class="milestone-item"><div class="marker money"><div class="inner"></div></div><div class="date">May 30</div><div class="t">Best cash · 1st of 89</div><div class="v">+$22.50</div></div>
+              <div class="milestone-item pending"><div class="marker pending"><div class="inner"></div></div><div class="date">soon</div><div class="t">250th tournament</div><div class="v">2 to go</div></div>
             </div>
           </div>
         </div>
 
         <!-- ABI Evolution Chart -->
         <div class="card chart-card" style="margin-top: 24px;">
-          <span class="kick accent-2">Evolução do Buy-In médio (ABI)</span>
+          <span class="kick accent-2">Average buy-in (ABI) evolution</span>
           <div class="arc-chart-container" id="career-abi-container" style="position: relative;">
             <div class="chart-tooltip" id="career-abi-tooltip" style="display: none; position: absolute; background: var(--bg-card); border: 1px solid var(--border-strong); padding: 8px 12px; border-radius: 8px; font-family: var(--mono); font-size: 10.5px; z-index: 100; pointer-events: none; box-shadow: 0 4px 20px rgba(0,0,0,0.5);"></div>
             <svg viewBox="0 0 1000 180" preserveAspectRatio="none" style="overflow: visible; width: 100%; height: 180px;">
@@ -148,47 +148,47 @@
 
               <!-- ABI Nodes group -->
               <g id="abi-nodes-group">
-                <circle class="abi-chart-node" cx="300" cy="160" r="5.5" data-info="<b>Stake nível 1</b><br>Torneios 1-80<br>ABI: $0.55 estável" />
-                <circle class="abi-chart-node" cx="600" cy="140" r="5.5" data-info="<b>Estabilização de stakes</b><br>Torneios 81-170<br>ABI: $1.10 step-up" />
-                <circle class="abi-chart-node" cx="900" cy="90" r="5.5" data-info="<b>Transição de stakes</b><br>Torneios 171-240<br>ABI: $2.20 shot-taking" />
+                <circle class="abi-chart-node" cx="300" cy="160" r="5.5" data-info="<b>Stake tier 1</b><br>Tournaments 1-80<br>ABI: $0.55 stable" />
+                <circle class="abi-chart-node" cx="600" cy="140" r="5.5" data-info="<b>Stake stabilization</b><br>Tournaments 81-170<br>ABI: $1.10 step-up" />
+                <circle class="abi-chart-node" cx="900" cy="90" r="5.5" data-info="<b>Stake transition</b><br>Tournaments 171-240<br>ABI: $2.20 shot-taking" />
               </g>
             </svg>
           </div>
           <div style="display:flex; justify-content:space-between; margin-top: 10px; font-family: var(--mono); font-size: 9px; color: var(--fg-muted);">
-            <span>Início (ABI: $0.55)</span>
-            <span>Subida progressiva de buy-in</span>
-            <span>Atual (ABI: $2.20)</span>
+            <span>Start (ABI: $0.55)</span>
+            <span>Progressive buy-in step-up</span>
+            <span>Current (ABI: $2.20)</span>
           </div>
         </div>
         
         <div class="career-bottom-grid">
           <!-- Left: Achievement Feed -->
           <div>
-            <h3 class="kick accent" style="margin-bottom:14px;">Mural de conquistas</h3>
+            <h3 class="kick accent" style="margin-bottom:14px;">Achievement wall</h3>
             <div class="timeline-feed">
               <div class="timeline-item">
-                <span class="t-date">30 mai 2026</span>
-                <span class="t-title">Cash de $12.40 na Sessão #37, série de ABI estável</span>
+                <span class="t-date">May 30, 2026</span>
+                <span class="t-title">$12.40 cash in Session #37, stable ABI streak</span>
                 <span class="t-val">+$12.40</span>
               </div>
               <div class="timeline-item">
-                <span class="t-date">28 mai 2026</span>
-                <span class="t-title">Eliminação na bolha do Deepstack $1.10</span>
+                <span class="t-date">May 28, 2026</span>
+                <span class="t-title">Bubble bust-out in the $1.10 Deepstack</span>
                 <span class="t-val loss">-$1.10</span>
               </div>
               <div class="timeline-item">
-                <span class="t-date">25 mai 2026</span>
-                <span class="t-title">Cash de $24.20 na Sessão #35, torneio KO com bounty</span>
+                <span class="t-date">May 25, 2026</span>
+                <span class="t-title">$24.20 cash in Session #35, bounty KO tournament</span>
                 <span class="t-val">+$24.20</span>
               </div>
               <div class="timeline-item">
-                <span class="t-date">15 mai 2026</span>
-                <span class="t-title">Pódio no Bounty Knockout $1.10 (3º de 240 jogadores)</span>
+                <span class="t-date">May 15, 2026</span>
+                <span class="t-title">Podium in the $1.10 Bounty Knockout (3rd of 240 players)</span>
                 <span class="t-val">+$48.00</span>
               </div>
               <div class="timeline-item">
-                <span class="t-date">11 fev 2026</span>
-                <span class="t-title">Maior bounty no Sunday Storm $1.10 (2º de 500 jogadores)</span>
+                <span class="t-date">Feb 11, 2026</span>
+                <span class="t-title">Biggest bounty in the $1.10 Sunday Storm (2nd of 500 players)</span>
                 <span class="t-val">+$112.50</span>
               </div>
             </div>
@@ -198,38 +198,38 @@
           <div style="display: flex; flex-direction: column; gap: 24px;">
             <!-- Finish Distribution -->
             <div class="card">
-              <span class="kick">Distribuição de eliminações</span>
+              <span class="kick">Elimination distribution</span>
               <div style="display: flex; flex-direction: column; gap: 9px; margin-top: 14px;">
                 <div style="display: grid; grid-template-columns: 80px 1fr 40px; align-items: center; font-size: 11.5px; font-family: var(--mono);">
-                  <span style="color: var(--fg-muted);">Início</span>
+                  <span style="color: var(--fg-muted);">Early</span>
                   <div style="height: 6px; background: var(--bg-input); border-radius: 3px; overflow: hidden; margin: 0 8px;">
                     <span style="display: block; height: 100%; width: 15%; background: var(--loss);"></span>
                   </div>
                   <span style="text-align: right; color: var(--fg-muted);">15%</span>
                 </div>
                 <div style="display: grid; grid-template-columns: 80px 1fr 40px; align-items: center; font-size: 11.5px; font-family: var(--mono);">
-                  <span style="color: var(--fg-muted);">Meio</span>
+                  <span style="color: var(--fg-muted);">Middle</span>
                   <div style="height: 6px; background: var(--bg-input); border-radius: 3px; overflow: hidden; margin: 0 8px;">
                     <span style="display: block; height: 100%; width: 22%; background: var(--warn);"></span>
                   </div>
                   <span style="text-align: right; color: var(--fg-muted);">22%</span>
                 </div>
                 <div style="display: grid; grid-template-columns: 80px 1fr 40px; align-items: center; font-size: 11.5px; font-family: var(--mono);">
-                  <span style="color: var(--fg-muted);">Bolha</span>
+                  <span style="color: var(--fg-muted);">Bubble</span>
                   <div style="height: 6px; background: var(--bg-input); border-radius: 3px; overflow: hidden; margin: 0 8px;">
                     <span style="display: block; height: 100%; width: 8%; background: var(--loss);"></span>
                   </div>
                   <span style="text-align: right; color: var(--fg-muted);">8%</span>
                 </div>
                 <div style="display: grid; grid-template-columns: 80px 1fr 40px; align-items: center; font-size: 11.5px; font-family: var(--mono);">
-                  <span style="color: var(--fg-muted);">No prêmio (ITM)</span>
+                  <span style="color: var(--fg-muted);">In the money (ITM)</span>
                   <div style="height: 6px; background: var(--bg-input); border-radius: 3px; overflow: hidden; margin: 0 8px;">
                     <span style="display: block; height: 100%; width: 40%; background: var(--accent);"></span>
                   </div>
                   <span style="text-align: right; color: var(--accent);">40%</span>
                 </div>
                 <div style="display: grid; grid-template-columns: 80px 1fr 40px; align-items: center; font-size: 11.5px; font-family: var(--mono);">
-                  <span style="color: var(--accent-2);">Mesa final</span>
+                  <span style="color: var(--accent-2);">Final table</span>
                   <div style="height: 6px; background: var(--bg-input); border-radius: 3px; overflow: hidden; margin: 0 8px;">
                     <span style="display: block; height: 100%; width: 15%; background: var(--accent-2);"></span>
                   </div>
@@ -240,25 +240,25 @@
 
             <!-- Stakes & Streaks Tracker Card -->
             <div class="card" style="padding: 20px;">
-              <span class="kick accent-2">Stakes & sequências</span>
+              <span class="kick accent-2">Stakes & streaks</span>
               <div style="margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                 <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 8px; padding: 10px;">
-                  <span class="kick" style="font-size: 8px;">Maior sequência de cash</span>
-                  <div style="font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--accent-2); margin-top: 2px;">6 ITM <span style="font-size: 10px; font-weight: 400; color: var(--fg-muted);">seguidos</span></div>
-                  <span style="font-size: 9px; color: var(--fg-muted); display: block; margin-top: 2px;">Sessões #24 a #29</span>
+                  <span class="kick" style="font-size: 8px;">Longest cash streak</span>
+                  <div style="font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--accent-2); margin-top: 2px;">6 ITM <span style="font-size: 10px; font-weight: 400; color: var(--fg-muted);">in a row</span></div>
+                  <span style="font-size: 9px; color: var(--fg-muted); display: block; margin-top: 2px;">Sessions #24 to #29</span>
                 </div>
                 <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 8px; padding: 10px;">
-                  <span class="kick" style="font-size: 8px;">Eliminações na bolha</span>
-                  <div style="font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--loss); margin-top: 2px;">12 <span style="font-size: 10px; font-weight: 400; color: var(--fg-muted);">ocorrências</span></div>
-                  <span style="font-size: 9px; color: var(--fg-muted); display: block; margin-top: 2px;">4.8% do tempo total de jogo</span>
+                  <span class="kick" style="font-size: 8px;">Bubble bust-outs</span>
+                  <div style="font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--loss); margin-top: 2px;">12 <span style="font-size: 10px; font-weight: 400; color: var(--fg-muted);">occurrences</span></div>
+                  <span style="font-size: 9px; color: var(--fg-muted); display: block; margin-top: 2px;">4.8% of total play time</span>
                 </div>
                 <div style="grid-column: span 2; background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 8px; padding: 10px; display: flex; justify-content: space-between; align-items: center;">
                   <div>
-                    <span class="kick" style="font-size: 8px;">Tamanho médio de campo vencido</span>
-                    <div style="font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--accent); margin-top: 2px;">248 jogadores</div>
+                    <span class="kick" style="font-size: 8px;">Average winning field size</span>
+                    <div style="font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--accent); margin-top: 2px;">248 players</div>
                   </div>
                   <div style="text-align: right;">
-                    <span style="font-size: 9px; font-family: var(--mono); color: var(--accent); background: var(--accent-soft); border: 1px solid var(--accent-line); padding: 2px 6px; border-radius: 4px; display: inline-block;">Top 12% em média</span>
+                    <span style="font-size: 9px; font-family: var(--mono); color: var(--accent); background: var(--accent-soft); border: 1px solid var(--accent-line); padding: 2px 6px; border-radius: 4px; display: inline-block;">Top 12% on average</span>
                   </div>
                 </div>
               </div>
@@ -266,7 +266,7 @@
 
             <!-- Hour/Day Heatmap -->
             <div class="card" style="padding: 20px; position: relative;">
-              <span class="kick">Densidade por dia & hora</span>
+              <span class="kick">Day & hour density</span>
               <!-- Tooltip for heatmap cells -->
               <div class="chart-tooltip" id="career-heatmap-tooltip" style="display: none; position: absolute; background: rgba(11, 13, 18, 0.95); border: 1px solid var(--border-strong); padding: 8px 12px; border-radius: 8px; font-family: var(--mono); font-size: 10.5px; z-index: 100; pointer-events: none;"></div>
               
@@ -284,7 +284,7 @@
                 </div>
               </div>
               <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; font-family: var(--mono); font-size: 8px; color: var(--fg-muted);">
-                <span>Linhas: seg - dom</span>
+                <span>Rows: Mon - Sun</span>
                 <span style="display: flex; gap: 4px; align-items: center;">
                   Menos <span style="width:8px; height:8px; background:var(--bg-input); border-radius:1px;"></span>
                   <span style="width:8px; height:8px; background:color-mix(in srgb, var(--accent) 15%, transparent); border-radius:1px;"></span>
@@ -304,23 +304,23 @@
           <!-- Stakes breakdown table -->
           <div class="card" style="padding:0; overflow:hidden;">
             <div style="padding: 16px 24px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.15); display:flex; justify-content:space-between; align-items:center;">
-              <span class="kick accent">Análise de desempenho por stake</span>
-              <span class="kick" style="font-size:8.5px;">Agrupado por nível de buy-in</span>
+              <span class="kick accent">Performance analysis by stake</span>
+              <span class="kick" style="font-size:8.5px;">Grouped by buy-in tier</span>
             </div>
             <table style="width:100%; border-collapse: collapse; font-size: 12.5px; text-align: left;">
               <thead>
                 <tr style="border-b: 1px solid var(--border); font-family: var(--mono); font-size: 10px; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.1em; background: rgba(255,255,255,0.01);">
-                  <th style="padding: 14px 24px; font-weight:600;">Nível de stake</th>
+                  <th style="padding: 14px 24px; font-weight:600;">Stake level</th>
                   <th style="padding: 14px 24px; font-weight:600; text-align:center;">Volume</th>
                   <th style="padding: 14px 24px; font-weight:600; text-align:center;">Cashes</th>
-                  <th style="padding: 14px 24px; font-weight:600; text-align:center;">ROI ITM</th>
-                  <th style="padding: 14px 24px; font-weight:600; text-align:right;">Lucro líquido</th>
+                  <th style="padding: 14px 24px; font-weight:600; text-align:center;">ITM ROI</th>
+                  <th style="padding: 14px 24px; font-weight:600; text-align:right;">Net profit</th>
                 </tr>
               </thead>
               <tbody style="font-family: var(--mono); font-weight: 700; color: var(--fg);">
                 <tr id="tier-row-micro" style="border-bottom: 1px solid rgba(255,255,255,0.03); cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.01)'" onmouseout="this.style.background='none'">
-                  <td style="padding: 16px 24px; font-family: var(--sans); font-weight:600; font-size: 13.5px;">$0.55 Micro stakes <span style="font-size: 8px; color: var(--accent); border: 1px solid var(--accent-line); background: var(--accent-soft); padding: 1px 4px; border-radius: 3px; margin-left: 6px; font-family: var(--mono); text-transform: uppercase;">Inspecionar</span></td>
-                  <td style="padding: 16px 24px; text-align:center; color: var(--fg-muted);">120 torneios</td>
+                  <td style="padding: 16px 24px; font-family: var(--sans); font-weight:600; font-size: 13.5px;">$0.55 Micro stakes <span style="font-size: 8px; color: var(--accent); border: 1px solid var(--accent-line); background: var(--accent-soft); padding: 1px 4px; border-radius: 3px; margin-left: 6px; font-family: var(--mono); text-transform: uppercase;">Inspect</span></td>
+                  <td style="padding: 16px 24px; text-align:center; color: var(--fg-muted);">120 tournaments</td>
                   <td style="padding: 16px 24px; text-align:center;">42 cashes (35.0%)</td>
                   <td style="padding: 16px 24px; text-align:center; color: var(--accent-2);">188.1%</td>
                   <td style="padding: 16px 24px; text-align:right; color: var(--accent-2);">+$124.20</td>
@@ -333,11 +333,11 @@
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--fg); margin-top: 4px;">26.2 / 20.4</div>
                       </div>
                       <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 10px; text-align: center;">
-                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">Freq. 3-bet</span>
+                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">3-bet freq.</span>
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--accent); margin-top: 4px;">8.2%</div>
                       </div>
                       <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 10px; text-align: center;">
-                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">C-bet no flop</span>
+                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">C-bet on flop</span>
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--accent-2); margin-top: 4px;">68.5%</div>
                       </div>
                       <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 10px; text-align: center;">
@@ -345,16 +345,16 @@
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--accent-2); margin-top: 4px;">92.4%</div>
                       </div>
                       <div style="padding-left: 10px;">
-                        <span class="kick" style="font-size: 8px; color: var(--accent); letter-spacing: 0.05em; display: block; text-transform: uppercase;">Insight do coach · Micro stakes</span>
-                        <p style="font-size: 11px; line-height: 1.45; color: var(--fg-muted); margin: 4px 0 0 0; font-family: var(--sans); font-weight: 400;">Campo bastante soft. A compliance pós-flop é alta, mas o rake consome boa parte do win rate. Exploração: abra mais largo em posições tardias para coletar blinds mortos.</p>
+                        <span class="kick" style="font-size: 8px; color: var(--accent); letter-spacing: 0.05em; display: block; text-transform: uppercase;">Coach insight · Micro stakes</span>
+                        <p style="font-size: 11px; line-height: 1.45; color: var(--fg-muted); margin: 4px 0 0 0; font-family: var(--sans); font-weight: 400;">Quite a soft field. Postflop compliance is high, but rake eats a big chunk of the win rate. Exploit: open wider in late positions to collect dead blinds.</p>
                       </div>
                     </div>
                   </td>
                 </tr>
 
                 <tr id="tier-row-target" style="border-bottom: 1px solid rgba(255,255,255,0.03); cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.01)'" onmouseout="this.style.background='none'">
-                  <td style="padding: 16px 24px; font-family: var(--sans); font-weight:600; font-size: 13.5px;">$1.10 Stake-alvo <span style="font-size: 8px; color: var(--accent); border: 1px solid var(--accent-line); background: var(--accent-soft); padding: 1px 4px; border-radius: 3px; margin-left: 6px; font-family: var(--mono); text-transform: uppercase;">Inspecionar</span></td>
-                  <td style="padding: 16px 24px; text-align:center; color: var(--fg-muted);">110 torneios</td>
+                  <td style="padding: 16px 24px; font-family: var(--sans); font-weight:600; font-size: 13.5px;">$1.10 Target stake <span style="font-size: 8px; color: var(--accent); border: 1px solid var(--accent-line); background: var(--accent-soft); padding: 1px 4px; border-radius: 3px; margin-left: 6px; font-family: var(--mono); text-transform: uppercase;">Inspect</span></td>
+                  <td style="padding: 16px 24px; text-align:center; color: var(--fg-muted);">110 tournaments</td>
                   <td style="padding: 16px 24px; text-align:center;">44 cashes (40.0%)</td>
                   <td style="padding: 16px 24px; text-align:center; color: var(--accent-2);">233.5%</td>
                   <td style="padding: 16px 24px; text-align:right; color: var(--accent-2);">+$282.65</td>
@@ -367,11 +367,11 @@
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--fg); margin-top: 4px;">24.5 / 19.8</div>
                       </div>
                       <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 10px; text-align: center;">
-                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">Freq. 3-bet</span>
+                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">3-bet freq.</span>
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--accent); margin-top: 4px;">9.4%</div>
                       </div>
                       <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 10px; text-align: center;">
-                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">C-bet no flop</span>
+                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">C-bet on flop</span>
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--accent-2); margin-top: 4px;">71.2%</div>
                       </div>
                       <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 10px; text-align: center;">
@@ -379,16 +379,16 @@
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--accent-2); margin-top: 4px;">94.2%</div>
                       </div>
                       <div style="padding-left: 10px;">
-                        <span class="kick" style="font-size: 8px; color: var(--accent); letter-spacing: 0.05em; display: block; text-transform: uppercase;">Insight do coach · Stake-alvo</span>
-                        <p style="font-size: 11px; line-height: 1.45; color: var(--fg-muted); margin: 4px 0 0 0; font-family: var(--sans); font-weight: 400;">Nível de stake estável. O jogador mostra disciplina posicional de elite e C-bet pós-flop equilibrado. Exploração: a frequência de squeeze 3-bet está ótima.</p>
+                        <span class="kick" style="font-size: 8px; color: var(--accent); letter-spacing: 0.05em; display: block; text-transform: uppercase;">Coach insight · Target stake</span>
+                        <p style="font-size: 11px; line-height: 1.45; color: var(--fg-muted); margin: 4px 0 0 0; font-family: var(--sans); font-weight: 400;">Stable stake level. The player shows elite positional discipline and balanced postflop C-betting. Exploit: squeeze 3-bet frequency is excellent.</p>
                       </div>
                     </div>
                   </td>
                 </tr>
 
                 <tr id="tier-row-shot" style="cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.01)'" onmouseout="this.style.background='none'">
-                  <td style="padding: 16px 24px; font-family: var(--sans); font-weight:600; font-size: 13.5px;">$2.20 Tentativa de subida <span style="font-size: 8px; color: var(--accent); border: 1px solid var(--accent-line); background: var(--accent-soft); padding: 1px 4px; border-radius: 3px; margin-left: 6px; font-family: var(--mono); text-transform: uppercase;">Inspecionar</span></td>
-                  <td style="padding: 16px 24px; text-align:center; color: var(--fg-muted);">20 torneios</td>
+                  <td style="padding: 16px 24px; font-family: var(--sans); font-weight:600; font-size: 13.5px;">$2.20 Shot-take <span style="font-size: 8px; color: var(--accent); border: 1px solid var(--accent-line); background: var(--accent-soft); padding: 1px 4px; border-radius: 3px; margin-left: 6px; font-family: var(--mono); text-transform: uppercase;">Inspect</span></td>
+                  <td style="padding: 16px 24px; text-align:center; color: var(--fg-muted);">20 tournaments</td>
                   <td style="padding: 16px 24px; text-align:center;">3 cashes (15.0%)</td>
                   <td style="padding: 16px 24px; text-align:center; color: var(--loss);">-40.9%</td>
                   <td style="padding: 16px 24px; text-align:right; color: var(--loss);">-$18.00</td>
@@ -401,11 +401,11 @@
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--fg); margin-top: 4px;">22.8 / 18.2</div>
                       </div>
                       <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 10px; text-align: center;">
-                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">Freq. 3-bet</span>
+                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">3-bet freq.</span>
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--accent); margin-top: 4px;">6.5%</div>
                       </div>
                       <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 10px; text-align: center;">
-                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">C-bet no flop</span>
+                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">C-bet on flop</span>
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--loss); margin-top: 4px;">54.0%</div>
                       </div>
                       <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 10px; text-align: center;">
@@ -413,8 +413,8 @@
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--warn); margin-top: 4px;">84.5%</div>
                       </div>
                       <div style="padding-left: 10px;">
-                        <span class="kick" style="font-size: 8px; color: var(--loss); letter-spacing: 0.05em; display: block; text-transform: uppercase;">Insight do coach · Tentativa de subida</span>
-                        <p style="font-size: 11px; line-height: 1.45; color: var(--fg-muted); margin: 4px 0 0 0; font-family: var(--sans); font-weight: 400;">Campos cheios de regs. Defesa de blinds insuficiente e baixo sucesso de C-bet no flop. Ajustes: reduza os tamanhos de abertura RFI e aperte os ranges pré-flop diante de raises de posições iniciais.</p>
+                        <span class="kick" style="font-size: 8px; color: var(--loss); letter-spacing: 0.05em; display: block; text-transform: uppercase;">Coach insight · Shot-take</span>
+                        <p style="font-size: 11px; line-height: 1.45; color: var(--fg-muted); margin: 4px 0 0 0; font-family: var(--sans); font-weight: 400;">Fields full of regs. Insufficient blind defense and low flop C-bet success. Adjustments: reduce RFI open sizes and tighten preflop ranges facing early-position raises.</p>
                       </div>
                     </div>
                   </td>
@@ -426,23 +426,23 @@
           <!-- Tournament Formats Breakdown Table -->
           <div class="card" style="padding:0; overflow:hidden;">
             <div style="padding: 16px 24px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.15); display:flex; justify-content:space-between; align-items:center;">
-              <span class="kick accent">Desempenho por formato</span>
-              <span class="kick" style="font-size:8.5px;">Agrupado por estrutura de jogo</span>
+              <span class="kick accent">Performance by format</span>
+              <span class="kick" style="font-size:8.5px;">Grouped by game structure</span>
             </div>
             <table style="width:100%; border-collapse: collapse; font-size: 12.5px; text-align: left;">
               <thead>
                 <tr style="border-b: 1px solid var(--border); font-family: var(--mono); font-size: 10px; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.1em; background: rgba(255,255,255,0.01);">
-                  <th style="padding: 14px 24px; font-weight:600;">Estrutura</th>
+                  <th style="padding: 14px 24px; font-weight:600;">Structure</th>
                   <th style="padding: 14px 24px; font-weight:600; text-align:center;">Volume</th>
                   <th style="padding: 14px 24px; font-weight:600; text-align:center;">ROI</th>
-                  <th style="padding: 14px 24px; font-weight:600; text-align:center;">Compliance GTO</th>
-                  <th style="padding: 14px 24px; font-weight:600; text-align:right;">Lucro líquido</th>
+                  <th style="padding: 14px 24px; font-weight:600; text-align:center;">GTO compliance</th>
+                  <th style="padding: 14px 24px; font-weight:600; text-align:right;">Net profit</th>
                 </tr>
               </thead>
               <tbody style="font-family: var(--mono); font-weight: 700; color: var(--fg);">
                 <tr id="format-row-bounty" style="border-bottom: 1px solid rgba(255,255,255,0.03); cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.01)'" onmouseout="this.style.background='none'">
-                  <td style="padding: 16px 24px; font-family: var(--sans); font-weight:600; font-size: 13.5px;">Bounty Knockout (PKO) <span style="font-size: 8px; color: var(--accent); border: 1px solid var(--accent-line); background: var(--accent-soft); padding: 1px 4px; border-radius: 3px; margin-left: 6px; font-family: var(--mono); text-transform: uppercase;">Inspecionar</span></td>
-                  <td style="padding: 16px 24px; text-align:center; color: var(--fg-muted);">130 torneios</td>
+                  <td style="padding: 16px 24px; font-family: var(--sans); font-weight:600; font-size: 13.5px;">Bounty Knockout (PKO) <span style="font-size: 8px; color: var(--accent); border: 1px solid var(--accent-line); background: var(--accent-soft); padding: 1px 4px; border-radius: 3px; margin-left: 6px; font-family: var(--mono); text-transform: uppercase;">Inspect</span></td>
+                  <td style="padding: 16px 24px; text-align:center; color: var(--fg-muted);">130 tournaments</td>
                   <td style="padding: 16px 24px; text-align:center; color: var(--accent-2);">165.2%</td>
                   <td style="padding: 16px 24px; text-align:center; color: var(--accent-2);">88.4%</td>
                   <td style="padding: 16px 24px; text-align:right; color: var(--accent-2);">+$236.40</td>
@@ -459,24 +459,24 @@
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--accent); margin-top: 4px;">12.4%</div>
                       </div>
                       <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 10px; text-align: center;">
-                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">C-bet no flop</span>
+                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">C-bet on flop</span>
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--accent-2); margin-top: 4px;">74.5%</div>
                       </div>
                       <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 10px; text-align: center;">
-                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">Lucro de bounty</span>
+                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">Bounty profit</span>
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--accent-2); margin-top: 4px;">+$184.00</div>
                       </div>
                       <div style="padding-left: 10px;">
-                        <span class="kick" style="font-size: 8px; color: var(--accent); letter-spacing: 0.05em; display: block; text-transform: uppercase;">Insight do coach · PKO</span>
-                        <p style="font-size: 11px; line-height: 1.45; color: var(--fg-muted); margin: 4px 0 0 0; font-family: var(--sans); font-weight: 400;">Alta compliance em bounty. Jogou de forma agressiva em spots de KO nas primeiras streets. Nota: mantenha thresholds de call largos contra all-ins de stacks curtos para capturar bounties.</p>
+                        <span class="kick" style="font-size: 8px; color: var(--accent); letter-spacing: 0.05em; display: block; text-transform: uppercase;">Coach insight · PKO</span>
+                        <p style="font-size: 11px; line-height: 1.45; color: var(--fg-muted); margin: 4px 0 0 0; font-family: var(--sans); font-weight: 400;">High bounty compliance. Played aggressively in KO spots on the early streets. Note: keep call thresholds wide against short-stack all-ins to capture bounties.</p>
                       </div>
                     </div>
                   </td>
                 </tr>
 
                 <tr id="format-row-deepstack" style="border-bottom: 1px solid rgba(255,255,255,0.03); cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.01)'" onmouseout="this.style.background='none'">
-                  <td style="padding: 16px 24px; font-family: var(--sans); font-weight:600; font-size: 13.5px;">Deepstack acelerado <span style="font-size: 8px; color: var(--accent); border: 1px solid var(--accent-line); background: var(--accent-soft); padding: 1px 4px; border-radius: 3px; margin-left: 6px; font-family: var(--mono); text-transform: uppercase;">Inspecionar</span></td>
-                  <td style="padding: 16px 24px; text-align:center; color: var(--fg-muted);">70 torneios</td>
+                  <td style="padding: 16px 24px; font-family: var(--sans); font-weight:600; font-size: 13.5px;">Accelerated Deepstack <span style="font-size: 8px; color: var(--accent); border: 1px solid var(--accent-line); background: var(--accent-soft); padding: 1px 4px; border-radius: 3px; margin-left: 6px; font-family: var(--mono); text-transform: uppercase;">Inspect</span></td>
+                  <td style="padding: 16px 24px; text-align:center; color: var(--fg-muted);">70 tournaments</td>
                   <td style="padding: 16px 24px; text-align:center; color: var(--accent-2);">128.4%</td>
                   <td style="padding: 16px 24px; text-align:center; color: var(--accent-2);">90.1%</td>
                   <td style="padding: 16px 24px; text-align:right; color: var(--accent-2);">+$132.80</td>
@@ -489,28 +489,28 @@
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--fg); margin-top: 4px;">22.4 / 17.5</div>
                       </div>
                       <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 10px; text-align: center;">
-                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">Freq. 3-bet</span>
+                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">3-bet freq.</span>
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--accent); margin-top: 4px;">7.8%</div>
                       </div>
                       <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 10px; text-align: center;">
-                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">C-bet no flop</span>
+                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">C-bet on flop</span>
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--accent-2); margin-top: 4px;">69.0%</div>
                       </div>
                       <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 10px; text-align: center;">
-                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">Ganho no showdown</span>
+                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">Showdown win</span>
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--accent-2); margin-top: 4px;">56.8%</div>
                       </div>
                       <div style="padding-left: 10px;">
-                        <span class="kick" style="font-size: 8px; color: var(--accent); letter-spacing: 0.05em; display: block; text-transform: uppercase;">Insight do coach · Deepstack</span>
-                        <p style="font-size: 11px; line-height: 1.45; color: var(--fg-muted); margin: 4px 0 0 0; font-family: var(--sans); font-weight: 400;">Excelente disciplina com stacks profundos. Evite linhas de blefe de baixa equity no turn; o dimensionamento de value-bet está bem calibrado.</p>
+                        <span class="kick" style="font-size: 8px; color: var(--accent); letter-spacing: 0.05em; display: block; text-transform: uppercase;">Coach insight · Deepstack</span>
+                        <p style="font-size: 11px; line-height: 1.45; color: var(--fg-muted); margin: 4px 0 0 0; font-family: var(--sans); font-weight: 400;">Excellent deep-stack discipline. Avoid low-equity bluff lines on the turn; value-bet sizing is well calibrated.</p>
                       </div>
                     </div>
                   </td>
                 </tr>
 
                 <tr id="format-row-turbo" style="border-bottom: 1px solid rgba(255,255,255,0.03); cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.01)'" onmouseout="this.style.background='none'">
-                  <td style="padding: 16px 24px; font-family: var(--sans); font-weight:600; font-size: 13.5px;">Estruturas Turbo Rebuy <span style="font-size: 8px; color: var(--accent); border: 1px solid var(--accent-line); background: var(--accent-soft); padding: 1px 4px; border-radius: 3px; margin-left: 6px; font-family: var(--mono); text-transform: uppercase;">Inspecionar</span></td>
-                  <td style="padding: 16px 24px; text-align:center; color: var(--fg-muted);">35 torneios</td>
+                  <td style="padding: 16px 24px; font-family: var(--sans); font-weight:600; font-size: 13.5px;">Turbo Rebuy structures <span style="font-size: 8px; color: var(--accent); border: 1px solid var(--accent-line); background: var(--accent-soft); padding: 1px 4px; border-radius: 3px; margin-left: 6px; font-family: var(--mono); text-transform: uppercase;">Inspect</span></td>
+                  <td style="padding: 16px 24px; text-align:center; color: var(--fg-muted);">35 tournaments</td>
                   <td style="padding: 16px 24px; text-align:center; color: var(--accent-2);">84.2%</td>
                   <td style="padding: 16px 24px; text-align:center; color: var(--warn);">82.0%</td>
                   <td style="padding: 16px 24px; text-align:right; color: var(--accent-2);">+$32.50</td>
@@ -523,11 +523,11 @@
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--fg); margin-top: 4px;">32.0 / 26.5</div>
                       </div>
                       <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 10px; text-align: center;">
-                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">Freq. 3-bet</span>
+                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">3-bet freq.</span>
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--accent); margin-top: 4px;">14.2%</div>
                       </div>
                       <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 10px; text-align: center;">
-                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">C-bet no flop</span>
+                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">C-bet on flop</span>
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--warn); margin-top: 4px;">52.4%</div>
                       </div>
                       <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 10px; text-align: center;">
@@ -535,16 +535,16 @@
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--warn); margin-top: 4px;">82.0%</div>
                       </div>
                       <div style="padding-left: 10px;">
-                        <span class="kick" style="font-size: 8px; color: var(--accent); letter-spacing: 0.05em; display: block; text-transform: uppercase;">Insight do coach · Turbo</span>
-                        <p style="font-size: 11px; line-height: 1.45; color: var(--fg-muted); margin: 4px 0 0 0; font-family: var(--sans); font-weight: 400;">Desvios na fase de push/fold agressiva. Dando fold no topo do range no SB vs raises do BTN. Realinhe com as tabelas de push de 10bb.</p>
+                        <span class="kick" style="font-size: 8px; color: var(--accent); letter-spacing: 0.05em; display: block; text-transform: uppercase;">Coach insight · Turbo</span>
+                        <p style="font-size: 11px; line-height: 1.45; color: var(--fg-muted); margin: 4px 0 0 0; font-family: var(--sans); font-weight: 400;">Deviations in the aggressive push/fold phase. Folding the top of the range in the SB vs BTN raises. Realign with the 10bb push charts.</p>
                       </div>
                     </div>
                   </td>
                 </tr>
 
                 <tr id="format-row-hyper" style="cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.01)'" onmouseout="this.style.background='none'">
-                  <td style="padding: 16px 24px; font-family: var(--sans); font-weight:600; font-size: 13.5px;">Satélite Hyper Turbo <span style="font-size: 8px; color: var(--accent); border: 1px solid var(--accent-line); background: var(--accent-soft); padding: 1px 4px; border-radius: 3px; margin-left: 6px; font-family: var(--mono); text-transform: uppercase;">Inspecionar</span></td>
-                  <td style="padding: 16px 24px; text-align:center; color: var(--fg-muted);">15 torneios</td>
+                  <td style="padding: 16px 24px; font-family: var(--sans); font-weight:600; font-size: 13.5px;">Hyper Turbo satellite <span style="font-size: 8px; color: var(--accent); border: 1px solid var(--accent-line); background: var(--accent-soft); padding: 1px 4px; border-radius: 3px; margin-left: 6px; font-family: var(--mono); text-transform: uppercase;">Inspect</span></td>
+                  <td style="padding: 16px 24px; text-align:center; color: var(--fg-muted);">15 tournaments</td>
                   <td style="padding: 16px 24px; text-align:center; color: var(--loss);">-35.4%</td>
                   <td style="padding: 16px 24px; text-align:center; color: var(--loss);">76.5%</td>
                   <td style="padding: 16px 24px; text-align:right; color: var(--loss);">-$12.85</td>
@@ -557,11 +557,11 @@
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--fg); margin-top: 4px;">34.5 / 29.0</div>
                       </div>
                       <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 10px; text-align: center;">
-                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">Freq. 3-bet</span>
+                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">3-bet freq.</span>
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--accent); margin-top: 4px;">18.5%</div>
                       </div>
                       <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 10px; text-align: center;">
-                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">C-bet no flop</span>
+                        <span class="kick" style="font-size: 7px; color: var(--fg-muted);">C-bet on flop</span>
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--loss); margin-top: 4px;">45.2%</div>
                       </div>
                       <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 10px; text-align: center;">
@@ -569,8 +569,8 @@
                         <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--loss); margin-top: 4px;">76.5%</div>
                       </div>
                       <div style="padding-left: 10px;">
-                        <span class="kick" style="font-size: 8px; color: var(--loss); letter-spacing: 0.05em; display: block; text-transform: uppercase;">Insight do coach · Hyper</span>
-                        <p style="font-size: 11px; line-height: 1.45; color: var(--fg-muted); margin: 4px 0 0 0; font-family: var(--sans); font-weight: 400;">Alargamento severo do range GTO devido à pressão dos blinds. Evite dar call em excesso a shoves com mãos marginais (ex.: A5o, K9o) em situações de bolha.</p>
+                        <span class="kick" style="font-size: 8px; color: var(--loss); letter-spacing: 0.05em; display: block; text-transform: uppercase;">Coach insight · Hyper</span>
+                        <p style="font-size: 11px; line-height: 1.45; color: var(--fg-muted); margin: 4px 0 0 0; font-family: var(--sans); font-weight: 400;">Severe widening of the GTO range due to blind pressure. Avoid over-calling shoves with marginal hands (e.g. A5o, K9o) in bubble situations.</p>
                       </div>
                     </div>
                   </td>
@@ -590,8 +590,8 @@
             <!-- Global Predators -->
             <div class="card" style="padding: 0; overflow: hidden; border-color: var(--loss-line);">
               <div style="padding: 16px 20px; border-bottom: 1px solid var(--loss-line); background: var(--loss-soft); display: flex; justify-content: space-between; align-items: center; color: var(--loss);">
-                <span class="kick loss" style="font-weight:700;">Predadores · nêmeses</span>
-                <span class="kick" style="font-size: 8px; color: var(--loss);">Mais BB ganhos do herói</span>
+                <span class="kick loss" style="font-weight:700;">Predators · nemeses</span>
+                <span class="kick" style="font-size: 8px; color: var(--loss);">Most BB won off the hero</span>
               </div>
               <div style="padding: 20px; display: flex; flex-direction: column; gap: 10px;" id="career-predators-list">
                 <!-- Programmatically populated in career.js -->
@@ -601,8 +601,8 @@
             <!-- Global Prey -->
             <div class="card" style="padding: 0; overflow: hidden; border-color: var(--accent-line);">
               <div style="padding: 16px 20px; border-bottom: 1px solid var(--accent-line); background: var(--accent-soft); display: flex; justify-content: space-between; align-items: center; color: var(--accent-2);">
-                <span class="kick accent" style="font-weight:700;">Presas · vítimas</span>
-                <span class="kick" style="font-size: 8px; color: var(--accent-2);">Mais BB ganhos pelo herói</span>
+                <span class="kick accent" style="font-weight:700;">Prey · victims</span>
+                <span class="kick" style="font-size: 8px; color: var(--accent-2);">Most BB won by the hero</span>
               </div>
               <div style="padding: 20px; display: flex; flex-direction: column; gap: 10px;" id="career-prey-list">
                 <!-- Programmatically populated in career.js -->
@@ -613,8 +613,8 @@
           <!-- Opponent Overlap -->
           <div class="card" style="padding: 0; overflow: hidden;">
             <div style="padding: 16px 24px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.15); display: flex; justify-content: space-between; align-items: center;">
-              <span class="kick accent">Adversários mais recorrentes</span>
-              <span class="kick" style="font-size: 8px;">Mais mãos jogadas contra</span>
+              <span class="kick accent">Most recurring opponents</span>
+              <span class="kick" style="font-size: 8px;">Most hands played against</span>
             </div>
             <div style="padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px;" id="career-overlap-grid">
               <!-- Programmatically populated in career.js -->
@@ -628,20 +628,20 @@
       <div class="career-tab-content" id="career-tab-hands-content" style="display: none;">
         <div class="card" style="padding: 0; overflow: hidden;">
           <div style="padding: 16px 24px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.15); display: flex; justify-content: space-between; align-items: center;">
-            <span class="kick accent">Mãos de alto impacto</span>
-            <span class="kick" style="font-size: 8.5px;">Top 10 mãos por delta de big blind</span>
+            <span class="kick accent">High-impact hands</span>
+            <span class="kick" style="font-size: 8.5px;">Top 10 hands by big-blind delta</span>
           </div>
           <table class="hands-table" style="width: 100%; border-collapse: collapse; text-align: left;">
             <thead>
               <tr style="border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 10px; color: var(--fg-muted); text-transform: uppercase; background: rgba(255,255,255,0.01);">
                 <th style="padding: 12px 24px;">Rank</th>
-                <th style="padding: 12px 24px;">Cartas</th>
-                <th style="padding: 12px 24px; text-align:center;">Posição</th>
-                <th style="padding: 12px 24px; text-align:center;">Cenário</th>
+                <th style="padding: 12px 24px;">Cards</th>
+                <th style="padding: 12px 24px; text-align:center;">Position</th>
+                <th style="padding: 12px 24px; text-align:center;">Scenario</th>
                 <th style="padding: 12px 24px; text-align:center;">Stack</th>
-                <th style="padding: 12px 24px; text-align:center;">Compliance GTO</th>
-                <th style="padding: 12px 24px; text-align:right;">Lucro/Perda (BB)</th>
-                <th style="padding: 12px 24px; text-align:center;">Ação</th>
+                <th style="padding: 12px 24px; text-align:center;">GTO compliance</th>
+                <th style="padding: 12px 24px; text-align:right;">Profit/Loss (BB)</th>
+                <th style="padding: 12px 24px; text-align:center;">Action</th>
               </tr>
             </thead>
             <tbody id="career-hands-body" style="font-family: var(--mono); font-weight: 700; color: var(--fg);">
