@@ -3,8 +3,8 @@
 import gsap from 'gsap';
 import { state } from '../state.js';
 
-const DAYS = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
-const DAYS_FULL = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const DAYS_FULL = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const MONTHS = ['nov', 'dez', 'jan', 'fev', 'mar', 'abr', 'mai', 'jun'];
 const WEEKS = 35;
 
@@ -56,8 +56,8 @@ function rowMarkup(s) {
     <div class="timeline-row-editorial" data-drawer="drawer-${s.num}">
       <div class="timeline-date-block">${s.date}<div class="timeline-date-sub">${s.time}</div></div>
       <div class="timeline-title-block">
-        <div class="editorial-title">Sessão #${s.num}</div>
-        <div class="editorial-desc">${s.hands.toLocaleString('pt-BR')} mãos · ${s.tournaments} torneios</div>
+        <div class="editorial-title">Session #${s.num}</div>
+        <div class="editorial-desc">${s.hands.toLocaleString('en-US')} hands · ${s.tournaments} tournaments</div>
       </div>
       <div class="timeline-val-block">$${s.buyIns.toFixed(2)}</div>
       <div class="timeline-val-block ${bbCls}">${bbStr}</div>
@@ -67,7 +67,7 @@ function rowMarkup(s) {
 
 function deltaPill(s, prev) {
   if (!prev) {
-    return `<span class="delta-pill flat">primeira sessão registrada</span>`;
+    return `<span class="delta-pill flat">first recorded session</span>`;
   }
   const d = s.bb100 - prev.bb100;
   const cls = d > 0 ? 'up' : d < 0 ? 'down' : 'flat';
@@ -82,35 +82,35 @@ function drawerMarkup(s, prev) {
   const amtColor = lost ? 'var(--loss)' : 'var(--accent-2)';
   const amtStr = `${s.nemesisLoss > 0 ? '+' : ''}${s.nemesisLoss.toFixed(0)}bb`;
   const nemesisLine = lost
-    ? `Tirou <span style="color:${amtColor}; font-weight:700;">${amtStr}</span> de você nesta sessão.`
-    : `Você lucrou <span style="color:${amtColor}; font-weight:700;">${amtStr}</span> contra este jogador.`;
+    ? `Took <span style="color:${amtColor}; font-weight:700;">${amtStr}</span> off you this session.`
+    : `You profited <span style="color:${amtColor}; font-weight:700;">${amtStr}</span> against this player.`;
 
   const insightColor = s.compliance >= 85 ? 'var(--accent)' : 'var(--loss)';
-  const insightHead = s.compliance >= 85 ? 'Boa disciplina.' : 'Compliance baixa.';
+  const insightHead = s.compliance >= 85 ? 'Good discipline.' : 'Low compliance.';
 
   return `
     <div class="editorial-expand-panel" id="drawer-${s.num}">
       <div style="padding: 0 24px;">${deltaPill(s, prev)}</div>
       <div class="expanded-card-grid">
         <div class="session-card">
-          <h4>Nêmesis da sessão</h4>
+          <h4>Session nemesis</h4>
           <p class="mon-number" style="font-size:22px; margin:0;">${s.nemesis}</p>
           <p style="font-size:11.5px; color:var(--fg-muted); margin:8px 0 0;">${nemesisLine}</p>
         </div>
         <div class="session-card">
-          <h4>Índices de consistência</h4>
+          <h4>Consistency indices</h4>
           ${bar('C-bet total', s.cbet, '')}
           ${bar('C-bet HU', s.cbetHu, 'blue')}
           ${bar('WTSD', s.wtsd, 'amber')}
         </div>
         <div class="session-card">
-          <h4>Inteligência da sessão</h4>
+          <h4>Session intelligence</h4>
           <p style="font-size:12px; line-height:1.5; color:var(--fg-muted); margin:0;">
             <span style="color:${insightColor}; font-weight:700;">${insightHead}</span> ${s.insight}
           </p>
         </div>
         <div class="session-card chart-card">
-          <h4>Progressão acumulada de bb</h4>
+          <h4>Cumulative bb progression</h4>
           <div class="mini-chart-container" style="height: 100px; position: relative; margin-top: 10px;">
             <svg class="mini-trend-svg" id="mini-trend-${s.num}" width="100%" height="100%" viewBox="0 0 200 100" preserveAspectRatio="none">
               <defs>
@@ -295,7 +295,7 @@ function buildCalendar() {
     const sign = net > 0 ? 'pos' : net < 0 ? 'neg' : '';
     const netStr = net === 0 ? 'zero' : (net > 0 ? '+' : '−') + '$' + Math.abs(net).toFixed(2);
     tip.innerHTML = `<div><span class="net ${sign}">${netStr}</span> · ${cell.dataset.dayFull}, ${cell.dataset.date}</div>`
-      + `<div class="meta">${cell.dataset.tourneys} torneios · ${cell.dataset.itm}% ITM</div>`;
+      + `<div class="meta">${cell.dataset.tourneys} tournaments · ${cell.dataset.itm}% ITM</div>`;
     tip.classList.add('show');
   });
   grid.addEventListener('mousemove', (e) => {
@@ -324,13 +324,13 @@ function initExportModal() {
 
   function triggerExport(type) {
     currentExportType = type;
-    document.getElementById('export-modal-title').innerText = `Exportando o livro-razão (${type})`;
+    document.getElementById('export-modal-title').innerText = `Exporting the ledger (${type})`;
 
     successArea.style.display = 'none';
     progressArea.style.display = 'block';
     progressBar.style.width = '0%';
     pctText.innerText = '0%';
-    statusText.innerText = 'Iniciando sequência de compilação...';
+    statusText.innerText = 'Starting compilation sequence...';
     logsWindow.innerHTML = '';
 
     exportBackdrop.style.display = 'flex';
@@ -338,14 +338,14 @@ function initExportModal() {
     let progress = 0;
     const totalHands = state.sessions.reduce((acc, s) => acc + s.hands, 0);
     const logMessages = [
-      { pct: 5, msg: 'Iniciando sequência de compilação...' },
-      { pct: 15, msg: `Carregando histórico de sessões (${state.sessions.length} sessões ativas)...` },
-      { pct: 28, msg: `Coletando telemetria do histórico de mãos (${totalHands.toLocaleString('pt-BR')} mãos)...` },
-      { pct: 45, msg: `Convertendo registros para o buffer no formato ${type}...` },
-      { pct: 60, msg: 'Validando métricas de compliance de abertura GTO...' },
-      { pct: 78, msg: 'Calculando deltas de bb e win rates por posição...' },
-      { pct: 90, msg: 'Comprimindo e validando a integridade do arquivo...' },
-      { pct: 100, msg: `Compilação concluída. Livro-razão pronto: ledger.${type.toLowerCase()}` }
+      { pct: 5, msg: 'Starting compilation sequence...' },
+      { pct: 15, msg: `Loading session history (${state.sessions.length} active sessions)...` },
+      { pct: 28, msg: `Collecting hand-history telemetry (${totalHands.toLocaleString('en-US')} hands)...` },
+      { pct: 45, msg: `Converting records to the ${type} buffer...` },
+      { pct: 60, msg: 'Validating GTO open-compliance metrics...' },
+      { pct: 78, msg: 'Computing bb deltas and win rates by position...' },
+      { pct: 90, msg: 'Compressing and validating file integrity...' },
+      { pct: 100, msg: `Compilation complete. Ledger ready: ledger.${type.toLowerCase()}` }
     ];
 
     let currentLogIndex = 0;

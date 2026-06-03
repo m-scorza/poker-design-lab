@@ -3,13 +3,13 @@
       <!-- Session Activity Calendar Heatmap -->
       <div class="card" style="margin-bottom: 24px; padding: 20px 24px;">
         <div class="cal-h">
-          <span class="kick accent">Calendário de frequência & volume</span>
-          <span class="note">densidade = volume · cor = resultado líquido</span>
+          <span class="kick accent">Frequency & volume calendar</span>
+          <span class="note">density = volume · color = net result</span>
           <div class="legend">
             <span class="sw"><i style="background: color-mix(in srgb, var(--loss) 70%, transparent);"></i>−$5+</span>
-            <span class="sw"><i style="background: color-mix(in srgb, var(--loss) 20%, transparent);"></i>perda</span>
+            <span class="sw"><i style="background: color-mix(in srgb, var(--loss) 20%, transparent);"></i>loss</span>
             <span class="sw"><i class="cal-cell flat" style="position:static;"></i>zero</span>
-            <span class="sw"><i style="background: color-mix(in srgb, var(--accent) 38%, transparent);"></i>ganho</span>
+            <span class="sw"><i style="background: color-mix(in srgb, var(--accent) 38%, transparent);"></i>gain</span>
             <span class="sw"><i style="background: color-mix(in srgb, var(--accent) 88%, transparent);"></i>+$5+</span>
           </div>
         </div>
@@ -21,15 +21,15 @@
       <!-- Action Strip & Table -->
       <div class="card" style="padding:0; overflow:hidden;">
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.15);">
-          <span class="kick">Histórico de sessões · linha do tempo de volume</span>
+          <span class="kick">Session history · volume timeline</span>
           <div style="display: flex; gap: 8px;">
-            <button class="stat-trigger" style="padding: 4px 10px; font-size: 10.5px; font-family: var(--mono); cursor: pointer;" id="btn-export-csv">Exportar CSV</button>
-            <button class="stat-trigger" style="padding: 4px 10px; font-size: 10.5px; font-family: var(--mono); cursor: pointer;" id="btn-export-pdf">Exportar PDF</button>
+            <button class="stat-trigger" style="padding: 4px 10px; font-size: 10.5px; font-family: var(--mono); cursor: pointer;" id="btn-export-csv">Export CSV</button>
+            <button class="stat-trigger" style="padding: 4px 10px; font-size: 10.5px; font-family: var(--mono); cursor: pointer;" id="btn-export-pdf">Export PDF</button>
           </div>
         </div>
 
         <div class="timeline-row-editorial" style="background:rgba(0,0,0,0.2); font-family:var(--mono); font-size:10px; text-transform:uppercase; color:var(--fg-muted); cursor:default; border-bottom-width:2px; pointer-events: none;">
-          <span>Data</span><span>Detalhes da sessão</span><span>Buy-ins</span><span>bb/100</span><span>Compliance GTO</span>
+          <span>Date</span><span>Session details</span><span>Buy-ins</span><span>bb/100</span><span>GTO compliance</span>
         </div>
 
         <!-- Rows + drawers rendered from state.sessions by sessions.js -->
@@ -41,13 +41,13 @@
       <div class="replay-modal-backdrop" id="export-backdrop" style="display: none; align-items: center; justify-content: center; z-index: 10000;">
         <div class="replay-modal" style="max-width: 450px; width: 90%;">
           <div class="replay-modal-header">
-            <span class="kick accent" id="export-modal-title">Exportando o livro-razão</span>
+            <span class="kick accent" id="export-modal-title">Exporting the ledger</span>
             <button class="replay-modal-close" id="btn-close-export">&times;</button>
           </div>
           <div style="padding: 24px;">
             <div class="export-progress-container" id="export-progress-area" style="margin-bottom: 20px;">
               <div class="session-bar-lbl" style="margin-bottom: 8px;">
-                <span id="export-status-text" style="font-family: var(--mono); color: var(--accent);">Compilando o histórico de mãos...</span>
+                <span id="export-status-text" style="font-family: var(--mono); color: var(--accent);">Compiling the hand history...</span>
                 <span id="export-pct" style="font-family: var(--mono);">0%</span>
               </div>
               <div class="session-bar-track" style="height: 6px;">
@@ -61,8 +61,8 @@
 
             <div id="export-success-msg" style="display: none; text-align: center; margin-top: 10px;">
               <div style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; color: var(--accent); font-size: 24px;">✓</div>
-              <p style="font-size: 13px; color: var(--fg-muted); margin: 0;">O arquivo do livro-razão está pronto para download.</p>
-              <button class="btn-reset-db" id="btn-download-file" style="margin-top: 15px; width: 100%; border: 1px solid var(--accent); background: var(--accent-soft); color: var(--accent); font-family: var(--mono); font-size: 11px; padding: 8px; cursor: pointer; text-transform: uppercase;">Baixar arquivo</button>
+              <p style="font-size: 13px; color: var(--fg-muted); margin: 0;">The ledger file is ready to download.</p>
+              <button class="btn-reset-db" id="btn-download-file" style="margin-top: 15px; width: 100%; border: 1px solid var(--accent); background: var(--accent-soft); color: var(--accent); font-family: var(--mono); font-size: 11px; padding: 8px; cursor: pointer; text-transform: uppercase;">Download file</button>
             </div>
           </div>
         </div>
