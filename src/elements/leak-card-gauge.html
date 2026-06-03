@@ -65,7 +65,7 @@
     .gauge .fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; background: var(--sev); width: 0; transition: width 0.9s cubic-bezier(0.22,1,0.36,1); }
     /* the target marker tick */
     .gauge .mark { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--fg); opacity: 0.55; border-radius: 1px; }
-    .gauge .mark::after { content: 'alvo'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 8px; letter-spacing: 0.05em; color: var(--fg-4); }
+    .gauge .mark::after { content: 'target'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 8px; letter-spacing: 0.05em; color: var(--fg-4); }
 
     .leak .foot { display: flex; align-items: center; gap: 12px; margin-top: 2px; }
     .leak .cost { font-family: var(--mono); font-size: 11px; color: var(--fg-3); }
@@ -91,19 +91,19 @@
       // dir: 'low' = lower-is-better (value above target is bad), 'high' = higher-is-better.
       // pos = where the marker/fill sit on the 0..max track.
       const LEAKS = [
-        { name: 'Limping', scen: 'pré-flop · fora da BB', sev: 'high', dir: 'low',
+        { name: 'Limping', scen: 'preflop · outside the BB', sev: 'high', dir: 'low',
           cur: 4.2, target: 0, max: 8, unit: '%', cost: 3.1, trend: 'down', delta: '+1.4pts',
           spark: '4,22 18,18 30,19 42,14 54,16 66,10 86,6' },
-        { name: 'C-bet HU baixo', scen: 'flop · PFR heads-up', sev: 'high', dir: 'high',
+        { name: 'Low HU C-bet', scen: 'flop · heads-up PFR', sev: 'high', dir: 'high',
           cur: 71, target: 100, max: 100, unit: '%', cost: 2.6, trend: 'up', delta: '+6pts',
           spark: '4,20 18,17 30,18 42,12 54,11 66,8 86,5' },
-        { name: 'WTSD alto', scen: 'showdown · global', sev: 'med', dir: 'low',
+        { name: 'High WTSD', scen: 'showdown · global', sev: 'med', dir: 'low',
           cur: 38.5, target: 35, max: 50, unit: '%', cost: 1.4, trend: 'down', delta: '+0.9pts',
           spark: '4,8 18,9 30,7 42,11 54,10 66,13 86,15' },
-        { name: 'Overfold CO', scen: 'pré-flop · compliance', sev: 'med', dir: 'high',
+        { name: 'Overfold CO', scen: 'preflop · compliance', sev: 'med', dir: 'high',
           cur: 86.2, target: 90, max: 100, unit: '%', cost: 1.1, trend: 'up', delta: '+3.0pts',
           spark: '4,18 18,16 30,15 42,12 54,13 66,9 86,7' },
-        { name: 'Cold-call', scen: 'pré-flop · MP/HJ/CO', sev: 'low', dir: 'low',
+        { name: 'Cold-call', scen: 'preflop · MP/HJ/CO', sev: 'low', dir: 'low',
           cur: 1.8, target: 0, max: 8, unit: '%', cost: 0.5, trend: 'up', delta: '-2.1pts',
           spark: '4,6 18,8 30,7 42,9 54,8 66,11 86,13' },
         { name: 'Missed c-bet', scen: 'flop · PFR check', sev: 'low', dir: 'low',
@@ -141,15 +141,15 @@
           card.innerHTML =
             '<div class="top">' +
               '<div><div class="name">' + k.name + '</div><div class="scen">' + k.scen + '</div></div>' +
-              '<span class="sev-pill">' + (k.sev === 'high' ? 'severidade alta' : k.sev === 'med' ? 'média' : 'baixa') + '</span>' +
+              '<span class="sev-pill">' + (k.sev === 'high' ? 'high severity' : k.sev === 'med' ? 'medium' : 'low') + '</span>' +
             '</div>' +
             '<div class="gauge">' +
               '<div class="vals"><span class="cur">' + curTxt + '</span>' +
-                '<span class="tgt">alvo ' + k.target + k.unit + (k.dir === 'low' ? ' ou menos' : '+') + '</span></div>' +
+                '<span class="tgt">target ' + k.target + k.unit + (k.dir === 'low' ? ' or less' : '+') + '</span></div>' +
               '<div class="track"><span class="fill"></span><span class="mark" style="left:' + markPct + '%;"></span></div>' +
             '</div>' +
             '<div class="foot">' +
-              '<span class="cost">custo <b>' + k.cost.toFixed(1) + ' bb/100</b></span>' +
+              '<span class="cost">cost <b>' + k.cost.toFixed(1) + ' bb/100</b></span>' +
               '<span class="trend ' + k.trend + '">' + (k.trend === 'up' ? '▲ ' : '▼ ') + k.delta + '</span>' +
               '<svg class="spark" viewBox="0 0 90 28" data-spark="' + k.spark + '"></svg>' +
             '</div>';

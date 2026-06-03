@@ -92,26 +92,26 @@
   </style>
 </head>
 <body>
-  <a class="back-link" href="../../elements.html">← Voltar ao catálogo</a>
+  <a class="back-link" href="../../elements.html">← Back to catalog</a>
   <div class="container">
-    <h1>Mapa de Severidade · Leak × Posição</h1>
-    <p class="sub">Grade de calor cruzando cada vazamento contra a posição — clique numa célula para focar.</p>
+    <h1>Severity Map · Leak × Position</h1>
+    <p class="sub">Heat grid crossing each leak against position — click a cell to focus.</p>
 
     <div class="card">
       <div class="hm-h">
-        <span class="hm-t">SEVERIDADE · LEAK × POSIÇÃO</span>
-        <span class="hm-sub">clique numa célula para detalhar</span>
+        <span class="hm-t">SEVERITY · LEAK × POSITION</span>
+        <span class="hm-sub">click a cell for details</span>
         <div class="hm-legend">
-          <span class="swatch"><span class="sw crit"></span>crítico</span>
-          <span class="swatch"><span class="sw high"></span>alto</span>
-          <span class="swatch"><span class="sw med"></span>médio</span>
+          <span class="swatch"><span class="sw crit"></span>critical</span>
+          <span class="swatch"><span class="sw high"></span>high</span>
+          <span class="swatch"><span class="sw med"></span>medium</span>
           <span class="swatch"><span class="sw ok"></span>—</span>
         </div>
       </div>
       <div class="hm-grid" id="grid"></div>
       <div class="hm-caption" id="caption">
         <span class="pin">◇</span>
-        <span>Passe o mouse e clique numa célula para isolar o vazamento por posição.</span>
+        <span>Hover and click a cell to isolate the leak by position.</span>
       </div>
     </div>
   </div>
@@ -120,16 +120,16 @@
     const COLS = ['UTG / MP', 'HJ', 'CO', 'BTN', 'SB', 'BB'];
     // null = empty cell; otherwise [severity, ev-lost-bb]
     const ROWS = [
-      { name: 'Defesa BB vs ~2.5x', cells: [null, null, ['crit', 8.4], ['high', 3.2], ['med', 1.4], null] },
+      { name: 'BB defense vs ~2.5x', cells: [null, null, ['crit', 8.4], ['high', 3.2], ['med', 1.4], null] },
       { name: '3-bet light',        cells: [['low', 0.8], null, ['med', 2.1], ['low', 1.2], ['high', 3.1], null] },
       { name: 'River over-bet',     cells: [null, ['med', 2.4], ['crit', 5.2], ['high', 1.8], null, null] },
-      { name: 'Steal baixa freq.',  cells: [null, ['low', 0.4], ['med', 1.2], ['high', 3.2], ['low', 0.3], null] },
+      { name: 'Low-freq steal',     cells: [null, ['low', 0.4], ['med', 1.2], ['high', 3.2], ['low', 0.3], null] },
       { name: 'Turn float bluff',   cells: [null, null, ['low', 0.6], ['med', 1.4], ['low', 0.6], null] },
-      { name: 'Banda push / fold',  cells: [['low', 0.2], ['low', 0.4], ['low', 0.5], ['med', 0.6], ['low', 0.2], ['low', 0.2]] },
+      { name: 'Push / fold band',   cells: [['low', 0.2], ['low', 0.4], ['low', 0.5], ['med', 0.6], ['low', 0.2], ['low', 0.2]] },
       { name: 'Stall ITM',          cells: [null, ['low', 0.3], ['low', 0.4], ['med', 0.5], null, ['low', 0.2]] },
-      { name: 'Limp re-iso pós-flop', cells: [['low', 0.8], ['med', 1.4], ['med', 1.2], ['med', 1.4], null, null] },
+      { name: 'Limp re-iso postflop', cells: [['low', 0.8], ['med', 1.4], ['med', 1.2], ['med', 1.4], null, null] },
     ];
-    const SEV_LABEL = { crit: 'crítico', high: 'alto', med: 'médio', low: 'baixo' };
+    const SEV_LABEL = { crit: 'critical', high: 'high', med: 'medium', low: 'low' };
 
     const grid = document.getElementById('grid');
     const caption = document.getElementById('caption');
@@ -158,7 +158,7 @@
     function select(el, rowName, colName, sev, amt) {
       grid.querySelectorAll('.hm-cell.sel').forEach(c => c.classList.remove('sel'));
       el.classList.add('sel');
-      caption.innerHTML = `<span class="pin">◆</span><span><b>${rowName}</b> · posição <b>${colName}</b> — severidade <b>${SEV_LABEL[sev]}</b></span><span class="amt">−${amt.toFixed(1)} bb/100</span>`;
+      caption.innerHTML = `<span class="pin">◆</span><span><b>${rowName}</b> · position <b>${colName}</b> — severity <b>${SEV_LABEL[sev]}</b></span><span class="amt">−${amt.toFixed(1)} bb/100</span>`;
     }
 
     function div(cls, text) {

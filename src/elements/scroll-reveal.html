@@ -58,43 +58,43 @@
   </style>
 </head>
 <body>
-  <a class="back-link" href="../../elements.html">← Voltar ao catálogo</a>
-  <div class="scroll-hint">role para revelar ↓</div>
+  <a class="back-link" href="../../elements.html">← Back to catalog</a>
+  <div class="scroll-hint">scroll to reveal ↓</div>
 
   <div class="container">
     <div class="lede">
-      <h1>Revelação<br>no scroll.</h1>
-      <p>Cada bloco entra com um fade-up escalonado conforme cruza o viewport — IntersectionObserver com stagger de 55&nbsp;ms por lote e failsafe anti-conteúdo-oculto.</p>
+      <h1>Reveal<br>on scroll.</h1>
+      <p>Each block enters with a staggered fade-up as it crosses the viewport — IntersectionObserver with a 55&nbsp;ms per-batch stagger and an anti-hidden-content failsafe.</p>
     </div>
 
     <div class="block reveal">
-      <div class="tag">001 · Premissa</div>
-      <h2>Conteúdo que respira ao entrar</h2>
-      <p>O observer dispara uma única vez por elemento. Quando a borda inferior cruza −8% do viewport, o bloco anima e deixa de ser observado — sem custo de scroll contínuo.</p>
+      <div class="tag">001 · Premise</div>
+      <h2>Content that breathes as it enters</h2>
+      <p>The observer fires once per element. When the bottom edge crosses −8% of the viewport, the block animates and stops being observed — no continuous scroll cost.</p>
     </div>
 
     <div class="stat-row">
-      <div class="stat reveal"><div class="v money">+$388</div><div class="l">Lucro</div></div>
+      <div class="stat reveal"><div class="v money">+$388</div><div class="l">Profit</div></div>
       <div class="stat reveal"><div class="v pos">141%</div><div class="l">ROI</div></div>
-      <div class="stat reveal"><div class="v">250</div><div class="l">Torneios</div></div>
+      <div class="stat reveal"><div class="v">250</div><div class="l">Tournaments</div></div>
     </div>
 
     <div class="block reveal">
       <div class="tag">002 · Stagger</div>
-      <h2>Lotes escalonados</h2>
-      <p>Elementos próximos herdam um <code>transition-delay</code> crescente (até 6 passos × 55&nbsp;ms), então um grupo que entra junto cascateia em vez de piscar de uma vez.</p>
+      <h2>Staggered batches</h2>
+      <p>Neighboring elements inherit a growing <code>transition-delay</code> (up to 6 steps × 55&nbsp;ms), so a group entering together cascades instead of flashing in all at once.</p>
     </div>
 
     <div class="block reveal">
-      <div class="tag">003 · Resiliência</div>
-      <h2>Nunca deixa nada escondido</h2>
-      <p>Respeita <code>prefers-reduced-motion</code> e, se o observer nunca disparar, um failsafe de 1,4&nbsp;s força todos os blocos a aparecerem. O conteúdo é sempre legível.</p>
+      <div class="tag">003 · Resilience</div>
+      <h2>Never leaves anything hidden</h2>
+      <p>It respects <code>prefers-reduced-motion</code> and, if the observer never fires, a 1.4&nbsp;s failsafe forces all blocks to appear. The content is always legible.</p>
     </div>
 
     <div class="block reveal">
-      <div class="tag">004 · Fim</div>
-      <h2>Pronto para coreografar</h2>
-      <p>Standalone porque o sandbox troca de página sem scroll — este brick é a base para timelines em parallax e histórias roladas (Locomotive / Noomo).</p>
+      <div class="tag">004 · End</div>
+      <h2>Ready to choreograph</h2>
+      <p>Standalone because the sandbox swaps pages without scrolling — this brick is the base for parallax timelines and scrolled stories (Locomotive / Noomo).</p>
     </div>
   </div>
 

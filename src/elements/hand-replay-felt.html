@@ -138,18 +138,18 @@
         <div class="felt"></div>
         <div class="center">
           <div class="board" id="board"></div>
-          <div class="pot" id="pot">pote <b>0</b></div>
-          <div class="street-tag" id="streetTag">pré-flop</div>
+          <div class="pot" id="pot">pot <b>0</b></div>
+          <div class="street-tag" id="streetTag">preflop</div>
         </div>
         <div class="dealer-btn" id="dbtn">D</div>
         <!-- seats injected -->
       </div>
       <div class="controls">
-        <button id="first" title="início">⏮</button>
-        <button id="prev" title="anterior">◀</button>
-        <button class="play" id="play" title="reproduzir">▶</button>
-        <button id="next" title="próximo">▶▏</button>
-        <button id="last" title="fim">⏭</button>
+        <button id="first" title="start">⏮</button>
+        <button id="prev" title="previous">◀</button>
+        <button class="play" id="play" title="play">▶</button>
+        <button id="next" title="next">▶▏</button>
+        <button id="last" title="end">⏭</button>
         <div class="scrub"><span class="prog" id="prog"></span></div>
         <span class="idx" id="idx">0 / 0</span>
       </div>
@@ -171,10 +171,10 @@
       // Each step is a snapshot delta. board = cards visible; acting = seat id; act = {seat,kind,text};
       // folded = set of seat ids folded so far; stacks override; reveal = hole cards to flip up.
       const STEPS = [
-        { street: 'pré-flop', board: [], pot: 130, acting: 'co', act: { seat: 'co', kind: 'fold', text: 'fold' }, folded: ['co'] },
-        { street: 'pré-flop', board: [], pot: 130, acting: 'btn', act: { seat: 'btn', kind: 'raise', text: 'raise 250' }, pot2: 380 },
-        { street: 'pré-flop', board: [], pot: 380, acting: 'sb', act: { seat: 'sb', kind: 'fold', text: 'fold' }, folded: ['co','sb'] },
-        { street: 'pré-flop', board: [], pot: 380, acting: 'bb', act: { seat: 'bb', kind: 'call', text: 'call 250' }, pot2: 530 },
+        { street: 'preflop', board: [], pot: 130, acting: 'co', act: { seat: 'co', kind: 'fold', text: 'fold' }, folded: ['co'] },
+        { street: 'preflop', board: [], pot: 130, acting: 'btn', act: { seat: 'btn', kind: 'raise', text: 'raise 250' }, pot2: 380 },
+        { street: 'preflop', board: [], pot: 380, acting: 'sb', act: { seat: 'sb', kind: 'fold', text: 'fold' }, folded: ['co','sb'] },
+        { street: 'preflop', board: [], pot: 380, acting: 'bb', act: { seat: 'bb', kind: 'call', text: 'call 250' }, pot2: 530 },
         { street: 'flop', board: ['Qh','7c','2d'], pot: 530, acting: 'bb', act: { seat: 'bb', kind: 'check', text: 'check' } },
         { street: 'flop', board: ['Qh','7c','2d'], pot: 530, acting: 'btn', act: { seat: 'btn', kind: 'bet', text: 'c-bet 175 (33%)' }, pot2: 705 },
         { street: 'flop', board: ['Qh','7c','2d'], pot: 705, acting: 'bb', act: { seat: 'bb', kind: 'call', text: 'call 175' }, pot2: 880 },
@@ -184,7 +184,7 @@
         { street: 'river', board: ['Qh','7c','2d','Jd','Th'], pot: 2040, acting: 'bb', act: { seat: 'bb', kind: 'check', text: 'check' } },
         { street: 'river', board: ['Qh','7c','2d','Jd','Th'], pot: 2040, acting: 'btn', act: { seat: 'btn', kind: 'bet', text: 'bet 1100 (Broadway)' }, pot2: 3140 },
         { street: 'river', board: ['Qh','7c','2d','Jd','Th'], pot: 3140, acting: 'bb', act: { seat: 'bb', kind: 'call', text: 'call 1100' }, pot2: 4240, reveal: { bb: ['Qs','Jc'] } },
-        { street: 'showdown', board: ['Qh','7c','2d','Jd','Th'], pot: 4240, acting: 'btn', act: { seat: 'btn', kind: 'bet', text: 'scorza23 vence — sequência ás-alto' }, reveal: { bb: ['Qs','Jc'] }, win: 'btn' },
+        { street: 'showdown', board: ['Qh','7c','2d','Jd','Th'], pot: 4240, acting: 'btn', act: { seat: 'btn', kind: 'bet', text: 'scorza23 wins — ace-high straight' }, reveal: { bb: ['Qs','Jc'] }, win: 'btn' },
       ];
 
       const SUIT = { s: { cls: 'spade', g: '♠' }, h: { cls: 'heart', g: '♥' }, d: { cls: 'diamond', g: '♦' }, c: { cls: 'club', g: '♣' } };
@@ -246,7 +246,7 @@
         st.board.forEach(c => boardEl.appendChild(cardEl(c, false)));
         // pot (use post-action pot2 if present)
         const potVal = st.pot2 != null ? st.pot2 : st.pot;
-        potEl.innerHTML = 'pote <b>' + potVal.toLocaleString('en-US') + '</b>';
+        potEl.innerHTML = 'pot <b>' + potVal.toLocaleString('en-US') + '</b>';
         streetTag.textContent = st.street;
         // folded + acting + action callouts
         const folded = new Set(st.folded || []);

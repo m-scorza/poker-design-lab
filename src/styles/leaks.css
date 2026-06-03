@@ -274,7 +274,7 @@
   .lg-track { position: relative; height: 7px; border-radius: 4px; background: rgba(255,255,255,0.05); overflow: visible; }
   .lg-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; background: var(--sev); width: 0; transition: width 0.9s cubic-bezier(0.22,1,0.36,1); }
   .lg-mark { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--fg); opacity: 0.55; border-radius: 1px; }
-  .lg-mark::after { content: 'alvo'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 8px; letter-spacing: 0.05em; color: var(--fg-dim); }
+  .lg-mark::after { content: 'target'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 8px; letter-spacing: 0.05em; color: var(--fg-dim); }
 
   .lg-foot { display: flex; align-items: center; gap: 12px; margin-top: 2px; }
   .lg-cost { font-family: var(--mono); font-size: 11px; color: var(--fg-muted); }
