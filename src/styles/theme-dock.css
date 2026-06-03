@@ -58,22 +58,23 @@
   background: var(--bg-card);
   border: 1px solid var(--border-strong);
   box-shadow: var(--shadow-card);
-  /* NO backdrop-filter while hidden: Chromium keeps compositing a blurred dark
-     region even at opacity:0/visibility:hidden, leaving a dark "blob" over every
-     page after the picker is closed. Apply the blur only while .open. */
-  backdrop-filter: none;
-  /* hidden until .open */
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(10px) scale(0.98);
   transform-origin: bottom right;
-  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  /* Fully removed from paint while closed. opacity:0/visibility:hidden was not
+     enough: the panel keeps a promoted compositing layer (it carries a dark
+     box-shadow + backdrop-filter), and Chromium goes on painting that dark
+     blurred region — the "shadow blob" that hovered over every page. display:none
+     guarantees zero paint/compositing, so there is no ghost to leak. */
+  display: none;
+  backdrop-filter: none;
 }
 .theme-dock.open .dock-panel {
-  opacity: 1;
-  visibility: visible;
+  display: block;
   backdrop-filter: blur(16px);
-  transform: translateY(0) scale(1);
+  animation: dock-panel-in 0.2s cubic-bezier(0.19, 1, 0.22, 1) both;
+}
+@keyframes dock-panel-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .dock-header {
