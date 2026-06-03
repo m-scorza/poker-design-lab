@@ -1,18 +1,18 @@
 <section class="page" id="page-ranges">
 
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
-        <h2 class="kick accent" style="margin:0;">Laboratório de ranges · teoria vs. realidade</h2>
+        <h2 class="kick accent" style="margin:0;">Range lab · theory vs. reality</h2>
         <div style="display:flex; gap: 8px; flex-wrap: wrap;">
           <!-- Scenario toggle -->
           <div class="ranges-tab-menu" id="ranges-scenario-selector" style="margin: 0;">
-            <button class="ranges-tab-btn active" data-scenario="rfi">Abertura RFI</button>
+            <button class="ranges-tab-btn active" data-scenario="rfi">RFI open</button>
             <button class="ranges-tab-btn" data-scenario="pushfold">Push/Fold (10bb)</button>
           </div>
           <!-- View mode toggle -->
           <div class="ranges-tab-menu" id="ranges-mode-selector" style="margin: 0;">
-            <button class="ranges-tab-btn active" data-mode="oracle">Oráculo (GTO)</button>
-            <button class="ranges-tab-btn" data-mode="mirror">Espelho</button>
-            <button class="ranges-tab-btn" data-mode="edit">Editar</button>
+            <button class="ranges-tab-btn active" data-mode="oracle">Oracle (GTO)</button>
+            <button class="ranges-tab-btn" data-mode="mirror">Mirror</button>
+            <button class="ranges-tab-btn" data-mode="edit">Edit</button>
           </div>
         </div>
       </div>
@@ -25,8 +25,8 @@
           </div>
 
           <div class="rg-matrix-head">
-            <span class="rg-matrix-mode-lbl" id="ranges-mode-label">O Oráculo · range teórico GTO</span>
-            <span class="rg-matrix-spot" id="ranges-spot-label">ABERTURA BTN · 100bb</span>
+            <span class="rg-matrix-mode-lbl" id="ranges-mode-label">The Oracle · theoretical GTO range</span>
+            <span class="rg-matrix-spot" id="ranges-spot-label">BTN OPEN · 100bb</span>
           </div>
 
           <div class="matrix-grid-box rg-grid" id="ranges-matrix-grid" style="max-width: 460px; margin: 0 auto;">
@@ -40,7 +40,7 @@
             <div style="display: flex; align-items: center; gap: 14px;">
               <div style="display: flex; align-items: center; gap: 6px;">
                 <input type="checkbox" id="toggle-deviations" checked style="cursor: pointer; width: 14px; height: 14px; accent-color: var(--accent);"/>
-                <label for="toggle-deviations" style="font-family: var(--mono); font-size: 10px; text-transform: uppercase; cursor: pointer; color: var(--fg-muted);">Marcar desvios</label>
+                <label for="toggle-deviations" style="font-family: var(--mono); font-size: 10px; text-transform: uppercase; cursor: pointer; color: var(--fg-muted);">Mark deviations</label>
               </div>
               <span class="kick" id="ranges-combos-lbl" style="font-size: 11px;">169 combos</span>
             </div>
@@ -61,8 +61,8 @@
                   <path d="M9 3v18"></path><path d="M15 3v18"></path>
                 </svg>
               </div>
-              <h4 class="rg-insight-empty-title">Selecione uma mão</h4>
-              <p class="rg-insight-empty-sub">Passe o mouse ou clique numa célula para comparar teoria vs. realidade.</p>
+              <h4 class="rg-insight-empty-title">Select a hand</h4>
+              <p class="rg-insight-empty-sub">Hover or click a cell to compare theory vs. reality.</p>
             </div>
             <!-- Detail body, populated by JS -->
             <div class="rg-insight-body" id="ranges-insight-body" style="display:none;"></div>
@@ -70,32 +70,32 @@
 
           <!-- Solver delta validation -->
           <div class="card solver-delta-card">
-            <span class="kick accent">Validação Δ vs. solver</span>
+            <span class="kick accent">Δ validation vs. solver</span>
             <div style="margin-top:14px; display: flex; flex-direction: column; gap: 14px;" id="ranges-validation-stack">
               <div id="validation-UTG" class="rg-val-row">
-                <div class="rg-val-top"><span class="pos-lbl">UTG abre</span><span class="delta-lbl val-delta">+0.0% OK</span></div>
+                <div class="rg-val-top"><span class="pos-lbl">UTG opens</span><span class="delta-lbl val-delta">+0.0% OK</span></div>
                 <div class="rg-val-track"><span class="val-progress"></span></div>
-                <div class="rg-val-foot"><span class="val-player">Você: 0%</span><span class="val-solver">Solver: 0%</span></div>
+                <div class="rg-val-foot"><span class="val-player">You: 0%</span><span class="val-solver">Solver: 0%</span></div>
               </div>
               <div id="validation-HJ" class="rg-val-row">
-                <div class="rg-val-top"><span class="pos-lbl">HJ abre</span><span class="delta-lbl val-delta">+0.0% OK</span></div>
+                <div class="rg-val-top"><span class="pos-lbl">HJ opens</span><span class="delta-lbl val-delta">+0.0% OK</span></div>
                 <div class="rg-val-track"><span class="val-progress"></span></div>
-                <div class="rg-val-foot"><span class="val-player">Você: 0%</span><span class="val-solver">Solver: 0%</span></div>
+                <div class="rg-val-foot"><span class="val-player">You: 0%</span><span class="val-solver">Solver: 0%</span></div>
               </div>
               <div id="validation-CO" class="rg-val-row">
-                <div class="rg-val-top"><span class="pos-lbl">CO abre</span><span class="delta-lbl val-delta">+0.0% OK</span></div>
+                <div class="rg-val-top"><span class="pos-lbl">CO opens</span><span class="delta-lbl val-delta">+0.0% OK</span></div>
                 <div class="rg-val-track"><span class="val-progress"></span></div>
-                <div class="rg-val-foot"><span class="val-player">Você: 0%</span><span class="val-solver">Solver: 0%</span></div>
+                <div class="rg-val-foot"><span class="val-player">You: 0%</span><span class="val-solver">Solver: 0%</span></div>
               </div>
               <div id="validation-BTN" class="rg-val-row">
-                <div class="rg-val-top"><span class="pos-lbl">BTN abre</span><span class="delta-lbl val-delta">+0.0% OK</span></div>
+                <div class="rg-val-top"><span class="pos-lbl">BTN opens</span><span class="delta-lbl val-delta">+0.0% OK</span></div>
                 <div class="rg-val-track"><span class="val-progress"></span></div>
-                <div class="rg-val-foot"><span class="val-player">Você: 0%</span><span class="val-solver">Solver: 0%</span></div>
+                <div class="rg-val-foot"><span class="val-player">You: 0%</span><span class="val-solver">Solver: 0%</span></div>
               </div>
               <div id="validation-SB" class="rg-val-row">
-                <div class="rg-val-top"><span class="pos-lbl">SB abre</span><span class="delta-lbl val-delta">+0.0% OK</span></div>
+                <div class="rg-val-top"><span class="pos-lbl">SB opens</span><span class="delta-lbl val-delta">+0.0% OK</span></div>
                 <div class="rg-val-track"><span class="val-progress"></span></div>
-                <div class="rg-val-foot"><span class="val-player">Você: 0%</span><span class="val-solver">Solver: 0%</span></div>
+                <div class="rg-val-foot"><span class="val-player">You: 0%</span><span class="val-solver">Solver: 0%</span></div>
               </div>
             </div>
           </div>

@@ -96,8 +96,8 @@ function getActiveRanges() { return activeScenario === 'rfi' ? rfiRanges : pushF
 function getActiveSolverPct(pos) { return activeScenario === 'rfi' ? rangesPct[pos] : pushFoldPct[pos]; }
 function getActiveDeviations() { return activeScenario === 'rfi' ? deviationCombos : pushFoldDeviations; }
 function posVerb(pos) {
-  if (activeScenario === 'rfi') return pos === 'BB' ? 'BB defende' : `${pos} abre`;
-  return pos === 'BB' ? 'BB paga' : `${pos} shove`;
+  if (activeScenario === 'rfi') return pos === 'BB' ? 'BB defends' : `${pos} opens`;
+  return pos === 'BB' ? 'BB calls' : `${pos} shove`;
 }
 function spotStack() { return activeScenario === 'rfi' ? '100bb' : '10bb'; }
 
@@ -172,7 +172,7 @@ function cellModel(pos, hand) {
     raise = Math.round(40 + rng() * 20);
     fold = Math.max(0, 100 - raise - call);
     isDeviation = true;
-    devType = rng() > 0.5 ? 'ABERTURA FORA DE RANGE' : 'COLD-CALL';
+    devType = rng() > 0.5 ? 'OPEN OUT OF RANGE' : 'COLD-CALL';
   } else {
     // Plain fold hand — rarely spewed.
     const dealt = rng() > 0.55;
@@ -181,7 +181,7 @@ function cellModel(pos, hand) {
       // rare spew
       raise = Math.round(40 + rng() * 40); call = Math.round(rng() * 20);
       fold = Math.max(0, 100 - raise - call); compFrac = 0; isDeviation = true;
-      devType = 'ABERTURA FORA DE RANGE';
+      devType = 'OPEN OUT OF RANGE';
     } else {
       raise = 0; call = 0; fold = 100; compFrac = instances > 0 ? 1 : 0;
     }
@@ -200,9 +200,9 @@ function updateModeChrome() {
   const spotLabel = document.getElementById('ranges-spot-label');
   if (modeLabel) {
     modeLabel.textContent =
-      activeMode === 'oracle' ? 'O Oráculo · range teórico GTO'
-      : activeMode === 'mirror' ? 'O Espelho · sua execução real'
-      : 'Editor de range · clique para alternar';
+      activeMode === 'oracle' ? 'The Oracle · theoretical GTO range'
+      : activeMode === 'mirror' ? 'The Mirror · your real execution'
+      : 'Range editor · click to toggle';
   }
   if (spotLabel) spotLabel.textContent = `${posVerb(activePos).toUpperCase()} · ${spotStack()}`;
   renderLegend();
@@ -216,11 +216,11 @@ function renderLegend() {
       '<span><i class="sw-raise"></i>Raise</span>' +
       '<span><i class="sw-call"></i>Call</span>' +
       '<span><i class="sw-fold"></i>Fold</span>' +
-      '<span><i class="sw-dev"></i>Desvio</span>';
+      '<span><i class="sw-dev"></i>Deviation</span>';
   } else {
     legend.innerHTML =
-      '<span><i class="sw-open"></i>Sempre abre</span>' +
-      '<span><i class="sw-mix"></i>Ação mista</span>' +
+      '<span><i class="sw-open"></i>Always opens</span>' +
+      '<span><i class="sw-mix"></i>Mixed action</span>' +
       '<span><i class="sw-foldcell"></i>Fold</span>';
   }
 }
@@ -315,7 +315,7 @@ function bindTooltip() {
     if (activeMode === 'mirror') {
       const mi = m.mirror;
       if (mi.instances === 0) {
-        tip.innerHTML = `<div class="rg-tip-hand">${m.hand}</div><div class="rg-tip-row"><span class="k">sem dados</span></div>`;
+        tip.innerHTML = `<div class="rg-tip-hand">${m.hand}</div><div class="rg-tip-row"><span class="k">no data</span></div>`;
       } else {
         const comp = Math.round((mi.correct / mi.instances) * 100);
         tip.innerHTML =
@@ -323,10 +323,10 @@ function bindTooltip() {
           `<div class="rg-tip-row"><span class="k raise">raise</span><span>${mi.raise}%</span></div>` +
           `<div class="rg-tip-row"><span class="k call">call</span><span>${mi.call}%</span></div>` +
           `<div class="rg-tip-row"><span class="k fold">fold</span><span>${mi.fold}%</span></div>` +
-          `<div class="rg-tip-row"><span class="k">amostra</span><span>${mi.instances} · ${comp}% ok</span></div>`;
+          `<div class="rg-tip-row"><span class="k">sample</span><span>${mi.instances} · ${comp}% ok</span></div>`;
       }
     } else {
-      const label = m.cls === 'always' ? 'sempre abre' : m.cls === 'mix' ? 'ação mista' : 'fold';
+      const label = m.cls === 'always' ? 'always opens' : m.cls === 'mix' ? 'mixed action' : 'fold';
       tip.innerHTML =
         `<div class="rg-tip-hand">${m.hand}</div>` +
         `<div class="rg-tip-row"><span class="k raise">raise</span><span>${m.oracle.raise}%</span></div>` +
@@ -359,7 +359,7 @@ function showInsight(hand, persist) {
 
   const m = cellModel(activePos, hand);
   const mi = m.mirror;
-  const clsLabel = m.cls === 'always' ? 'Padrão GTO' : m.cls === 'mix' ? 'Ação mista' : 'Excluir';
+  const clsLabel = m.cls === 'always' ? 'GTO standard' : m.cls === 'mix' ? 'Mixed action' : 'Exclude';
   const clsPill = m.cls === 'always' ? 'ok' : m.cls === 'mix' ? 'mix' : 'fold';
   const comp = mi.instances > 0 ? Math.round((mi.correct / mi.instances) * 100) : null;
   const compClass = comp == null ? 'dim' : comp >= 90 ? 'ok' : 'bad';
@@ -367,41 +367,41 @@ function showInsight(hand, persist) {
   let middle;
   if (mi.isDeviation && mi.instances > 0) {
     middle =
-      `<h4 class="rg-i-sec bad"><span class="dot"></span>Desvios críticos</h4>` +
+      `<h4 class="rg-i-sec bad"><span class="dot"></span>Critical deviations</h4>` +
       `<div class="rg-i-dev">` +
         `<div class="rg-i-dev-top"><span class="rg-i-dev-type">${mi.devType}</span><span class="rg-i-dev-stack">${spotStack()}</span></div>` +
-        `<div class="rg-i-dev-body">Jogou <b>${mi.hand}</b> em ${mi.instances} mãos — apenas ${comp}% segundo o range teórico. ` +
-        `${m.cls === 'fold' ? 'É um fold padrão nesta posição.' : 'Frequência fora do alvo.'}</div>` +
+        `<div class="rg-i-dev-body">Played <b>${mi.hand}</b> in ${mi.instances} hands — only ${comp}% per the theoretical range. ` +
+        `${m.cls === 'fold' ? 'It is a standard fold in this position.' : 'Frequency off target.'}</div>` +
       `</div>`;
   } else if (mi.instances > 0) {
     middle =
       `<div class="rg-i-elite">` +
         `<div class="rg-i-elite-icon">⚡</div>` +
-        `<p class="rg-i-elite-title">Execução elite</p>` +
-        `<p class="rg-i-elite-sub">Nenhum desvio registrado para esta mão nesta posição.</p>` +
+        `<p class="rg-i-elite-title">Elite execution</p>` +
+        `<p class="rg-i-elite-sub">No deviations recorded for this hand in this position.</p>` +
       `</div>`;
   } else {
     middle =
       `<div class="rg-i-nodata">` +
-        `<p>Sem histórico para <b>${mi.hand}</b> em ${activePos}.</p>` +
+        `<p>No history for <b>${mi.hand}</b> in ${activePos}.</p>` +
       `</div>`;
   }
 
   body.innerHTML =
     `<div class="rg-i-head">` +
-      `<div><h3 class="rg-i-hand">${m.hand}</h3><p class="rg-i-spot">${activePos} · pré-flop</p></div>` +
+      `<div><h3 class="rg-i-hand">${m.hand}</h3><p class="rg-i-spot">${activePos} · preflop</p></div>` +
       `<span class="rg-i-pill ${clsPill}">${clsLabel}</span>` +
     `</div>` +
     `<div class="rg-i-stats">` +
-      `<div class="rg-i-stat"><span class="l">Frequência</span><span class="v">${mi.instances}</span></div>` +
+      `<div class="rg-i-stat"><span class="l">Frequency</span><span class="v">${mi.instances}</span></div>` +
       `<div class="rg-i-stat"><span class="l">Compliance</span><span class="v ${compClass}">${comp == null ? '—' : comp + '%'}</span></div>` +
     `</div>` +
     middle +
     `<div class="rg-i-insight">` +
-      `<span class="kick accent">Leitura estratégica</span>` +
+      `<span class="kick accent">Strategic read</span>` +
       `<p>${m.cls === 'fold'
-        ? `${m.hand} é fold padrão em ${activePos}. Abrir ou pagar gera cenários -EV no longo prazo.`
-        : `Abra ${m.hand} de ${activePos}. Ajuste exploratório: cuidado com 3-bets agressivos atrás.`}</p>` +
+        ? `${m.hand} is a standard fold in ${activePos}. Opening or calling creates -EV scenarios in the long run.`
+        : `Open ${m.hand} from ${activePos}. Exploit adjustment: beware aggressive 3-bets behind.`}</p>` +
     `</div>`;
 
   if (empty) empty.style.display = 'none';
@@ -423,14 +423,14 @@ function updateValidationCard(pos) {
   const progressBar = row.querySelector('.val-progress');
   const posLbl = row.querySelector('.pos-lbl');
 
-  if (playerSpan) playerSpan.textContent = `Você: ${playerPct.toFixed(1)}%`;
+  if (playerSpan) playerSpan.textContent = `You: ${playerPct.toFixed(1)}%`;
   if (solverSpan) solverSpan.textContent = `Solver: ${solverPct.toFixed(1)}%`;
   if (posLbl) posLbl.textContent = posVerb(pos);
 
   let statusText, cls;
   if (Math.abs(delta) < 1.0) { statusText = `${delta >= 0 ? '+' : ''}${delta.toFixed(1)}% OK`; cls = 'ok'; }
-  else if (delta > 0) { statusText = `+${delta.toFixed(1)}% amplo`; cls = delta > 5.0 ? 'bad' : 'warn'; }
-  else { statusText = `${delta.toFixed(1)}% restrito`; cls = 'warn'; }
+  else if (delta > 0) { statusText = `+${delta.toFixed(1)}% wide`; cls = delta > 5.0 ? 'bad' : 'warn'; }
+  else { statusText = `${delta.toFixed(1)}% tight`; cls = 'warn'; }
 
   if (deltaLabel) { deltaLabel.textContent = statusText; deltaLabel.className = `delta-lbl val-delta ${cls}`; }
   if (progressBar) { progressBar.style.width = `${Math.min(playerPct, 100)}%`; progressBar.className = `val-progress ${cls}`; }
