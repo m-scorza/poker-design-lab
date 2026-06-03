@@ -4,21 +4,21 @@ import { state } from '../state.js';
 
 const leaksData = {
   btn: {
-    sev: 'Crítico', sevClass: 'dev',
-    meta: 'Leak principal · 1 de 3 · BTN · 100bb',
-    head: 'O botão está <span class="leak-highlight">sangrando.</span>',
-    desc: "Você está abrindo <b>58%</b> no botão, onde o solver quer <b>48–52%</b>. Os 6% inferiores desse range — <i>K8s K7s Q6s Q5s J7s T7s</i> — são os mais punidos por 3-bets de posição tardia.",
+    sev: 'Critical', sevClass: 'dev',
+    meta: 'Main leak · 1 of 3 · BTN · 100bb',
+    head: 'The button is <span class="leak-highlight">bleeding.</span>',
+    desc: "You are opening <b>58%</b> on the button, where the solver wants <b>48–52%</b>. The bottom 6% of that range — <i>K8s K7s Q6s Q5s J7s T7s</i> — are the most punished by late-position 3-bets.",
     dev: '+8.0%', cost: '-28bb/100', tourney: '-$0.62', recover: '+$60',
-    pos: 'ABERTURA BTN', activeCombos: ['K8s', 'K7s', 'Q6s', 'Q5s', 'J7s', 'T7s', 'K9s', 'QTs', 'J9s', 'T8s'],
-    coachTitle: 'Corrigindo a abertura ampla demais no BTN',
-    coachPlan: 'Corte primeiro as aberturas/calls mais fracos. Revise toda mão de VPIP fora do range antes da próxima sessão. Foque em remover os 6% inferiores do range (K8s, K7s, Q6s, J7s, T7s) para se proteger de squeezes de CO/BB.',
+    pos: 'BTN OPEN', activeCombos: ['K8s', 'K7s', 'Q6s', 'Q5s', 'J7s', 'T7s', 'K9s', 'QTs', 'J9s', 'T8s'],
+    coachTitle: 'Fixing the too-wide BTN open',
+    coachPlan: 'Cut the weakest opens/calls first. Review every out-of-range VPIP hand before the next session. Focus on removing the bottom 6% of the range (K8s, K7s, Q6s, J7s, T7s) to protect yourself from CO/BB squeezes.',
     coachChecklist: [
-      'Revise os ranges de RFI do BTN a 100bb (limite a 48%).',
-      'Marque K8s-K7s como FOLD padrão contra blinds que dão 3-bet agressivo.',
-      'Rode um drill de 10 spots na Arena para calibrar folds de botão.'
+      'Review the BTN RFI ranges at 100bb (cap at 48%).',
+      'Mark K8s-K7s as a default FOLD against aggressively 3-betting blinds.',
+      'Run a 10-spot drill in the Arena to calibrate button folds.'
     ],
     // Range bar metrics
-    metricName: 'Frequência de RFI no BTN',
+    metricName: 'BTN RFI frequency',
     minTarget: 48,
     maxTarget: 52,
     actualVal: 58,
@@ -27,21 +27,21 @@ const leaksData = {
     handsFilter: (h) => h.pos === 'BTN' && !h.compliant
   },
   bb: {
-    sev: 'Alto', sevClass: 'dev',
-    meta: 'Alta prioridade · 2 de 3 · BB · 25bb',
-    head: 'Fold demais no <span class="leak-highlight">big blind.</span>',
-    desc: "Você dá fold <b>68%</b> contra aberturas de botão de posição tardia, onde os ranges ótimos defendem <b>52-56%</b>. Você está abrindo mão de defesas lucrativas como <i>T8o 97o Q6s J7s</i>.",
+    sev: 'High', sevClass: 'dev',
+    meta: 'High priority · 2 of 3 · BB · 25bb',
+    head: 'Folding too much on the <span class="leak-highlight">big blind.</span>',
+    desc: "You fold <b>68%</b> against late-position button opens, where optimal ranges defend <b>52-56%</b>. You are giving up profitable defenses like <i>T8o 97o Q6s J7s</i>.",
     dev: '-12.0%', cost: '-18bb/100', tourney: '-$0.38', recover: '+$35',
-    pos: 'DEFESA BB', activeCombos: ['T8o', '97o', 'Q6s', 'J7s', '86s', 'T7s', 'J6s'],
-    coachTitle: 'Corrigindo o overfold no Big Blind',
-    coachPlan: 'Defenda o BB de forma mais agressiva contra roubos de botão em posição tardia. Você está dando fold 12% além do ideal, deixando os adversários imprimirem fichas roubando seu blind.',
+    pos: 'BB DEFENSE', activeCombos: ['T8o', '97o', 'Q6s', 'J7s', '86s', 'T7s', 'J6s'],
+    coachTitle: 'Fixing the Big Blind overfold',
+    coachPlan: 'Defend the BB more aggressively against late-position button steals. You are folding 12% beyond optimal, letting opponents print chips by stealing your blind.',
     coachChecklist: [
-      'Identifique o tamanho do open do botão: fold contra 3x, defenda contra 2x-2.2x.',
-      'Pratique o flat de mãos como T8o, 97o, Q6s, J7s em vez de dar fold.',
-      'Marque os casos de overfold com stack efetivo abaixo de 20bb.'
+      'Identify the button open size: fold against 3x, defend against 2x-2.2x.',
+      'Practice flatting hands like T8o, 97o, Q6s, J7s instead of folding.',
+      'Flag overfold cases with effective stack below 20bb.'
     ],
     // Range bar metrics
-    metricName: 'Frequência de defesa do BB',
+    metricName: 'BB defense frequency',
     minTarget: 52,
     maxTarget: 56,
     actualVal: 40,
@@ -50,21 +50,21 @@ const leaksData = {
     handsFilter: (h) => h.pos === 'BB' && h.scenario === 'VS_OPEN'
   },
   sb: {
-    sev: 'Médio', sevClass: 'ok',
-    meta: 'Prioridade média · 3 de 3 · SB · 40bb',
-    head: 'Flat de <span class="leak-highlight">ases offsuit fracos.</span>',
-    desc: "Os calls dão prejuízo no Small Blind contra aberturas de posição inicial. Mãos como <i>A8o A7o KJo</i> são flats massivamente negativos.",
+    sev: 'Medium', sevClass: 'ok',
+    meta: 'Medium priority · 3 of 3 · SB · 40bb',
+    head: 'Flatting <span class="leak-highlight">weak offsuit aces.</span>',
+    desc: "Calls lose money in the Small Blind against early-position opens. Hands like <i>A8o A7o KJo</i> are massively negative flats.",
     dev: '+6.4%', cost: '-11bb/100', tourney: '-$0.15', recover: '+$18',
-    pos: 'FLAT SB VS UTG', activeCombos: ['A8o', 'A7o', 'KJo', 'QTo', 'JTo'],
-    coachTitle: 'Plano de correção do flat no SB',
-    coachPlan: 'Pare de dar call no Small Blind contra raises de UTG e MP. Os ranges de open de UTG são apertados; flatar ases offsuit fracos fora de posição é um vazamento enorme no longo prazo.',
+    pos: 'SB FLAT VS UTG', activeCombos: ['A8o', 'A7o', 'KJo', 'QTo', 'JTo'],
+    coachTitle: 'SB flat correction plan',
+    coachPlan: 'Stop calling in the Small Blind against UTG and MP raises. UTG open ranges are tight; flatting weak offsuit aces out of position is a huge long-term leak.',
     coachChecklist: [
-      'Imponha uma política estrita de 3-bet ou fold no Small Blind.',
-      'Nunca dê call com broadways offsuit ou ases offsuit fracos.',
-      'Revise as sessões de domingo em busca de leaks de compliance no Small Blind.'
+      'Enforce a strict 3-bet or fold policy in the Small Blind.',
+      'Never call with offsuit broadways or weak offsuit aces.',
+      'Review Sunday sessions for Small Blind compliance leaks.'
     ],
     // Range bar metrics
-    metricName: 'Frequência de flat no SB',
+    metricName: 'SB flat frequency',
     minTarget: 0,
     maxTarget: 4,
     actualVal: 10,
@@ -150,7 +150,7 @@ export function initLeaks() {
 
     const matchingHands = state.hands.filter(filterFn).slice(0, 3); // grab top 3 for the preview drawer
     if (matchingHands.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--fg-muted);">Nenhuma mão de desvio encontrada na base de dados.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--fg-muted);">No deviation hands found in the database.</td></tr>`;
       return;
     }
 
@@ -198,7 +198,7 @@ export function initLeaks() {
 
     label.innerText = data.metricName;
     gtoText.innerText = `${data.minTarget}% - ${data.maxTarget}%`;
-    userText.innerText = `Você: ${data.actualVal}%`;
+    userText.innerText = `You: ${data.actualVal}%`;
     userText.style.color = data.color;
 
     // Reposition elements
@@ -312,16 +312,16 @@ export function initLeaks() {
 /* ---------- Leak × Position severity heatmap (ported from leak-heatmap brick) ---------- */
 const HM_COLS = ['UTG / MP', 'HJ', 'CO', 'BTN', 'SB', 'BB'];
 const HM_ROWS = [
-  { name: 'Defesa BB vs ~2.5x', cells: [null, null, ['crit', 8.4], ['high', 3.2], ['med', 1.4], null] },
+  { name: 'BB defense vs ~2.5x', cells: [null, null, ['crit', 8.4], ['high', 3.2], ['med', 1.4], null] },
   { name: '3-bet light', cells: [['low', 0.8], null, ['med', 2.1], ['low', 1.2], ['high', 3.1], null] },
-  { name: 'Overbet no river', cells: [null, ['med', 2.4], ['crit', 5.2], ['high', 1.8], null, null] },
-  { name: 'Steal baixa freq.', cells: [null, ['low', 0.4], ['med', 1.2], ['high', 3.2], ['low', 0.3], null] },
-  { name: 'Float bluff no turn', cells: [null, null, ['low', 0.6], ['med', 1.4], ['low', 0.6], null] },
-  { name: 'Banda push / fold', cells: [['low', 0.2], ['low', 0.4], ['low', 0.5], ['med', 0.6], ['low', 0.2], ['low', 0.2]] },
-  { name: 'Stall ITM', cells: [null, ['low', 0.3], ['low', 0.4], ['med', 0.5], null, ['low', 0.2]] },
-  { name: 'Limp re-iso pós-flop', cells: [['low', 0.8], ['med', 1.4], ['med', 1.2], ['med', 1.4], null, null] }
+  { name: 'River overbet', cells: [null, ['med', 2.4], ['crit', 5.2], ['high', 1.8], null, null] },
+  { name: 'Low-freq steal', cells: [null, ['low', 0.4], ['med', 1.2], ['high', 3.2], ['low', 0.3], null] },
+  { name: 'Turn float bluff', cells: [null, null, ['low', 0.6], ['med', 1.4], ['low', 0.6], null] },
+  { name: 'Push / fold band', cells: [['low', 0.2], ['low', 0.4], ['low', 0.5], ['med', 0.6], ['low', 0.2], ['low', 0.2]] },
+  { name: 'ITM stall', cells: [null, ['low', 0.3], ['low', 0.4], ['med', 0.5], null, ['low', 0.2]] },
+  { name: 'Limp re-iso postflop', cells: [['low', 0.8], ['med', 1.4], ['med', 1.2], ['med', 1.4], null, null] }
 ];
-const HM_SEV_LABEL = { crit: 'crítico', high: 'alto', med: 'médio', low: 'baixo' };
+const HM_SEV_LABEL = { crit: 'critical', high: 'high', med: 'medium', low: 'low' };
 
 function buildLeakHeatmap() {
   const grid = document.getElementById('leak-hm-grid');
@@ -350,7 +350,7 @@ function buildLeakHeatmap() {
       el.addEventListener('click', () => {
         grid.querySelectorAll('.hm-cell.sel').forEach(c => c.classList.remove('sel'));
         el.classList.add('sel');
-        caption.innerHTML = `<span class="pin">◆</span><span><b>${row.name}</b> · posição <b>${HM_COLS[ci]}</b> — severidade <b>${HM_SEV_LABEL[sev]}</b></span><span class="amt">−${amt.toFixed(1)} bb/100</span>`;
+        caption.innerHTML = `<span class="pin">◆</span><span><b>${row.name}</b> · position <b>${HM_COLS[ci]}</b> — severity <b>${HM_SEV_LABEL[sev]}</b></span><span class="amt">−${amt.toFixed(1)} bb/100</span>`;
       });
       grid.appendChild(el);
     });
@@ -359,22 +359,22 @@ function buildLeakHeatmap() {
 
 /* ---------- Monitored leak gauges (ported from leak-card-gauge brick) ---------- */
 const GAUGE_LEAKS = [
-  { name: 'Limping', scen: 'pré-flop · fora da BB', sev: 'high', dir: 'low',
+  { name: 'Limping', scen: 'preflop · outside the BB', sev: 'high', dir: 'low',
     cur: 4.2, target: 0, max: 8, unit: '%', cost: 3.1, trend: 'down', delta: '+1.4pts',
     spark: '4,22 18,18 30,19 42,14 54,16 66,10 86,6' },
-  { name: 'C-bet HU baixo', scen: 'flop · PFR heads-up', sev: 'high', dir: 'high',
+  { name: 'Low HU C-bet', scen: 'flop · heads-up PFR', sev: 'high', dir: 'high',
     cur: 71, target: 100, max: 100, unit: '%', cost: 2.6, trend: 'up', delta: '+6pts',
     spark: '4,20 18,17 30,18 42,12 54,11 66,8 86,5' },
-  { name: 'WTSD alto', scen: 'showdown · global', sev: 'med', dir: 'low',
+  { name: 'High WTSD', scen: 'showdown · global', sev: 'med', dir: 'low',
     cur: 38.5, target: 35, max: 50, unit: '%', cost: 1.4, trend: 'down', delta: '+0.9pts',
     spark: '4,8 18,9 30,7 42,11 54,10 66,13 86,15' },
-  { name: 'Overfold CO', scen: 'pré-flop · compliance', sev: 'med', dir: 'high',
+  { name: 'CO overfold', scen: 'preflop · compliance', sev: 'med', dir: 'high',
     cur: 86.2, target: 90, max: 100, unit: '%', cost: 1.1, trend: 'up', delta: '+3.0pts',
     spark: '4,18 18,16 30,15 42,12 54,13 66,9 86,7' },
-  { name: 'Cold-call', scen: 'pré-flop · MP/HJ/CO', sev: 'low', dir: 'low',
+  { name: 'Cold-call', scen: 'preflop · MP/HJ/CO', sev: 'low', dir: 'low',
     cur: 1.8, target: 0, max: 8, unit: '%', cost: 0.5, trend: 'up', delta: '-2.1pts',
     spark: '4,6 18,8 30,7 42,9 54,8 66,11 86,13' },
-  { name: 'C-bet perdido', scen: 'flop · PFR deu check', sev: 'low', dir: 'low',
+  { name: 'Missed C-bet', scen: 'flop · PFR checked', sev: 'low', dir: 'low',
     cur: 9, target: 0, max: 30, unit: '%', cost: 0.7, trend: 'up', delta: '-4pts',
     spark: '4,5 18,7 30,6 42,8 54,9 66,11 86,12' }
 ];
@@ -404,7 +404,7 @@ function buildLeakGauges() {
   GAUGE_LEAKS.forEach((k) => {
     const fillPct = Math.max(0, Math.min(100, (k.cur / k.max) * 100));
     const markPct = Math.max(0, Math.min(100, (k.target / k.max) * 100));
-    const sevLabel = k.sev === 'high' ? 'severidade alta' : k.sev === 'med' ? 'média' : 'baixa';
+    const sevLabel = k.sev === 'high' ? 'high severity' : k.sev === 'med' ? 'medium' : 'low';
     const card = document.createElement('div');
     card.className = 'lg-card ' + k.sev;
     card.innerHTML =
@@ -414,11 +414,11 @@ function buildLeakGauges() {
       '</div>' +
       '<div class="lg-gauge">' +
         '<div class="lg-vals"><span class="lg-cur">' + k.cur + k.unit + '</span>' +
-          '<span class="lg-tgt">alvo ' + k.target + k.unit + (k.dir === 'low' ? ' ou menos' : '+') + '</span></div>' +
+          '<span class="lg-tgt">target ' + k.target + k.unit + (k.dir === 'low' ? ' or less' : '+') + '</span></div>' +
         '<div class="lg-track"><span class="lg-fill"></span><span class="lg-mark" style="left:' + markPct + '%;"></span></div>' +
       '</div>' +
       '<div class="lg-foot">' +
-        '<span class="lg-cost">custo <b>' + k.cost.toFixed(1) + ' bb/100</b></span>' +
+        '<span class="lg-cost">cost <b>' + k.cost.toFixed(1) + ' bb/100</b></span>' +
         '<span class="lg-trend ' + k.trend + '">' + (k.trend === 'up' ? '▲ ' : '▼ ') + k.delta + '</span>' +
         '<svg class="lg-spark" viewBox="0 0 90 28" data-spark="' + k.spark + '"></svg>' +
       '</div>';

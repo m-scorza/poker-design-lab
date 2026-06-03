@@ -5,19 +5,19 @@
         <div class="inc-grid" id="incident-grid-box">
           <div>
             <div style="display:flex; gap:12px; align-items:center; margin-bottom:14px;">
-              <span class="compliance-badge dev" id="leak-severity-badge">Crítico</span>
-              <span class="kick" id="leak-meta">Leak principal · 1 de 3 · BTN · 100bb</span>
+              <span class="compliance-badge dev" id="leak-severity-badge">Critical</span>
+              <span class="kick" id="leak-meta">Main leak · 1 of 3 · BTN · 100bb</span>
             </div>
-            <h2 class="inc-headline-text" id="leak-headline">O botão está <span class="leak-highlight">sangrando.</span></h2>
+            <h2 class="inc-headline-text" id="leak-headline">The button is <span class="leak-highlight">bleeding.</span></h2>
             <p class="inc-desc" id="leak-description">
-              Você está abrindo <b>58%</b> no botão, onde o solver quer <b>48–52%</b>. Os 6% inferiores desse range — <i>K8s K7s Q6s Q5s J7s T7s</i> — são os mais punidos por 3-bets de posição tardia.
+              You are opening <b>58%</b> on the button, where the solver wants <b>48–52%</b>. The bottom 6% of that range — <i>K8s K7s Q6s Q5s J7s T7s</i> — are the most punished by late-position 3-bets.
             </p>
 
             <!-- Target Range Bar -->
             <div id="leak-target-range-container" style="margin-top: 18px; border-top: 1px solid var(--border); padding-top: 16px;">
               <div style="display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10px; color: var(--fg-muted); margin-bottom: 6px;">
-                <span id="leak-range-label">Frequência de RFI no BTN</span>
-                <span>Alvo GTO: <span id="leak-range-gto" style="color: var(--accent); font-weight: 700;">48% - 52%</span></span>
+                <span id="leak-range-label">BTN RFI frequency</span>
+                <span>GTO target: <span id="leak-range-gto" style="color: var(--accent); font-weight: 700;">48% - 52%</span></span>
               </div>
               <div style="height: 8px; background: rgba(255,255,255,0.03); border-radius: 4px; position: relative; border: 1px solid var(--border); overflow: hidden;">
                 <!-- Target band -->
@@ -27,23 +27,23 @@
               </div>
               <div style="display: flex; justify-content: space-between; font-family: var(--mono); font-size: 9px; color: var(--fg-muted); margin-top: 4px;">
                 <span>0%</span>
-                <span id="leak-range-user" style="color: var(--loss); font-weight: 700;">Você: 58%</span>
+                <span id="leak-range-user" style="color: var(--loss); font-weight: 700;">You: 58%</span>
                 <span>100%</span>
               </div>
             </div>
 
             <div class="inc-stats-row">
-              <div class="inc-stat-item"><span class="l">Desvio</span><div class="v loss" id="leak-stat-dev">+8.0%</div></div>
-              <div class="inc-stat-item"><span class="l">Custo</span><div class="v loss" id="leak-stat-cost">-28bb/100</div></div>
-              <div class="inc-stat-item"><span class="l">Por torneio</span><div class="v loss" id="leak-stat-tourney">-$0.62</div></div>
-              <div class="inc-stat-item"><span class="l">Recuperável</span><div class="v accent" id="leak-stat-recover">+$60</div></div>
+              <div class="inc-stat-item"><span class="l">Deviation</span><div class="v loss" id="leak-stat-dev">+8.0%</div></div>
+              <div class="inc-stat-item"><span class="l">Cost</span><div class="v loss" id="leak-stat-cost">-28bb/100</div></div>
+              <div class="inc-stat-item"><span class="l">Per tournament</span><div class="v loss" id="leak-stat-tourney">-$0.62</div></div>
+              <div class="inc-stat-item"><span class="l">Recoverable</span><div class="v accent" id="leak-stat-recover">+$60</div></div>
             </div>
           </div>
 
           <div class="matrix-wrapper">
             <div class="matrix-grid-cell-label">
-              <span>Mapa de range RFI</span>
-              <span class="spot-pos" id="leak-matrix-pos">ABERTURA BTN</span>
+              <span>RFI range map</span>
+              <span class="spot-pos" id="leak-matrix-pos">BTN OPEN</span>
             </div>
             <div class="matrix-grid-box" id="leak-matrix-grid">
               <!-- Grid generated via JS -->
@@ -55,27 +55,27 @@
       <!-- Leak x Position severity heatmap (folded from leak-heatmap brick) -->
       <div class="card" style="margin-bottom: 24px; padding: 22px 24px;">
         <div class="hm-h">
-          <span class="kick accent">Severidade · Leak × Posição</span>
-          <span class="hm-sub">clique numa célula para isolar o vazamento</span>
+          <span class="kick accent">Severity · Leak × Position</span>
+          <span class="hm-sub">click a cell to isolate the leak</span>
           <div class="hm-legend">
-            <span class="swatch"><span class="sw crit"></span>crítico</span>
-            <span class="swatch"><span class="sw high"></span>alto</span>
-            <span class="swatch"><span class="sw med"></span>médio</span>
+            <span class="swatch"><span class="sw crit"></span>critical</span>
+            <span class="swatch"><span class="sw high"></span>high</span>
+            <span class="swatch"><span class="sw med"></span>medium</span>
             <span class="swatch"><span class="sw ok"></span>—</span>
           </div>
         </div>
         <div class="hm-grid" id="leak-hm-grid"></div>
         <div class="hm-caption" id="leak-hm-caption">
           <span class="pin">◇</span>
-          <span>Passe o mouse e clique numa célula para isolar o vazamento por posição.</span>
+          <span>Hover and click a cell to isolate the leak by position.</span>
         </div>
       </div>
 
       <!-- Monitored leak gauges (folded from leak-card-gauge brick) -->
       <div class="card" style="margin-bottom: 24px; padding: 22px 24px;">
         <div class="hm-h">
-          <span class="kick accent">Vazamentos monitorados</span>
-          <span class="hm-sub">frequência atual vs. alvo · tendência · custo estimado</span>
+          <span class="kick accent">Monitored leaks</span>
+          <span class="hm-sub">current frequency vs. target · trend · estimated cost</span>
         </div>
         <div class="leak-gauge-grid" id="leak-gauges"></div>
       </div>
@@ -83,14 +83,14 @@
       <!-- Ranked index ledger -->
       <div class="card" style="padding:0; overflow:hidden; margin-bottom: 24px;">
         <div class="leak-index-cols">
-          <span>#</span><span>Vazamento</span><span>Severidade</span><span>Stack</span><span style="text-align:right;">Custo</span>
+          <span>#</span><span>Leak</span><span>Severity</span><span>Stack</span><span style="text-align:right;">Cost</span>
         </div>
 
         <!-- Row 1 -->
         <div class="leak-index-row crit" data-leak="btn" data-drawer="leak-drawer-btn">
           <span class="leak-rank">#1</span>
-          <span class="leak-name">Abertura ampla demais no BTN<div style="font-size:10.5px; color:var(--fg-muted); margin-top:2px;">Open frouxo demais contra 3-bets tardios</div></span>
-          <span><span class="leak-sev-badge crit">Crítico</span></span>
+          <span class="leak-name">Opening too wide on the BTN<div style="font-size:10.5px; color:var(--fg-muted); margin-top:2px;">Open too loose against late 3-bets</div></span>
+          <span><span class="leak-sev-badge crit">Critical</span></span>
           <span class="leak-spot-lbl">100bb</span>
           <span class="leak-cost-lbl" style="text-align:right;">-$0.62/T</span>
         </div>
@@ -98,20 +98,20 @@
         <div class="leak-drawer-panel" id="leak-drawer-btn">
           <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px; padding: 24px;">
             <div>
-              <span class="kick" style="margin-bottom: 10px; display: block;">Histograma de distribuição do desvio</span>
+              <span class="kick" style="margin-bottom: 10px; display: block;">Deviation distribution histogram</span>
               <div style="height: 110px; position: relative;" id="histogram-container-btn">
                 <!-- SVG injected dynamically -->
               </div>
             </div>
             <div>
-              <span class="kick" style="margin-bottom: 10px; display: block;">Mãos associadas</span>
+              <span class="kick" style="margin-bottom: 10px; display: block;">Associated hands</span>
               <table class="hands-table" style="font-size: 11px;">
                 <thead>
                   <tr>
-                    <th>Cartas</th>
-                    <th>Ação</th>
-                    <th>Lucro líquido</th>
-                    <th style="text-align: right;">Ação</th>
+                    <th>Cards</th>
+                    <th>Action</th>
+                    <th>Net profit</th>
+                    <th style="text-align: right;">Action</th>
                   </tr>
                 </thead>
                 <tbody class="leak-hands-tbody" id="leak-hands-btn">
@@ -125,8 +125,8 @@
         <!-- Row 2 -->
         <div class="leak-index-row med" data-leak="bb" data-drawer="leak-drawer-bb">
           <span class="leak-rank">#2</span>
-          <span class="leak-name">Fold demais no BB vs. open do BTN<div style="font-size:10.5px; color:var(--fg-muted); margin-top:2px;">Overfold do BB contra aberturas do botão</div></span>
-          <span><span class="leak-sev-badge high">Alto</span></span>
+          <span class="leak-name">Folding too much on the BB vs. BTN open<div style="font-size:10.5px; color:var(--fg-muted); margin-top:2px;">BB overfold against button opens</div></span>
+          <span><span class="leak-sev-badge high">High</span></span>
           <span class="leak-spot-lbl">25bb</span>
           <span class="leak-cost-lbl" style="text-align:right; color:var(--warn);">-$0.38/T</span>
         </div>
@@ -134,20 +134,20 @@
         <div class="leak-drawer-panel" id="leak-drawer-bb">
           <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px; padding: 24px;">
             <div>
-              <span class="kick" style="margin-bottom: 10px; display: block;">Histograma de distribuição do desvio</span>
+              <span class="kick" style="margin-bottom: 10px; display: block;">Deviation distribution histogram</span>
               <div style="height: 110px; position: relative;" id="histogram-container-bb">
                 <!-- SVG injected dynamically -->
               </div>
             </div>
             <div>
-              <span class="kick" style="margin-bottom: 10px; display: block;">Mãos associadas</span>
+              <span class="kick" style="margin-bottom: 10px; display: block;">Associated hands</span>
               <table class="hands-table" style="font-size: 11px;">
                 <thead>
                   <tr>
-                    <th>Cartas</th>
-                    <th>Ação</th>
-                    <th>Lucro líquido</th>
-                    <th style="text-align: right;">Ação</th>
+                    <th>Cards</th>
+                    <th>Action</th>
+                    <th>Net profit</th>
+                    <th style="text-align: right;">Action</th>
                   </tr>
                 </thead>
                 <tbody class="leak-hands-tbody" id="leak-hands-bb">
@@ -161,8 +161,8 @@
         <!-- Row 3 -->
         <div class="leak-index-row med" data-leak="sb" data-drawer="leak-drawer-sb">
           <span class="leak-rank">#3</span>
-          <span class="leak-name">Call frouxo de SB vs. open de UTG/MP<div style="font-size:10.5px; color:var(--fg-muted); margin-top:2px;">Flat do SB com ases offsuit fracos</div></span>
-          <span><span class="leak-sev-badge med">Médio</span></span>
+          <span class="leak-name">Loose SB call vs. UTG/MP open<div style="font-size:10.5px; color:var(--fg-muted); margin-top:2px;">SB flat with weak offsuit aces</div></span>
+          <span><span class="leak-sev-badge med">Medium</span></span>
           <span class="leak-spot-lbl">40bb</span>
           <span class="leak-cost-lbl" style="text-align:right; color:var(--fg-muted);">-$0.15/T</span>
         </div>
@@ -170,20 +170,20 @@
         <div class="leak-drawer-panel" id="leak-drawer-sb">
           <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px; padding: 24px;">
             <div>
-              <span class="kick" style="margin-bottom: 10px; display: block;">Histograma de distribuição do desvio</span>
+              <span class="kick" style="margin-bottom: 10px; display: block;">Deviation distribution histogram</span>
               <div style="height: 110px; position: relative;" id="histogram-container-sb">
                 <!-- SVG injected dynamically -->
               </div>
             </div>
             <div>
-              <span class="kick" style="margin-bottom: 10px; display: block;">Mãos associadas</span>
+              <span class="kick" style="margin-bottom: 10px; display: block;">Associated hands</span>
               <table class="hands-table" style="font-size: 11px;">
                 <thead>
                   <tr>
-                    <th>Cartas</th>
-                    <th>Ação</th>
-                    <th>Lucro líquido</th>
-                    <th style="text-align: right;">Ação</th>
+                    <th>Cards</th>
+                    <th>Action</th>
+                    <th>Net profit</th>
+                    <th style="text-align: right;">Action</th>
                   </tr>
                 </thead>
                 <tbody class="leak-hands-tbody" id="leak-hands-sb">
@@ -199,19 +199,19 @@
       <!-- Leak Coach Action Plan Card -->
       <div class="card" id="leak-coach-card" style="padding: 24px;">
         <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
-          <span style="font-size: 16px; font-weight: 700; color: var(--accent);">PLANO DE ESTUDO & CORREÇÃO</span>
-          <span class="compliance-badge ok" style="font-size: 8.5px; text-transform: uppercase;">Coach ativo</span>
+          <span style="font-size: 16px; font-weight: 700; color: var(--accent);">STUDY & CORRECTION PLAN</span>
+          <span class="compliance-badge ok" style="font-size: 8.5px; text-transform: uppercase;">Coach active</span>
         </div>
-        <h4 id="coach-title" style="font-family: var(--display); font-size: 18px; margin: 0 0 10px; font-weight: 700;">Corrigindo a abertura ampla demais no BTN</h4>
+        <h4 id="coach-title" style="font-family: var(--display); font-size: 18px; margin: 0 0 10px; font-weight: 700;">Fixing the too-wide BTN open</h4>
         <p id="coach-plan" style="font-size: 13px; line-height: 1.6; color: var(--fg-muted); margin: 0 0 16px;">
-          Corte primeiro as aberturas/calls mais fracos. Revise toda mão de VPIP fora do range antes da próxima sessão. Foque em remover os 6% inferiores do range (K8s, K7s, Q6s, J7s, T7s) para se proteger de squeezes de CO/BB.
+          Cut the weakest opens/calls first. Review every out-of-range VPIP hand before the next session. Focus on removing the bottom 6% of the range (K8s, K7s, Q6s, J7s, T7s) to protect yourself from CO/BB squeezes.
         </p>
         <div style="border-top: 1px solid var(--border); padding-top: 14px;">
-          <span class="kick">Checklist pré-sessão</span>
+          <span class="kick">Pre-session checklist</span>
           <ul id="coach-checklist" style="font-family: var(--mono); font-size: 11px; line-height: 1.8; color: var(--fg); margin: 8px 0 0; padding-left: 20px;">
-            <li>Revise os ranges de RFI do BTN a 100bb (limite a 48%).</li>
-            <li>Marque K8s-K7s como FOLD padrão contra blinds que dão 3-bet agressivo.</li>
-            <li>Rode um drill de 10 spots na Arena para calibrar folds de botão.</li>
+            <li>Review the BTN RFI ranges at 100bb (cap at 48%).</li>
+            <li>Mark K8s-K7s as a default FOLD against aggressively 3-betting blinds.</li>
+            <li>Run a 10-spot drill in the Arena to calibrate button folds.</li>
           </ul>
         </div>
       </div>
