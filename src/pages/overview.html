@@ -4,20 +4,20 @@
       <div class="desk-header">
         <div>
           <h2 class="desk-title">
-            Mesa de comando
+            Command Desk
             <span class="pnl-badge" id="overview-pnl-badge">+$388.85</span>
           </h2>
           <p class="desk-subtitle" id="overview-subtitle">
-            Veredito de readiness de stake, leak nº1 e tendência do torneio a partir dos históricos importados.
+            Stake-readiness verdict, the #1 leak and tournament trend from your imported hand histories.
           </p>
         </div>
         <div class="scope-select">
           <span class="kick scope-select-lbl">SCOPE:</span>
           <select id="overview-session-select">
-            <option value="all">Base de dados completa</option>
-            <option value="session-37">Sessão #37 (30/05/2026)</option>
-            <option value="session-36">Sessão #36 (28/05/2026)</option>
-            <option value="session-35">Sessão #35 (25/05/2026)</option>
+            <option value="all">Full database</option>
+            <option value="session-37">Session #37 (05/30/2026)</option>
+            <option value="session-36">Session #36 (05/28/2026)</option>
+            <option value="session-35">Session #35 (05/25/2026)</option>
           </select>
         </div>
       </div>
@@ -29,9 +29,9 @@
 
           <!-- Lifetime Winnings (The Monument) -->
           <div class="card monument">
-            <span class="kick accent" id="overview-pnl-kick">Lucro líquido vitalício · 250 torneios</span>
+            <span class="kick accent" id="overview-pnl-kick">Lifetime net profit · 250 tournaments</span>
             <div class="mon-number" id="overview-pnl-num"><span class="sign">+</span>$388<span class="cents">.85</span></div>
-            <div class="mon-verdict" id="mon-verdict">Você está no positivo. <em>Um desvio de botão</em> é a história inteira.</div>
+            <div class="mon-verdict" id="mon-verdict">You're cash positive. <em>One button deviation</em> is the whole story.</div>
           </div>
 
           <!-- Concentric Ring HUD Telemetry -->
@@ -68,15 +68,15 @@
 
             <div class="hud-stats-list">
               <button class="stat-trigger active" data-stat="vpip">
-                <span class="st-l">VPIP (Vol. na pote)</span>
+                <span class="st-l">VPIP (Voluntary in pot)</span>
                 <span class="st-value">21.8%</span>
               </button>
               <button class="stat-trigger" data-stat="pfr">
-                <span class="st-l">PFR (Raise pré-flop)</span>
+                <span class="st-l">PFR (Preflop raise)</span>
                 <span class="st-value">17.2%</span>
               </button>
               <button class="stat-trigger" data-stat="3bet">
-                <span class="st-l">Frequência de 3-bet</span>
+                <span class="st-l">3-bet frequency</span>
                 <span class="st-value">8.4%</span>
               </button>
             </div>
@@ -85,8 +85,8 @@
           <!-- Volume & Chips Performance -->
           <div class="card volume-card">
             <div class="volume-text">
-              <span class="kick">Volume &amp; performance em fichas</span>
-              <div class="mon-number volume-number" id="overview-chips-value">+324,580 <span class="cents">fichas</span></div>
+              <span class="kick">Volume &amp; chip performance</span>
+              <div class="mon-number volume-number" id="overview-chips-value">+324,580 <span class="cents">chips</span></div>
               <div class="kick volume-winrate" id="overview-winrate-value">+8.24 bb/100 win rate</div>
             </div>
             <div class="volume-chips">
@@ -124,57 +124,57 @@
           <!-- The 30-second answer verdict (ValueSnapshotCard) -->
           <div class="card verdict-card" id="overview-verdict-card">
             <div class="verdict-head">
-              <span class="kick accent">Resposta em 30 segundos</span>
+              <span class="kick accent">The 30-second answer</span>
               <span class="verdict-readiness" id="verdict-readiness">78<small>/100</small></span>
             </div>
-            <div class="verdict-reco up" id="verdict-reco">Subir de stake</div>
-            <div class="verdict-confidence" id="verdict-confidence">Confiança: Alta · prontidão de banca</div>
+            <div class="verdict-reco up" id="verdict-reco">Move up in stakes</div>
+            <div class="verdict-confidence" id="verdict-confidence">Confidence: High · bankroll readiness</div>
 
             <div class="verdict-metrics">
               <div class="verdict-metric">
-                <span class="kick">ROI rastreado</span>
+                <span class="kick">Tracked ROI</span>
                 <span class="vm-val accent" id="verdict-roi">+141.4% ROI</span>
               </div>
               <div class="verdict-metric">
-                <span class="kick">Lucro</span>
-                <span class="vm-val" id="verdict-profit">+$388.85 acumulado</span>
+                <span class="kick">Profit</span>
+                <span class="vm-val" id="verdict-profit">+$388.85 cumulative</span>
               </div>
             </div>
 
             <div class="verdict-blocker">
-              <span class="kick loss">Bloqueador principal</span>
-              <div class="vb-title" id="verdict-blocker-title">Abertura de BTN ampla demais</div>
-              <p class="vb-detail" id="verdict-blocker-detail">O fundo do range de botão custa -28bb/100 contra blinds ativos.</p>
+              <span class="kick loss">Main blocker</span>
+              <div class="vb-title" id="verdict-blocker-title">BTN open range too wide</div>
+              <p class="vb-detail" id="verdict-blocker-detail">The bottom of your button range costs -28bb/100 against active blinds.</p>
             </div>
 
             <button class="verdict-action" id="verdict-action" type="button">
-              <span class="kick">Corrija agora</span>
-              <span class="va-text" id="verdict-action-text">Fold K7s, Q5s e T7s no botão</span>
+              <span class="kick">Fix this now</span>
+              <span class="va-text" id="verdict-action-text">Fold K7s, Q5s and T7s on the button</span>
               <span class="va-arrow">→</span>
             </button>
           </div>
 
           <!-- Tournament Financials as clean StatCard tiles -->
           <div class="card">
-            <span class="kick">Financeiro de torneios &amp; tiers</span>
+            <span class="kick">Tournament financials &amp; tiers</span>
             <div class="stat-tile-grid">
               <div class="stat-tile accent-2">
-                <span class="st-k">Buy-in médio (ABI)</span>
+                <span class="st-k">Average buy-in (ABI)</span>
                 <div class="st-v" id="overview-financials-abi">$1.10</div>
-                <span class="st-sub accent-2">Stakes estáveis</span>
+                <span class="st-sub accent-2">Stable stakes</span>
               </div>
               <div class="stat-tile accent-2">
-                <span class="st-k">Taxa ITM</span>
+                <span class="st-k">ITM rate</span>
                 <div class="st-v" id="overview-financials-itm">35.6%</div>
-                <span class="st-sub accent-2">vs 16% do campo</span>
+                <span class="st-sub accent-2">vs 16% field</span>
               </div>
               <div class="stat-tile">
-                <span class="st-k">Total investido</span>
+                <span class="st-k">Total invested</span>
                 <div class="st-v muted" id="overview-financials-invested">$275.00</div>
-                <span class="st-sub">250 torneios</span>
+                <span class="st-sub">250 tournaments</span>
               </div>
               <div class="stat-tile accent">
-                <span class="st-k">Total em prêmios</span>
+                <span class="st-k">Total in prizes</span>
                 <div class="st-v accent" id="overview-financials-prizes">+$663.85</div>
                 <span class="st-sub accent">89 cashes</span>
               </div>
@@ -187,32 +187,32 @@
         <div class="card headline-card span-2">
           <div class="headline-body">
             <div class="headline-text">
-              <span class="kick loss" id="headline-kick">Incidente de destaque · O leak nº1</span>
-              <h3 class="headline-title" id="headline-title">O botão abriu amplo demais</h3>
+              <span class="kick loss" id="headline-kick">Headline incident · The #1 leak</span>
+              <h3 class="headline-title" id="headline-title">The button opened too wide</h3>
               <p class="headline-prose" id="headline-prose">
-                Seu open de botão está em <em>58%</em> contra o alvo GTO de 48–52%. Os 8% inferiores de
-                aberturas — mãos como <em>K7s, Q5s e T7s</em> — sangram em média <em>-28bb/100</em> contra
-                blinds que reagem. Corte essas mãos e o gráfico vira de vez.
+                Your button open sits at <em>58%</em> against the 48–52% GTO target. The bottom 8% of
+                opens — hands like <em>K7s, Q5s and T7s</em> — bleed an average <em>-28bb/100</em> against
+                reactive blinds. Cut those hands and the graph turns for good.
               </p>
               <div class="headline-meta">
                 <span class="hm-cost" id="headline-cost">-28bb/100</span>
                 <span class="hm-sep">·</span>
-                <span id="headline-meta-left">58% open vs 48–52% alvo</span>
+                <span id="headline-meta-left">58% open vs 48–52% target</span>
                 <span class="hm-sep">·</span>
-                <span id="headline-meta-right">1.842 mãos · BTN</span>
+                <span id="headline-meta-right">1,842 hands · BTN</span>
               </div>
               <button class="headline-cta" id="headline-cta" type="button">
-                Revisar mãos no laboratório de ranges <span class="va-arrow">→</span>
+                Review hands in the range lab <span class="va-arrow">→</span>
               </button>
             </div>
 
             <div class="headline-grid-wrap">
               <div class="headline-grid-head">
-                <span class="kick">Grade 13×13 · <span id="headline-grid-pos">BTN</span> RFI</span>
+                <span class="kick">13×13 grid · <span id="headline-grid-pos">BTN</span> RFI</span>
                 <div class="headline-legend">
-                  <span><i class="open"></i>Em range</span>
-                  <span><i class="mix"></i>Misto</span>
-                  <span><i class="dev"></i>Open vazando</span>
+                  <span><i class="open"></i>In range</span>
+                  <span><i class="mix"></i>Mixed</span>
+                  <span><i class="dev"></i>Open leaking</span>
                 </div>
               </div>
               <div class="matrix-grid-box" id="overview-headline-grid">
@@ -226,11 +226,11 @@
         <div class="card chart-card span-2">
           <div class="chart-card-head">
             <div>
-              <span class="kick accent">Progressão de banca</span>
-              <h3 class="chart-card-title">PnL líquido acumulado</h3>
+              <span class="kick accent">Bankroll progression</span>
+              <h3 class="chart-card-title">Cumulative net PnL</h3>
             </div>
             <div class="ranges-tab-menu" id="overview-chart-selector">
-              <button class="ranges-tab-btn active" data-chart="lifetime">Vitalício</button>
+              <button class="ranges-tab-btn active" data-chart="lifetime">Lifetime</button>
               <button class="ranges-tab-btn" data-chart="30d">30d</button>
               <button class="ranges-tab-btn" data-chart="7d">7d</button>
             </div>
@@ -252,26 +252,26 @@
             </svg>
           </div>
           <div class="chart-footer">
-            <span>Sessão inicial</span>
-            <span>Regressão linear: tendência de lucro estável · R² = 0.94</span>
-            <span>Sessão recente</span>
+            <span>First session</span>
+            <span>Linear regression: stable profit trend · R² = 0.94</span>
+            <span>Recent session</span>
           </div>
         </div>
 
         <!-- ===== Stack Depth bands + Blocker simulator ===== -->
         <div class="card span-2 deeper-row">
           <div class="deeper-col">
-            <span class="kick">Bandas de stack &amp; bloqueadores</span>
+            <span class="kick">Stack bands &amp; blockers</span>
             <div class="blocker-leak-grid">
               <div class="leak-kpi-cell loss" id="overview-leak-cell">
-                <span class="kick loss">Pior spot</span>
+                <span class="kick loss">Worst spot</span>
                 <div class="leak-kpi-val loss" id="overview-leak-title">BTN Open</div>
-                <span class="kick leak-kpi-sub" id="overview-leak-impact">-28bb/100 impacto</span>
+                <span class="kick leak-kpi-sub" id="overview-leak-impact">-28bb/100 impact</span>
               </div>
               <div class="leak-kpi-cell" id="overview-gto-cell">
-                <span class="kick">Compliance GTO</span>
+                <span class="kick">GTO compliance</span>
                 <div class="leak-kpi-val" id="overview-gto-compliance">87.5%</div>
-                <span class="kick leak-kpi-sub accent">Alvo &ge; 85%</span>
+                <span class="kick leak-kpi-sub accent">Target &ge; 85%</span>
               </div>
             </div>
 
@@ -286,12 +286,12 @@
 
           <!-- Blocker Calculator Widget -->
           <div class="deeper-col blocker-col">
-            <span class="kick accent">Simulador HUD de bloqueadores</span>
-            <p class="blocker-intro">Escolha suas cartas e o board para calcular as combinações que você bloqueia.</p>
+            <span class="kick accent">Blocker HUD simulator</span>
+            <p class="blocker-intro">Pick your cards and the board to calculate the combos you block.</p>
 
             <div class="blocker-selects">
               <div>
-                <label class="blocker-label">Mão do herói</label>
+                <label class="blocker-label">Hero hand</label>
                 <select id="blocker-hero-hand" class="blocker-select">
                   <option value="AsKs">A♠ K♠</option>
                   <option value="AhKh">A♥ K♥</option>
@@ -302,7 +302,7 @@
                 </select>
               </div>
               <div>
-                <label class="blocker-label">Cartas do board</label>
+                <label class="blocker-label">Board cards</label>
                 <select id="blocker-board" class="blocker-select">
                   <option value="JsTs4h">J♠ T♠ 4♥</option>
                   <option value="Qs9s2h">Q♠ 9♠ 2♥</option>
@@ -314,17 +314,17 @@
 
             <div class="blocker-results">
               <div>
-                <span class="kick blocker-res-k">Nut flush draws bloqueados</span>
+                <span class="kick blocker-res-k">Nut flush draws blocked</span>
                 <div class="blocker-res-v accent" id="blocker-flush-val">62.5%</div>
               </div>
               <div>
-                <span class="kick blocker-res-k">Combinações de sequência</span>
+                <span class="kick blocker-res-k">Straight combinations</span>
                 <div class="blocker-res-v accent-2" id="blocker-straight-val">6 combos</div>
               </div>
               <div class="blocker-rating">
-                <span class="kick blocker-res-k">Rating combinatório de bloqueio</span>
+                <span class="kick blocker-res-k">Blocker combinatorics rating</span>
                 <div class="blocker-rating-desc" id="blocker-rating-desc">
-                  Ter <b>A♠ K♠</b> bloqueia <span class="accent">62.5%</span> dos combos de nut flush do vilão num board <span class="accent-2">J♠ T♠ 4♥</span>. Capacidade de exploit de elite.
+                  Holding <b>A♠ K♠</b> blocks <span class="accent">62.5%</span> of villain's nut-flush combos on a <span class="accent-2">J♠ T♠ 4♥</span> board. Elite exploit capability.
                 </div>
               </div>
             </div>
@@ -335,16 +335,16 @@
         <div class="card position-heatmap-card span-2">
           <div class="heatmap-head">
             <div>
-              <span class="kick accent">Telemetria do anel 6-max</span>
-              <h3 class="heatmap-title">Mapa de calor de lucratividade posicional</h3>
+              <span class="kick accent">6-max ring telemetry</span>
+              <h3 class="heatmap-title">Positional profitability heatmap</h3>
             </div>
-            <span class="kick">Clique num assento para inspecionar</span>
+            <span class="kick">Click a seat to inspect</span>
           </div>
 
           <div class="heatmap-layout">
             <div class="felt-ring">
               <div class="felt-table">
-                <span class="kick felt-lbl">Mesa de feltro</span>
+                <span class="kick felt-lbl">Felt table</span>
               </div>
               <button class="heatmap-seat-btn active seat-btn pos-btn" data-pos="BTN">BTN<br>-28.0bb</button>
               <button class="heatmap-seat-btn seat-sb pos-sb" data-pos="SB">SB<br>-8.4bb</button>
@@ -366,18 +366,18 @@
                   <div class="inspect-v" id="inspect-pfr-val">22.1%</div>
                 </div>
                 <div>
-                  <span class="kick inspect-k">bb/100 lucro</span>
+                  <span class="kick inspect-k">bb/100 profit</span>
                   <div class="inspect-v loss" id="inspect-profit-val">-28.0 bb</div>
                 </div>
                 <div>
-                  <span class="kick inspect-k">Volume de mãos</span>
-                  <div class="inspect-v" id="inspect-volume-val">1,842 mãos</div>
+                  <span class="kick inspect-k">Hand volume</span>
+                  <div class="inspect-v" id="inspect-volume-val">1,842 hands</div>
                 </div>
               </div>
               <div class="inspect-insight">
-                <span class="kick inspect-k">Insight do coach</span>
+                <span class="kick inspect-k">Coach insight</span>
                 <p id="inspect-insight-val">
-                  Abrindo holdings do fundo do range pré-flop. Blinds estão apertando agressivamente. Corte opens K8s/Q6s.
+                  Opening bottom-of-range holdings preflop. The blinds are tightening aggressively. Cut K8s/Q6s opens.
                 </p>
               </div>
             </div>
@@ -386,7 +386,7 @@
 
         <!-- ===== Active Alert Log Drawer ===== -->
         <div class="card alert-log-card span-2">
-          <span class="kick accent">Log de alertas ativos &amp; correções</span>
+          <span class="kick accent">Active alert log &amp; fixes</span>
           <div class="alert-list" id="overview-alerts-list">
             <!-- alerts rendered by radar.js -->
           </div>
@@ -394,7 +394,7 @@
 
         <!-- ===== Predators & Prey ===== -->
         <div class="card span-2">
-          <span class="kick">Predadores &amp; presas recentes</span>
+          <span class="kick">Recent predators &amp; prey</span>
           <div class="predator-list" id="overview-predators-list">
             <!-- rendered by radar.js -->
           </div>

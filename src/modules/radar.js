@@ -213,10 +213,10 @@ function calculateBlockers(handVal, boardVal) {
     const flushValEl = document.getElementById('blocker-flush-val');
     const straightValEl = document.getElementById('blocker-straight-val');
     const descEl = document.getElementById('blocker-rating-desc');
-    if (flushValEl) flushValEl.innerText = 'Conflito';
-    if (straightValEl) straightValEl.innerText = 'Conflito';
+    if (flushValEl) flushValEl.innerText = 'Conflict';
+    if (straightValEl) straightValEl.innerText = 'Conflict';
     if (descEl) {
-      descEl.innerHTML = `<span style="color: var(--loss); font-weight: 700;">Carta duplicada:</span> a mão do herói e o board compartilham a carta <span style="color: var(--fg); font-weight:700;">${formattedOverlap}</span>. Escolha um board ou mão diferente.`;
+      descEl.innerHTML = `<span style="color: var(--loss); font-weight: 700;">Duplicate card:</span> the hero hand and the board share the card <span style="color: var(--fg); font-weight:700;">${formattedOverlap}</span>. Pick a different board or hand.`;
     }
     return;
   }
@@ -352,11 +352,11 @@ function calculateBlockers(handVal, boardVal) {
   let ratingDesc = '';
   const flushPercent = parseFloat(flushValText);
   if (flushValText === '100%' || blockedStraightDrawCombos >= 15) {
-    ratingDesc = `${handHtml} bloqueia <span style="color: var(--accent); font-weight:700;">${flushValText}</span> dos draws de nut flush do vilão e <span style="color: var(--accent-2); font-weight:700;">${blockedStraightDrawCombos}</span> combinações de sequência no board ${boardHtml}. Capacidade de exploração elite.`;
+    ratingDesc = `${handHtml} blocks <span style="color: var(--accent); font-weight:700;">${flushValText}</span> of villain's nut-flush draws and <span style="color: var(--accent-2); font-weight:700;">${blockedStraightDrawCombos}</span> straight combinations on the ${boardHtml} board. Elite exploit capability.`;
   } else if (flushPercent > 0 || blockedStraightDrawCombos > 5) {
-    ratingDesc = `${handHtml} bloqueia <span style="color: var(--accent); font-weight:700;">${flushValText}</span> dos draws de nut flush do vilão e <span style="color: var(--accent-2); font-weight:700;">${blockedStraightDrawCombos}</span> combinações de sequência no board ${boardHtml}. Bloqueadores defensivos fortes.`;
+    ratingDesc = `${handHtml} blocks <span style="color: var(--accent); font-weight:700;">${flushValText}</span> of villain's nut-flush draws and <span style="color: var(--accent-2); font-weight:700;">${blockedStraightDrawCombos}</span> straight combinations on the ${boardHtml} board. Strong defensive blockers.`;
   } else {
-    ratingDesc = `${handHtml} tem impacto mínimo de bloqueio no board ${boardHtml} (<span style="color: var(--accent);">${flushValText}</span> nut flush, <span style="color: var(--accent-2);">${blockedStraightDrawCombos}</span> combos de sequência). Perfil de bloqueio padrão.`;
+    ratingDesc = `${handHtml} has minimal blocker impact on the ${boardHtml} board (<span style="color: var(--accent);">${flushValText}</span> nut flush, <span style="color: var(--accent-2);">${blockedStraightDrawCombos}</span> straight combos). Standard blocker profile.`;
   }
 
   if (ratingDescEl) ratingDescEl.innerHTML = ratingDesc;
@@ -430,14 +430,14 @@ function renderOverview() {
 
   if (subtitleEl) {
     subtitleEl.innerText = isAll
-      ? 'Veredito de readiness de stake, leak nº1 e tendência do torneio a partir dos históricos importados.'
-      : `Análise granular da sessão: ${data.date} (${data.time})`;
+      ? 'Stake-readiness verdict, the #1 leak and tournament trend from your imported hand histories.'
+      : `Granular session analysis: ${data.date} (${data.time})`;
   }
 
   if (pnlKick) {
     pnlKick.innerText = isAll
-      ? `Lucro líquido vitalício · ${data.tournaments} torneios`
-      : `Lucro líquido da sessão · ${data.tournaments} torneios`;
+      ? `Lifetime net profit · ${data.tournaments} tournaments`
+      : `Session net profit · ${data.tournaments} tournaments`;
   }
 
   if (pnlNum) {
@@ -507,15 +507,15 @@ function renderOverview() {
   const chipsEl = document.getElementById('overview-chips-value');
   const winrateEl = document.getElementById('overview-winrate-value');
   if (chipsEl) {
-    countUp(chipsEl, data.chips, { sign: true, suffixHtml: ' <span class="cents">fichas</span>' });
+    countUp(chipsEl, data.chips, { sign: true, suffixHtml: ' <span class="cents">chips</span>' });
   }
   if (winrateEl) {
     if (isAll) {
-      winrateEl.innerText = `+${data.bb100.toFixed(2)} bb/100 de win rate`;
+      winrateEl.innerText = `+${data.bb100.toFixed(2)} bb/100 win rate`;
       winrateEl.style.color = 'var(--accent)';
     } else {
       const isPos = data.bb100 >= 0;
-      winrateEl.innerText = `${isPos ? '+' : ''}${data.bb100.toFixed(1)} bb na sessão`;
+      winrateEl.innerText = `${isPos ? '+' : ''}${data.bb100.toFixed(1)} bb this session`;
       winrateEl.style.color = isPos ? 'var(--accent)' : 'var(--loss)';
     }
   }
@@ -528,8 +528,8 @@ function renderOverview() {
 
   if (leakTitle && leakImpact) {
     if (isAll) {
-      leakTitle.innerText = 'Abertura BTN';
-      leakImpact.innerText = '-28bb/100 de impacto';
+      leakTitle.innerText = 'BTN open';
+      leakImpact.innerText = '-28bb/100 impact';
       if (leakCell) leakCell.style.borderLeftColor = 'var(--loss)';
     } else if (data.alerts && data.alerts.length > 0) {
       const topAlert = data.alerts[0];
@@ -537,7 +537,7 @@ function renderOverview() {
       leakImpact.innerText = topAlert.title.substring(topAlert.title.indexOf('('));
       if (leakCell) leakCell.style.borderLeftColor = topAlert.severity === 'loss' ? 'var(--loss)' : 'var(--warn)';
     } else {
-      leakTitle.innerText = 'Nenhum';
+      leakTitle.innerText = 'None';
       leakImpact.innerText = 'Zero leaks';
       if (leakCell) leakCell.style.borderLeftColor = 'var(--accent)';
     }
@@ -570,7 +570,7 @@ function renderOverview() {
     alertsContainer.innerHTML = '';
     const alertsToDraw = isAll ? state.lifetime.alerts : data.alerts;
     if (!alertsToDraw || alertsToDraw.length === 0) {
-      alertsContainer.innerHTML = `<div class="alerts-empty">Nenhum leak pré-flop ativo nesta sessão.</div>`;
+      alertsContainer.innerHTML = `<div class="alerts-empty">No active preflop leaks in this session.</div>`;
     } else {
       alertsToDraw.forEach(alert => {
         const row = document.createElement('div');
@@ -583,7 +583,7 @@ function renderOverview() {
               <span class="alert-dot"></span>
               <span class="alert-title">${alert.title}</span>
             </div>
-            <span class="kick alert-expand">Expandir correção</span>
+            <span class="kick alert-expand">Expand fix</span>
           </button>
           <div class="alert-body">
             <p>${alert.body}</p>
@@ -600,14 +600,14 @@ function renderOverview() {
           if (isHidden) {
             body.style.display = 'block';
             gsap.fromTo(body, { height: 0, opacity: 0 }, { height: 'auto', opacity: 1, duration: 0.3 });
-            btn.querySelector('.kick').innerText = 'Recolher';
+            btn.querySelector('.kick').innerText = 'Collapse';
           } else {
             gsap.to(body, {
               height: 0, opacity: 0, duration: 0.2, onComplete: () => {
                 body.style.display = 'none';
               }
             });
-            btn.querySelector('.kick').innerText = 'Expandir correção';
+            btn.querySelector('.kick').innerText = 'Expand fix';
           }
         });
       });
@@ -691,15 +691,15 @@ function renderVerdict(isAll, data) {
     const topAlert = data.alerts && data.alerts[0];
     const good = data.pnl >= 0 && data.compliance >= 85;
     v = {
-      reco: good ? 'Sessão dentro do plano' : 'Sessão para revisar',
+      reco: good ? 'Session on plan' : 'Session to review',
       recoClass: good ? 'hold' : 'down',
       readiness: Math.round(data.compliance),
-      confidence: good ? 'Compliance forte' : 'Compliance abaixo do alvo',
+      confidence: good ? 'Strong compliance' : 'Compliance below target',
       roiLabel: `${data.bb100 >= 0 ? '+' : ''}${data.bb100.toFixed(1)} bb/100`,
-      profitLabel: `${data.pnl >= 0 ? '+' : ''}$${data.pnl.toFixed(2)} na sessão`,
-      blockerTitle: topAlert ? topAlert.title : 'Sem leaks pré-flop',
+      profitLabel: `${data.pnl >= 0 ? '+' : ''}$${data.pnl.toFixed(2)} this session`,
+      blockerTitle: topAlert ? topAlert.title : 'No preflop leaks',
       blockerDetail: topAlert ? topAlert.body : data.insight,
-      action: topAlert ? 'Abrir o laboratório de leaks' : 'Continuar o plano atual',
+      action: topAlert ? 'Open the leak lab' : 'Continue the current plan',
     };
   }
 
@@ -710,7 +710,7 @@ function renderVerdict(isAll, data) {
   }
   const readyEl = document.getElementById('verdict-readiness');
   if (readyEl) readyEl.innerHTML = `${v.readiness}<small>/100</small>`;
-  setText('verdict-confidence', `Confiança: ${v.confidence}`);
+  setText('verdict-confidence', `Confidence: ${v.confidence}`);
   setText('verdict-roi', v.roiLabel);
   setText('verdict-profit', v.profitLabel);
   setText('verdict-blocker-title', v.blockerTitle);
@@ -730,25 +730,25 @@ function renderHeadline(isAll, data) {
     const topAlert = data.alerts && data.alerts[0];
     if (!topAlert) {
       h = {
-        kick: 'Incidente de destaque · Sessão limpa',
-        title: 'Nenhum leak pré-flop nesta sessão',
+        kick: 'Headline incident · Clean session',
+        title: 'No preflop leaks this session',
         pos: 'BTN', scenario: 'rfi',
         prose: data.insight,
         costBb: '0bb',
         offending: [],
         metaLeft: `Compliance ${data.compliance.toFixed(1)}%`,
-        metaRight: `${data.hands} mãos`,
+        metaRight: `${data.hands} hands`,
       };
     } else {
       h = {
-        kick: 'Incidente de destaque · Leak da sessão',
+        kick: 'Headline incident · Session leak',
         title: topAlert.title,
         pos: 'BTN', scenario: 'rfi',
         prose: topAlert.body,
         costBb: '—',
         offending: state.lifetime.headline.offending,
-        metaLeft: `Sessão #${data.num}`,
-        metaRight: `${data.hands} mãos`,
+        metaLeft: `Session #${data.num}`,
+        metaRight: `${data.hands} hands`,
       };
     }
   }

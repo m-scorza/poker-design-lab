@@ -41,28 +41,28 @@ export const state = {
     worstResult: -32.40,
     // "30-second answer" verdict (modelled on the real ValueSnapshotCard)
     verdict: {
-      reco: 'Subir de stake',
+      reco: 'Move up in stakes',
       recoClass: 'up',          // up | hold | down | sample
       readiness: 78,            // 0-100
-      confidence: 'Alta',
+      confidence: 'High',
       roiLabel: '+141.4% ROI',
-      profitLabel: '+$388.85 acumulado',
-      blockerTitle: 'Abertura de BTN ampla demais',
-      blockerDetail: 'O fundo do range de botão custa -28bb/100 contra blinds ativos.',
-      action: 'Fold K7s, Q5s e T7s no botão',
+      profitLabel: '+$388.85 cumulative',
+      blockerTitle: 'BTN open range too wide',
+      blockerDetail: 'The bottom of your button range costs -28bb/100 against active blinds.',
+      action: 'Fold K7s, Q5s and T7s on the button',
       actionTab: 'leaks'
     },
     // "Headline Incident" — the #1 leak told as editorial prose + the offending hands
     headline: {
-      kick: 'Incidente de destaque · O leak nº1',
-      title: 'O botão abriu amplo demais',
+      kick: 'Headline incident · The #1 leak',
+      title: 'The button opened too wide',
       pos: 'BTN',
       scenario: 'rfi',
-      prose: 'Seu open de botão está em <em>58%</em> contra o alvo GTO de 48–52%. Os 8% inferiores de aberturas — mãos como <em>K7s, Q5s e T7s</em> — sangram em média <em>-28bb/100</em> contra blinds que reagem. Corte essas mãos e o gráfico vira de vez.',
+      prose: 'Your button open sits at <em>58%</em> against the 48–52% GTO target. The bottom 8% of opens — hands like <em>K7s, Q5s and T7s</em> — bleed an average <em>-28bb/100</em> against reactive blinds. Cut those hands and the graph turns for good.',
       costBb: '-28bb/100',
       offending: ['K7s', 'Q5s', 'T7s', 'Q4s', 'J6s', 'T6s', 'K3o', 'Q7o'],
-      metaLeft: '58% open vs 48–52% alvo',
-      metaRight: '1.842 mãos · BTN',
+      metaLeft: '58% open vs 48–52% target',
+      metaRight: '1,842 hands · BTN',
       actionTab: 'ranges'
     },
     nemeses: [
@@ -118,7 +118,7 @@ export const state = {
       chips: 14200,
       nemesis: 'villain_crusher',
       nemesisLoss: -32.0,
-      insight: 'Você manteve a compliance de abertura GTO em 88,5%. As ações no turn ficaram estáveis, mas revise as defesas de blind contra aberturas tardias.',
+      insight: 'You held GTO open compliance at 88.5%. Turn actions stayed steady, but review your blind defenses against late-position opens.',
       alerts: [
         {
           id: 'alert-sb-def',
@@ -161,7 +161,7 @@ export const state = {
       chips: -24800,
       nemesis: 'fish_king_22',
       nemesisLoss: -78.0,
-      insight: 'A defesa de blinds foi ampla demais contra aberturas de HJ/CO. Reavalie os critérios de fold no SB.',
+      insight: 'Blind defense was too wide against HJ/CO opens. Re-evaluate your SB folding thresholds.',
       alerts: [
         {
           id: 'alert-btn-rfi',
@@ -204,7 +204,7 @@ export const state = {
       chips: 38400,
       nemesis: 'shark_reg',
       nemesisLoss: -18.4,
-      insight: 'Os ranges de pré-flop foram seguidos perfeitamente e os sizings de aposta por valor foram ótimos.',
+      insight: 'Preflop ranges were followed perfectly and value-bet sizings were excellent.',
       alerts: [],
       stackBands: [
         { label: '<10bb (push)', value: 500, width: 10, class: '' },
