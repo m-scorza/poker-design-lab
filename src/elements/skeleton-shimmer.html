@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Skeleton Shimmer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --panel: rgba(13, 17, 25, 0.6);
+      --border: rgba(255, 255, 255, 0.06);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --pos: #5ec98f;
+      --neg: #ef7c74;
+      --fg: #f3f4f6;
+      --fg-2: #c3cad9;
+      --fg-3: #8892b0;
+      --fg-4: #5a607a;
+      --skl: rgba(255,255,255,0.05);
+      --skl-hi: rgba(255,255,255,0.13);
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-3); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { width: 100%; max-width: 760px; }
+    h1 { font-family: var(--display); font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; text-align: center; }
+    .sub { color: var(--fg-3); margin: 0 0 26px; font-size: 14px; text-align: center; }
+    .toolbar { display: flex; justify-content: center; margin-bottom: 26px; }
+    .toggle { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); background: rgba(0,240,255,0.06); border: 1px solid rgba(0,240,255,0.25); padding: 10px 18px; border-radius: 9px; cursor: pointer; }
+    .toggle:hover { background: rgba(0,240,255,0.12); }
+
+    .panels { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 18px; }
+    .panel.full { grid-column: span 2; }
+    .panel-eye { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-4); margin-bottom: 14px; }
+
+    /* shimmer primitive */
+    .sk { position: relative; overflow: hidden; background: var(--skl); border-radius: 6px; }
+    .sk::after {
+      content: ''; position: absolute; inset: 0; transform: translateX(-100%);
+      background: linear-gradient(90deg, transparent, var(--skl-hi), transparent);
+      animation: shimmer 1.4s ease-in-out infinite;
+    }
+    @keyframes shimmer { to { transform: translateX(100%); } }
+    .sk.circle { border-radius: 50%; }
+    .line { height: 11px; margin-bottom: 9px; }
+    .w90 { width: 90%; } .w70 { width: 70%; } .w50 { width: 50%; } .w40 { width: 40%; } .w30 { width: 30%; }
+
+    /* stat tiles skeleton */
+    .stat-row { display: flex; gap: 10px; }
+    .stat-row .tile { flex: 1; }
+    .tile .sk { margin-bottom: 8px; }
+
+    /* card with avatar */
+    .av-row { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; }
+    .av { width: 42px; height: 42px; flex: none; }
+    .av-meta { flex: 1; }
+
+    /* table rows */
+    .trow { display: grid; grid-template-columns: 28px 1fr 80px 80px; gap: 12px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--border); }
+
+    /* loaded (real) content, hidden until toggled */
+    .loaded { display: none; }
+    body.ready .skeleton { display: none; }
+    body.ready .loaded { display: block; }
+    .real-line { font-size: 13px; color: var(--fg-2); margin-bottom: 8px; }
+    .real-h { font-family: var(--display); font-size: 17px; font-weight: 700; }
+    .real-stat { font-family: var(--mono); }
+    .real-stat .k { font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-4); }
+    .real-stat .v { font-size: 22px; margin-top: 3px; }
+    .real-trow { display: grid; grid-template-columns: 28px 1fr 80px 80px; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 12px; color: var(--fg-3); }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Skeleton Shimmer</h1>
+    <p class="sub">Placeholder scaffolds with a sweeping highlight while data loads — stat tiles, a dossier card and a table. Toggle to swap skeletons for the resolved content.</p>
+    <div class="toolbar"><button class="toggle" id="toggle">Toggle loaded state</button></div>
+
+    <div class="panels">
+      <!-- stat tiles -->
+      <div class="panel">
+        <div class="panel-eye">Lifetime scorecard</div>
+        <div class="skeleton">
+          <div class="stat-row">
+            <div class="tile"><div class="sk line w50"></div><div class="sk line w70" style="height:20px"></div></div>
+            <div class="tile"><div class="sk line w50"></div><div class="sk line w70" style="height:20px"></div></div>
+            <div class="tile"><div class="sk line w50"></div><div class="sk line w70" style="height:20px"></div></div>
+          </div>
+        </div>
+        <div class="loaded">
+          <div class="stat-row">
+            <div class="tile real-stat"><div class="k">Hands</div><div class="v">10,716</div></div>
+            <div class="tile real-stat"><div class="k">ROI</div><div class="v" style="color:var(--pos)">141%</div></div>
+            <div class="tile real-stat"><div class="k">Range</div><div class="v" style="color:var(--accent)">91%</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- dossier card -->
+      <div class="panel">
+        <div class="panel-eye">Villain dossier</div>
+        <div class="skeleton">
+          <div class="av-row"><div class="sk circle av"></div><div class="av-meta"><div class="sk line w70"></div><div class="sk line w40"></div></div></div>
+          <div class="sk line w90"></div><div class="sk line w90"></div><div class="sk line w50"></div>
+        </div>
+        <div class="loaded">
+          <div class="av-row"><div class="av sk" style="background:rgba(239,124,116,0.18);border-radius:50%"></div><div class="av-meta"><div class="real-h">reg_grinder_22</div><div class="real-line" style="color:var(--neg)">Predator · LAG</div></div></div>
+          <div class="real-line">Opens wide from late position and 3-bets light. Flat your value, avoid bloating pots out of position.</div>
+        </div>
+      </div>
+
+      <!-- table -->
+      <div class="panel full">
+        <div class="panel-eye">High-impact hands</div>
+        <div class="skeleton">
+          <div class="trow"><div class="sk line" style="margin:0"></div><div class="sk line w70" style="margin:0"></div><div class="sk line" style="margin:0"></div><div class="sk line" style="margin:0"></div></div>
+          <div class="trow"><div class="sk line" style="margin:0"></div><div class="sk line w90" style="margin:0"></div><div class="sk line" style="margin:0"></div><div class="sk line" style="margin:0"></div></div>
+          <div class="trow"><div class="sk line" style="margin:0"></div><div class="sk line w50" style="margin:0"></div><div class="sk line" style="margin:0"></div><div class="sk line" style="margin:0"></div></div>
+        </div>
+        <div class="loaded">
+          <div class="real-trow"><span>BTN</span><span>K7s · open out of range</span><span style="color:var(--neg)">−18.0</span><span>100bb</span></div>
+          <div class="real-trow"><span>CO</span><span>AJo · 3-bet vs MP</span><span style="color:var(--pos)">+24.5</span><span>62bb</span></div>
+          <div class="real-trow"><span>BB</span><span>T9s · defend vs 2.5x</span><span style="color:var(--pos)">+11.2</span><span>48bb</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    const toggle = document.getElementById('toggle');
+    toggle.addEventListener('click', () => document.body.classList.toggle('ready'));
+  </script>
+</body>
+</html>

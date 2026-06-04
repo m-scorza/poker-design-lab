@@ -74,6 +74,9 @@ status calls; Claude defaults new bricks to `new`.
 | Slide-in Drawer | `drawer-slide.html` | Overlays | new | net-new (filter panel; blob-safe scrim) |
 | Command Palette | `command-palette.html` | Overlays | new | net-new (⌘K fuzzy filter + keyboard nav) |
 | Tooltip & Popover | `tooltip-popover.html` | Overlays | new | net-new (auto-flip placement + JS rect positioning) |
+| Cinematic Progress | `progress-cinematic.html` | Loaders | new | net-new (mirrors app `#loader` import bar) |
+| Spinner Set | `spinners.html` | Loaders | new | net-new (8 pure-CSS indeterminate loaders) |
+| Skeleton Shimmer | `skeleton-shimmer.html` | Loaders | new | net-new (shimmer placeholders + loaded-state toggle) |
 
 ## Archive-only (NOT in the current system — preserved, pull forward on demand)
 
