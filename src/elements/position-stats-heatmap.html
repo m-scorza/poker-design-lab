@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Positional Stats Heatmap</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --panel: rgba(13, 17, 25, 0.65);
+      --border: rgba(255, 255, 255, 0.06);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --accent-2: #00FF87;
+      --pos: #5ec98f;
+      --neg: #ef7c74;
+      --warn: #e8c468;
+      --fg: #f3f4f6;
+      --fg-2: #c3cad9;
+      --fg-3: #8892b0;
+      --fg-4: #5a607a;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-3); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { width: 100%; max-width: 880px; }
+    h1 { font-family: var(--display); font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; text-align: center; }
+    .sub { color: var(--fg-3); text-align: center; margin: 0 0 30px; font-size: 14px; }
+
+    .card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 22px 24px; backdrop-filter: blur(8px); }
+    .hm-h { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+    .hm-t { font-family: var(--mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+    .hm-sub { font-family: var(--mono); font-size: 11px; color: var(--fg-3); }
+    .legend { margin-left: auto; display: flex; gap: 12px; align-items: center; font-family: var(--mono); font-size: 10px; color: var(--fg-3); }
+    .legend .ramp { display: inline-flex; height: 11px; width: 90px; border-radius: 3px; overflow: hidden; }
+    .legend .ramp i { flex: 1; }
+
+    .grid { display: grid; grid-template-columns: 150px repeat(8, 1fr); gap: 3px; }
+    .grid > div { padding: 8px 6px; font-family: var(--mono); font-size: 10.5px; text-align: center; }
+    .corner { background: transparent; }
+    .col-h { color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.06em; }
+    .row-h { color: var(--fg-2); text-align: left; white-space: nowrap; }
+    .cell {
+      border-radius: 3px; cursor: pointer; color: #04141a; font-weight: 600; min-height: 34px;
+      display: grid; place-items: center;
+      transition: transform 0.15s cubic-bezier(0.19,1,0.22,1), box-shadow 0.15s ease;
+    }
+    .cell:hover { transform: scale(1.12); z-index: 5; position: relative; box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
+    .cell.sel { outline: 2px solid var(--fg); outline-offset: 1px; }
+
+    .metric-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
+    .mtab { font-family: var(--mono); font-size: 11px; padding: 7px 13px; border-radius: 8px; cursor: pointer; color: var(--fg-3); background: rgba(255,255,255,0.03); border: 1px solid var(--border); }
+    .mtab.on { color: var(--accent); border-color: var(--accent); background: rgba(0,240,255,0.07); }
+
+    .caption { margin-top: 16px; padding: 13px 15px; border-radius: 9px; background: rgba(0,240,255,0.05); border: 1px solid rgba(0,240,255,0.18); font-family: var(--mono); font-size: 12px; color: var(--fg-2); min-height: 42px; display: flex; align-items: center; gap: 10px; }
+    .caption .pin { color: var(--accent); }
+    .caption b { color: var(--fg); }
+    .caption .tag { margin-left: auto; font-size: 10px; padding: 2px 8px; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Positional Stats Heatmap</h1>
+    <p class="sub">Hero's core preflop frequencies graded by seat. Switch metric to recolor the grid against its target band — green sits on target, amber drifts, red is a leak.</p>
+
+    <div class="card">
+      <div class="metric-tabs" id="tabs">
+        <button class="mtab on" data-m="vpip">VPIP</button>
+        <button class="mtab" data-m="pfr">PFR</button>
+        <button class="mtab" data-m="threebet">3-bet</button>
+        <button class="mtab" data-m="fold">Fold to steal</button>
+      </div>
+      <div class="hm-h">
+        <span class="hm-t" id="metric-name">VPIP · by position</span>
+        <span class="hm-sub" id="metric-target">target band 18–30%</span>
+        <div class="legend"><span>off</span><span class="ramp"><i style="background:#ef7c74"></i><i style="background:#e8c468"></i><i style="background:#5ec98f"></i></span><span>on target</span></div>
+      </div>
+      <div class="grid" id="grid"></div>
+      <div class="caption" id="caption"><span class="pin">◇</span><span>Hover a cell to read the seat's frequency and how it sits against the target.</span></div>
+    </div>
+  </div>
+
+  <script type="module">
+    const POS = ['UTG', 'UTG+1', 'MP', 'HJ', 'CO', 'BTN', 'SB', 'BB'];
+    // per-metric: values by position + a [lo,hi] on-target band (in %)
+    const METRICS = {
+      vpip:     { name: 'VPIP · by position', band: [16, 30], vals: [14, 15, 18, 24, 31, 44, 38, 62] },
+      pfr:      { name: 'PFR · by position', band: [12, 26], vals: [13, 14, 16, 21, 28, 40, 33, 14] },
+      threebet: { name: '3-bet % · by position', band: [5, 11], vals: [4, 5, 6, 7, 9, 12, 14, 8] },
+      fold:     { name: 'Fold to steal · by position', band: [40, 60], vals: [null, null, null, null, null, null, 52, 66] },
+    };
+    const grid = document.getElementById('grid');
+    const caption = document.getElementById('caption');
+    const metricName = document.getElementById('metric-name');
+    const metricTarget = document.getElementById('metric-target');
+    let current = 'vpip';
+
+    // distance from target band → 0 (on target) .. 1 (far off) → color
+    function gradeColor(v, band) {
+      if (v == null) return { bg: 'rgba(255,255,255,0.04)', score: null };
+      const [lo, hi] = band;
+      let off = 0;
+      if (v < lo) off = (lo - v) / lo;
+      else if (v > hi) off = (v - hi) / hi;
+      off = Math.min(1, off);
+      // green → amber → red as off grows
+      const g = { r: 94, g: 201, b: 143 }, a = { r: 232, g: 196, b: 104 }, r = { r: 239, g: 124, b: 116 };
+      let c;
+      if (off < 0.5) { const t = off / 0.5; c = mix(g, a, t); }
+      else { const t = (off - 0.5) / 0.5; c = mix(a, r, t); }
+      return { bg: `rgb(${c.r},${c.g},${c.b})`, score: off };
+    }
+    function mix(x, y, t) { return { r: Math.round(x.r + (y.r - x.r) * t), g: Math.round(x.g + (y.g - x.g) * t), b: Math.round(x.b + (y.b - x.b) * t) }; }
+
+    function render() {
+      const m = METRICS[current];
+      metricName.textContent = m.name;
+      metricTarget.textContent = `target band ${m.band[0]}–${m.band[1]}%`;
+      grid.innerHTML = '';
+      grid.appendChild(div('corner'));
+      POS.forEach((p) => grid.appendChild(div('col-h', p)));
+      grid.appendChild(div('row-h', m.name.split(' · ')[0]));
+      m.vals.forEach((v, i) => {
+        const { bg, score } = gradeColor(v, m.band);
+        const el = document.createElement('div');
+        el.className = 'cell';
+        el.style.background = bg;
+        el.textContent = v == null ? '·' : v + '%';
+        if (v == null) { el.style.color = 'var(--fg-4)'; el.style.cursor = 'default'; }
+        else el.addEventListener('click', () => select(el, POS[i], v, m.band, score));
+        el.addEventListener('mouseenter', () => { if (v != null) describe(POS[i], v, m.band, score); });
+        grid.appendChild(el);
+      });
+    }
+    function verdict(score) {
+      if (score === 0) return ['on target', 'var(--pos)', 'rgba(94,201,143,0.14)'];
+      if (score < 0.4) return ['slight drift', 'var(--warn)', 'rgba(232,196,104,0.14)'];
+      return ['leak', 'var(--neg)', 'rgba(239,124,116,0.14)'];
+    }
+    function describe(pos, v, band, score) {
+      const [lbl, col, bgc] = verdict(score);
+      const dir = v < band[0] ? 'below' : v > band[1] ? 'above' : 'inside';
+      caption.innerHTML = `<span class="pin">◆</span><span><b>${pos}</b> · ${current.toUpperCase()} <b>${v}%</b> — ${dir} the ${band[0]}–${band[1]}% band</span><span class="tag" style="color:${col};background:${bgc}">${lbl}</span>`;
+    }
+    function select(el, pos, v, band, score) {
+      grid.querySelectorAll('.cell.sel').forEach((c) => c.classList.remove('sel'));
+      el.classList.add('sel'); describe(pos, v, band, score);
+    }
+    function div(cls, text) { const d = document.createElement('div'); d.className = cls; if (text != null) d.textContent = text; return d; }
+
+    document.querySelectorAll('.mtab').forEach((t) => t.addEventListener('click', () => {
+      document.querySelectorAll('.mtab').forEach((x) => x.classList.remove('on'));
+      t.classList.add('on'); current = t.dataset.m; render();
+    }));
+    render();
+  </script>
+</body>
+</html>

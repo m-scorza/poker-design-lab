@@ -82,6 +82,9 @@ status calls; Claude defaults new bricks to `new`.
 | Char Reveal | `char-reveal.html` | Text FX | new | net-new (mask clip + pop-in + scramble settle) |
 | Parallax Depth | `parallax-depth.html` | Scroll & Choreography | new | net-new (per-depth layer translate + masked reveal) |
 | Sticky Stack Cards | `sticky-stack.html` | Scroll & Choreography | new | net-new (sticky pin-and-stack milestone cards) |
+| Positional Stats Heatmap | `position-stats-heatmap.html` | Data Viz | new | net-new (VPIP/PFR/3-bet/fold by seat, target-band grading) |
+| All-in Equity Bar | `equity-bar.html` | Poker-Specific | new | net-new (win/tie/lose split + 4-color combos + board) |
+| EV vs Actual · Variance | `variance-graph.html` | Data Viz | new | net-new (cumulative actual vs EV + ±1σ band + crosshair) |
 
 ## Archive-only (NOT in the current system — preserved, pull forward on demand)
 

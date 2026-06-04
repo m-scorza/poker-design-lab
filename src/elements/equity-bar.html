@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - All-in Equity Bar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --panel: rgba(13, 17, 25, 0.65);
+      --border: rgba(255, 255, 255, 0.06);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --pos: #5ec98f;
+      --neg: #ef7c74;
+      --warn: #e8c468;
+      --tie: #8892b0;
+      --fg: #f3f4f6;
+      --fg-2: #c3cad9;
+      --fg-3: #8892b0;
+      --fg-4: #5a607a;
+      /* card suit colors per spec */
+      --spade: #f3f4f6; --heart: #ef7c74; --diamond: #5aa9ff; --club: #5ec98f;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-3); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { width: 100%; max-width: 720px; }
+    h1 { font-family: var(--display); font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; text-align: center; }
+    .sub { color: var(--fg-3); text-align: center; margin: 0 0 30px; font-size: 14px; }
+
+    .card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 26px; backdrop-filter: blur(8px); }
+    .seats { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 22px; }
+    .seat { flex: 1; }
+    .seat .who { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-4); }
+    .seat.hero .who { color: var(--accent); }
+    .hand { display: flex; gap: 6px; margin-top: 8px; }
+    .seat.villain .hand { justify-content: flex-end; }
+    .pc { width: 40px; height: 56px; border-radius: 6px; background: #0e1217; border: 1px solid var(--border-strong); display: grid; place-items: center; font-family: var(--mono); font-weight: 700; font-size: 19px; position: relative; }
+    .pc .s { position: absolute; bottom: 4px; right: 5px; font-size: 11px; }
+    .s-spade { color: var(--spade); } .s-heart { color: var(--heart); } .s-diamond { color: var(--diamond); } .s-club { color: var(--club); }
+    .vs { font-family: var(--display); font-weight: 800; font-size: 18px; color: var(--fg-4); }
+    .eq-num { font-family: var(--mono); font-size: 30px; font-weight: 500; margin-top: 7px; }
+    .seat.hero .eq-num { color: var(--pos); } .seat.villain .eq-num { color: var(--neg); text-align: right; }
+
+    /* the split bar */
+    .bar { display: flex; height: 30px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-strong); }
+    .bar .seg { display: grid; place-items: center; font-family: var(--mono); font-size: 11px; color: #04141a; font-weight: 600; transition: width 0.8s cubic-bezier(0.19,1,0.22,1); white-space: nowrap; overflow: hidden; }
+    .seg.win  { background: var(--pos); }
+    .seg.tie  { background: var(--tie); }
+    .seg.lose { background: var(--neg); }
+    .bar-key { display: flex; gap: 16px; justify-content: center; margin-top: 12px; font-family: var(--mono); font-size: 11px; color: var(--fg-3); }
+    .bar-key i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
+
+    .board { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border); }
+    .board-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-4); margin-bottom: 10px; text-align: center; }
+    .board-cards { display: flex; gap: 7px; justify-content: center; }
+    .scenarios { display: flex; gap: 8px; justify-content: center; margin-top: 22px; flex-wrap: wrap; }
+    .scn { font-family: var(--mono); font-size: 11px; padding: 8px 14px; border-radius: 8px; cursor: pointer; color: var(--fg-3); background: rgba(255,255,255,0.03); border: 1px solid var(--border); }
+    .scn.on { color: var(--accent); border-color: var(--accent); background: rgba(0,240,255,0.07); }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>All-in Equity Bar</h1>
+    <p class="sub">Hero vs villain at the moment the money goes in — a win / tie / lose split bar with hand combos and the run-out board. Pick a spot to recompute.</p>
+
+    <div class="card">
+      <div class="seats">
+        <div class="seat hero">
+          <div class="who">scorza23 · hero</div>
+          <div class="hand" id="hero-hand"></div>
+          <div class="eq-num"><span id="hero-eq">0</span>%</div>
+        </div>
+        <div class="vs">VS</div>
+        <div class="seat villain">
+          <div class="who">villain</div>
+          <div class="hand" id="villain-hand"></div>
+          <div class="eq-num"><span id="villain-eq">0</span>%</div>
+        </div>
+      </div>
+
+      <div class="bar" id="bar">
+        <div class="seg win" id="seg-win"></div>
+        <div class="seg tie" id="seg-tie"></div>
+        <div class="seg lose" id="seg-lose"></div>
+      </div>
+      <div class="bar-key">
+        <span><i style="background:var(--pos)"></i>hero wins</span>
+        <span><i style="background:var(--tie)"></i>tie</span>
+        <span><i style="background:var(--neg)"></i>villain wins</span>
+      </div>
+
+      <div class="board">
+        <div class="board-lbl" id="board-lbl">preflop · all-in</div>
+        <div class="board-cards" id="board"></div>
+      </div>
+
+      <div class="scenarios" id="scns"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    const SUIT = { s: ['♠', 's-spade'], h: ['♥', 's-heart'], d: ['♦', 's-diamond'], c: ['♣', 's-club'] };
+    function cardEl(code) {
+      const rank = code.slice(0, -1), suit = code.slice(-1);
+      const el = document.createElement('div'); el.className = 'pc';
+      const [glyph, cls] = SUIT[suit];
+      el.innerHTML = `<span class="${cls}">${rank}</span><span class="s ${cls}">${glyph}</span>`;
+      return el;
+    }
+    function setHand(host, cards) { host.innerHTML = ''; cards.forEach((c) => host.appendChild(cardEl(c))); }
+
+    const SCENARIOS = [
+      { name: 'AKs vs QQ · preflop', hero: ['Ah', 'Kh'], villain: ['Qs', 'Qd'], board: [], win: 46, tie: 0.4, lose: 53.6, lbl: 'preflop · all-in' },
+      { name: 'AA vs KK · preflop', hero: ['Ac', 'Ad'], villain: ['Ks', 'Kh'], board: [], win: 81.9, tie: 0.5, lose: 17.6, lbl: 'preflop · all-in' },
+      { name: 'Flush draw vs top pair', hero: ['Jh', 'Th'], villain: ['Ac', 'Qd'], board: ['Ah', '7h', '2c'], win: 45, tie: 0, lose: 55, lbl: 'flop · all-in' },
+      { name: 'Set vs nut-flush draw', hero: ['8c', '8d'], villain: ['Ah', 'Kh'], board: ['8s', '5h', '2h'], win: 66, tie: 1, lose: 33, lbl: 'flop · all-in' },
+    ];
+
+    const heroEq = document.getElementById('hero-eq'), villainEq = document.getElementById('villain-eq');
+    const segWin = document.getElementById('seg-win'), segTie = document.getElementById('seg-tie'), segLose = document.getElementById('seg-lose');
+    const boardLbl = document.getElementById('board-lbl');
+
+    function load(s) {
+      setHand(document.getElementById('hero-hand'), s.hero);
+      setHand(document.getElementById('villain-hand'), s.villain);
+      const board = document.getElementById('board');
+      board.innerHTML = '';
+      if (!s.board.length) { board.innerHTML = '<span style="font-family:var(--mono);color:var(--fg-4);font-size:12px">— no board —</span>'; }
+      else s.board.forEach((c) => board.appendChild(cardEl(c)));
+      boardLbl.textContent = s.lbl;
+      const heroTotal = (s.win + s.tie / 2).toFixed(1);
+      heroEq.textContent = heroTotal;
+      villainEq.textContent = (100 - heroTotal).toFixed(1);
+      // animate from 0
+      segWin.style.width = '0'; segTie.style.width = '0'; segLose.style.width = '0';
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        segWin.style.width = s.win + '%'; segTie.style.width = s.tie + '%'; segLose.style.width = s.lose + '%';
+        segWin.textContent = s.win >= 8 ? s.win + '%' : '';
+        segLose.textContent = s.lose >= 8 ? s.lose + '%' : '';
+      }));
+      // failsafe if rAF paused
+      setTimeout(() => { if (!segWin.style.width || segWin.style.width === '0px') { segWin.style.width = s.win + '%'; segTie.style.width = s.tie + '%'; segLose.style.width = s.lose + '%'; } }, 200);
+    }
+
+    const scns = document.getElementById('scns');
+    SCENARIOS.forEach((s, i) => {
+      const b = document.createElement('button');
+      b.className = 'scn' + (i === 0 ? ' on' : '');
+      b.textContent = s.name;
+      b.addEventListener('click', () => { scns.querySelectorAll('.scn').forEach((x) => x.classList.remove('on')); b.classList.add('on'); load(s); });
+      scns.appendChild(b);
+    });
+    load(SCENARIOS[0]);
+  </script>
+</body>
+</html>

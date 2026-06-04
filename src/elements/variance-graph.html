@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - EV vs Actual Variance</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --panel: rgba(13, 17, 25, 0.65);
+      --border: rgba(255, 255, 255, 0.06);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --accent-2: #00FF87;
+      --pos: #5ec98f;
+      --neg: #ef7c74;
+      --warn: #e8c468;
+      --fg: #f3f4f6;
+      --fg-2: #c3cad9;
+      --fg-3: #8892b0;
+      --fg-4: #5a607a;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-3); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { width: 100%; max-width: 820px; }
+    h1 { font-family: var(--display); font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; text-align: center; }
+    .sub { color: var(--fg-3); text-align: center; margin: 0 0 30px; font-size: 14px; }
+
+    .card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 24px; backdrop-filter: blur(8px); }
+    .legend { display: flex; gap: 18px; align-items: center; margin-bottom: 14px; font-family: var(--mono); font-size: 11px; color: var(--fg-3); flex-wrap: wrap; }
+    .legend .k { display: inline-flex; align-items: center; gap: 7px; }
+    .legend .ln { width: 18px; height: 2px; border-radius: 2px; }
+    .legend .ln.actual { background: var(--accent-2); }
+    .legend .ln.ev { background: var(--accent); border-top: 2px dashed var(--accent); height: 0; }
+    .legend .sw { width: 14px; height: 10px; border-radius: 2px; background: rgba(0,240,255,0.12); border: 1px solid rgba(0,240,255,0.3); }
+    .legend .delta { margin-left: auto; }
+    .legend .delta b { color: var(--pos); }
+
+    svg { width: 100%; height: auto; display: block; }
+    .chart-wrap { position: relative; }
+    .tip { position: absolute; pointer-events: none; transform: translate(-50%, -120%); background: rgba(10,13,18,0.95); border: 1px solid var(--border-strong); border-radius: 8px; padding: 8px 10px; font-family: var(--mono); font-size: 11px; color: var(--fg-2); white-space: nowrap; opacity: 0; transition: opacity 0.12s ease; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+    .tip b { color: var(--fg); }
+    .tip .ev { color: var(--accent); } .tip .ac { color: var(--accent-2); }
+
+    .foot { display: flex; gap: 14px; margin-top: 16px; }
+    .stat { flex: 1; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 11px; padding: 13px 15px; font-family: var(--mono); }
+    .stat .k { font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-4); }
+    .stat .v { font-size: 22px; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>EV vs Actual · Variance</h1>
+    <p class="sub">Cumulative real winnings against all-in-adjusted EV, with a shaded confidence band around the expectation. Where the green runs under the cyan, you ran below expectation.</p>
+
+    <div class="card">
+      <div class="legend">
+        <span class="k"><span class="ln actual"></span>Actual ($)</span>
+        <span class="k"><span class="ln ev"></span>All-in EV ($)</span>
+        <span class="k"><span class="sw"></span>±1σ band</span>
+        <span class="delta">running below EV by <b id="gap">$0</b></span>
+      </div>
+      <div class="chart-wrap" id="wrap">
+        <svg id="svg" viewBox="0 0 800 320" preserveAspectRatio="none" role="img" aria-label="EV vs actual variance graph"></svg>
+        <div class="tip" id="tip"></div>
+      </div>
+      <div class="foot">
+        <div class="stat"><div class="k">Actual</div><div class="v" style="color:var(--accent-2)">+$388</div></div>
+        <div class="stat"><div class="k">All-in EV</div><div class="v" style="color:var(--accent)">+$431</div></div>
+        <div class="stat"><div class="k">Variance gap</div><div class="v" style="color:var(--neg)">−$43</div></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    const W = 800, H = 320, padL = 8, padR = 8, padT = 16, padB = 22;
+    const svg = document.getElementById('svg');
+    const NS = 'http://www.w3.org/2000/svg';
+
+    // synth a 60-point walk: EV trends smoothly up, actual wiggles around it and ends below
+    const N = 60;
+    const ev = [], actual = [], sigma = [];
+    let e = 0, a = 0;
+    for (let i = 0; i < N; i++) {
+      e += 7.2 + Math.sin(i / 7) * 1.4;                 // smooth EV climb
+      a = e - (i / N) * 43 + Math.sin(i / 3) * 22 + Math.cos(i / 5) * 14; // actual: wiggles, ends ~43 under
+      ev.push(e); actual.push(a);
+      sigma.push(16 + i * 0.9);                          // band widens with sample
+    }
+    const maxV = Math.max(...ev.map((v, i) => v + sigma[i])) * 1.05;
+    const minV = Math.min(0, ...actual.map((v, i) => v - sigma[i] * 0.4));
+    const X = (i) => padL + (i / (N - 1)) * (W - padL - padR);
+    const Y = (v) => padT + (1 - (v - minV) / (maxV - minV)) * (H - padT - padB);
+
+    function path(arr) { return arr.map((v, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1)).join(' '); }
+    function bandPath() {
+      const top = ev.map((v, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v + sigma[i]).toFixed(1)).join(' ');
+      const bot = ev.map((v, i) => 'L' + X(N - 1 - i).toFixed(1) + ' ' + Y(ev[N - 1 - i] - sigma[N - 1 - i]).toFixed(1)).join(' ');
+      return top + ' ' + bot + ' Z';
+    }
+    function add(tag, attrs) { const el = document.createElementNS(NS, tag); for (const k in attrs) el.setAttribute(k, attrs[k]); svg.appendChild(el); return el; }
+
+    // zero baseline
+    add('line', { x1: padL, y1: Y(0), x2: W - padR, y2: Y(0), stroke: 'rgba(255,255,255,0.1)', 'stroke-dasharray': '3 4' });
+    // band
+    add('path', { d: bandPath(), fill: 'rgba(0,240,255,0.1)', stroke: 'none' });
+    // EV dashed
+    add('path', { d: path(ev), fill: 'none', stroke: 'var(--accent)', 'stroke-width': 2, 'stroke-dasharray': '5 4', opacity: 0.85 });
+    // actual solid
+    const actualPath = add('path', { d: path(actual), fill: 'none', stroke: 'var(--accent-2)', 'stroke-width': 2.4, 'stroke-linejoin': 'round' });
+    // endpoint dot
+    add('circle', { cx: X(N - 1), cy: Y(actual[N - 1]), r: 4, fill: 'var(--accent-2)' });
+
+    // draw-on animation for the actual line
+    const len = actualPath.getTotalLength ? actualPath.getTotalLength() : 0;
+    if (len) {
+      actualPath.style.strokeDasharray = len; actualPath.style.strokeDashoffset = len;
+      requestAnimationFrame(() => requestAnimationFrame(() => { actualPath.style.transition = 'stroke-dashoffset 1.3s ease'; actualPath.style.strokeDashoffset = '0'; }));
+      setTimeout(() => { actualPath.style.strokeDashoffset = '0'; }, 200); // failsafe
+    }
+
+    // hover crosshair + tooltip
+    const tip = document.getElementById('tip');
+    const wrap = document.getElementById('wrap');
+    const cursor = add('line', { x1: 0, y1: padT, x2: 0, y2: H - padB, stroke: 'rgba(255,255,255,0.18)', opacity: 0 });
+    svg.addEventListener('mousemove', (ev2) => {
+      const rect = svg.getBoundingClientRect();
+      const px = (ev2.clientX - rect.left) / rect.width * W;
+      let i = Math.round((px - padL) / (W - padL - padR) * (N - 1));
+      i = Math.max(0, Math.min(N - 1, i));
+      cursor.setAttribute('x1', X(i)); cursor.setAttribute('x2', X(i)); cursor.setAttribute('opacity', 1);
+      tip.style.opacity = 1;
+      tip.style.left = (X(i) / W * rect.width) + 'px';
+      tip.style.top = (Y(actual[i]) / H * rect.height) + 'px';
+      tip.innerHTML = `<b>hand ${Math.round((i / (N - 1)) * 10716).toLocaleString('en-US')}</b><br><span class="ac">actual $${actual[i].toFixed(0)}</span> · <span class="ev">EV $${ev[i].toFixed(0)}</span>`;
+    });
+    svg.addEventListener('mouseleave', () => { cursor.setAttribute('opacity', 0); tip.style.opacity = 0; });
+
+    // keep the legend gap consistent with the narrative footer (+$431 EV − +$388 actual)
+    document.getElementById('gap').textContent = '$43';
+  </script>
+</body>
+</html>
