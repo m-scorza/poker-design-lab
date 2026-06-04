@@ -26,22 +26,23 @@ export const PALETTES = [
 // combos with a one-line rationale (see docs/TYPOGRAPHY.md). The dock applies a
 // pairing — or a custom per-axis mix — by setting --display / --sans / --mono
 // inline on <body>. No more frozen 7-preset roulette.
+// Serif is intentionally out for now (no Fraunces / Source Serif). A non-serif
+// display + body face can be added here later to restore a third pairing and
+// widen the mix-and-match pool.
 export const FACES = {
   bricolage:   { name: 'Bricolage Grotesque', stack: "'Bricolage Grotesque', system-ui, sans-serif", roles: ['display'],         tag: 'display · grotesque' },
-  fraunces:    { name: 'Fraunces',            stack: "'Fraunces', Georgia, serif",                    roles: ['display'],         tag: 'display · contrast serif' },
   spacegrotesk:{ name: 'Space Grotesk',       stack: "'Space Grotesk', system-ui, sans-serif",        roles: ['display', 'body'], tag: 'display · geometric' },
   hanken:      { name: 'Hanken Grotesk',      stack: "'Hanken Grotesk', system-ui, sans-serif",       roles: ['body'],            tag: 'body · humanist' },
   inter:       { name: 'Inter',               stack: "'Inter', -apple-system, sans-serif",            roles: ['body'],            tag: 'body · neutral' },
-  sourceserif: { name: 'Source Serif 4',      stack: "'Source Serif 4', Georgia, serif",              roles: ['body'],            tag: 'body · reading serif' },
   spacemono:   { name: 'Space Mono',          stack: "'Space Mono', ui-monospace, monospace",         roles: ['mono'],            tag: 'mono · characterful' },
   jetbrains:   { name: 'JetBrains Mono',      stack: "'JetBrains Mono', ui-monospace, monospace",     roles: ['mono'],            tag: 'mono · data' },
 };
 
 // Curated pairings — the front door. `why` is shown on the card.
+// (A third, serif-free pairing slot is open — see note above.)
 export const PAIRINGS = [
-  { id: 'broadsheet', name: 'Broadsheet', display: 'bricolage',    body: 'hanken',      mono: 'spacemono', why: 'Newspaper authority — the Ledger voice.' },
-  { id: 'contrast',   name: 'Contrast',   display: 'fraunces',     body: 'sourceserif', mono: 'jetbrains', why: 'All-serif, premium print feel.' },
-  { id: 'terminal',   name: 'Terminal',   display: 'spacegrotesk', body: 'inter',       mono: 'jetbrains', why: 'Clean, neutral — a precise instrument.' },
+  { id: 'broadsheet', name: 'Broadsheet', display: 'bricolage',    body: 'hanken', mono: 'spacemono', why: 'Newspaper authority — the Ledger voice.' },
+  { id: 'terminal',   name: 'Terminal',   display: 'spacegrotesk', body: 'inter',  mono: 'jetbrains', why: 'Clean, neutral — a precise instrument.' },
 ];
 
 const AXES = ['display', 'body', 'mono'];

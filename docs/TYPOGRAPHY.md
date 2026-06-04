@@ -43,15 +43,17 @@ JetBrains Mono, Space Mono. Candidates from the archive: Playfair Display, Sourc
 | **Hanken Grotesk** | humanist sans | Warm, readable, friendly | **KEEP — primary body.** |
 | **Space Mono** | mono | Characterful, slightly retro; superb for labels | **KEEP — label/kicker system.** |
 | **JetBrains Mono** | mono | Neutral, dense, great for data columns | **KEEP — data/numeral mono.** |
-| **Fraunces** | high-contrast serif | Dramatic, "soft" magazine display | **KEEP — display serif** (the contrast option). |
+| **Fraunces** | high-contrast serif | Dramatic, "soft" magazine display | **OUT** (user call, 2026-06-03). Serif direction dropped for now. |
 | **Space Grotesk** | geometric-ish display | Clean, techy, modern | **KEEP — the "data tool" display.** |
 | **Inter** | neutral grotesk | Invisible, excellent UI body | **KEEP — neutral body** (pairs with Space Grotesk). |
-| **Outfit** | geometric sans | Generic, rounded, forgettable | **DEMOTE.** It's the current default and it's the blandest face we own. |
-| **Source Serif 4** | editorial body serif | Serious, legible long-form serif | **ADD — fills a real hole.** We have *no* reading serif; Fraunces is display-only. |
-| **Playfair Display** | very-high-contrast serif | Dramatic, fashion-mag | **SKIP for now.** Loaded but barely used historically; Fraunces already covers contrast display. Revisit only if Fraunces feels too soft. |
+| **Outfit** | geometric sans | Generic, rounded, forgettable | **DROPPED.** Was the bland default; removed from the payload. |
+| **Source Serif 4** | editorial body serif | Serious, legible long-form serif | **OUT** (user call). Briefly added then removed with the serif direction. |
+| **Playfair Display** | very-high-contrast serif | Dramatic, fashion-mag | **SKIP.** Serif is out. |
 
-Net change to the loaded set: **drop Outfit, add Source Serif 4.** Same family count, more usable range,
-and the payload (see CURATION.md perf note) doesn't grow.
+**Decision (2026-06-03): serif is out for now.** No Fraunces, no Source Serif 4. A non-serif display +
+body face can be added later to restore a third pairing and widen the mix pool. Net loaded set after
+this pass: Bricolage, Hanken, Space Grotesk, Inter, Space Mono, JetBrains — **dropped Outfit, Fraunces,
+Source Serif 4** (lighter payload than before).
 
 ---
 
@@ -64,13 +66,13 @@ you swap display / body / mono independently — so curation is the front door, 
 `display: Bricolage Grotesque · body: Hanken Grotesk · mono: Space Mono`
 Proven in the archive; maximum newspaper identity. This should replace `geometric` as what loads first.
 
-### 2. Contrast — editorial / magazine
-`display: Fraunces · body: Source Serif 4 · mono: JetBrains Mono`
-All-serif voice for a softer, premium-print feel. Showcases the new reading serif.
-
-### 3. Terminal — data tool
+### 2. Terminal — data tool
 `display: Space Grotesk · body: Inter · mono: JetBrains Mono`
-Clean, neutral, "this is a precise instrument." (≈ today's `neogrotesk`, kept for the analytical mood.)
+Clean, neutral, "this is a precise instrument."
+
+### 3. (open slot)
+Reserved for a future **non-serif** display+body pairing once we find faces worth adding. Serif is out
+for now, so the system ships with two pairings + the advanced mix.
 
 **Retire / fold:** `geometric` (generic default → replaced by Broadsheet), `techno` (mono-as-display is a
 novelty — keep mono for labels only), and collapse the overlapping `classic`/`neogrotesk` into the three
@@ -93,7 +95,7 @@ This is the structural change behind your "I want to mix and decide" — the dat
 ## So what
 
 - **Adopt the treatment first** (scale, tracking, mono kickers, tabular nums) — biggest win, font-agnostic.
-- **Default flips to Broadsheet**; drop Outfit, add Source Serif 4; **don't** add Playfair yet.
-- **Three pairings, not seven**, each with a written reason; add an advanced display×body×mono override.
+- **Default flips to Broadsheet**; dropped Outfit/Fraunces/Source Serif 4 (**serif is out**).
+- **Two pairings** (Broadsheet, Terminal) + an advanced display×body×mono override; 3rd slot reserved for a future non-serif pairing.
 - Build order when you're ready: refactor `theme-dock.js` font model (preset → 3 axes) → rewrite the
   `body[data-font]` blocks in `theme-system.css` as the 3 pairings → add the rationale UI in the dock.

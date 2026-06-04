@@ -183,8 +183,7 @@ body[data-color="gold"] {
    3-axis model (display / body / mono) driven by src/modules/theme-dock.js, which
    sets --display / --sans / --mono inline on <body> from a curated pairing or a
    custom mix (see docs/TYPOGRAPHY.md). The :root block above is the Broadsheet
-   first-paint fallback. Curated pairings:
+   first-paint fallback. Curated pairings (serif intentionally out for now):
      · Broadsheet (default) — Bricolage Grotesque / Hanken Grotesk / Space Mono
-     · Contrast            — Fraunces / Source Serif 4 / JetBrains Mono
      · Terminal            — Space Grotesk / Inter / JetBrains Mono
    ========================================================= */
