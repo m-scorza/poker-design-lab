@@ -10,9 +10,18 @@ html, body {
   font-family: var(--sans);
   min-height: 100vh;
   overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
   cursor: default;
   transition: background 0.5s ease, color 0.3s ease;
+  /* Typographic baseline (treatment pass — global, font-agnostic):
+     · tabular-nums so every stat/number has fixed-width figures and columns
+       stop shimmering when values change (the app is number-dense).
+     · optical-sizing lets the variable faces (Bricolage, Inter) adapt to size.
+     · grayscale + legibility smoothing for crisp text on the dark canvas. */
+  font-variant-numeric: tabular-nums;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* Waving 3D math grid canvas background */
