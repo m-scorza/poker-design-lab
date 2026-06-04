@@ -21,35 +21,65 @@ export const PALETTES = [
   { id: 'gold',        name: 'Gold Noir',   grid: '212, 175, 95',  swatch: ['#0a0805', '#D4AF5F', '#D24B4B'] },
 ];
 
-// Each font pairing sets --display / --sans / --mono via a body[data-font] block.
-export const FONTS = [
-  { id: 'geometric',  name: 'Geometric' },
-  { id: 'editorial',  name: 'Editorial' },
-  { id: 'grotesque',  name: 'Grotesque' },
-  { id: 'serif',      name: 'Serif' },
-  { id: 'techno',     name: 'Techno' },
-  { id: 'classic',    name: 'Classic' },
-  { id: 'neogrotesk', name: 'Neo-Grotesk' },
+// Typography is a 3-axis model (display / body / mono). Each FACE is a real font
+// stack tagged with the role(s) it can fill; PAIRINGS are curated, opinionated
+// combos with a one-line rationale (see docs/TYPOGRAPHY.md). The dock applies a
+// pairing — or a custom per-axis mix — by setting --display / --sans / --mono
+// inline on <body>. No more frozen 7-preset roulette.
+export const FACES = {
+  bricolage:   { name: 'Bricolage Grotesque', stack: "'Bricolage Grotesque', system-ui, sans-serif", roles: ['display'],         tag: 'display · grotesque' },
+  fraunces:    { name: 'Fraunces',            stack: "'Fraunces', Georgia, serif",                    roles: ['display'],         tag: 'display · contrast serif' },
+  spacegrotesk:{ name: 'Space Grotesk',       stack: "'Space Grotesk', system-ui, sans-serif",        roles: ['display', 'body'], tag: 'display · geometric' },
+  hanken:      { name: 'Hanken Grotesk',      stack: "'Hanken Grotesk', system-ui, sans-serif",       roles: ['body'],            tag: 'body · humanist' },
+  inter:       { name: 'Inter',               stack: "'Inter', -apple-system, sans-serif",            roles: ['body'],            tag: 'body · neutral' },
+  sourceserif: { name: 'Source Serif 4',      stack: "'Source Serif 4', Georgia, serif",              roles: ['body'],            tag: 'body · reading serif' },
+  spacemono:   { name: 'Space Mono',          stack: "'Space Mono', ui-monospace, monospace",         roles: ['mono'],            tag: 'mono · characterful' },
+  jetbrains:   { name: 'JetBrains Mono',      stack: "'JetBrains Mono', ui-monospace, monospace",     roles: ['mono'],            tag: 'mono · data' },
+};
+
+// Curated pairings — the front door. `why` is shown on the card.
+export const PAIRINGS = [
+  { id: 'broadsheet', name: 'Broadsheet', display: 'bricolage',    body: 'hanken',      mono: 'spacemono', why: 'Newspaper authority — the Ledger voice.' },
+  { id: 'contrast',   name: 'Contrast',   display: 'fraunces',     body: 'sourceserif', mono: 'jetbrains', why: 'All-serif, premium print feel.' },
+  { id: 'terminal',   name: 'Terminal',   display: 'spacegrotesk', body: 'inter',       mono: 'jetbrains', why: 'Clean, neutral — a precise instrument.' },
 ];
 
-const CKEY = 'ledger-color';
-const FKEY = 'ledger-font';
+const AXES = ['display', 'body', 'mono'];
+const VAR = { display: '--display', body: '--sans', mono: '--mono' };
 
-function readKey(key, fallback, list) {
+const CKEY = 'ledger-color';
+const FKEY_AXES = 'ledger-font-axes';   // JSON { display, body, mono } — source of truth
+const FKEY_PAIR = 'ledger-font-pairing'; // active pairing id, or 'custom'
+
+function readColorKey(fallback) {
   try {
-    const v = localStorage.getItem(key);
-    return v && list.some((x) => x.id === v) ? v : fallback;
+    const v = localStorage.getItem(CKEY);
+    return v && PALETTES.some((x) => x.id === v) ? v : fallback;
   } catch {
     return fallback;
   }
+}
+
+// Read saved axes, falling back to the default pairing. Guards against unknown
+// face ids (e.g. after a face is renamed/removed).
+function readAxes() {
+  const def = PAIRINGS[0];
+  const base = { display: def.display, body: def.body, mono: def.mono };
+  try {
+    const saved = JSON.parse(localStorage.getItem(FKEY_AXES) || 'null');
+    if (saved) AXES.forEach((ax) => { if (FACES[saved[ax]] && FACES[saved[ax]].roles.includes(ax)) base[ax] = saved[ax]; });
+  } catch {}
+  return base;
 }
 
 export function initThemeDock() {
   const dock = document.getElementById('theme-dock');
   const toggle = document.getElementById('dock-toggle');
   const colorWrap = document.getElementById('dock-colors');
-  const fontWrap = document.getElementById('dock-fonts');
-  if (!colorWrap || !fontWrap) return;
+  const pairWrap = document.getElementById('dock-pairings');
+  const axesWrap = document.getElementById('dock-axes');
+  const advToggle = document.getElementById('dock-advanced-toggle');
+  if (!colorWrap || !pairWrap || !axesWrap) return;
 
   // Collapsible panel
   if (toggle && dock) {
@@ -71,13 +101,35 @@ export function initThemeDock() {
     toggleChips.forEach((el, i) => { el.style.background = p.swatch[i] || p.swatch[0]; });
   };
 
-  const applyFont = (id) => {
-    const f = FONTS.find((x) => x.id === id) || FONTS[0];
-    document.body.setAttribute('data-font', f.id);
-    try { localStorage.setItem(FKEY, f.id); } catch {}
-    fontWrap.querySelectorAll('.dock-chip').forEach((b) =>
-      b.classList.toggle('active', b.dataset.id === f.id));
+  // --- typography: 3-axis state ---
+  let axes = readAxes();
+
+  // which pairing (if any) exactly matches the current axes?
+  const matchingPairing = () =>
+    PAIRINGS.find((p) => p.display === axes.display && p.body === axes.body && p.mono === axes.mono);
+
+  const apply = () => {
+    AXES.forEach((ax) => document.body.style.setProperty(VAR[ax], FACES[axes[ax]].stack));
+    const pair = matchingPairing();
+    document.body.setAttribute('data-font', pair ? pair.id : 'custom');
+    try {
+      localStorage.setItem(FKEY_AXES, JSON.stringify(axes));
+      localStorage.setItem(FKEY_PAIR, pair ? pair.id : 'custom');
+    } catch {}
+    // reflect state in the UI
+    pairWrap.querySelectorAll('.dock-pairing').forEach((c) =>
+      c.classList.toggle('active', !!pair && c.dataset.id === pair.id));
+    axesWrap.querySelectorAll('.dock-face').forEach((c) =>
+      c.classList.toggle('active', axes[c.dataset.axis] === c.dataset.face));
   };
+
+  const setPairing = (id) => {
+    const p = PAIRINGS.find((x) => x.id === id);
+    if (!p) return;
+    axes = { display: p.display, body: p.body, mono: p.mono };
+    apply();
+  };
+  const setAxis = (axis, faceId) => { axes[axis] = faceId; apply(); };
 
   // --- render color swatches ---
   PALETTES.forEach((p) => {
@@ -94,17 +146,54 @@ export function initThemeDock() {
     colorWrap.appendChild(btn);
   });
 
-  // --- render font chips ---
-  FONTS.forEach((f) => {
+  // --- render curated pairing cards (name + live specimen + rationale) ---
+  PAIRINGS.forEach((p) => {
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'dock-chip';
-    btn.dataset.id = f.id;
-    btn.textContent = f.name;
-    btn.addEventListener('click', () => applyFont(f.id));
-    fontWrap.appendChild(btn);
+    btn.className = 'dock-pairing';
+    btn.dataset.id = p.id;
+    btn.innerHTML =
+      `<span class="dp-spec" style="font-family:${FACES[p.display].stack}">Aa</span>` +
+      `<span class="dp-meta"><span class="dp-name">${p.name}</span>` +
+      `<span class="dp-why">${p.why}</span></span>`;
+    btn.addEventListener('click', () => setPairing(p.id));
+    pairWrap.appendChild(btn);
   });
 
-  applyColor(readKey(CKEY, 'obsidian', PALETTES));
-  applyFont(readKey(FKEY, 'geometric', FONTS));
+  // --- render advanced per-axis pickers ---
+  const AXIS_LABEL = { display: 'Display', body: 'Body', mono: 'Mono' };
+  AXES.forEach((axis) => {
+    const row = document.createElement('div');
+    row.className = 'dock-axis-row';
+    row.innerHTML = `<span class="dock-axis-label">${AXIS_LABEL[axis]}</span>`;
+    const chips = document.createElement('div');
+    chips.className = 'dock-axis-chips';
+    Object.entries(FACES).filter(([, f]) => f.roles.includes(axis)).forEach(([id, f]) => {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'dock-face';
+      chip.dataset.axis = axis;
+      chip.dataset.face = id;
+      chip.title = f.tag;
+      chip.textContent = f.name;
+      chip.style.fontFamily = f.stack;
+      chip.addEventListener('click', () => setAxis(axis, id));
+      chips.appendChild(chip);
+    });
+    row.appendChild(chips);
+    axesWrap.appendChild(row);
+  });
+
+  // advanced disclosure
+  if (advToggle) {
+    advToggle.addEventListener('click', () => {
+      const open = axesWrap.hasAttribute('hidden');
+      if (open) axesWrap.removeAttribute('hidden'); else axesWrap.setAttribute('hidden', '');
+      advToggle.setAttribute('aria-expanded', String(open));
+      advToggle.classList.toggle('open', open);
+    });
+  }
+
+  applyColor(readColorKey('obsidian'));
+  apply();
 }

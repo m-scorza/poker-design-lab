@@ -129,26 +129,49 @@
 }
 .dock-swatch.active .sw-name { color: var(--fg); }
 
-/* --- font chips --- */
-.dock-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+/* --- curated typography pairings --- */
+.dock-pairings { display: flex; flex-direction: column; gap: 7px; }
+.dock-pairing {
+  display: flex; align-items: center; gap: 11px; text-align: left;
+  padding: 9px 10px; border-radius: 10px;
+  background: var(--bg-input); border: 1px solid var(--border); cursor: pointer;
+  transition: border-color 0.16s ease, transform 0.16s ease;
 }
-.dock-chip {
-  padding: 6px 10px;
-  border-radius: 8px;
-  background: var(--bg-input);
-  border: 1px solid var(--border);
-  color: var(--fg-muted);
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.04em;
-  cursor: pointer;
+.dock-pairing:hover { transform: translateY(-1px); border-color: var(--border-strong); }
+.dock-pairing.active { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent-line) inset; }
+.dp-spec {
+  flex: none; width: 34px; height: 34px; border-radius: 8px;
+  display: grid; place-items: center; font-size: 18px; line-height: 1;
+  background: var(--bg-2); border: 1px solid var(--border); color: var(--fg);
+}
+.dock-pairing.active .dp-spec { color: var(--accent); border-color: var(--accent-line); }
+.dp-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.dp-name { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--fg); }
+.dp-why { font-family: var(--sans); font-size: 10px; line-height: 1.3; color: var(--fg-muted); }
+
+/* --- advanced disclosure --- */
+.dock-advanced-toggle {
+  margin-top: 10px; width: 100%; text-align: left;
+  background: none; border: none; cursor: pointer; padding: 4px 2px;
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--fg-muted); transition: color 0.16s ease;
+}
+.dock-advanced-toggle::before { content: '▸ '; }
+.dock-advanced-toggle.open::before { content: '▾ '; }
+.dock-advanced-toggle:hover { color: var(--accent); }
+
+.dock-axes { margin-top: 8px; display: flex; flex-direction: column; gap: 10px; }
+.dock-axis-row { display: flex; flex-direction: column; gap: 5px; }
+.dock-axis-label { font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-dim); }
+.dock-axis-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.dock-face {
+  padding: 5px 9px; border-radius: 7px;
+  background: var(--bg-input); border: 1px solid var(--border); color: var(--fg-muted);
+  font-size: 11px; cursor: pointer;
   transition: border-color 0.16s ease, color 0.16s ease, transform 0.16s ease;
 }
-.dock-chip:hover { transform: translateY(-1px); border-color: var(--border-strong); color: var(--fg); }
-.dock-chip.active { border-color: var(--accent); color: var(--accent); }
+.dock-face:hover { transform: translateY(-1px); border-color: var(--border-strong); color: var(--fg); }
+.dock-face.active { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
 
 @media (max-width: 640px) {
   .dock-panel { width: 210px; }

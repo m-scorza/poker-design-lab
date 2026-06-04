@@ -36,10 +36,12 @@
   --fg-muted: #8892b0;
   --fg-dim: #3a3f50;
   
-  /* Fonts (Geometric default) */
-  --sans: 'Inter', -apple-system, sans-serif;
-  --display: 'Outfit', sans-serif;
-  --mono: 'JetBrains Mono', monospace;
+  /* Fonts — Broadsheet default (the Ledger voice). theme-dock.js overrides these
+     three axes inline from the chosen pairing / custom mix; this block is the
+     first-paint fallback before JS runs, so it must already be the real identity. */
+  --display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --sans: 'Hanken Grotesk', system-ui, sans-serif;
+  --mono: 'Space Mono', ui-monospace, monospace;
   
   --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.5);
 }
@@ -176,47 +178,13 @@ body[data-color="gold"] {
 }
 
 /* =========================================================
-   TYPOGRAPHY THEMES (font pairings — display / sans / mono)
+   TYPOGRAPHY
+   The old 7 `body[data-font="…"]` preset blocks are gone. Typography is now a
+   3-axis model (display / body / mono) driven by src/modules/theme-dock.js, which
+   sets --display / --sans / --mono inline on <body> from a curated pairing or a
+   custom mix (see docs/TYPOGRAPHY.md). The :root block above is the Broadsheet
+   first-paint fallback. Curated pairings:
+     · Broadsheet (default) — Bricolage Grotesque / Hanken Grotesk / Space Mono
+     · Contrast            — Fraunces / Source Serif 4 / JetBrains Mono
+     · Terminal            — Space Grotesk / Inter / JetBrains Mono
    ========================================================= */
-
-/* --- EDITORIAL --- (premium grotesk headline + humanist body + mono numerals) */
-body[data-font="editorial"] {
-  --sans: 'Hanken Grotesk', system-ui, sans-serif;
-  --display: 'Space Grotesk', system-ui, sans-serif;
-  --mono: 'Space Mono', ui-monospace, monospace;
-}
-
-/* --- GROTESQUE --- (optical Bricolage display, newspaper energy) */
-body[data-font="grotesque"] {
-  --display: 'Bricolage Grotesque', system-ui, sans-serif;
-  --sans: 'Hanken Grotesk', system-ui, sans-serif;
-  --mono: 'Space Mono', ui-monospace, monospace;
-}
-
-/* --- SERIF --- (high-contrast Fraunces headline, geometric body) */
-body[data-font="serif"] {
-  --display: 'Fraunces', Georgia, serif;
-  --sans: 'Inter', -apple-system, sans-serif;
-  --mono: 'JetBrains Mono', ui-monospace, monospace;
-}
-
-/* --- TECHNO --- (monospaced display, technical) */
-body[data-font="techno"] {
-  --display: 'JetBrains Mono', ui-monospace, monospace;
-  --sans: 'Space Grotesk', system-ui, sans-serif;
-  --mono: 'JetBrains Mono', ui-monospace, monospace;
-}
-
-/* --- CLASSIC --- (serif headline + grotesk body + mono) */
-body[data-font="classic"] {
-  --display: 'Fraunces', Georgia, serif;
-  --sans: 'Hanken Grotesk', system-ui, sans-serif;
-  --mono: 'Space Mono', ui-monospace, monospace;
-}
-
-/* --- NEO-GROTESK --- (Space Grotesk display + Inter body) */
-body[data-font="neogrotesk"] {
-  --display: 'Space Grotesk', system-ui, sans-serif;
-  --sans: 'Inter', -apple-system, sans-serif;
-  --mono: 'JetBrains Mono', ui-monospace, monospace;
-}
