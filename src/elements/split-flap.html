@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Split-Flap Counter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --panel: rgba(13, 17, 25, 0.6);
+      --flap: #15191f;
+      --flap-2: #0d1014;
+      --border: rgba(255, 255, 255, 0.06);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --pos: #5ec98f;
+      --neg: #ef7c74;
+      --fg: #f3f4f6;
+      --fg-2: #c3cad9;
+      --fg-3: #8892b0;
+      --fg-4: #5a607a;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-3); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { width: 100%; max-width: 720px; text-align: center; }
+    h1 { font-family: var(--display); font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; }
+    .sub { color: var(--fg-3); margin: 0 0 38px; font-size: 14px; }
+
+    .board { display: flex; flex-direction: column; gap: 24px; align-items: center; margin-bottom: 34px; }
+    .stat-line { display: flex; align-items: center; gap: 18px; }
+    .stat-line .lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-4); width: 130px; text-align: right; }
+    .flaps { display: flex; gap: 4px; }
+    .pre { font-family: var(--mono); font-size: 30px; color: var(--fg-4); align-self: center; }
+
+    .flap {
+      position: relative; width: 30px; height: 46px; perspective: 200px;
+      font-family: var(--mono); font-size: 30px; font-weight: 700; line-height: 46px; text-align: center;
+    }
+    .flap .card {
+      position: absolute; inset: 0; border-radius: 5px; overflow: hidden;
+      background: linear-gradient(var(--flap) 0 50%, var(--flap-2) 50% 100%);
+      border: 1px solid var(--border-strong);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.02);
+      color: var(--accent);
+    }
+    .flap .card::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: rgba(0,0,0,0.55); }
+    .flap.flip .card { animation: flap-flip 0.16s ease-in; }
+    @keyframes flap-flip {
+      0% { transform: rotateX(0); }
+      49% { transform: rotateX(-90deg); filter: brightness(0.4); }
+      50% { transform: rotateX(-90deg); }
+      100% { transform: rotateX(0); }
+    }
+
+    .controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .btn { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; padding: 11px 18px; border-radius: 9px; cursor: pointer; color: var(--fg-2); background: rgba(255,255,255,0.03); border: 1px solid var(--border-strong); }
+    .btn:hover { border-color: var(--accent); }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Split-Flap Counter</h1>
+    <p class="sub">Airport-board flap digits that tick through values to a target — each card flips through intermediate glyphs so a stat lands with mechanical flair. Refresh to re-roll.</p>
+
+    <div class="board" id="board">
+      <div class="stat-line"><span class="lbl">Lifetime profit</span><span class="pre">$</span><span class="flaps" data-target="388" data-len="3"></span></div>
+      <div class="stat-line"><span class="lbl">ROI</span><span class="flaps" data-target="141" data-len="3"></span><span class="pre">%</span></div>
+      <div class="stat-line"><span class="lbl">Hands</span><span class="flaps" data-target="10716" data-len="5"></span></div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="roll">Re-roll values</button>
+      <button class="btn" id="zero">Reset to 0</button>
+    </div>
+  </div>
+
+  <script type="module">
+    const GLYPHS = '0123456789';
+
+    function makeFlap() {
+      const f = document.createElement('span');
+      f.className = 'flap';
+      f.innerHTML = '<span class="card">0</span>';
+      return f;
+    }
+
+    function buildRow(row) {
+      const len = +row.dataset.len;
+      row.innerHTML = '';
+      const flaps = [];
+      for (let i = 0; i < len; i++) { const f = makeFlap(); row.appendChild(f); flaps.push(f); }
+      row._flaps = flaps;
+    }
+
+    // animate a single flap from its current glyph to target glyph, ticking through
+    function spinFlap(flap, targetChar, delay) {
+      const card = flap.querySelector('.card');
+      const targetIdx = GLYPHS.indexOf(targetChar);
+      let steps = targetIdx + 4 + Math.floor(Math.random() * 6); // overshoot rolls for texture
+      let cur = 0;
+      setTimeout(() => {
+        const iv = setInterval(() => {
+          flap.classList.remove('flip'); void flap.offsetWidth; flap.classList.add('flip');
+          cur = (cur + 1) % 10;
+          card.textContent = GLYPHS[cur];
+          steps--;
+          if (steps <= 0 || (cur === targetIdx && steps < 4)) {
+            card.textContent = targetChar; clearInterval(iv);
+          }
+        }, 90);
+      }, delay);
+    }
+
+    function setRow(row, value) {
+      const len = +row.dataset.len;
+      const str = String(value).padStart(len, '0').slice(-len);
+      row._flaps.forEach((f, i) => spinFlap(f, str[i], i * 70));
+    }
+
+    const rows = [...document.querySelectorAll('.flaps')];
+    rows.forEach(buildRow);
+
+    function rollAll() {
+      rows.forEach((r) => {
+        const base = +r.dataset.target;
+        // small random jitter around the canonical target so each roll differs
+        const jittered = Math.max(0, base + Math.round((Math.random() - 0.5) * base * 0.12));
+        setRow(r, jittered);
+      });
+    }
+    document.getElementById('roll').addEventListener('click', rollAll);
+    document.getElementById('zero').addEventListener('click', () => rows.forEach((r) => setRow(r, 0)));
+
+    // initial landing
+    rows.forEach((r) => setRow(r, +r.dataset.target));
+  </script>
+</body>
+</html>

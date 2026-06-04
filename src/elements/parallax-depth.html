@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Parallax Depth</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --bg-2: #0b0d12;
+      --panel: rgba(13, 17, 25, 0.6);
+      --border: rgba(255, 255, 255, 0.06);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --accent-2: #00FF87;
+      --neg: #ef7c74;
+      --fg: #f3f4f6;
+      --fg-2: #c3cad9;
+      --fg-3: #8892b0;
+      --fg-4: #5a607a;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-3); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .scroll-hint { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 11px; color: var(--fg-4); z-index: 100; animation: bob 1.6s ease-in-out infinite; }
+    @keyframes bob { 50% { transform: translateX(-50%) translateY(-5px); } }
+
+    /* hero with stacked parallax layers */
+    .hero { position: relative; height: 100vh; overflow: hidden; display: grid; place-items: center; }
+    .layer { position: absolute; inset: 0; will-change: transform; pointer-events: none; }
+    .l-orb1 { background: radial-gradient(420px circle at 28% 36%, rgba(0,240,255,0.16), transparent 60%); }
+    .l-orb2 { background: radial-gradient(480px circle at 74% 64%, rgba(0,255,135,0.12), transparent 62%); }
+    .l-grid { background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 54px 54px; opacity: 0.5; }
+    .hero-copy { position: relative; z-index: 5; text-align: center; will-change: transform; }
+    .hero-copy .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+    .hero-copy h1 { font-family: var(--display); font-weight: 800; font-size: 64px; margin: 14px 0 0; letter-spacing: -0.03em; }
+    .hero-copy h1 .money { color: var(--accent-2); }
+    .hero-copy p { color: var(--fg-3); max-width: 460px; margin: 14px auto 0; }
+
+    /* content reveal section */
+    .reading { max-width: 760px; margin: 0 auto; padding: 100px 40px 140px; }
+    .block { margin-bottom: 80px; opacity: 0; transform: translateY(34px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.19,1,0.22,1); }
+    .block.in { opacity: 1; transform: none; }
+    .block .tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+    .block h2 { font-family: var(--display); font-weight: 700; font-size: 30px; margin: 10px 0 12px; letter-spacing: -0.02em; }
+    .block p { color: var(--fg-3); line-height: 1.7; font-size: 15px; }
+    .stat-band { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 22px; }
+    .stat { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; font-family: var(--mono); }
+    .stat .k { font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-4); }
+    .stat .v { font-size: 24px; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="scroll-hint">scroll ↓</div>
+
+  <section class="hero" id="hero">
+    <div class="layer l-grid" data-depth="0.15"></div>
+    <div class="layer l-orb1" data-depth="0.4"></div>
+    <div class="layer l-orb2" data-depth="0.6"></div>
+    <div class="hero-copy" data-depth="-0.25">
+      <div class="eyebrow">Reg Life · scorza23</div>
+      <h1>The edge,<br>told in <span class="money">$388.</span></h1>
+      <p>Multi-layer parallax: each layer translates at its own depth as you scroll, building a sense of dimension behind the headline.</p>
+    </div>
+  </section>
+
+  <div class="reading">
+    <div class="block">
+      <div class="tag">001 · Premise</div>
+      <h2>Depth from differential motion</h2>
+      <p>Background layers drift slower than the foreground; the copy lifts faster than the scroll. The brain reads the speed difference as distance — cheap parallax, no 3D engine, just transform on a scroll handler throttled through requestAnimationFrame.</p>
+      <div class="stat-band">
+        <div class="stat"><div class="k">Hands</div><div class="v">10,716</div></div>
+        <div class="stat"><div class="k">ROI</div><div class="v" style="color:var(--accent-2)">141%</div></div>
+        <div class="stat"><div class="k">Sessions</div><div class="v">37</div></div>
+      </div>
+    </div>
+    <div class="block">
+      <div class="tag">002 · Reveal</div>
+      <h2>Masked slide-in on enter</h2>
+      <p>As each block crosses the viewport it fades and rises into place via IntersectionObserver — fired once per element, so scrolling back up doesn't re-trigger. A failsafe forces everything visible if observers never run.</p>
+    </div>
+    <div class="block">
+      <div class="tag">003 · Use</div>
+      <h2>For the editorial hero</h2>
+      <p>This is the long-form treatment for THE LEDGER's masthead — a cinematic opener before the dashboard's dense grids take over. Layers stay token-driven so any palette re-skins it instantly.</p>
+    </div>
+  </div>
+
+  <script type="module">
+    const layers = [...document.querySelectorAll('[data-depth]')];
+    let ticking = false;
+    function onScroll() {
+      if (ticking) return; ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        layers.forEach((l) => { l.style.transform = `translate3d(0, ${y * +l.dataset.depth}px, 0)`; });
+        ticking = false;
+      });
+    }
+    addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // reveal blocks
+    const blocks = [...document.querySelectorAll('.block')];
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { rootMargin: '0px 0px -12% 0px' });
+      blocks.forEach((b) => io.observe(b));
+    } else { blocks.forEach((b) => b.classList.add('in')); }
+    // failsafe
+    setTimeout(() => blocks.forEach((b) => b.classList.add('in')), 1600);
+  </script>
+</body>
+</html>

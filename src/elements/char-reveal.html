@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Char Reveal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --border: rgba(255, 255, 255, 0.06);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --accent-2: #00FF87;
+      --fg: #f3f4f6;
+      --fg-2: #c3cad9;
+      --fg-3: #8892b0;
+      --fg-4: #5a607a;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --serif: 'Fraunces', serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-3); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { width: 100%; max-width: 760px; text-align: center; }
+    .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 22px; }
+
+    .demo { margin-bottom: 40px; }
+    .demo-label { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-4); margin-bottom: 14px; }
+
+    /* 1 · mask-up clip reveal (word-by-word) */
+    .clip-line { font-family: var(--display); font-weight: 800; font-size: 40px; letter-spacing: -0.02em; line-height: 1.1; }
+    .clip-line .word { display: inline-block; overflow: hidden; vertical-align: top; }
+    .clip-line .word > span { display: inline-block; transform: translateY(110%); transition: transform 0.6s cubic-bezier(0.19,1,0.22,1); }
+    .clip-line.in .word > span { transform: translateY(0); }
+    .clip-line .money { color: var(--accent-2); }
+
+    /* 2 · per-char pop-in */
+    .pop-line { font-family: var(--serif); font-weight: 600; font-size: 34px; }
+    .pop-line .ch { display: inline-block; opacity: 0; transform: translateY(0.5em) scale(0.8); filter: blur(4px); transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.19,1,0.22,1), filter 0.4s ease; }
+    .pop-line.in .ch { opacity: 1; transform: none; filter: none; }
+
+    /* 3 · scramble-settle */
+    .scram-line { font-family: var(--mono); font-size: 26px; letter-spacing: 0.02em; color: var(--accent); min-height: 34px; }
+
+    .btn { margin-top: 6px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding: 12px 22px; border-radius: 9px; cursor: pointer; color: var(--accent); background: rgba(0,240,255,0.06); border: 1px solid rgba(0,240,255,0.25); }
+    .btn:hover { background: rgba(0,240,255,0.12); }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <div class="eyebrow">Text FX · reveal</div>
+
+    <div class="demo">
+      <div class="demo-label">Mask clip · word-by-word</div>
+      <div class="clip-line" id="clip">
+        <span class="word"><span>One</span></span> <span class="word"><span>button</span></span> <span class="word"><span>deviation</span></span> <span class="word"><span class="money">costs</span></span> <span class="word"><span class="money">$388.</span></span>
+      </div>
+    </div>
+
+    <div class="demo">
+      <div class="demo-label">Per-character pop-in</div>
+      <div class="pop-line" id="pop" data-text="The Ledger reads your edge."></div>
+    </div>
+
+    <div class="demo">
+      <div class="demo-label">Scramble &amp; settle</div>
+      <div class="scram-line" id="scram" data-text="COMPLIANCE 91.4%"></div>
+    </div>
+
+    <button class="btn" id="replay">▶ replay all</button>
+  </div>
+
+  <script type="module">
+    const clip = document.getElementById('clip');
+    const pop = document.getElementById('pop');
+    const scram = document.getElementById('scram');
+
+    // build per-char pop-in
+    function buildPop() {
+      pop.innerHTML = '';
+      [...pop.dataset.text].forEach((c, i) => {
+        const s = document.createElement('span');
+        s.className = 'ch'; s.textContent = c === ' ' ? ' ' : c;
+        s.style.transitionDelay = (i * 28) + 'ms';
+        pop.appendChild(s);
+      });
+    }
+
+    // scramble settle
+    const GLY = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.%';
+    let scramRaf = null;
+    function runScramble() {
+      const target = scram.dataset.text;
+      const start = performance.now();
+      const DUR = 1100;
+      cancelAnimationFrame(scramRaf);
+      function tick(now) {
+        const t = Math.min(1, (now - start) / DUR);
+        const settled = Math.floor(t * target.length);
+        let out = '';
+        for (let i = 0; i < target.length; i++) {
+          if (i < settled || target[i] === ' ') out += target[i];
+          else out += GLY[Math.floor(Math.random() * GLY.length)];
+        }
+        scram.textContent = out;
+        if (t < 1) scramRaf = requestAnimationFrame(tick); else scram.textContent = target;
+      }
+      scramRaf = requestAnimationFrame(tick);
+    }
+
+    function play() {
+      clip.classList.remove('in'); pop.classList.remove('in');
+      buildPop();
+      scram.textContent = scram.dataset.text; // never blank, even before rAF
+      // next frame so transitions re-trigger
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        clip.classList.add('in');
+        pop.classList.add('in');
+      }));
+      runScramble();
+      // anti-hidden failsafe: if rAF is paused (hidden tab), force everything visible
+      setTimeout(() => {
+        clip.classList.add('in'); pop.classList.add('in');
+        if (!scram.textContent) scram.textContent = scram.dataset.text;
+      }, 1400);
+    }
+
+    document.getElementById('replay').addEventListener('click', play);
+    play();
+  </script>
+</body>
+</html>

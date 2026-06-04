@@ -77,6 +77,11 @@ status calls; Claude defaults new bricks to `new`.
 | Cinematic Progress | `progress-cinematic.html` | Loaders | new | net-new (mirrors app `#loader` import bar) |
 | Spinner Set | `spinners.html` | Loaders | new | net-new (8 pure-CSS indeterminate loaders) |
 | Skeleton Shimmer | `skeleton-shimmer.html` | Loaders | new | net-new (shimmer placeholders + loaded-state toggle) |
+| Cursor Trail + Crosshair | `cursor-trail.html` | Cursors | new | net-new (spring trail + magnetic snap + Shift crosshair lock) |
+| Split-Flap Counter | `split-flap.html` | Text FX | new | net-new (airport flap digits → stat landing) |
+| Char Reveal | `char-reveal.html` | Text FX | new | net-new (mask clip + pop-in + scramble settle) |
+| Parallax Depth | `parallax-depth.html` | Scroll & Choreography | new | net-new (per-depth layer translate + masked reveal) |
+| Sticky Stack Cards | `sticky-stack.html` | Scroll & Choreography | new | net-new (sticky pin-and-stack milestone cards) |
 
 ## Archive-only (NOT in the current system — preserved, pull forward on demand)
 
