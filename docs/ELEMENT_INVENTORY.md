@@ -69,6 +69,11 @@ status calls; Claude defaults new bricks to `new`.
 | Verdict Diagnosis Card | `verdict-card.html` | Poker-Specific | new | `archive/legacy_dashboards/Dashboard v7.html` |
 | Retro CLI Terminal | `cli-panel.html` | Nav & Chrome | new | `archive/sandboxes/design_sandbox_v2.html` |
 | Blueprint / CAD Theme | `blueprint-theme.html` | Nav & Chrome | new | `archive/sandboxes/design_sandbox_v3.html` |
+| Glassmorphic Modal | `modal-glass.html` | Overlays | new | net-new (blob-safe display:none scrim + focus trap) |
+| Toast Stack | `toast-stack.html` | Overlays | new | net-new (slide-in + timer-bar auto-dismiss + hover-pause) |
+| Slide-in Drawer | `drawer-slide.html` | Overlays | new | net-new (filter panel; blob-safe scrim) |
+| Command Palette | `command-palette.html` | Overlays | new | net-new (⌘K fuzzy filter + keyboard nav) |
+| Tooltip & Popover | `tooltip-popover.html` | Overlays | new | net-new (auto-flip placement + JS rect positioning) |
 
 ## Archive-only (NOT in the current system — preserved, pull forward on demand)
 

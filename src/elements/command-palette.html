@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Command Palette</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --panel: rgba(13, 17, 25, 0.86);
+      --border: rgba(255, 255, 255, 0.06);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --pos: #5ec98f;
+      --neg: #ef7c74;
+      --fg: #f3f4f6;
+      --fg-2: #c3cad9;
+      --fg-3: #8892b0;
+      --fg-4: #5a607a;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-3); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { width: 100%; max-width: 640px; text-align: center; }
+    h1 { font-family: var(--display); font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; }
+    .sub { color: var(--fg-3); margin: 0 0 28px; font-size: 14px; }
+    .open-btn {
+      font-family: var(--mono); font-size: 12px; color: var(--fg-2); cursor: pointer;
+      padding: 12px 18px; border-radius: 10px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-strong);
+      display: inline-flex; gap: 12px; align-items: center;
+    }
+    .open-btn:hover { border-color: var(--accent); }
+    .open-btn kbd { font-family: var(--mono); font-size: 10px; padding: 3px 7px; border-radius: 5px; border: 1px solid var(--border-strong); color: var(--fg-3); background: rgba(255,255,255,0.03); }
+
+    /* scrim — BLOB-SAFE display:none while closed */
+    .scrim {
+      position: fixed; inset: 0; z-index: 500; display: none;
+      align-items: flex-start; justify-content: center; padding-top: 14vh;
+      background: rgba(3,4,8,0.5); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    }
+    .scrim.open { display: flex; animation: scrim-in 0.16s ease both; }
+    @keyframes scrim-in { from { opacity: 0; } to { opacity: 1; } }
+
+    .palette {
+      width: 100%; max-width: 540px; background: var(--panel); backdrop-filter: blur(18px);
+      border: 1px solid var(--border-strong); border-radius: 14px; overflow: hidden;
+      box-shadow: 0 28px 80px rgba(0,0,0,0.62);
+      animation: pal-in 0.2s cubic-bezier(0.19,1,0.22,1) both;
+    }
+    @keyframes pal-in { from { opacity: 0; transform: translateY(-12px) scale(0.98); } to { opacity: 1; transform: none; } }
+    .pal-search { display: flex; align-items: center; gap: 11px; padding: 15px 17px; border-bottom: 1px solid var(--border); }
+    .pal-search svg { width: 16px; height: 16px; color: var(--fg-4); flex: none; }
+    .pal-search input { flex: 1; background: none; border: none; outline: none; color: var(--fg); font-family: var(--sans); font-size: 15px; }
+    .pal-search input::placeholder { color: var(--fg-4); }
+    .pal-list { max-height: 320px; overflow-y: auto; padding: 7px; }
+    .pal-group { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-4); padding: 9px 10px 5px; }
+    .pal-item {
+      display: flex; align-items: center; gap: 12px; padding: 10px 11px; border-radius: 9px; cursor: pointer;
+      color: var(--fg-2); font-size: 13.5px;
+    }
+    .pal-item .pi-ico { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; background: rgba(255,255,255,0.04); color: var(--fg-3); font-size: 13px; flex: none; }
+    .pal-item .pi-name { flex: 1; }
+    .pal-item .pi-hint { font-family: var(--mono); font-size: 10px; color: var(--fg-4); }
+    .pal-item mark { background: none; color: var(--accent); font-weight: 600; }
+    .pal-item.active { background: rgba(0,240,255,0.1); color: var(--fg); }
+    .pal-item.active .pi-ico { background: rgba(0,240,255,0.16); color: var(--accent); }
+    .pal-empty { padding: 26px; text-align: center; color: var(--fg-4); font-family: var(--mono); font-size: 12px; }
+    .pal-foot { display: flex; gap: 16px; padding: 9px 14px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 10px; color: var(--fg-4); }
+    .pal-foot kbd { padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border-strong); color: var(--fg-3); margin-right: 4px; }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Command Palette</h1>
+    <p class="sub">A ⌘K launcher with fuzzy filtering, full keyboard navigation, and highlighted matches. Closed state is <code>display:none</code> so the blur never ghosts.</p>
+    <button class="open-btn" id="open">Search or jump to… <kbd>⌘</kbd><kbd>K</kbd></button>
+  </div>
+
+  <div class="scrim" id="scrim">
+    <div class="palette" role="dialog" aria-modal="true" aria-label="Command palette">
+      <div class="pal-search">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="5"/><line x1="11" y1="11" x2="14" y2="14"/></svg>
+        <input id="q" type="text" placeholder="Search hands, leaks, villains, pages…" autocomplete="off" />
+      </div>
+      <div class="pal-list" id="list"></div>
+      <div class="pal-foot"><span><kbd>↑↓</kbd>navigate</span><span><kbd>↵</kbd>open</span><span><kbd>esc</kbd>close</span></div>
+    </div>
+  </div>
+
+  <script type="module">
+    const COMMANDS = [
+      { group: 'Pages', ico: '◧', name: 'Go to Desk', hint: 'overview' },
+      { group: 'Pages', ico: '◔', name: 'Go to Career', hint: 'lifetime' },
+      { group: 'Pages', ico: '▦', name: 'Go to Ranges', hint: 'grid' },
+      { group: 'Pages', ico: '⚠', name: 'Go to Leaks', hint: 'report' },
+      { group: 'Pages', ico: '☷', name: 'Go to Villains', hint: 'dossiers' },
+      { group: 'Actions', ico: '↑', name: 'Import hand history', hint: 'upload .txt' },
+      { group: 'Actions', ico: '↻', name: 'Re-run leak analysis', hint: 'recompute' },
+      { group: 'Actions', ico: '⤓', name: 'Export session report', hint: 'pdf' },
+      { group: 'Leaks', ico: '✦', name: 'Fix the too-wide BTN open', hint: '-28bb/100' },
+      { group: 'Leaks', ico: '✦', name: 'Raise HU C-bet to 100%', hint: 'flop' },
+      { group: 'Villains', ico: '☺', name: 'Open dossier · fish_player_99', hint: 'prey' },
+      { group: 'Villains', ico: '☹', name: 'Open dossier · reg_grinder_22', hint: 'predator' },
+    ];
+
+    const scrim = document.getElementById('scrim');
+    const q = document.getElementById('q');
+    const list = document.getElementById('list');
+    let active = 0, filtered = [];
+
+    // subsequence fuzzy match → returns highlighted html or null
+    function fuzzy(text, term) {
+      if (!term) return text;
+      let ti = 0, out = '', t = term.toLowerCase();
+      for (const ch of text) {
+        if (ti < t.length && ch.toLowerCase() === t[ti]) { out += `<mark>${ch}</mark>`; ti++; }
+        else out += ch;
+      }
+      return ti === t.length ? out : null;
+    }
+
+    function render() {
+      const term = q.value.trim();
+      filtered = [];
+      list.innerHTML = '';
+      let lastGroup = null;
+      COMMANDS.forEach((cmd) => {
+        const hl = fuzzy(cmd.name, term);
+        if (hl === null) return;
+        filtered.push(cmd);
+      });
+      if (!filtered.length) { list.innerHTML = '<div class="pal-empty">No matches for “' + term + '”</div>'; return; }
+      active = Math.min(active, filtered.length - 1);
+      filtered.forEach((cmd, i) => {
+        if (cmd.group !== lastGroup) {
+          const g = document.createElement('div'); g.className = 'pal-group'; g.textContent = cmd.group; list.appendChild(g); lastGroup = cmd.group;
+        }
+        const el = document.createElement('div');
+        el.className = 'pal-item' + (i === active ? ' active' : '');
+        el.innerHTML = `<span class="pi-ico">${cmd.ico}</span><span class="pi-name">${fuzzy(cmd.name, term)}</span><span class="pi-hint">${cmd.hint}</span>`;
+        el.addEventListener('mousemove', () => { active = i; paintActive(); });
+        el.addEventListener('click', () => choose());
+        list.appendChild(el);
+      });
+    }
+    function paintActive() {
+      [...list.querySelectorAll('.pal-item')].forEach((el, i) => el.classList.toggle('active', i === active));
+      const el = list.querySelectorAll('.pal-item')[active];
+      if (el) el.scrollIntoView({ block: 'nearest' });
+    }
+    function choose() {
+      const cmd = filtered[active];
+      if (cmd) { close(); /* demo: would route here */ }
+    }
+    function open() { scrim.classList.add('open'); q.value = ''; active = 0; render(); setTimeout(() => q.focus(), 30); }
+    function close() { scrim.classList.remove('open'); }
+
+    document.getElementById('open').addEventListener('click', open);
+    q.addEventListener('input', () => { active = 0; render(); });
+    scrim.addEventListener('mousedown', (e) => { if (e.target === scrim) close(); });
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); scrim.classList.contains('open') ? close() : open(); return; }
+      if (!scrim.classList.contains('open')) return;
+      if (e.key === 'Escape') { close(); }
+      else if (e.key === 'ArrowDown') { e.preventDefault(); active = Math.min(active + 1, filtered.length - 1); paintActive(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); active = Math.max(active - 1, 0); paintActive(); }
+      else if (e.key === 'Enter') { e.preventDefault(); choose(); }
+    });
+
+    render();
+  </script>
+</body>
+</html>

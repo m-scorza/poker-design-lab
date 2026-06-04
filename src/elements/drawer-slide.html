@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Slide-in Drawer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --panel: rgba(11, 14, 20, 0.92);
+      --border: rgba(255, 255, 255, 0.06);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --pos: #5ec98f;
+      --neg: #ef7c74;
+      --warn: #e8c468;
+      --fg: #f3f4f6;
+      --fg-2: #c3cad9;
+      --fg-3: #8892b0;
+      --fg-4: #5a607a;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-3); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { width: 100%; max-width: 640px; text-align: center; }
+    h1 { font-family: var(--display); font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; }
+    .sub { color: var(--fg-3); margin: 0 0 32px; font-size: 14px; }
+    .btn {
+      font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 12px 22px; border-radius: 9px; cursor: pointer; color: var(--accent);
+      background: rgba(0,240,255,0.06); border: 1px solid rgba(0,240,255,0.28);
+      transition: background 0.18s ease, transform 0.18s ease;
+    }
+    .btn:hover { background: rgba(0,240,255,0.13); transform: translateY(-2px); }
+
+    /* scrim — BLOB-SAFE display:none while closed */
+    .scrim {
+      position: fixed; inset: 0; z-index: 500; display: none;
+      background: rgba(3,4,8,0.5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    }
+    .scrim.open { display: block; animation: scrim-in 0.2s ease both; }
+    @keyframes scrim-in { from { opacity: 0; } to { opacity: 1; } }
+
+    .drawer {
+      position: fixed; top: 0; right: 0; bottom: 0; z-index: 501;
+      width: 360px; max-width: 92vw;
+      background: var(--panel); border-left: 1px solid var(--border-strong);
+      box-shadow: -24px 0 70px rgba(0,0,0,0.6); backdrop-filter: blur(14px);
+      transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.19,1,0.22,1);
+      display: flex; flex-direction: column;
+    }
+    .scrim.open .drawer { transform: translateX(0); }
+    .dr-head { padding: 20px 22px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 10px; }
+    .dr-head .eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); }
+    .dr-head h2 { font-family: var(--display); font-weight: 700; font-size: 18px; margin: 6px 0 0; letter-spacing: -0.01em; }
+    .x { margin-left: auto; width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; cursor: pointer; color: var(--fg-3); border: 1px solid var(--border); background: rgba(255,255,255,0.02); font-family: var(--mono); }
+    .x:hover { color: var(--fg); border-color: var(--border-strong); }
+    .dr-body { padding: 18px 22px; overflow-y: auto; flex: 1; text-align: left; }
+    .field { margin-bottom: 16px; }
+    .field label { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-4); margin-bottom: 7px; }
+    .field .seg { display: flex; gap: 6px; flex-wrap: wrap; }
+    .chip { font-family: var(--mono); font-size: 11px; padding: 7px 12px; border-radius: 8px; cursor: pointer; color: var(--fg-3); background: rgba(255,255,255,0.03); border: 1px solid var(--border); }
+    .chip.on { color: var(--accent); border-color: var(--accent); background: rgba(0,240,255,0.07); }
+    .field input[type=range] { width: 100%; accent-color: var(--accent); }
+    .rng-val { font-family: var(--mono); font-size: 12px; color: var(--fg-2); }
+    .dr-foot { padding: 16px 22px; border-top: 1px solid var(--border); display: flex; gap: 10px; }
+    .dr-foot .ghost { flex: 1; background: transparent; border: 1px solid var(--border-strong); color: var(--fg-2); }
+    .dr-foot .solid { flex: 1; background: var(--accent); border: 1px solid var(--accent); color: #04181b; }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Slide-in Drawer</h1>
+    <p class="sub">A right-anchored filter panel that slides over a blurred scrim. Closed state is <code>display:none</code> (no composited ghost); the panel transforms in. Esc or click-outside closes.</p>
+    <button class="btn" id="open">Open filters</button>
+  </div>
+
+  <div class="scrim" id="scrim" data-drawer>
+    <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="dr-title">
+      <div class="dr-head">
+        <div>
+          <div class="eyebrow">Hand explorer</div>
+          <h2 id="dr-title">Filters</h2>
+        </div>
+        <div class="x" data-close>✕</div>
+      </div>
+      <div class="dr-body">
+        <div class="field">
+          <label>Position</label>
+          <div class="seg">
+            <span class="chip">UTG</span><span class="chip on">HJ</span><span class="chip on">CO</span>
+            <span class="chip">BTN</span><span class="chip">SB</span><span class="chip">BB</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Scenario</label>
+          <div class="seg">
+            <span class="chip on">RFI</span><span class="chip">Facing raise</span><span class="chip">Blind war</span><span class="chip">BB defense</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Stack depth · <span class="rng-val" id="rngv">20–40bb</span></label>
+          <input type="range" min="0" max="2" value="1" id="rng" />
+        </div>
+        <div class="field">
+          <label>Result</label>
+          <div class="seg">
+            <span class="chip">Won</span><span class="chip">Lost</span><span class="chip on">Showdown</span>
+          </div>
+        </div>
+      </div>
+      <div class="dr-foot">
+        <button class="btn ghost" data-close>Reset</button>
+        <button class="btn solid" data-close>Apply · 312 hands</button>
+      </div>
+    </aside>
+  </div>
+
+  <script type="module">
+    const scrim = document.getElementById('scrim');
+    const openBtn = document.getElementById('open');
+    let lastTrigger = null;
+
+    function open() { lastTrigger = document.activeElement; scrim.classList.add('open'); scrim.querySelector('.x').focus(); }
+    function close() { scrim.classList.remove('open'); if (lastTrigger) lastTrigger.focus(); }
+
+    openBtn.addEventListener('click', open);
+    scrim.querySelectorAll('[data-close]').forEach((c) => c.addEventListener('click', close));
+    scrim.addEventListener('mousedown', (e) => { if (e.target === scrim) close(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+
+    // chip toggles
+    scrim.querySelectorAll('.chip').forEach((c) => c.addEventListener('click', () => c.classList.toggle('on')));
+
+    // range label
+    const rng = document.getElementById('rng'), rngv = document.getElementById('rngv');
+    const LABELS = ['< 20bb (short)', '20–40bb', '> 40bb (deep)'];
+    rng.addEventListener('input', () => { rngv.textContent = LABELS[rng.value]; });
+  </script>
+</body>
+</html>

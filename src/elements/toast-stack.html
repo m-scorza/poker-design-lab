@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Toast Stack</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --panel: rgba(13, 17, 25, 0.82);
+      --border: rgba(255, 255, 255, 0.06);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --pos: #5ec98f;
+      --neg: #ef7c74;
+      --warn: #e8c468;
+      --fg: #f3f4f6;
+      --fg-2: #c3cad9;
+      --fg-3: #8892b0;
+      --fg-4: #5a607a;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-3); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { width: 100%; max-width: 640px; text-align: center; }
+    h1 { font-family: var(--display); font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; }
+    .sub { color: var(--fg-3); margin: 0 0 32px; font-size: 14px; }
+    .trigger-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.05em; text-transform: uppercase;
+      padding: 11px 18px; border-radius: 9px; cursor: pointer; color: var(--fg-2);
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border-strong);
+      transition: transform 0.16s ease, border-color 0.16s ease;
+    }
+    .btn:hover { transform: translateY(-2px); border-color: var(--accent); }
+
+    /* toast viewport — fixed, top-right */
+    .toast-host {
+      position: fixed; top: 22px; right: 22px; z-index: 600;
+      display: flex; flex-direction: column; gap: 10px; width: 320px;
+      pointer-events: none;
+    }
+    .toast {
+      pointer-events: auto; position: relative; overflow: hidden;
+      background: var(--panel); border: 1px solid var(--border-strong); border-left-width: 3px;
+      border-radius: 11px; padding: 13px 14px 14px; backdrop-filter: blur(10px);
+      box-shadow: 0 14px 36px rgba(0,0,0,0.5);
+      display: flex; gap: 11px; align-items: flex-start;
+      animation: toast-in 0.32s cubic-bezier(0.19,1,0.22,1) both;
+    }
+    .toast.leaving { animation: toast-out 0.28s cubic-bezier(0.5,0,0.75,0) both; }
+    @keyframes toast-in  { from { opacity: 0; transform: translateX(40px) scale(0.96); } to { opacity: 1; transform: none; } }
+    @keyframes toast-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateX(40px) scale(0.96); margin-bottom: -54px; } }
+    .toast.success { border-left-color: var(--pos); }
+    .toast.error   { border-left-color: var(--neg); }
+    .toast.info    { border-left-color: var(--accent); }
+    .toast.warn    { border-left-color: var(--warn); }
+    .toast .ico { width: 22px; height: 22px; border-radius: 6px; display: grid; place-items: center; font-size: 12px; font-weight: 700; flex: none; }
+    .toast.success .ico { background: rgba(94,201,143,0.14); color: var(--pos); }
+    .toast.error .ico   { background: rgba(239,124,116,0.14); color: var(--neg); }
+    .toast.info .ico    { background: rgba(0,240,255,0.12); color: var(--accent); }
+    .toast.warn .ico    { background: rgba(232,196,104,0.14); color: var(--warn); }
+    .toast .body { flex: 1; text-align: left; }
+    .toast .title { font-size: 13px; font-weight: 600; }
+    .toast .msg { font-size: 11.5px; color: var(--fg-3); margin-top: 2px; line-height: 1.45; }
+    .toast .close { cursor: pointer; color: var(--fg-4); font-family: var(--mono); font-size: 12px; flex: none; }
+    .toast .close:hover { color: var(--fg); }
+    .toast .timer { position: absolute; left: 0; bottom: 0; height: 2px; background: currentColor; opacity: 0.5; width: 100%; transform-origin: left; }
+    .toast.success .timer { color: var(--pos); }
+    .toast.error .timer { color: var(--neg); }
+    .toast.info .timer { color: var(--accent); }
+    .toast.warn .timer { color: var(--warn); }
+    @keyframes timer-run { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Toast Stack</h1>
+    <p class="sub">Stacked notifications that slide in top-right, auto-dismiss on a timer bar, and collapse the gap as they leave. Hover a toast to pause its timer.</p>
+    <div class="trigger-row">
+      <button class="btn" data-toast="success">Success</button>
+      <button class="btn" data-toast="error">Error</button>
+      <button class="btn" data-toast="info">Info</button>
+      <button class="btn" data-toast="warn">Warning</button>
+    </div>
+  </div>
+
+  <div class="toast-host" id="host" aria-live="polite"></div>
+
+  <script type="module">
+    const host = document.getElementById('host');
+    const PRESETS = {
+      success: { ico: '✓', title: 'Analysis complete', msg: '1,204 hands parsed · leak report updated.' },
+      error:   { ico: '!', title: 'Import failed', msg: 'Hand #260356646368 was malformed — skipped.' },
+      info:    { ico: 'i', title: 'New session detected', msg: '4-hour gap — grouped into session #38.' },
+      warn:    { ico: '▲', title: 'Leak worsening', msg: 'BTN open frequency up to 58% this session.' },
+    };
+    const DURATION = 4200;
+
+    function dismiss(toast) {
+      if (toast.dataset.leaving) return;
+      toast.dataset.leaving = '1';
+      toast.classList.add('leaving');
+      toast.addEventListener('animationend', () => toast.remove(), { once: true });
+    }
+
+    function spawn(kind) {
+      const p = PRESETS[kind] || PRESETS.info;
+      const t = document.createElement('div');
+      t.className = 'toast ' + kind;
+      t.innerHTML =
+        `<span class="ico">${p.ico}</span>` +
+        `<div class="body"><div class="title">${p.title}</div><div class="msg">${p.msg}</div></div>` +
+        `<span class="close">✕</span>` +
+        `<span class="timer"></span>`;
+      host.appendChild(t);
+
+      const timer = t.querySelector('.timer');
+      timer.style.animation = `timer-run ${DURATION}ms linear forwards`;
+      let killAt = setTimeout(() => dismiss(t), DURATION);
+
+      // pause on hover
+      t.addEventListener('mouseenter', () => { clearTimeout(killAt); timer.style.animationPlayState = 'paused'; });
+      t.addEventListener('mouseleave', () => {
+        timer.style.animationPlayState = 'running';
+        const remaining = (parseFloat(getComputedStyle(timer).transform.split(',')[0].replace('matrix(', '')) || 0);
+        killAt = setTimeout(() => dismiss(t), DURATION * (isNaN(remaining) ? 1 : remaining));
+      });
+      t.querySelector('.close').addEventListener('click', () => { clearTimeout(killAt); dismiss(t); });
+    }
+
+    document.querySelectorAll('[data-toast]').forEach((b) =>
+      b.addEventListener('click', () => spawn(b.dataset.toast)));
+
+    // seed one so the page isn't empty
+    spawn('info');
+  </script>
+</body>
+</html>

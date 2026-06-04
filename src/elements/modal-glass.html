@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Glassmorphic Modal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --bg-2: #0b0d12;
+      --panel: rgba(13, 17, 25, 0.72);
+      --border: rgba(255, 255, 255, 0.06);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --accent-2: #00FF87;
+      --neg: #ef7c74;
+      --warn: #e8c468;
+      --fg: #f3f4f6;
+      --fg-2: #c3cad9;
+      --fg-3: #8892b0;
+      --fg-4: #5a607a;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    /* subtle ambient so the blur has something to chew on */
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(680px circle at 20% 15%, rgba(0,240,255,0.07), transparent 60%),
+        radial-gradient(600px circle at 85% 85%, rgba(255,59,107,0.06), transparent 60%);
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-3); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { position: relative; z-index: 1; width: 100%; max-width: 760px; text-align: center; }
+    h1 { font-family: var(--display); font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; }
+    .sub { color: var(--fg-3); margin: 0 0 32px; font-size: 14px; }
+
+    .trigger-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 12px 22px; border-radius: 9px; cursor: pointer;
+      background: rgba(0,240,255,0.06); border: 1px solid rgba(0,240,255,0.28); color: var(--accent);
+      transition: background 0.18s ease, transform 0.18s ease;
+    }
+    .btn:hover { background: rgba(0,240,255,0.13); transform: translateY(-2px); }
+    .btn.danger { background: rgba(239,124,116,0.06); border-color: rgba(239,124,116,0.3); color: var(--neg); }
+    .btn.danger:hover { background: rgba(239,124,116,0.13); }
+
+    /* ===== modal scrim + dialog =====
+       BLOB-SAFE: the overlay is display:none while closed, so the blurred
+       scrim never composites a ghost over the page. It is switched to
+       display:flex by .open and animated in via keyframes. */
+    .scrim {
+      position: fixed; inset: 0; z-index: 500;
+      display: none;
+      align-items: center; justify-content: center;
+      padding: 24px;
+      background: rgba(3, 4, 8, 0.55);
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
+    }
+    .scrim.open { display: flex; animation: scrim-in 0.18s ease both; }
+    @keyframes scrim-in { from { opacity: 0; } to { opacity: 1; } }
+
+    .dialog {
+      width: 100%; max-width: 420px; text-align: left;
+      background: var(--panel);
+      border: 1px solid var(--border-strong);
+      border-radius: 16px;
+      box-shadow: 0 24px 70px rgba(0,0,0,0.6);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      padding: 24px;
+      animation: dialog-in 0.22s cubic-bezier(0.19,1,0.22,1) both;
+    }
+    @keyframes dialog-in {
+      from { opacity: 0; transform: translateY(14px) scale(0.96); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .dialog .eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); }
+    .dialog.danger .eyebrow { color: var(--neg); }
+    .dialog h2 { font-family: var(--display); font-weight: 700; font-size: 21px; margin: 8px 0 10px; letter-spacing: -0.01em; }
+    .dialog p { color: var(--fg-3); font-size: 13.5px; line-height: 1.55; margin: 0 0 20px; }
+    .dialog .row { display: flex; gap: 10px; justify-content: flex-end; }
+    .dialog .ghost { background: transparent; border: 1px solid var(--border-strong); color: var(--fg-2); }
+    .dialog .ghost:hover { background: rgba(255,255,255,0.04); }
+    .dialog .solid { background: var(--accent); border: 1px solid var(--accent); color: #04181b; }
+    .dialog.danger .solid { background: var(--neg); border-color: var(--neg); color: #1c0a08; }
+    .x {
+      position: absolute; top: 16px; right: 16px; width: 28px; height: 28px; border-radius: 8px;
+      display: grid; place-items: center; cursor: pointer; color: var(--fg-3);
+      border: 1px solid var(--border); background: rgba(255,255,255,0.02); font-family: var(--mono);
+    }
+    .x:hover { color: var(--fg); border-color: var(--border-strong); }
+    .dialog { position: relative; }
+    .hint { margin-top: 26px; font-family: var(--mono); font-size: 11px; color: var(--fg-4); }
+    kbd { font-family: var(--mono); font-size: 10px; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border-strong); color: var(--fg-2); }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Glassmorphic Modal</h1>
+    <p class="sub">A focus-trapped dialog over a blurred scrim. Closed state is <code>display:none</code> so the backdrop blur never leaves a composited ghost — open / close with the buttons, click the scrim, or press <kbd>Esc</kbd>.</p>
+    <div class="trigger-row">
+      <button class="btn" data-open="confirm">Open dialog</button>
+      <button class="btn danger" data-open="discard">Discard changes</button>
+    </div>
+    <div class="hint">Esc closes · click outside closes · focus returns to the trigger</div>
+  </div>
+
+  <!-- confirm modal -->
+  <div class="scrim" id="scrim-confirm" data-modal>
+    <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="t-confirm">
+      <div class="x" data-close>✕</div>
+      <div class="eyebrow">Import session</div>
+      <h2 id="t-confirm">Analyze 1,204 new hands?</h2>
+      <p>scorza23 · 6 tournaments detected in the dropped hand history. Parsing runs locally and updates your leak report.</p>
+      <div class="row">
+        <button class="btn ghost" data-close>Cancel</button>
+        <button class="btn solid" data-close>Run analysis</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- danger modal -->
+  <div class="scrim" id="scrim-discard" data-modal>
+    <div class="dialog danger" role="dialog" aria-modal="true" aria-labelledby="t-discard">
+      <div class="x" data-close>✕</div>
+      <div class="eyebrow">Unsaved notes</div>
+      <h2 id="t-discard">Discard your dossier edits?</h2>
+      <p>Your notes on this villain haven't been saved. This can't be undone once you leave the page.</p>
+      <div class="row">
+        <button class="btn ghost" data-close>Keep editing</button>
+        <button class="btn solid" data-close>Discard</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    let lastTrigger = null;
+
+    function openModal(id, trigger) {
+      const scrim = document.getElementById('scrim-' + id);
+      if (!scrim) return;
+      lastTrigger = trigger || null;
+      scrim.classList.add('open');
+      // focus the first actionable control for keyboard users
+      const focusable = scrim.querySelector('button, [href], input, [tabindex]');
+      if (focusable) focusable.focus();
+    }
+    function closeModal(scrim) {
+      scrim.classList.remove('open');
+      if (lastTrigger) { lastTrigger.focus(); lastTrigger = null; }
+    }
+    function closeAll() {
+      document.querySelectorAll('.scrim.open').forEach(closeModal);
+    }
+
+    document.querySelectorAll('[data-open]').forEach((btn) => {
+      btn.addEventListener('click', () => openModal(btn.dataset.open, btn));
+    });
+
+    document.querySelectorAll('[data-modal]').forEach((scrim) => {
+      // close buttons inside
+      scrim.querySelectorAll('[data-close]').forEach((c) =>
+        c.addEventListener('click', () => closeModal(scrim)));
+      // click on the scrim itself (not the dialog) closes
+      scrim.addEventListener('mousedown', (e) => {
+        if (e.target === scrim) closeModal(scrim);
+      });
+      // simple focus trap while open
+      scrim.addEventListener('keydown', (e) => {
+        if (e.key !== 'Tab') return;
+        const items = [...scrim.querySelectorAll('button, [href], input, [tabindex]')].filter((el) => el.offsetParent !== null);
+        if (!items.length) return;
+        const first = items[0], last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      });
+    });
+
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAll(); });
+  </script>
+</body>
+</html>

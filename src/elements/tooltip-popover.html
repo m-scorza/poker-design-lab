@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - Tooltip & Popover</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --panel: rgba(13, 17, 25, 0.92);
+      --border: rgba(255, 255, 255, 0.06);
+      --border-strong: rgba(255, 255, 255, 0.16);
+      --accent: #00F0FF;
+      --pos: #5ec98f;
+      --neg: #ef7c74;
+      --warn: #e8c468;
+      --fg: #f3f4f6;
+      --fg-2: #c3cad9;
+      --fg-3: #8892b0;
+      --fg-4: #5a607a;
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Outfit', sans-serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-3); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    .container { width: 100%; max-width: 720px; text-align: center; }
+    h1 { font-family: var(--display); font-weight: 700; margin: 0 0 8px; letter-spacing: -0.02em; }
+    .sub { color: var(--fg-3); margin: 0 0 40px; font-size: 14px; }
+
+    .demo-card { background: rgba(13,17,25,0.5); border: 1px solid var(--border); border-radius: 14px; padding: 36px; }
+    .section-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-4); margin-bottom: 18px; }
+
+    /* tooltip targets in a stat strip */
+    .stat-strip { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 38px; }
+    .stat { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 11px; padding: 14px 18px; min-width: 110px; cursor: help; position: relative; }
+    .stat .k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-4); }
+    .stat .v { font-family: var(--mono); font-size: 22px; margin-top: 4px; }
+    .stat .v.pos { color: var(--pos); } .stat .v.warn { color: var(--warn); } .stat .v.neg { color: var(--neg); }
+    .stat:hover { border-color: var(--border-strong); }
+
+    .pop-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.05em; text-transform: uppercase; padding: 11px 18px; border-radius: 9px; cursor: pointer; color: var(--fg-2); background: rgba(255,255,255,0.03); border: 1px solid var(--border-strong); position: relative; }
+    .btn:hover { border-color: var(--accent); }
+
+    /* floating layer */
+    .tip {
+      position: fixed; z-index: 700; max-width: 240px; pointer-events: none;
+      background: var(--panel); border: 1px solid var(--border-strong); border-radius: 9px;
+      padding: 9px 11px; font-size: 12px; color: var(--fg-2); line-height: 1.45;
+      box-shadow: 0 12px 34px rgba(0,0,0,0.55); backdrop-filter: blur(10px);
+      opacity: 0; transform: translateY(4px); transition: opacity 0.14s ease, transform 0.14s ease;
+    }
+    .tip.show { opacity: 1; transform: none; }
+    .tip .tt { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 3px; }
+    .tip .arrow { position: absolute; width: 9px; height: 9px; background: var(--panel); border: 1px solid var(--border-strong); transform: rotate(45deg); }
+
+    .popover { pointer-events: auto; max-width: 280px; }
+    .popover .po-row { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11.5px; padding: 3px 0; color: var(--fg-3); }
+    .popover .po-row b { color: var(--fg); }
+    .popover .po-act { margin-top: 9px; font-family: var(--mono); font-size: 10px; color: var(--accent); cursor: pointer; }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>Tooltip &amp; Popover</h1>
+    <p class="sub">Hover tooltips on stat tiles (auto-flipping placement, arrow) and click-to-toggle popovers with richer content. Floating layer is positioned in JS against the trigger rect.</p>
+
+    <div class="demo-card">
+      <div class="section-label">Hover tooltips · stat strip</div>
+      <div class="stat-strip">
+        <div class="stat" data-tip="VPIP" data-tip-body="Voluntarily put $ in pot. Target 20–30%. You sit a touch loose at 24.1%." data-place="top">
+          <div class="k">VPIP</div><div class="v pos">24.1%</div>
+        </div>
+        <div class="stat" data-tip="C-bet HU" data-tip-body="Heads-up flop continuation. Game-plan target is 100% at 33% pot — biggest open leak." data-place="top">
+          <div class="k">C-bet HU</div><div class="v warn">71%</div>
+        </div>
+        <div class="stat" data-tip="WTSD" data-tip-body="Went to showdown. Over 35% means you call down too light. You're at 38.5%." data-place="top">
+          <div class="k">WTSD</div><div class="v neg">38.5%</div>
+        </div>
+        <div class="stat" data-tip="Compliance" data-tip-body="Share of preflop decisions inside the theoretical range across all positions." data-place="top">
+          <div class="k">Range</div><div class="v pos">91.4%</div>
+        </div>
+      </div>
+
+      <div class="section-label">Click popovers</div>
+      <div class="pop-row">
+        <button class="btn" data-pop="hand">Hand #260356…</button>
+        <button class="btn" data-pop="filter">Why flagged?</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- floating tooltip -->
+  <div class="tip" id="tip"><span class="tt" id="tip-tt"></span><span id="tip-body"></span><span class="arrow" id="tip-arrow"></span></div>
+
+  <!-- popover content templates -->
+  <div class="tip popover" id="pop"><div id="pop-content"></div><span class="arrow" id="pop-arrow"></span></div>
+
+  <script type="module">
+    const tip = document.getElementById('tip');
+    const tipTt = document.getElementById('tip-tt'), tipBody = document.getElementById('tip-body'), tipArrow = document.getElementById('tip-arrow');
+
+    function place(el, trigger, arrow, preferred = 'top') {
+      const r = trigger.getBoundingClientRect();
+      el.classList.add('show');
+      const tw = el.offsetWidth, th = el.offsetHeight, gap = 10;
+      let place = preferred;
+      if (place === 'top' && r.top - th - gap < 8) place = 'bottom';
+      let top, left = r.left + r.width / 2 - tw / 2;
+      left = Math.max(8, Math.min(left, window.innerWidth - tw - 8));
+      if (place === 'top') top = r.top - th - gap; else top = r.bottom + gap;
+      el.style.top = top + 'px'; el.style.left = left + 'px';
+      // arrow centered on trigger
+      const ax = r.left + r.width / 2 - left - 4.5;
+      arrow.style.left = Math.max(10, Math.min(ax, tw - 18)) + 'px';
+      if (place === 'top') { arrow.style.bottom = '-5px'; arrow.style.top = 'auto'; arrow.style.borderTop = 'none'; arrow.style.borderLeft = 'none'; }
+      else { arrow.style.top = '-5px'; arrow.style.bottom = 'auto'; arrow.style.borderBottom = 'none'; arrow.style.borderRight = 'none'; }
+    }
+
+    // --- tooltips ---
+    document.querySelectorAll('[data-tip]').forEach((t) => {
+      t.addEventListener('mouseenter', () => {
+        tipTt.textContent = t.dataset.tip; tipBody.textContent = t.dataset.tipBody;
+        place(tip, t, tipArrow, t.dataset.place || 'top');
+      });
+      t.addEventListener('mouseleave', () => tip.classList.remove('show'));
+    });
+
+    // --- popovers ---
+    const pop = document.getElementById('pop'), popContent = document.getElementById('pop-content'), popArrow = document.getElementById('pop-arrow');
+    const POP = {
+      hand: '<span class="tt">Hand summary</span>' +
+            '<div class="po-row"><span>Position</span><b>BTN</b></div>' +
+            '<div class="po-row"><span>Hand</span><b>K7s</b></div>' +
+            '<div class="po-row"><span>Scenario</span><b>RFI · 100bb</b></div>' +
+            '<div class="po-row"><span>Net</span><b style="color:var(--neg)">−18.0 bb</b></div>' +
+            '<div class="po-act">Open full replay →</div>',
+      filter: '<span class="tt">Why flagged</span>' +
+            '<div class="po-row"><span>Type</span><b>Open out of range</b></div>' +
+            '<div class="po-row"><span>Frequency</span><b>58% vs 48–52%</b></div>' +
+            '<div class="po-row"><span>Est. cost</span><b style="color:var(--neg)">−28 bb/100</b></div>' +
+            '<div class="po-act">Add to study plan →</div>',
+    };
+    let openTrigger = null;
+    function openPop(btn) {
+      popContent.innerHTML = POP[btn.dataset.pop] || '';
+      place(pop, btn, popArrow, 'bottom');
+      openTrigger = btn;
+    }
+    function closePop() { pop.classList.remove('show'); openTrigger = null; }
+    document.querySelectorAll('[data-pop]').forEach((btn) => {
+      btn.addEventListener('click', (e) => { e.stopPropagation(); openTrigger === btn ? closePop() : openPop(btn); });
+    });
+    document.addEventListener('click', (e) => { if (openTrigger && !pop.contains(e.target)) closePop(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePop(); });
+    window.addEventListener('scroll', closePop, true);
+  </script>
+</body>
+</html>
