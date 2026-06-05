@@ -1,5 +1,18 @@
 # Agent Handoff Log — Poker Design Lab
 
+## 2026-06-05 — Design Audit Loop (Iteration 20): Arena View Typography
+
+- Owner / agent:          Antigravity (Autonomous Loop)
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/styles/*.css`
+- Files touched:
+  - `src/styles/arena.css` - Standardized hardcoded font-sizes on central pot, simulator deal cards, trainer feedback overlay headers, telemetry panel headers, and streak score indicators to map to core Obsidian variables (`var(--t-sm)`, `var(--t-body)`, `var(--t-h3)`).
+- Summary:
+  - Aligned trainer interface and telemetry panel typography on the Arena tab with the central system text scale tokens.
+  - Verified Vite compile and bundler output with zero warnings or errors.
+- Verification:
+  - Production build (`npm run build`) completed successfully in 4.41s.
+
 ## 2026-06-05 — Design Audit Loop (Iteration 19): Career Tab Geometry & Typography
 
 - Owner / agent:          Antigravity (Autonomous Loop)
