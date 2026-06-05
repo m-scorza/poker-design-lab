@@ -6,13 +6,13 @@
     align-items: stretch;
     border-bottom: 1px solid var(--border-strong);
     background: rgba(0,0,0,0.2);
-    margin-bottom: 24px;
+    margin-bottom: var(--s-xl);
   }
   .wire-badge {
     display: flex;
     align-items: center;
-    gap: 9px;
-    padding: 13px 18px 13px 0;
+    gap: var(--s-xs);
+    padding: var(--s-sm) var(--s-lg) var(--s-sm) 0;
     border-right: 1px solid var(--border);
     background: var(--bg-2);
   }
@@ -42,7 +42,7 @@
   }
   .wire-tape {
     overflow: hidden;
-    padding-left: 22px;
+    padding-left: var(--s-lg);
     display: flex;
     align-items: center;
     position: relative;
@@ -60,9 +60,9 @@
     font-size: var(--t-sm);
     letter-spacing: 0.05em;
     color: var(--fg-muted);
-    margin-right: 30px;
+    margin-right: var(--s-2xl);
     display: inline-flex;
-    gap: 9px;
+    gap: var(--s-xs);
     align-items: center;
   }
   .wire-track span::before {

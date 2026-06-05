@@ -1,7 +1,7 @@
 /*     MASTHEAD HEADER (Horizontal Navigation bar)
      ========================================================= */
   .masthead {
-    padding: 26px 0 0;
+    padding: var(--s-xl) 0 0;
     border-bottom: none;
     position: relative;
     z-index: 10;
@@ -10,13 +10,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 24px;
-    padding-bottom: 18px;
+    gap: var(--s-xl);
+    padding-bottom: var(--s-lg);
   }
   .logo {
     display: flex;
     align-items: baseline;
-    gap: 14px;
+    gap: var(--s-sm);
   }
   .logo .glyph {
     font-family: var(--display);
@@ -25,7 +25,7 @@
     letter-spacing: 0.02em;
     background: var(--accent);
     color: var(--bg);
-    padding: 3px 8px 4px;
+    padding: var(--s-2xs) var(--s-xs);
     border-radius: var(--r-xs);
     line-height: 1;
     align-self: center;
@@ -47,12 +47,12 @@
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--fg-muted);
-    margin-left: 4px;
+    margin-left: var(--s-2xs);
   }
  
   .mast-nav {
     display: flex;
-    gap: 4px;
+    gap: var(--s-2xs);
   }
   .mast-nav a {
     font-family: var(--mono);
@@ -60,7 +60,7 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--fg-muted);
-    padding: 7px 13px;
+    padding: var(--s-xs) var(--s-sm);
     border-radius: var(--r-sm);
     transition: color .14s, background .14s;
     cursor: pointer;
@@ -78,7 +78,7 @@
   .dateline {
     border-top: 1px solid var(--border-strong);
     border-bottom: 1px solid var(--border);
-    padding: 9px 0;
+    padding: var(--s-xs) 0;
     display: flex;
     flex-wrap: wrap;
     gap: 0;
@@ -89,7 +89,7 @@
     color: var(--fg-muted);
   }
   .dateline span {
-    padding: 0 16px;
+    padding: 0 var(--s-md);
     border-right: 1px solid var(--border);
   }
   .dateline span:first-child { padding-left: 0; }
