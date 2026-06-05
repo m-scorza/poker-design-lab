@@ -48,6 +48,18 @@
   --r-lg: 14px;
   --bw: 1px;
   
+  /* Spacing Scale (4px-based grid alignment) */
+  --s-2xs: 4px;
+  --s-xs: 8px;
+  --s-sm: 12px;
+  --s-md: 16px;
+  --s-lg: 20px;
+  --s-xl: 24px;
+  --s-2xl: 32px;
+  --s-3xl: 40px;
+  --s-4xl: 48px;
+  --s-5xl: 64px;
+  
   /* Pre-flop Action Fills (Damped) */
   --fill-raise: color-mix(in oklch, var(--accent) 55%, var(--bg-2));
   --fill-call: color-mix(in oklch, var(--accent-2) 32%, var(--bg-2));
