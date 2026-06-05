@@ -1,5 +1,19 @@
 # Agent Handoff Log — Poker Design Lab
 
+## 2026-06-05 — Design Audit Loop (Iteration 16): Radius Standardization (Ranges & Leaks)
+
+- Owner / agent:          Antigravity (Autonomous Loop)
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/styles/*.css`
+- Files touched:
+  - `src/styles/ranges.css` - Standardized 10 border-radius instances (e.g. ranges tab menus, position grids, tooltips, insight tiles) using the design system tokens (`var(--r-xs)`, `var(--r-sm)`, `var(--r-md)`, `var(--r-lg)`).
+  - `src/styles/leaks.css` - Standardized 14 border-radius instances (e.g. matrix-grid box, cell nodes, leak cards, trend badges, legends, caption boxes) using the design system tokens.
+- Summary:
+  - Harmonized geometry globally across the Leaks and Ranges tabs by replacing hardcoded pixel radii with standard variables.
+  - Verified Vite compile and bundler output with zero warnings or errors.
+- Verification:
+  - Production build (`npm run build`) completed successfully in 4.00s.
+
 ## 2026-06-05 — Design Audit Loop (Iteration 15): Hands Page Inline Style Cleanup
 
 - Owner / agent:          Antigravity (Autonomous Loop)
