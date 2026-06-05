@@ -3,20 +3,18 @@
    ========================================================= */
 
 .dock-btn:hover, .btn-replay:hover, .ranges-tab-btn:hover, .btn-reset-db:hover, .btn-trainer-act:hover {
-  box-shadow: 0 0 15px var(--accent-glow);
+  box-shadow: 0 0 12px var(--accent-glow);
   border-color: var(--accent);
-  text-shadow: 0 0 8px var(--accent-glow);
-  transition: border-color 0.2s, box-shadow 0.2s, text-shadow 0.2s;
+  transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
 }
 
 .btn-reset-db:hover {
   border-color: var(--loss) !important;
-  box-shadow: 0 0 15px rgba(255, 59, 107, 0.35) !important;
-  text-shadow: 0 0 8px rgba(255, 59, 107, 0.40) !important;
+  box-shadow: 0 0 12px rgba(255, 59, 107, 0.35) !important;
 }
 
 .pos-select-btn:hover {
-  box-shadow: 0 0 12px var(--accent-glow);
+  box-shadow: 0 0 8px var(--accent-glow);
   background: var(--accent-soft);
   color: var(--fg);
 }

@@ -1,16 +1,16 @@
 <section class="page" id="page-sessions">
 
       <!-- Session Activity Calendar Heatmap -->
-      <div class="card" style="margin-bottom: 24px; padding: 20px 24px;">
+      <div class="card sessions-calendar-card">
         <div class="cal-h">
           <span class="kick accent">Frequency & volume calendar</span>
           <span class="note">density = volume · color = net result</span>
           <div class="legend">
-            <span class="sw"><i style="background: color-mix(in srgb, var(--loss) 70%, transparent);"></i>−$5+</span>
-            <span class="sw"><i style="background: color-mix(in srgb, var(--loss) 20%, transparent);"></i>loss</span>
-            <span class="sw"><i class="cal-cell flat" style="position:static;"></i>zero</span>
-            <span class="sw"><i style="background: color-mix(in srgb, var(--accent) 38%, transparent);"></i>gain</span>
-            <span class="sw"><i style="background: color-mix(in srgb, var(--accent) 88%, transparent);"></i>+$5+</span>
+            <span class="sw"><i class="sessions-legend-dot-loss1"></i>−$5+</span>
+            <span class="sw"><i class="sessions-legend-dot-loss2"></i>loss</span>
+            <span class="sw"><i class="cal-cell flat sessions-legend-dot-zero"></i>zero</span>
+            <span class="sw"><i class="sessions-legend-dot-win1"></i>gain</span>
+            <span class="sw"><i class="sessions-legend-dot-win2"></i>+$5+</span>
           </div>
         </div>
         <div class="cal-grid" id="cal-grid"></div>
@@ -19,16 +19,16 @@
       <div class="cal-tip" id="cal-tip"></div>
 
       <!-- Action Strip & Table -->
-      <div class="card" style="padding:0; overflow:hidden;">
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.15);">
+      <div class="card sessions-history-card">
+        <div class="sessions-history-header">
           <span class="kick">Session history · volume timeline</span>
-          <div style="display: flex; gap: 8px;">
-            <button class="stat-trigger" style="padding: 4px 10px; font-size: 10.5px; font-family: var(--mono); cursor: pointer;" id="btn-export-csv">Export CSV</button>
-            <button class="stat-trigger" style="padding: 4px 10px; font-size: 10.5px; font-family: var(--mono); cursor: pointer;" id="btn-export-pdf">Export PDF</button>
+          <div class="sessions-export-actions">
+            <button class="stat-trigger sessions-export-btn" id="btn-export-csv">Export CSV</button>
+            <button class="stat-trigger sessions-export-btn" id="btn-export-pdf">Export PDF</button>
           </div>
         </div>
 
-        <div class="timeline-row-editorial" style="background:rgba(0,0,0,0.2); font-family:var(--mono); font-size:10px; text-transform:uppercase; color:var(--fg-muted); cursor:default; border-bottom-width:2px; pointer-events: none;">
+        <div class="timeline-row-editorial sessions-timeline-header-override">
           <span>Date</span><span>Session details</span><span>Buy-ins</span><span>bb/100</span><span>GTO compliance</span>
         </div>
 
@@ -38,31 +38,31 @@
       </div>
 
       <!-- Export Modal Backdrop -->
-      <div class="replay-modal-backdrop" id="export-backdrop" style="display: none; align-items: center; justify-content: center; z-index: 10000;">
-        <div class="replay-modal" style="max-width: 450px; width: 90%;">
+      <div class="sessions-export-backdrop" id="export-backdrop">
+        <div class="replay-modal sessions-export-modal-override">
           <div class="replay-modal-header">
             <span class="kick accent" id="export-modal-title">Exporting the ledger</span>
             <button class="replay-modal-close" id="btn-close-export">&times;</button>
           </div>
-          <div style="padding: 24px;">
-            <div class="export-progress-container" id="export-progress-area" style="margin-bottom: 20px;">
-              <div class="session-bar-lbl" style="margin-bottom: 8px;">
-                <span id="export-status-text" style="font-family: var(--mono); color: var(--accent);">Compiling the hand history...</span>
-                <span id="export-pct" style="font-family: var(--mono);">0%</span>
+          <div class="sessions-export-body">
+            <div class="export-progress-container sessions-export-progress-container" id="export-progress-area">
+              <div class="session-bar-lbl sessions-bar-lbl-override">
+                <span id="export-status-text" class="sessions-export-status-text">Compiling the hand history...</span>
+                <span id="export-pct" class="sessions-export-pct">0%</span>
               </div>
-              <div class="session-bar-track" style="height: 6px;">
-                <div class="session-bar-fill" id="export-progress-bar" style="width: 0%; background: var(--accent);"></div>
+              <div class="session-bar-track sessions-bar-track-override">
+                <div class="session-bar-fill sessions-bar-fill-override" id="export-progress-bar"></div>
               </div>
             </div>
 
-            <div class="terminal-log-window" id="export-terminal-logs" style="height: 120px; background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 6px; padding: 10px; font-family: var(--mono); font-size: 10px; color: var(--fg-muted); overflow-y: auto; line-height: 1.5; margin-bottom: 20px;">
+            <div class="terminal-log-window sessions-terminal-window" id="export-terminal-logs">
               <!-- Simulated compilation logs -->
             </div>
 
-            <div id="export-success-msg" style="display: none; text-align: center; margin-top: 10px;">
-              <div style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; color: var(--accent); font-size: 24px;">✓</div>
-              <p style="font-size: 13px; color: var(--fg-muted); margin: 0;">The ledger file is ready to download.</p>
-              <button class="btn-reset-db" id="btn-download-file" style="margin-top: 15px; width: 100%; border: 1px solid var(--accent); background: var(--accent-soft); color: var(--accent); font-family: var(--mono); font-size: 11px; padding: 8px; cursor: pointer; text-transform: uppercase;">Download file</button>
+            <div id="export-success-msg" class="sessions-export-success-box">
+              <div class="sessions-export-success-checkmark">✓</div>
+              <p class="sessions-export-success-text">The ledger file is ready to download.</p>
+              <button class="btn-download-file sessions-download-btn" id="btn-download-file">Download file</button>
             </div>
           </div>
         </div>

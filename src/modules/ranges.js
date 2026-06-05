@@ -255,6 +255,9 @@ function updateRangesGrid() {
             `<span class="rg-fill rg-call" style="height:${call}%;"></span>` +
             `<span class="rg-fill rg-fold" style="height:${fold}%;"></span>` +
             `<span class="rg-label">${hand}</span>`;
+          if (call > 0) {
+            cell.classList.add('rg-cell-has-call');
+          }
         } else {
           cell.innerHTML = `<span class="rg-label">${hand}</span>`;
         }

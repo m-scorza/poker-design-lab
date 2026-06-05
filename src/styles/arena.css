@@ -9,7 +9,7 @@
   .hologram-viewport {
     background: rgba(0,0,0,0.4);
     border: 1px solid var(--border);
-    border-radius: 20px;
+    border-radius: var(--r-lg);
     position: relative;
     overflow: hidden;
     display: flex; flex-direction: column;
@@ -17,11 +17,10 @@
     padding: 20px;
   }
   
-  /* 3D Tilted felt surface */
+  /* Flat top-down felt surface */
   .hologram-stage-3d {
     flex: 1;
     position: relative;
-    perspective: 1200px;
     display: flex; align-items: center; justify-content: center;
     height: 100%;
   }
@@ -29,23 +28,21 @@
     position: absolute;
     width: 620px; height: 260px;
     border-radius: 130px;
-    border: 14px solid #202633;
-    background: #151b26;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.7), inset 0 0 60px rgba(0,0,0,0.5);
-    transform: rotateX(32deg);
-    transform-style: preserve-3d;
+    border: 6px solid var(--felt-rail);
+    background: var(--felt);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
   }
   
   /* Seats overlay */
   .hologram-seat {
     position: absolute;
     background: var(--bg-card);
-    border: 1.5px solid var(--border);
+    border: var(--bw) solid var(--border);
     color: var(--fg);
     padding: 8px 14px;
-    border-radius: 12px;
+    border-radius: var(--r-md);
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: var(--t-sm);
     text-align: center;
     cursor: pointer;
     transition: border-color 0.2s, background 0.2s, transform 0.2s;
@@ -61,7 +58,7 @@
     background: var(--accent-soft);
   }
   .hologram-seat .name { font-weight: 700; display: block; }
-  .hologram-seat .chips { font-size: 9px; color: var(--fg-muted); display: block; margin-top: 2px; }
+  .hologram-seat .chips { font-size: var(--t-cap); color: var(--fg-muted); display: block; margin-top: 2px; }
   
   /* Precise absolute coordinates for seats */
   .seat-1 { top: 15%; left: 15%; }
@@ -79,8 +76,8 @@
     pointer-events: none;
     opacity: 0.55;
   }
-  .center-pot-box .l { font-family: var(--mono); font-size: 8px; text-transform: uppercase; color: var(--fg-muted); }
-  .center-pot-box .v { font-family: var(--mono); font-size: 20px; font-weight: 700; color: #fff; }
+  .center-pot-box .l { font-family: var(--mono); font-size: var(--t-cap); text-transform: uppercase; color: var(--fg-muted); }
+  .center-pot-box .v { font-family: var(--mono); font-size: 20px; font-weight: 700; color: var(--accent); }
 
   /* Hologram path vectors canvas */
   #arena-felt-canvas {
@@ -103,9 +100,10 @@
   .hologram-deal-card {
     position: absolute;
     width: 48px; height: 68px;
-    background: #fff;
-    border-radius: 5px;
-    color: #000;
+    background: var(--bg-2);
+    border: var(--bw) solid var(--border-strong);
+    border-radius: var(--r-sm);
+    color: var(--fg);
     font-family: var(--sans);
     font-weight: 700;
     font-size: 14px;
@@ -116,7 +114,7 @@
     z-index: 40;
     pointer-events: none;
   }
-  .hologram-deal-card.red { color: #f43f5e; }
+  .hologram-deal-card.red { color: var(--loss); }
   .hologram-deal-card .suit { align-self: flex-end; font-size: 16px; }
 
   .trainer-actions-wrap {
@@ -129,14 +127,14 @@
   }
   .btn-trainer-act {
     background: var(--bg-card);
-    border: 1.5px solid var(--border-strong);
+    border: var(--bw) solid var(--border-strong);
     color: var(--fg);
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: var(--t-sm);
     font-weight: 700;
     text-transform: uppercase;
     padding: 12px 28px;
-    border-radius: 8px;
+    border-radius: var(--r-sm);
     cursor: pointer;
     transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
   }
@@ -157,7 +155,7 @@
     background: rgba(8, 10, 15, 0.9);
     border: 1px solid var(--border-strong);
     padding: 16px 28px;
-    border-radius: 16px;
+    border-radius: var(--r-lg);
     text-align: center;
     box-shadow: 0 15px 45px rgba(0,0,0,0.8);
     transition: opacity 0.3s, transform 0.3s;
@@ -179,8 +177,8 @@
     right: 24px; bottom: 24px;
     background: rgba(8, 10, 15, 0.82);
     backdrop-filter: blur(16px);
-    border: 1.5px solid var(--border-strong);
-    border-radius: 12px;
+    border: var(--bw) solid var(--border-strong);
+    border-radius: var(--r-md);
     padding: 12px 16px;
     z-index: 9999;
     box-shadow: 0 10px 40px rgba(0,0,0,0.6);
@@ -188,15 +186,11 @@
     flex-direction: column;
     gap: 8px;
     width: 210px;
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1);
-    transform-origin: right bottom;
-  }
-  .theme-dock:hover {
-    transform: scale(1.03);
+    transition: border-color var(--t-med) var(--ease), box-shadow var(--t-med) var(--ease);
   }
   .dock-header {
     font-family: var(--mono);
-    font-size: 8.5px;
+    font-size: var(--t-cap);
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--fg-muted);
@@ -209,15 +203,15 @@
     justify-content: space-between;
     gap: 6px;
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: var(--t-cap);
   }
   .dock-btn {
     background: rgba(255,255,255,0.02);
     border: 1px solid var(--border);
     color: var(--fg-muted);
     padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 9px;
+    border-radius: var(--r-sm);
+    font-size: var(--t-cap);
     font-family: var(--mono);
     text-transform: uppercase;
     cursor: pointer;
@@ -244,7 +238,7 @@
   .loader.done { opacity: 0; visibility: hidden; }
   .loader-inner { width: min(440px, 80vw); }
   .loader-eye {
-    font-family: var(--mono); font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+    font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.25em; text-transform: uppercase;
     color: var(--fg-muted); display: flex; justify-content: space-between; margin-bottom: 12px;
   }
   .loader-eye b { color: var(--accent); }
@@ -253,5 +247,131 @@
   }
   .loader-bar { margin-top: 18px; height: 2px; background: rgba(255,255,255,0.04); position: relative; overflow: hidden; }
   .loader-bar span { position: absolute; inset: 0 auto 0 0; width: 0%; background: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
-  .loader-status { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--fg-muted); margin-top: 12px; }
+  .loader-status { font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.15em; text-transform: uppercase; color: var(--fg-muted); margin-top: 12px; }
+
+  /* Extracted Layout Classes */
+  .arena-status-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+  }
+  #arena-score {
+    color: var(--accent);
+  }
+  .arena-hole-cards {
+    position: absolute;
+    display: flex;
+    gap: 8px;
+    z-index: 60;
+    top: 110px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .arena-telemetry-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  .arena-telemetry-card h3 {
+    font-family: var(--display);
+    margin: 8px 0 4px;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .arena-telemetry-card p {
+    font-size: var(--t-sm);
+    line-height: 1.5;
+    color: var(--fg-muted);
+    margin: 0;
+  }
+  .arena-telemetry-streaks {
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .arena-streak-box {
+    background: rgba(0,0,0,0.15);
+    padding: 8px;
+    border: var(--bw) solid var(--border);
+    border-radius: var(--r-sm);
+    text-align: center;
+  }
+  .arena-streak-box .kick {
+    font-size: var(--t-cap);
+  }
+  #arena-streak-val, #arena-best-streak-val {
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 14px;
+    margin-top: 2px;
+  }
+  #arena-streak-val {
+    color: var(--accent-2);
+  }
+  #arena-best-streak-val {
+    color: var(--accent);
+  }
+  .arena-timer-selector-wrap {
+    margin-top: 14px;
+  }
+  .arena-timer-selector-wrap .kick {
+    font-size: var(--t-cap);
+  }
+  #arena-speed-selector {
+    display: flex;
+    gap: 4px;
+    margin-top: 6px;
+  }
+  #arena-speed-selector .dock-btn {
+    font-size: var(--t-cap);
+    padding: 2px 6px;
+  }
+  .arena-drill-status-wrap {
+    border-top: var(--bw) solid var(--border);
+    padding-top: 12px;
+    margin-top: 12px;
+  }
+  .arena-drill-status-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  #arena-timer-countdown {
+    font-family: var(--mono);
+    font-size: var(--t-cap);
+    color: var(--loss);
+    font-weight: 700;
+  }
+  .arena-drill-spot-info {
+    font-family: var(--mono);
+    font-size: var(--t-sm);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+  .arena-drill-spot-info b {
+    color: var(--accent);
+  }
+  #trainer-current-hand {
+    font-size: var(--t-body);
+    color: #fff;
+  }
+  .arena-history-log-wrap {
+    border-top: var(--bw) solid var(--border);
+    padding-top: 12px;
+    margin-top: 12px;
+  }
+  #arena-history-log {
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  #arena-history-log div {
+    font-family: var(--mono);
+    font-size: var(--t-cap);
+    color: var(--fg-dim);
+  }
 

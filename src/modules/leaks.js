@@ -150,7 +150,7 @@ export function initLeaks() {
 
     const matchingHands = state.hands.filter(filterFn).slice(0, 3); // grab top 3 for the preview drawer
     if (matchingHands.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--fg-muted);">No deviation hands found in the database.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="4" class="leaks-empty-table-cell">No deviation hands found in the database.</td></tr>`;
       return;
     }
 
@@ -169,9 +169,9 @@ export function initLeaks() {
 
       tr.innerHTML = `
         <td class="card-pair">${suitsMarkup}</td>
-        <td style="font-family:var(--mono); text-transform:uppercase;">${h.action}</td>
-        <td style="font-family:var(--mono);" class="${h.net.includes('+') ? 'suit-c' : 'suit-h'}">${h.net}</td>
-        <td style="text-align:right;"><button class="btn-replay btn-leak-replay" data-id="${h.id}">Replay</button></td>
+        <td class="hands-td-mono-uppercase-bold">${h.action}</td>
+        <td class="hands-td-mono ${h.net.includes('+') ? 'suit-c' : 'suit-h'}">${h.net}</td>
+        <td class="hands-td-right"><button class="btn-replay btn-leak-replay" data-id="${h.id}">Replay</button></td>
       `;
       tbody.appendChild(tr);
     });
@@ -215,6 +215,7 @@ export function initLeaks() {
   updateRangeBar(leaksData.btn);
   buildLeakHeatmap();
   buildLeakGauges();
+  buildPositionalStatsHeatmap();
   
   // Render initially expanded first row's lists
   Object.keys(leaksData).forEach(key => {
@@ -431,4 +432,121 @@ function buildLeakGauges() {
     // Fallback: guarantee the final width even if rAF is paused (hidden tab).
     setTimeout(() => { fill.style.width = fillPct + '%'; }, 120);
   });
+}
+
+/* ---------- Positional Stats Heatmap (ported from position-stats-heatmap brick) ---------- */
+const POS = ['UTG', 'UTG+1', 'MP', 'HJ', 'CO', 'BTN', 'SB', 'BB'];
+// per-metric: values by position + a [lo,hi] on-target band (in %)
+const METRICS = {
+  vpip:     { name: 'VPIP · by position', band: [16, 30], vals: [14, 15, 18, 24, 31, 44, 38, 62] },
+  pfr:      { name: 'PFR · by position', band: [12, 26], vals: [13, 14, 16, 21, 28, 40, 33, 14] },
+  threebet: { name: '3-bet % · by position', band: [5, 11], vals: [4, 5, 6, 7, 9, 12, 14, 8] },
+  fold:     { name: 'Fold to steal · by position', band: [40, 60], vals: [null, null, null, null, null, null, 52, 66] },
+};
+
+function buildPositionalStatsHeatmap() {
+  const grid = document.getElementById('leaks-heatmap-grid');
+  const caption = document.getElementById('leaks-heatmap-caption');
+  const metricName = document.getElementById('leaks-heatmap-metric-name');
+  const metricTarget = document.getElementById('leaks-heatmap-metric-target');
+  const tabsContainer = document.getElementById('leaks-heatmap-metric-tabs');
+  if (!grid || !caption || !metricName || !metricTarget) return;
+
+  let current = 'vpip';
+
+  function mixColors(x, y, t) {
+    return {
+      r: Math.round(x.r + (y.r - x.r) * t),
+      g: Math.round(x.g + (y.g - x.g) * t),
+      b: Math.round(x.b + (y.b - x.b) * t)
+    };
+  }
+
+  function gradeColor(v, band) {
+    if (v == null) return { bg: 'rgba(255,255,255,0.04)', score: null };
+    const [lo, hi] = band;
+    let off = 0;
+    if (v < lo) off = (lo - v) / lo;
+    else if (v > hi) off = (v - hi) / hi;
+    off = Math.min(1, off);
+    
+    // green → amber → red as off grows
+    const g = { r: 94, g: 201, b: 143 };
+    const a = { r: 232, g: 196, b: 104 };
+    const r = { r: 239, g: 124, b: 116 };
+    let c;
+    if (off < 0.5) {
+      const t = off / 0.5;
+      c = mixColors(g, a, t);
+    } else {
+      const t = (off - 0.5) / 0.5;
+      c = mixColors(a, r, t);
+    }
+    return { bg: `rgb(${c.r},${c.g},${c.b})`, score: off };
+  }
+
+  function verdict(score) {
+    if (score === 0) return ['on target', 'var(--pos)', 'rgba(94,201,143,0.14)'];
+    if (score < 0.4) return ['slight drift', 'var(--warn)', 'rgba(232,196,104,0.14)'];
+    return ['leak', 'var(--neg)', 'rgba(239,124,116,0.14)'];
+  }
+
+  function describe(pos, v, band, score) {
+    const [lbl, col, bgc] = verdict(score);
+    const dir = v < band[0] ? 'below' : v > band[1] ? 'above' : 'inside';
+    caption.innerHTML = `<span class="pin">◆</span><span><b>${pos}</b> · ${current.toUpperCase()} <b>${v}%</b> — ${dir} the ${band[0]}–${band[1]}% target band</span><span class="tag" style="color:${col};background:${bgc};margin-left:auto;font-size:10px;padding:2px 8px;border-radius:5px;">${lbl}</span>`;
+  }
+
+  function selectCell(el, pos, v, band, score) {
+    grid.querySelectorAll('.pos-hm-cell.sel').forEach(c => c.classList.remove('sel'));
+    el.classList.add('sel');
+    describe(pos, v, band, score);
+  }
+
+  function div(cls, text) {
+    const d = document.createElement('div');
+    d.className = cls;
+    if (text != null) d.textContent = text;
+    return d;
+  }
+
+  function renderGrid() {
+    const m = METRICS[current];
+    metricName.textContent = m.name;
+    metricTarget.textContent = `target band ${m.band[0]}–${m.band[1]}%`;
+    grid.innerHTML = '';
+    
+    grid.appendChild(div('pos-hm-corner'));
+    POS.forEach(p => grid.appendChild(div('pos-hm-col-h', p)));
+    grid.appendChild(div('pos-hm-row-h', m.name.split(' · ')[0]));
+    
+    m.vals.forEach((v, i) => {
+      const { bg, score } = gradeColor(v, m.band);
+      const el = document.createElement('div');
+      el.className = 'pos-hm-cell';
+      el.textContent = v == null ? '·' : v + '%';
+      if (v == null) {
+        el.classList.add('empty');
+      } else {
+        el.style.background = bg;
+        el.addEventListener('click', () => selectCell(el, POS[i], v, m.band, score));
+        el.addEventListener('mouseenter', () => describe(POS[i], v, m.band, score));
+      }
+      grid.appendChild(el);
+    });
+  }
+
+  if (tabsContainer) {
+    const tabs = tabsContainer.querySelectorAll('.mtab');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        tabs.forEach(t => t.classList.remove('on'));
+        tab.classList.add('on');
+        current = tab.dataset.m;
+        renderGrid();
+      });
+    });
+  }
+
+  renderGrid();
 }

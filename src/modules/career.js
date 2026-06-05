@@ -268,33 +268,23 @@ function drawHeatmap() {
 
   HEATMAP_DATA.forEach((dayRow, dayIdx) => {
     const rowDiv = document.createElement('div');
-    rowDiv.style.display = 'grid';
-    rowDiv.style.gridTemplateColumns = '24px repeat(24, 1fr)';
-    rowDiv.style.gap = '2px';
-    rowDiv.style.alignItems = 'center';
+    rowDiv.className = 'career-heatmap-row';
 
     // Day Label (Mon to Sun)
     const dayLabel = document.createElement('span');
     dayLabel.innerText = DAYS[dayIdx];
-    dayLabel.style.fontFamily = 'var(--mono)';
-    dayLabel.style.fontSize = '8px';
-    dayLabel.style.fontWeight = '700';
-    dayLabel.style.color = 'var(--fg-muted)';
+    dayLabel.className = 'career-heatmap-label';
     rowDiv.appendChild(dayLabel);
 
     // 24 Hour blocks
     dayRow.forEach((cell, hrIdx) => {
       const block = document.createElement('div');
-      block.style.aspectRatio = '1';
-      block.style.borderRadius = '2px';
-      block.style.cursor = 'pointer';
-      block.style.transition = 'transform 0.1s, box-shadow 0.1s';
+      block.className = 'career-heatmap-block';
       
       // Determine coloring based on profit/loss/neutral (token-driven via color-mix)
       const hasVolume = cell.volume > 0;
       if (!hasVolume) {
-        block.style.background = 'var(--bg-input)';
-        block.style.border = '1px solid var(--border)';
+        block.classList.add('empty');
       } else {
         const isPos = cell.profit >= 0;
         const baseVar = isPos ? 'var(--accent)' : 'var(--loss)';
@@ -303,12 +293,8 @@ function drawHeatmap() {
         block.style.border = `1px solid ${isPos ? 'var(--accent-line)' : 'var(--loss-line)'}`;
       }
 
-      // Hover enlargement
+      // Tooltip triggers
       block.addEventListener('mouseenter', (e) => {
-        block.style.transform = 'scale(1.3)';
-        block.style.zIndex = '10';
-        block.style.position = 'relative';
-
         const dayName = DAYS_FULL[dayIdx];
         const hourStr = `${hrIdx.toString().padStart(2, '0')}:00`;
         const profitStr = cell.profit >= 0 ? `+${cell.profit.toFixed(1)} bb` : `${cell.profit.toFixed(1)} bb`;
@@ -328,8 +314,6 @@ function drawHeatmap() {
       });
 
       block.addEventListener('mouseleave', () => {
-        block.style.transform = 'none';
-        block.style.zIndex = 'auto';
         tooltip.style.display = 'none';
       });
 
@@ -357,23 +341,17 @@ function drawOpponentLedgers() {
 
     predators.forEach((v, idx) => {
       const row = document.createElement('div');
-      row.style.display = 'flex';
-      row.style.justifyContent = 'space-between';
-      row.style.alignItems = 'center';
-      row.style.padding = '10px 14px';
-      row.style.background = 'rgba(255,255,255,0.01)';
-      row.style.border = '1px solid var(--border)';
-      row.style.borderRadius = '8px';
+      row.className = 'career-predators-row';
 
       row.innerHTML = `
-        <div style="display:flex; align-items:center; gap: 10px;">
-          <span style="font-family:var(--mono); font-size:13px; color:var(--loss); opacity:0.35;">#${idx+1}</span>
+        <div class="career-predators-name-box">
+          <span class="career-predators-rank">#${idx+1}</span>
           <div>
-            <div style="font-family:var(--mono); font-weight:700; color:var(--fg); text-transform:uppercase;">${v.name}</div>
-            <div style="font-size:10px; color:var(--fg-muted); margin-top:2px;">${v.hands} hands observed ·<span class="opp-arch-badge ${v.arch}" style="font-size:8px; padding:0 3px;">${v.label}</span></div>
+            <div class="career-predators-name">${v.name}</div>
+            <div class="career-predators-meta">${v.hands} hands observed · <span class="opp-arch-badge ${v.arch}">${v.label}</span></div>
           </div>
         </div>
-        <span style="font-family:var(--mono); color:var(--loss); font-size:14px; font-weight:700;">-${v.bb.toFixed(1)} bb</span>
+        <span class="career-predators-val">-${v.bb.toFixed(1)} bb</span>
       `;
       predatorsContainer.appendChild(row);
     });
@@ -390,23 +368,17 @@ function drawOpponentLedgers() {
 
     prey.forEach((v, idx) => {
       const row = document.createElement('div');
-      row.style.display = 'flex';
-      row.style.justifyContent = 'space-between';
-      row.style.alignItems = 'center';
-      row.style.padding = '10px 14px';
-      row.style.background = 'rgba(255,255,255,0.01)';
-      row.style.border = '1px solid var(--border)';
-      row.style.borderRadius = '8px';
+      row.className = 'career-predators-row';
 
       row.innerHTML = `
-        <div style="display:flex; align-items:center; gap: 10px;">
-          <span style="font-family:var(--mono); font-size:13px; color:var(--accent); opacity:0.35;">#${idx+1}</span>
+        <div class="career-predators-name-box">
+          <span class="career-predators-rank accent">#${idx+1}</span>
           <div>
-            <div style="font-family:var(--mono); font-weight:700; color:var(--fg); text-transform:uppercase;">${v.name}</div>
-            <div style="font-size:10px; color:var(--fg-muted); margin-top:2px;">${v.hands} hands observed ·<span class="opp-arch-badge ${v.arch}" style="font-size:8px; padding:0 3px;">${v.label}</span></div>
+            <div class="career-predators-name">${v.name}</div>
+            <div class="career-predators-meta">${v.hands} hands observed · <span class="opp-arch-badge ${v.arch}">${v.label}</span></div>
           </div>
         </div>
-        <span style="font-family:var(--mono); color:var(--accent-2); font-size:14px; font-weight:700;">+${v.bb.toFixed(1)} bb</span>
+        <span class="career-predators-val accent-2">+${v.bb.toFixed(1)} bb</span>
       `;
       preyContainer.appendChild(row);
     });
@@ -423,20 +395,17 @@ function drawOpponentLedgers() {
 
     overlap.forEach(v => {
       const card = document.createElement('div');
-      card.style.background = 'rgba(255,255,255,0.005)';
-      card.style.border = '1px solid var(--border)';
-      card.style.borderRadius = '12px';
-      card.style.padding = '14px 18px';
+      card.className = 'career-overlap-item';
 
       card.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-          <span style="font-family:var(--mono); font-weight:700; color:var(--fg); text-transform:uppercase;">${v.name}</span>
-          <span class="opp-arch-badge ${v.arch}" style="font-size:8px; padding:0 4px;">${v.label}</span>
+        <div class="career-overlap-header">
+          <span class="career-predators-name">${v.name}</span>
+          <span class="opp-arch-badge ${v.arch}">${v.label}</span>
         </div>
-        <div style="display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:11px; color:var(--fg-muted);">
+        <div class="career-overlap-meta">
           <span>VPIP/PFR: ${v.vpip}/${v.pfr}</span>
           <span>${v.hands} hands</span>
-          <span style="color:var(--accent);">✏️ ${v.notes} notas</span>
+          <span class="career-overlap-notes">✏️ ${v.notes} notas</span>
         </div>
       `;
       overlapGrid.appendChild(card);
@@ -460,8 +429,7 @@ function drawHighImpactHands() {
 
   sortedHands.forEach((h, idx) => {
     const tr = document.createElement('tr');
-    tr.style.borderBottom = '1px solid rgba(255,255,255,0.03)';
-    tr.style.fontSize = '12.5px';
+    tr.className = 'career-tr-clickable';
 
     const cardsSplit = h.cards.split(' ');
     const suitsMarkup = cardsSplit.map((c, i) => {
@@ -476,14 +444,14 @@ function drawHighImpactHands() {
     const isPos = h.net.includes('+');
 
     tr.innerHTML = `
-      <td style="padding:14px 24px; color:var(--fg-muted);">#${idx+1}</td>
-      <td style="padding:14px 24px;">${suitsMarkup}</td>
-      <td style="padding:14px 24px; text-align:center; color:var(--accent-2);">${h.pos}</td>
-      <td style="padding:14px 24px; text-align:center; color:var(--fg-muted);">${h.scenario.replace('_', ' ')}</td>
-      <td style="padding:14px 24px; text-align:center;">${h.stack}</td>
-      <td style="padding:14px 24px; text-align:center;"><span class="compliance-badge ${h.compliant ? 'ok' : 'dev'}">${h.compliant ? 'ok' : 'desvio'}</span></td>
-      <td style="padding:14px 24px; text-align:right; color: ${isPos ? 'var(--accent-2)' : 'var(--loss)'};">${h.net}</td>
-      <td style="padding:14px 24px; text-align:center;"><button class="btn-replay-career" data-id="${h.id}" style="padding:4px 10px; font-size:10.5px; border-radius:4px; background:var(--accent-soft); border:1px solid var(--accent-line); color:var(--accent); cursor:pointer;">Replay</button></td>
+      <td class="career-td-sans" style="color:var(--fg-muted);">#${idx+1}</td>
+      <td class="career-td-sans">${suitsMarkup}</td>
+      <td class="career-td-center" style="color:var(--accent-2);">${h.pos}</td>
+      <td class="career-td-center" style="color:var(--fg-muted);">${h.scenario.replace('_', ' ')}</td>
+      <td class="career-td-center">${h.stack}</td>
+      <td class="career-td-center"><span class="compliance-badge ${h.compliant ? 'ok' : 'dev'}">${h.compliant ? 'ok' : 'desvio'}</span></td>
+      <td class="career-td-right" style="color: ${isPos ? 'var(--accent-2)' : 'var(--loss)'};">${h.net}</td>
+      <td class="career-td-center"><button class="btn-replay-career" data-id="${h.id}">Replay</button></td>
     `;
     container.appendChild(tr);
   });

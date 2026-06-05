@@ -4,11 +4,11 @@
 
 .card::after, .opponent-dossier-card::after {
   content: '';
-  position: absolute; inset: -1.5px;
-  border-radius: 16px;
-  padding: 1.5px;
-  background: linear-gradient(90deg, transparent, var(--accent), var(--loss), transparent);
-  background-size: 200% 200%;
+  position: absolute; 
+  inset: calc(-1 * var(--bw));
+  border-radius: var(--r-lg);
+  padding: var(--bw);
+  background: var(--accent);
   -webkit-mask: 
      linear-gradient(#fff 0 0) content-box, 
      linear-gradient(#fff 0 0);
@@ -16,21 +16,14 @@
           mask-composite: exclude;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.5s ease;
+  transition: opacity var(--t-med) var(--ease);
   z-index: 5;
 }
 
 .opponent-dossier-card::after {
-  border-radius: 14px; /* match villain cards */
+  border-radius: var(--r-lg); /* match card radius token */
 }
 
 .card:hover::after, .opponent-dossier-card:hover::after {
-  opacity: 1;
-  animation: border-glow-cycle 4s linear infinite;
-}
-
-@keyframes border-glow-cycle {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  opacity: 0.6; /* subtle edge bloom on hover, static single-color */
 }

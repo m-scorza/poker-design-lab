@@ -157,8 +157,32 @@ export function initRadar() {
   const verdictAction = document.getElementById('verdict-action');
   if (verdictAction) {
     verdictAction.addEventListener('click', () => {
-      const tab = (state.lifetime.verdict && state.lifetime.verdict.actionTab) || 'leaks';
-      navigateToTab(tab);
+      if (state.lifetime.compliance < 90) {
+        window.showModal({
+          eyebrow: 'Fix Leak',
+          title: 'Apply GTO preflop adjustments?',
+          body: 'This will prune the bottom 8% of wide button opens (K7s, Q5s, T7s) to align your preflop frequencies with GTO. Your overall range compliance will increase to 94.2%.',
+          confirmText: 'Apply Fixes',
+          cancelText: 'Cancel',
+          isDanger: false,
+          onConfirm: () => {
+            state.lifetime.compliance = 94.2;
+            state.lifetime.alerts = state.lifetime.alerts.filter(a => a.id !== 'alert-btn-rfi');
+            state.lifetime.verdict.blockerTitle = 'Preflop BTN Open Resolved';
+            state.lifetime.verdict.blockerDetail = 'Button open frequencies are now locked to GTO. Blinders cannot exploit you.';
+            state.lifetime.verdict.action = 'BTN open fixes applied';
+            state.lifetime.verdict.readiness = 94;
+            state.notify();
+            if (window.spawnToast) {
+              window.spawnToast('success', 'GTO Fixes Applied', 'Pruned K7s, Q5s, T7s opens on BTN. Compliance now 94.2%');
+            }
+          }
+        });
+      } else {
+        if (window.spawnToast) {
+          window.spawnToast('info', 'Already Optimized', 'Your BTN preflop open range compliance is already running on target.');
+        }
+      }
     });
   }
   const headlineCta = document.getElementById('headline-cta');
@@ -342,8 +366,18 @@ function calculateBlockers(handVal, boardVal) {
   const straightValEl = document.getElementById('blocker-straight-val');
   const ratingDescEl = document.getElementById('blocker-rating-desc');
   
-  if (flushValEl) flushValEl.innerText = flushValText;
-  if (straightValEl) straightValEl.innerText = straightValText;
+  if (flushValEl) {
+    if (flushValEl.innerText !== flushValText) {
+      flushValEl.innerText = flushValText;
+      gsap.fromTo(flushValEl, { scale: 0.75, opacity: 0.2 }, { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(1.8)' });
+    }
+  }
+  if (straightValEl) {
+    if (straightValEl.innerText !== straightValText) {
+      straightValEl.innerText = straightValText;
+      gsap.fromTo(straightValEl, { scale: 0.75, opacity: 0.2 }, { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(1.8)' });
+    }
+  }
 
   // Dynamic explanation text
   const handHtml = handCards.map(c => `${c[0]}<span style="font-size:12px; line-height:1;">${suitNames[c[1]]}</span>`).join(' ');
@@ -362,17 +396,34 @@ function calculateBlockers(handVal, boardVal) {
   if (ratingDescEl) ratingDescEl.innerHTML = ratingDesc;
 }
 
-// Generate SVG coordinate paths dynamically
-function generateSVGPath(points, width = 1140, height = 180) {
-  if (points.length < 2) return { path: '', area: '' };
+// EV-adjusted winnings coordinate datasets
+const EV_CHART_DATA = {
+  all: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180, 184.20],
+  'session-37': [0, -1.0, -2.0, -0.5, 1.0, 1.5, 3.0, 4.2, 5.0, 6.8, 7.5, 8.2, 9.40],
+  'session-36': [0, 0.5, 1.0, 0.0, -1.0, -2.5, -3.8, -4.5, -5.0, -5.8, -6.10],
+  'session-35': [0, 1.0, 3.5, 5.0, 6.5, 8.0, 10.5, 12.4, 14.0, 15.80],
+  '30d': [100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180, 185, 190, 195, 200, 205, 210, 212.40],
+  '7d': [180, 185, 190, 195, 200, 202.10]
+};
 
-  const minVal = Math.min(...points, 0); // Include zero baseline
-  const maxVal = Math.max(...points, 10);
+// Generate SVG coordinate paths dynamically
+function generateSVGPath(points, evPoints = [], width = 1140, height = 180) {
+  if (points.length < 2) return { path: '', area: '', evPath: '' };
+
+  const allPoints = [...points, ...evPoints];
+  const minVal = Math.min(...allPoints, 0); // Include zero baseline
+  const maxVal = Math.max(...allPoints, 10);
   const range = maxVal - minVal;
 
   const mappedPoints = points.map((p, idx) => {
     const x = (idx / (points.length - 1)) * width;
     // Invert Y coordinate because SVG Y=0 is at top
+    const y = height - 15 - ((p - minVal) / range) * (height - 30);
+    return { x, y };
+  });
+
+  const mappedEvPoints = evPoints.map((p, idx) => {
+    const x = (idx / (evPoints.length - 1)) * width;
     const y = height - 15 - ((p - minVal) / range) * (height - 30);
     return { x, y };
   });
@@ -385,20 +436,51 @@ function generateSVGPath(points, width = 1140, height = 180) {
 
   // Closed area path
   const areaD = `${pathD} L ${width},${height} L 0,${height} Z`;
-  return { path: pathD, area: areaD };
+
+  // EV path
+  let evPathD = '';
+  if (mappedEvPoints.length > 0) {
+    evPathD = `M ${mappedEvPoints[0].x.toFixed(1)},${mappedEvPoints[0].y.toFixed(1)}`;
+    for (let i = 1; i < mappedEvPoints.length; i++) {
+      evPathD += ` L ${mappedEvPoints[i].x.toFixed(1)},${mappedEvPoints[i].y.toFixed(1)}`;
+    }
+  }
+
+  return { path: pathD, area: areaD, evPath: evPathD };
 }
 
 // Morph trend chart based on filter or session selection
 function morphTrendChart(filterKey) {
   const pathEl = document.getElementById('chart-path');
   const areaEl = document.getElementById('chart-area');
+  const evPathEl = document.getElementById('chart-ev-path');
+  const varianceTextEl = document.getElementById('variance-text');
   if (!pathEl || !areaEl) return;
 
   const points = CHART_DATA[filterKey] || CHART_DATA['all'];
-  const { path, area } = generateSVGPath(points);
+  const evPoints = EV_CHART_DATA[filterKey] || EV_CHART_DATA['all'];
+  const { path, area, evPath } = generateSVGPath(points, evPoints);
 
   gsap.to(pathEl, { attr: { d: path }, duration: 0.5, ease: "power2.out" });
   gsap.to(areaEl, { attr: { d: area }, duration: 0.5, ease: "power2.out" });
+  if (evPathEl && evPath) {
+    gsap.to(evPathEl, { attr: { d: evPath }, duration: 0.5, ease: "power2.out" });
+  }
+
+  // Calculate and update variance report
+  if (varianceTextEl && points.length > 0 && evPoints.length > 0) {
+    const finalProfit = points[points.length - 1];
+    const finalEv = evPoints[evPoints.length - 1];
+    const diff = finalProfit - finalEv;
+    
+    if (diff > 0.05) {
+      varianceTextEl.innerHTML = `Running <span class="accent-2" style="font-weight: 700;">+$${diff.toFixed(2)}</span> above GTO EV (Upswing / Running Hot)`;
+    } else if (diff < -0.05) {
+      varianceTextEl.innerHTML = `Running <span class="loss" style="font-weight: 700;">-$${Math.abs(diff).toFixed(2)}</span> below GTO EV (Downswing / Running Cold)`;
+    } else {
+      varianceTextEl.innerHTML = `Running on track with GTO EV (Variance: Normal)`;
+    }
+  }
 }
 
 // Render Overview page state changes

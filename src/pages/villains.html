@@ -1,13 +1,13 @@
 <section class="page" id="page-villains">
 
-      <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
-        <h2 class="kick accent" style="margin:0;">Opponent dossiers · predator vs. prey</h2>
-        <span class="kick" style="font-size: 11px;" id="villains-count-lbl">0 opponents tracked</span>
+      <div class="villains-header-row">
+        <h2 class="kick accent villains-header-title">Opponent dossiers · predator vs. prey</h2>
+        <span class="kick villains-count-label" id="villains-count-lbl">0 opponents tracked</span>
       </div>
 
       <div class="opponent-search-bar">
         <input type="text" id="villains-search-input" placeholder="Search opponent by name..."/>
-        <div class="ranges-tab-menu" id="villains-filter-dock" style="margin: 0;">
+        <div class="ranges-tab-menu villains-filter-dock-override" id="villains-filter-dock">
           <button class="ranges-tab-btn active" data-filter="all">All</button>
           <button class="ranges-tab-btn" data-filter="lag">LAG</button>
           <button class="ranges-tab-btn" data-filter="passive">Passive</button>

@@ -1,5 +1,88 @@
 # Agent Handoff Log — Poker Design Lab
 
+## 2026-06-05 — Visual & Interactive Component Integration (Heatmap, Drawer & Stagger Transitions)
+
+- Owner / agent:          Antigravity
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/styles/*.css`, `src/pages/*.html`, `src/modules/*.js`, `index.html`
+- Files touched:
+  - `src/modules/leaks.js` - Implemented `buildPositionalStatsHeatmap()` using linear interpolation color-grading off target GTO limits, interactive metric tabs, cell description captions, and event listeners.
+  - `src/pages/leaks.html` - Integrated the VPIP/PFR/3-Bet/Fold to Steal positional stats heatmap card with ramp legends.
+  - `src/pages/hands.html` - Rewrote the filter toolbar to be clean and compact, and appended the slide-in drawer layout `#filters-drawer-scrim` with interactive chips.
+  - `src/modules/hands.js` - Integrated drawer toggle click handlers, chip group activation synchronizers, search bar input listeners, and filter badge active counts.
+  - `src/styles/layout.css` - Defined right-anchored `.scrim-drawer`, `.drawer`, `.dr-head`, `.dr-body`, `.chip`, and `.dr-foot` styles with blur backdrops and slide transitions.
+  - `src/modules/transitions.js` - Integrated staggered card fade-in/up transitions (`gsap.to(cards, { opacity: 1, y: 0, stagger: 0.05 })`) executed immediately when a page loads and the skeleton shimmer fades out, enhancing visual choreography.
+- Summary:
+  - Fully wired the Positional Stats Heatmap into the live Leaks page, giving VPIP/PFR/3-Bet/Fold to Steal a beautiful visual target rating.
+  - Fully wired the right-side Slide-in Filters Drawer on the Hands page, allowing filters to be dynamically updated via interactive chips while keeping compatibility with the existing search inputs.
+  - Verified Vite compile and bundler output with zero warnings or errors.
+- Verification:
+  - Production build (`npm run build`) completed successfully in 3.72s.
+- Next action requested:
+  - Run the dev server (`npm run dev`) to inspect:
+    1. Leaks page Positional Heatmap card (switch tabs VPIP/PFR/3-bet/Fold to Steal and hover cells).
+    2. Hands page Filters drawer (click Filters, select position/scenario chips, and verify live table filter and badge count updates).
+
+## 2026-06-04 — Visual Design Audit Completion (Remaining Pages)
+
+- Owner / agent:          Antigravity
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/styles/*.css`, `src/pages/*.html`, `src/modules/*.js`
+- Files touched:
+  - `src/modules/sessions.js` - Refactored `rowMarkup()`, `drawerMarkup()`, and `initExportModal()` to replace dynamic inline styles with semantic CSS classes (`good`, `warning`, `sessions-opp-amt-loss`, `sessions-opp-amt-win`, `sessions-delta-pill-wrap`, `sessions-drawer-nemesis-val`, `sessions-drawer-nemesis-text`, `sessions-drawer-insight-text`, `sessions-drawer-insight-header-good`, `sessions-drawer-insight-header-warn`, `sessions-drawer-mini-chart`, `sessions-log-info`, `sessions-log-line`). Fixed a button ID mismatch (`btn-download-file`).
+  - `src/pages/sessions.html` - Standardized the calendar heatmap legend, export action strip, timeline headers, and progress trackers. Removed all inline style overrides.
+  - `src/styles/sessions.css` - Defined `.sessions-log-line` to handle the terminal log margin.
+  - `src/pages/hands.html` - Extracted inline layout styles from input filters, upload drop-zone, replayer modal felt overlays, card rows, pot boxes, and coach tips.
+  - `src/styles/hands.css` - Defined extracted classes (`.hands-search-input-override`, `.hands-upload-zone` with hover and `.dragover` states, `.hands-upload-idle-icon`, `.hands-upload-idle-desc`, `.hands-upload-active-log`, `.hands-th-right`, `.hands-replayer-modal-override`, `.hands-mini-felt-cards`, `.hands-board-cards-row`, `.hands-board-card-override`, `.hands-center-pot-box-override`, `.hands-pot-number`, `.hands-actions-strip`, `.hands-actions-left`, `.hands-street-label`, `.hands-step-wrap`, `.hands-step-num`, `.hands-coach-box`, `.hands-coach-icon`, `.hands-coach-tip`, `.hands-stat-val`, `.hands-stat-val.accent`, `.hands-td-mono`, `.hands-td-mono-muted`, `.hands-td-mono-uppercase-bold`, `.hands-td-right`, `.hands-upload-log-line`, `.hands-upload-log-prompt`).
+  - `src/modules/hands.js` - Refactored `renderHandsTable()` to output semantic tables with class names instead of inline styles. Refactored the drag & drop upload simulator to use `.dragover` class list transitions instead of inline styling. Refactored the logger to use `.hands-upload-log-line` and `.hands-upload-log-prompt` classes.
+  - `src/pages/villains.html` - Removed all inline styles on headers, counts, and filters, substituting layout-neutral classes.
+  - `src/styles/villains.css` - Defined `.villains-header-row`, `.villains-header-title`, `.villains-count-label`, and `.villains-filter-dock-override`.
+  - `src/pages/leaks.html` - Cleaned the entire page structure, removing all inline style properties from target range bands, accordions, histograms, tables, and study plan panels.
+  - `src/styles/leaks.css` - Added `.leaks-title-row`, `.leaks-range-container`, `.leaks-range-gto-label`, `.leaks-accent-bold`, `.leaks-range-track`, `.leaks-range-labels-row`, `.leaks-loss-bold`, `.leaks-info-card`, `.leaks-ledger-card`, `.leaks-text-right`, `.leaks-rank-desc`, `.leaks-warn-text`, `.leaks-muted-text`, `.leaks-drawer-inner`, `.leaks-drawer-kick-title`, `.leaks-histogram-container`, `.leaks-hands-table`, `.leaks-th-right`, `.leaks-coach-card-override`, `.leaks-coach-header`, `.leaks-coach-eyebrow`, `.leaks-coach-title`, `.leaks-coach-plan`, `.leaks-coach-checklist-wrap`, `.leaks-coach-checklist`, and `.leaks-empty-table-cell`. Mapped `.incident-swap-wrap`'s margin-bottom to CSS rules.
+  - `src/modules/leaks.js` - Refactored `renderDrawerHands()` to bind dynamic rows to `.hands-td-mono`, `.hands-td-mono-uppercase-bold`, `.hands-td-right`, and `.leaks-empty-table-cell`.
+- Summary:
+  - Finished the remaining visual audit tasks on Career, Sessions, Hands, Villains, and Leaks pages.
+  - Extracted layout-bearing inline styles to respective CSS sheets and mapped properties to design system tokens.
+  - Fixed replayer felt styling and mini cards to adapt dynamically to active visual themes.
+  - Validated that the application compiles successfully with zero compile warnings or gaps.
+- Verification:
+  - Vite production build (`npm run build`) completed successfully with zero bundle errors.
+- Risks / assumptions:
+  - None.
+- Next action requested:
+  - Review production build asset sizes and verify flat de-skeuomorphized felt interface in the main arena trainer workspace.
+
+## 2026-06-04 — Visual Design Audit Completion (Phases 1-7)
+
+- Owner / agent:          Antigravity
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/styles/*.css`, `src/pages/*.html`
+- Files touched:
+  - `src/styles/theme-system.css` - defined layout tokens (`--cell`, `--cell-gap`, `--matrix-size`), border/radius scale (`--r-xs` through `--r-lg`, `--bw`), damped fills (`--fill-raise`, etc.), customized felt tokens, typography scale tokens (`--t-cap` through `--t-display`), and motion curve tokens.
+  - `src/styles/arena.css` - mapped radii to tokens, restructured `.hologram-felt-3d` to flat top-down vector felt, mapped font sizes to tokens, and added layout classes for inline styles.
+  - `src/styles/ranges.css` - quantized grid spacing, mapped border-radius and borders to tokens, updated pre-flop action fills, added call-frequency underline class, defined card hierarchical weights (.rg-insight-card, .solver-delta-card), and added layout classes.
+  - `src/styles/desk.css` - removed inset shadow on `.scope-select`, flat-aligned `.stat-tile` corners, mapped sizes and radii to tokens.
+  - `src/styles/leaks.css` - quantized grid layout, mapped radii and font sizes to tokens.
+  - `src/styles/career.css`, `hands.css`, `sessions.css`, `villains.css`, `masthead.css`, `glow-borders.css`, `button-glows.css`, `transitions.css` - mapped borders, radii, and font sizes to design system tokens.
+  - `src/pages/arena.html` - extracted inline styles to class rules in `arena.css`.
+  - `src/pages/ranges.html` - extracted inline styles to class rules in `ranges.css`.
+  - `src/elements/felt-3d.html` - preserved the original tilted 3D felt representation.
+  - `elements.html` - registered original tilted 3D felt element in show room catalog.
+- Summary:
+  - Completed all 7 phases of the independent visual design audit.
+  - Standardized geometry (quantized matrix and hover scale transforms).
+  - Standardized borders, corner radii, motion curves, and typography scales globally.
+  - Calmed down neons with damped fills, and introduced call-frequency underline cue.
+  - Transitioned the tilted 3D felt to a top-down vector felt, while preserving the original 3D tilt representation as a showroom catalog component.
+  - Extracted inline layout styles from all pages into stylesheet classes.
+  - Enforced a clear visual hierarchy for cards.
+- Verification:
+  - Vite production build (`npm run build`) completed successfully with zero compile errors.
+- Risks / assumptions:
+  - Dynamic overrides in `theme-dock.js` preserve design tokens.
+- Next action requested:
+  - Review production build asset sizes and verify flat de-skeuomorphized felt interface in the main arena trainer workspace.
+
 ## 2026-05-31 — Interactive Tiers Accordion, Blocker HUD, Career ABI & Ranges Scenarios
 
 - Owner / agent:          Antigravity

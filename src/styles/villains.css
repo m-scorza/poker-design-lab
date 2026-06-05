@@ -10,10 +10,10 @@
   .opponent-search-bar input {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: var(--r-md);
     color: var(--fg);
     font-family: var(--mono);
-    font-size: 13px;
+    font-size: var(--t-body);
     padding: 10px 16px;
     width: 280px;
     outline: none;
@@ -26,14 +26,14 @@
     gap: 12px;
     margin-left: auto;
     font-family: var(--mono);
-    font-size: 9.5px;
+    font-size: var(--t-cap);
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--fg-muted);
     flex-wrap: wrap;
   }
   .villains-threat-legend span { display: inline-flex; align-items: center; gap: 6px; }
-  .villains-threat-legend i { width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
+  .villains-threat-legend i { width: 9px; height: 9px; border-radius: var(--r-xs); display: inline-block; }
   .villains-threat-legend i.t-pred { background: var(--loss); }
   .villains-threat-legend i.t-prey { background: var(--accent); }
   .villains-threat-legend i.t-neutral { background: var(--fg-dim); }
@@ -46,7 +46,7 @@
   .opponent-dossier-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: var(--r-lg);
     padding: 18px;
     position: relative;
     cursor: pointer;
@@ -72,7 +72,7 @@
   }
   .opp-avatar {
     width: 44px; height: 44px;
-    border-radius: 12px;
+    border-radius: var(--r-md);
     display: flex; align-items: center; justify-content: center;
     font-family: var(--mono);
     font-size: 16px;
@@ -93,20 +93,20 @@
   }
   .opp-dossier-sub {
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: var(--t-cap);
     color: var(--fg-muted);
     margin-top: 2px;
   }
   .opp-dossier-hands {
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: var(--t-cap);
     color: var(--fg-muted);
   }
 
   /* Threat classification badge (predator / prey / neutral) */
   .opp-threat {
     font-family: var(--mono);
-    font-size: 8.5px;
+    font-size: var(--t-cap);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -121,11 +121,11 @@
 
   .opp-arch-badge {
     font-family: var(--mono);
-    font-size: 9.5px;
+    font-size: var(--t-cap);
     text-transform: uppercase;
     font-weight: 700;
     padding: 2px 7px;
-    border-radius: 3px;
+    border-radius: var(--r-xs);
   }
   .opp-arch-badge.lag     { background: color-mix(in srgb, var(--loss) 10%, transparent);     border: 1px solid var(--loss-line);   color: var(--loss); }
   .opp-arch-badge.passive { background: color-mix(in srgb, var(--accent-2) 10%, transparent); border: 1px solid var(--accent-line); color: var(--accent-2); }
@@ -137,11 +137,11 @@
   }
   .opp-tag-badge {
     font-family: var(--mono);
-    font-size: 8px;
+    font-size: var(--t-cap);
     background: rgba(255,255,255,0.02);
     border: 1px solid var(--border);
     padding: 1px 5px;
-    border-radius: 3px;
+    border-radius: var(--r-xs);
     color: var(--fg-muted);
     margin-left: 4px;
     display: inline-block;
@@ -152,26 +152,26 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 8px;
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: var(--t-sm);
     margin-top: 12px;
   }
   .opp-stat-cell {
     text-align: center;
     background: rgba(0,0,0,0.15);
     padding: 6px;
-    border-radius: 6px;
+    border-radius: var(--r-sm);
   }
   .opp-stat-cell .v { font-weight: 700; color: var(--fg); margin-top: 2px; }
   .opp-stat-cell .v.warn { color: var(--warn); }
   .opp-stat-cell .v.bad { color: var(--loss); }
-  .opp-stat-cell .l { font-size: 8.5px; color: var(--fg-muted); }
+  .opp-stat-cell .l { font-size: var(--t-cap); color: var(--fg-muted); }
 
   /* Villain hover dossier exploit cards */
   .exploit-overlay-card {
     position: absolute;
     inset: 0;
     background: var(--bg-card-hover);
-    border-radius: 14px;
+    border-radius: var(--r-lg);
     padding: 16px;
     display: flex;
     flex-direction: column;
@@ -191,14 +191,14 @@
   }
   .exploit-card-title {
     font-family: var(--mono);
-    font-size: 9px;
+    font-size: var(--t-cap);
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--accent);
     margin-bottom: 8px;
   }
   .exploit-card-body {
-    font-size: 12px;
+    font-size: var(--t-sm);
     line-height: 1.5;
     color: var(--fg);
   }
@@ -213,7 +213,7 @@
   .opponent-detail-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: var(--r-lg);
     padding: 20px;
   }
 
@@ -221,20 +221,20 @@
   .villain-exploit-card {
     margin-bottom: 18px;
     padding: 12px 16px;
-    border-radius: 10px;
+    border-radius: var(--r-md);
     background: var(--accent-soft);
     border: 1px solid var(--accent-line);
   }
   .villain-exploit-card h4 {
     margin: 0 0 6px;
     color: var(--accent);
-    font-size: 9px;
+    font-size: var(--t-cap);
     font-family: var(--mono);
     text-transform: uppercase;
     letter-spacing: 0.1em;
   }
   .villain-exploit-card p {
-    font-size: 12px;
+    font-size: var(--t-sm);
     line-height: 1.45;
     color: var(--fg-muted);
     margin: 0;
@@ -244,13 +244,13 @@
   .villain-threat-strip {
     display: flex; align-items: center; gap: 10px;
     margin-bottom: 18px; padding: 10px 14px;
-    border-radius: 10px;
+    border-radius: var(--r-md);
     border: 1px solid var(--border);
     background: rgba(0,0,0,0.15);
   }
   .villain-threat-strip .vt-icon { font-size: 18px; line-height: 1; }
-  .villain-threat-strip .vt-label { font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
-  .villain-threat-strip .vt-desc { font-size: 11px; color: var(--fg-muted); line-height: 1.4; }
+  .villain-threat-strip .vt-label { font-family: var(--mono); font-size: var(--t-sm); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+  .villain-threat-strip .vt-desc { font-size: var(--t-sm); color: var(--fg-muted); line-height: 1.4; }
   .villain-threat-strip.pred { border-color: var(--loss-line); }
   .villain-threat-strip.pred .vt-label { color: var(--loss); }
   .villain-threat-strip.prey { border-color: var(--accent-line); }
@@ -261,10 +261,10 @@
     width: 100%; height: 75px;
     background: var(--bg-input);
     border: 1px solid var(--border);
-    border-radius: 6px;
+    border-radius: var(--r-sm);
     color: var(--fg);
     font-family: var(--sans);
-    font-size: 12px;
+    font-size: var(--t-sm);
     padding: 10px;
     resize: none; outline: none;
     box-sizing: border-box;
@@ -279,11 +279,11 @@
   }
   .tag-bubble-node {
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: var(--t-cap);
     padding: 3px 8px;
     background: rgba(255,255,255,0.03);
     border: 1px solid var(--border);
-    border-radius: 4px;
+    border-radius: var(--r-sm);
     cursor: pointer;
     color: var(--fg-muted);
     transition: all 0.15s ease;
@@ -304,8 +304,27 @@
   }
   .villains-empty-state .ico { font-size: 32px; margin-bottom: 12px; opacity: 0.6; }
   .villains-empty-state .lbl {
-    font-family: var(--mono); font-size: 11px;
+    font-family: var(--mono); font-size: var(--t-sm);
     text-transform: uppercase; letter-spacing: 0.05em;
+  }
+
+  /* Extracted classes for villains.html */
+  .villains-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .villains-header-title {
+    margin: 0;
+  }
+  .villains-count-label {
+    font-size: var(--t-sm);
+  }
+  .villains-filter-dock-override {
+    margin: 0;
   }
 
   /* =========================================================*/

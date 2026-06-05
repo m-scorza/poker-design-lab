@@ -67,15 +67,15 @@
             </div>
 
             <div class="hud-stats-list">
-              <button class="stat-trigger active" data-stat="vpip">
+              <button class="stat-trigger active" data-stat="vpip" data-tip="VPIP" data-tip-body="Voluntarily put $ in pot. Target 20–30%. You sit at 21.8%.">
                 <span class="st-l">VPIP (Voluntary in pot)</span>
                 <span class="st-value">21.8%</span>
               </button>
-              <button class="stat-trigger" data-stat="pfr">
+              <button class="stat-trigger" data-stat="pfr" data-tip="PFR" data-tip-body="Preflop raise rate. Target 15–22%. You raise 17.2% of hands.">
                 <span class="st-l">PFR (Preflop raise)</span>
                 <span class="st-value">17.2%</span>
               </button>
-              <button class="stat-trigger" data-stat="3bet">
+              <button class="stat-trigger" data-stat="3bet" data-tip="3-Bet" data-tip-body="3-bet frequency. Target 6–10%. You 3-bet 8.4% of hands.">
                 <span class="st-l">3-bet frequency</span>
                 <span class="st-value">8.4%</span>
               </button>
@@ -158,22 +158,22 @@
           <div class="card">
             <span class="kick">Tournament financials &amp; tiers</span>
             <div class="stat-tile-grid">
-              <div class="stat-tile accent-2">
+              <div class="stat-tile accent-2" data-tip="Average Buy-in" data-tip-body="The average entry fee across all played tournaments. Current stake: $1.10.">
                 <span class="st-k">Average buy-in (ABI)</span>
                 <div class="st-v" id="overview-financials-abi">$1.10</div>
                 <span class="st-sub accent-2">Stable stakes</span>
               </div>
-              <div class="stat-tile accent-2">
+              <div class="stat-tile accent-2" data-tip="In The Money" data-tip-body="Percentage of tournaments where you cashed. Your 35.6% rate is elite vs the 16% field average.">
                 <span class="st-k">ITM rate</span>
                 <div class="st-v" id="overview-financials-itm">35.6%</div>
                 <span class="st-sub accent-2">vs 16% field</span>
               </div>
-              <div class="stat-tile">
+              <div class="stat-tile" data-tip="Total Invested" data-tip-body="Total buy-ins paid. Lifetime bankroll outlay is $275.00.">
                 <span class="st-k">Total invested</span>
                 <div class="st-v muted" id="overview-financials-invested">$275.00</div>
                 <span class="st-sub">250 tournaments</span>
               </div>
-              <div class="stat-tile accent">
+              <div class="stat-tile accent" data-tip="Total Prizes" data-tip-body="Cumulative gross cashouts of +$663.85 across 89 cashes.">
                 <span class="st-k">Total in prizes</span>
                 <div class="st-v accent" id="overview-financials-prizes">+$663.85</div>
                 <span class="st-sub accent">89 cashes</span>
@@ -249,11 +249,12 @@
               <line x1="0" y1="135" x2="1140" y2="135" stroke="rgba(255,255,255,0.015)" />
               <path id="chart-area" d="M 0,160 Q 228,124 456,140 T 912,70 Q 1026,90 1140,30 L 1140,180 L 0,180 Z" fill="url(#chart-glow-gradient)" class="chart-anim" />
               <path id="chart-path" d="M 0,160 Q 228,124 456,140 T 912,70 Q 1026,90 1140,30" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" class="chart-anim" />
+              <path id="chart-ev-path" d="" fill="none" stroke="var(--warn)" stroke-width="1.8" stroke-dasharray="4,4" stroke-linecap="round" class="chart-anim" />
             </svg>
           </div>
           <div class="chart-footer">
             <span>First session</span>
-            <span>Linear regression: stable profit trend · R² = 0.94</span>
+            <span id="variance-text">Running +4.2bb/100 above GTO EV (Variance: Normal)</span>
             <span>Recent session</span>
           </div>
         </div>

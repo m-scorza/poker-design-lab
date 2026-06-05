@@ -5,6 +5,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-bottom: 24px;
   }
   .inc-grid {
     display: grid;
@@ -45,7 +46,7 @@
   }
   .inc-stat-item .l {
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: var(--t-cap);
     text-transform: uppercase;
     color: var(--fg-muted);
   }
@@ -68,7 +69,7 @@
     justify-content: space-between;
     margin-bottom: 8px;
     font-family: var(--mono);
-    font-size: 10.5px;
+    font-size: var(--t-sm);
     color: var(--fg-muted);
   }
   .matrix-grid-cell-label .spot-pos {
@@ -76,8 +77,10 @@
   }
   .matrix-grid-box {
     display: grid;
-    grid-template-columns: repeat(13, 1fr);
-    gap: 2.2px;
+    grid-template-columns: repeat(13, var(--cell));
+    gap: var(--cell-gap);
+    width: var(--matrix-size);
+    height: var(--matrix-size);
     aspect-ratio: 1;
     background: rgba(0,0,0,0.2);
     border: 1px solid var(--border);
@@ -90,7 +93,7 @@
     border-radius: 2px;
     display: flex; align-items: center; justify-content: center;
     font-family: var(--mono);
-    font-size: 7.5px;
+    font-size: var(--t-cap);
     color: var(--fg-dim);
     line-height: 1;
     letter-spacing: -0.05em;
@@ -98,7 +101,7 @@
     transition: background 0.25s, color 0.2s, transform 0.12s;
   }
   .matrix-cell-node:hover {
-    transform: scale(1.18);
+    transform: scale(1.08);
     z-index: 10;
   }
   .matrix-cell-node.open-range {
@@ -119,7 +122,7 @@
     border-top: 1px solid var(--border-strong);
     border-bottom: 1px solid var(--border);
     font-family: var(--mono);
-    font-size: 9px;
+    font-size: var(--t-cap);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--fg-dim);
@@ -163,7 +166,7 @@
   }
   .leak-sev-badge {
     font-family: var(--mono);
-    font-size: 9.5px;
+    font-size: var(--t-cap);
     text-transform: uppercase;
     display: inline-flex;
     align-items: center;
@@ -181,7 +184,7 @@
   
   .leak-spot-lbl {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: var(--t-sm);
     color: var(--fg-muted);
   }
   .leak-cost-lbl {
@@ -202,8 +205,8 @@
 
   /* ---- Leak × Position severity heatmap (folded from leak-heatmap brick) ---- */
   .hm-h { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
-  .hm-h .hm-sub { font-family: var(--mono); font-size: 11px; color: var(--fg-muted); }
-  .hm-legend { margin-left: auto; display: flex; gap: 14px; align-items: center; font-family: var(--mono); font-size: 10.5px; color: var(--fg-muted); }
+  .hm-h .hm-sub { font-family: var(--mono); font-size: var(--t-sm); color: var(--fg-muted); }
+  .hm-legend { margin-left: auto; display: flex; gap: 14px; align-items: center; font-family: var(--mono); font-size: var(--t-sm); color: var(--fg-muted); }
   .hm-legend .swatch { display: inline-flex; gap: 5px; align-items: center; }
   .hm-legend .sw { width: 12px; height: 12px; border-radius: 2px; }
   .hm-legend .sw.crit { background: var(--loss); box-shadow: 0 0 8px var(--loss-line); }
@@ -216,7 +219,7 @@
     grid-template-columns: 168px repeat(6, 1fr);
     gap: 3px;
   }
-  .hm-grid > div { padding: 9px 10px; font-family: var(--mono); font-size: 10.5px; }
+  .hm-grid > div { padding: 9px 10px; font-family: var(--mono); font-size: var(--t-sm); }
   .hm-corner { background: transparent; }
   .hm-col-h { color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.10em; text-align: center; }
   .hm-row-h { color: var(--fg); text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -233,12 +236,12 @@
   .hm-cell.empty { cursor: default; pointer-events: none; }
   .hm-cell.empty:hover { transform: none; box-shadow: none; }
   .hm-cell.sel { outline: 2px solid var(--accent); outline-offset: 1px; }
-  .hm-cell .v { display: block; font-size: 9px; opacity: 0.85; margin-top: 2px; letter-spacing: 0.04em; }
+  .hm-cell .v { display: block; font-size: var(--t-cap); opacity: 0.85; margin-top: 2px; letter-spacing: 0.04em; }
 
   .hm-caption {
     margin-top: 18px; padding: 14px 16px; border-radius: 9px;
     background: var(--accent-soft); border: 1px solid var(--accent-line);
-    font-family: var(--mono); font-size: 12px; color: var(--fg-muted); min-height: 44px;
+    font-family: var(--mono); font-size: var(--t-sm); color: var(--fg-muted); min-height: 44px;
     display: flex; align-items: center; gap: 10px;
   }
   .hm-caption .pin { color: var(--accent); }
@@ -259,9 +262,9 @@
 
   .lg-top { display: flex; align-items: flex-start; gap: 12px; }
   .lg-name { font-family: var(--display); font-weight: 600; font-size: 16px; letter-spacing: -0.01em; }
-  .lg-scen { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-muted); margin-top: 3px; }
+  .lg-scen { font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-muted); margin-top: 3px; }
   .lg-sev-pill {
-    margin-left: auto; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase;
+    margin-left: auto; font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.12em; text-transform: uppercase;
     padding: 3px 8px; border-radius: 5px; color: var(--sev);
     background: color-mix(in srgb, var(--sev) 10%, transparent);
     border: 1px solid color-mix(in srgb, var(--sev) 28%, transparent); white-space: nowrap;
@@ -270,18 +273,180 @@
   .lg-gauge { display: flex; flex-direction: column; gap: 7px; }
   .lg-vals { display: flex; align-items: baseline; gap: 8px; font-family: var(--mono); }
   .lg-cur { font-size: 26px; font-weight: 500; font-variant-numeric: tabular-nums; color: var(--sev); line-height: 1; }
-  .lg-tgt { font-size: 10.5px; color: var(--fg-dim); margin-left: auto; }
+  .lg-tgt { font-size: var(--t-sm); color: var(--fg-dim); margin-left: auto; }
   .lg-track { position: relative; height: 7px; border-radius: 4px; background: rgba(255,255,255,0.05); overflow: visible; }
   .lg-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; background: var(--sev); width: 0; transition: width 0.9s cubic-bezier(0.22,1,0.36,1); }
   .lg-mark { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--fg); opacity: 0.55; border-radius: 1px; }
-  .lg-mark::after { content: 'target'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 8px; letter-spacing: 0.05em; color: var(--fg-dim); }
+  .lg-mark::after { content: 'target'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.05em; color: var(--fg-dim); }
 
   .lg-foot { display: flex; align-items: center; gap: 12px; margin-top: 2px; }
-  .lg-cost { font-family: var(--mono); font-size: 11px; color: var(--fg-muted); }
+  .lg-cost { font-family: var(--mono); font-size: var(--t-sm); color: var(--fg-muted); }
   .lg-cost b { color: var(--loss); font-weight: 600; }
-  .lg-trend { font-family: var(--mono); font-size: 10.5px; padding: 2px 7px; border-radius: 5px; }
+  .lg-trend { font-family: var(--mono); font-size: var(--t-sm); padding: 2px 7px; border-radius: 5px; }
   .lg-trend.up { color: var(--accent); background: var(--accent-soft); border: 1px solid var(--accent-line); }
   .lg-trend.down { color: var(--loss); background: var(--loss-soft); border: 1px solid var(--loss-line); }
   .lg-spark { margin-left: auto; width: 86px; height: 28px; display: block; }
 
-  /* =========================================================*/
+  /* Extracted classes for leaks.html and leaks.js */
+  .leaks-title-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .leaks-range-container {
+    margin-top: 18px;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+  }
+  .leaks-range-gto-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: var(--t-cap);
+    color: var(--fg-muted);
+    margin-bottom: 6px;
+  }
+  .leaks-accent-bold {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .leaks-range-track {
+    height: 8px;
+    background: rgba(255,255,255,0.03);
+    border-radius: var(--r-xs);
+    position: relative;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .leaks-range-labels-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: var(--t-cap);
+    color: var(--fg-muted);
+    margin-top: 4px;
+  }
+  .leaks-loss-bold {
+    color: var(--loss);
+    font-weight: 700;
+  }
+  .leaks-info-card {
+    margin-bottom: 24px;
+    padding: 22px 24px;
+  }
+  .leaks-ledger-card {
+    padding: 0;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .leaks-text-right {
+    text-align: right;
+  }
+  .leaks-rank-desc {
+    font-size: var(--t-cap);
+    color: var(--fg-muted);
+    margin-top: 2px;
+  }
+  .leaks-warn-text {
+    color: var(--warn);
+  }
+  .leaks-muted-text {
+    color: var(--fg-muted);
+  }
+  .leaks-drawer-inner {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 24px;
+    padding: 24px;
+  }
+  .leaks-drawer-kick-title {
+    margin-bottom: 10px;
+    display: block;
+  }
+  .leaks-histogram-container {
+    height: 110px;
+    position: relative;
+  }
+  .leaks-hands-table {
+    font-size: var(--t-sm);
+  }
+  .leaks-th-right {
+    text-align: right;
+  }
+  .leaks-coach-card-override {
+    padding: 24px;
+  }
+  .leaks-coach-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .leaks-coach-eyebrow {
+    font-size: var(--t-body);
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .leaks-coach-title {
+    font-family: var(--display);
+    font-size: var(--t-h3);
+    margin: 0 0 10px;
+    font-weight: 700;
+  }
+  .leaks-coach-plan {
+    font-size: var(--t-body);
+    line-height: 1.6;
+    color: var(--fg-muted);
+    margin: 0 0 16px;
+  }
+  .leaks-coach-checklist-wrap {
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
+  }
+  .leaks-coach-checklist {
+    font-family: var(--mono);
+    font-size: var(--t-sm);
+    line-height: 1.8;
+    color: var(--fg);
+    margin: 8px 0 0;
+    padding-left: 20px;
+  }
+  .leaks-empty-table-cell {
+    text-align: center;
+    color: var(--fg-muted);
+  }
+
+  /* =========================================================
+     POSITIONAL STATS HEATMAP (GRADED BY SEAT)
+     ========================================================= */
+  .pos-hm-grid {
+    display: grid;
+    grid-template-columns: 125px repeat(8, 1fr);
+    gap: 3px;
+    margin-top: 12px;
+  }
+  .pos-hm-grid > div {
+    padding: 8px 6px;
+    font-family: var(--mono);
+    font-size: var(--t-cap);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .pos-hm-corner { background: transparent; }
+  .pos-hm-col-h { color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+  .pos-hm-row-h { color: var(--fg); text-align: left; white-space: nowrap; justify-content: flex-start !important; }
+  .pos-hm-cell {
+    border-radius: var(--r-xs); cursor: pointer; color: #04141a; font-weight: 600; min-height: 34px;
+    display: grid; place-items: center;
+    transition: transform 0.15s cubic-bezier(0.19,1,0.22,1), box-shadow 0.15s ease;
+  }
+  .pos-hm-cell:hover {
+    transform: scale(1.12); z-index: 5; position: relative; box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+  }
+  .pos-hm-cell.sel { outline: 2px solid var(--fg); outline-offset: 1px; }
+  .pos-hm-cell.empty { cursor: default; pointer-events: none; background: rgba(255,255,255,0.02) !important; color: var(--fg-dim) !important; }
+  .pos-hm-cell.empty:hover { transform: none; box-shadow: none; }
+

@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1480, initial-scale=1" />
+  <title>Element Showcase - 3D Perspective Felt (Original)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050608;
+      --bg-2: #0b0d12;
+      --bg-card: rgba(13, 17, 25, 0.65);
+      --border: rgba(255, 255, 255, 0.05);
+      --border-strong: rgba(255, 255, 255, 0.15);
+      --accent: #00F0FF;
+      --accent-soft: rgba(0, 240, 255, 0.06);
+      --accent-glow: rgba(0, 240, 255, 0.25);
+      --accent-2: #00FF87;
+      --loss: #FF3B6B;
+      --loss-soft: rgba(255, 59, 107, 0.08);
+      --fg: #f3f4f6;
+      --fg-muted: #8892b0;
+      --fg-dim: #3a3f50;
+      --mono: 'Space Mono', monospace;
+      --sans: 'Hanken Grotesk', system-ui, sans-serif;
+      --display: 'Bricolage Grotesque', system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 60px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .back-link { position: fixed; top: 20px; left: 20px; color: var(--fg-muted); text-decoration: none; font-family: var(--mono); font-size: 11px; text-transform: uppercase; z-index: 100; }
+    .back-link:hover { color: var(--accent); }
+    
+    .container { width: 100%; max-width: 800px; }
+    h1 { font-family: var(--display); font-weight: 800; margin: 0 0 8px; letter-spacing: -0.03em; text-align: center; font-size: 32px; }
+    .sub { color: var(--fg-muted); text-align: center; margin: 0 0 28px; font-size: 14px; font-family: var(--sans); }
+
+    .hologram-viewport {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      padding: 20px;
+      height: 480px;
+    }
+    
+    /* 3D Tilted felt surface */
+    .hologram-stage-3d {
+      flex: 1;
+      position: relative;
+      perspective: 1200px;
+      display: flex; align-items: center; justify-content: center;
+      height: 100%;
+    }
+    .hologram-felt-3d {
+      position: absolute;
+      width: 620px; height: 260px;
+      border-radius: 130px;
+      border: 14px solid #202633;
+      background: #151b26;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.7), inset 0 0 60px rgba(0,0,0,0.5);
+      transform: rotateX(32deg);
+      transform-style: preserve-3d;
+    }
+    
+    /* Seats overlay - original flat sticker-like cards positioned in front of 3D plane */
+    .hologram-seat {
+      position: absolute;
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      color: var(--fg);
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-family: var(--mono);
+      font-size: 11px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+      z-index: 10;
+      transition: all 0.2s ease;
+    }
+    .hologram-seat:hover {
+      border-color: var(--accent);
+      transform: scale(1.05);
+    }
+    .hologram-seat.hero {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .hologram-seat .name { font-weight: 700; display: block; }
+    .hologram-seat .chips { font-size: 9px; color: var(--fg-muted); display: block; margin-top: 2px; }
+    
+    .seat-1 { top: 15%; left: 15%; }
+    .seat-2 { top: 8%; left: 50%; transform: translateX(-50%); }
+    .seat-3 { top: 15%; right: 15%; }
+    .seat-4 { bottom: 15%; right: 15%; }
+    .seat-5 { bottom: 8%; left: 50%; transform: translateX(-50%); }
+    .seat-6 { bottom: 15%; left: 15%; }
+    
+    .center-pot-box {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      pointer-events: none;
+      opacity: 0.55;
+    }
+    .center-pot-box .l { font-family: var(--mono); font-size: 8px; text-transform: uppercase; color: var(--fg-muted); }
+    .center-pot-box .v { font-family: var(--mono); font-size: 20px; font-weight: 700; color: #fff; }
+
+    .hologram-deal-card {
+      position: absolute;
+      width: 48px; height: 68px;
+      background: #fff;
+      border-radius: 5px;
+      color: #000;
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 14px;
+      padding: 5px 7px;
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      z-index: 40;
+    }
+    .hologram-deal-card.red { color: #f43f5e; }
+    .hologram-deal-card .suit { align-self: flex-end; font-size: 16px; }
+
+    .trainer-actions-wrap {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      z-index: 50;
+      position: relative;
+    }
+    .btn-trainer-act {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-strong);
+      color: var(--fg);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 12px 28px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
+  <div class="container">
+    <h1>3D Perspective Felt (Original)</h1>
+    <p class="sub">The original skeuomorphic blue-grey felt table with a rotateX(32deg) transform, 14px bezel border, heavy drop-shadows, and 2D flat seats floating in perspective space.</p>
+
+    <div class="hologram-viewport">
+      <div style="display:flex; justify-content:space-between; align-items:center; z-index: 10;">
+        <span style="font-family:var(--mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent);">Original Design Showcase</span>
+        <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--fg-muted);">Pot: <b style="color:var(--accent);">15.5bb</b></div>
+      </div>
+      
+      <div class="hologram-stage-3d">
+        <div class="hologram-felt-3d"></div>
+        
+        <!-- Dummy Hero Cards -->
+        <div style="position: absolute; display: flex; gap: 8px; z-index: 60; top: 110px; left: 50%; transform: translateX(-50%);">
+          <div class="hologram-deal-card" style="position:relative;">
+            <span>A</span>
+            <span class="suit">♠</span>
+          </div>
+          <div class="hologram-deal-card red" style="position:relative;">
+            <span>K</span>
+            <span class="suit">♥</span>
+          </div>
+        </div>
+        
+        <button class="hologram-seat seat-1"><span class="name">UTG</span><span class="chips">100bb</span></button>
+        <button class="hologram-seat seat-2"><span class="name">MP</span><span class="chips">78bb</span></button>
+        <button class="hologram-seat seat-3"><span class="name">CO</span><span class="chips">52bb</span></button>
+        <button class="hologram-seat hero seat-4"><span class="name">BTN (Hero)</span><span class="chips">100bb</span></button>
+        <button class="hologram-seat seat-5"><span class="name">SB</span><span class="chips">32bb</span></button>
+        <button class="hologram-seat seat-6"><span class="name">BB</span><span class="chips">40bb</span></button>
+        
+        <div class="center-pot-box">
+          <span class="l">Pot</span>
+          <div class="v">15.5bb</div>
+        </div>
+      </div>
+      
+      <div class="trainer-actions-wrap">
+        <button class="btn-trainer-act">Fold</button>
+        <button class="btn-trainer-act">Call</button>
+        <button class="btn-trainer-act">Raise</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

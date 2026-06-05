@@ -51,7 +51,7 @@ function renderRows() {
 function rowMarkup(s) {
   const bbCls = s.bb100 > 0 ? 'pos' : s.bb100 < 0 ? 'neg' : '';
   const bbStr = `${s.bb100 > 0 ? '+' : ''}${s.bb100.toFixed(1)}`;
-  const compStyle = s.compliance >= 85 ? ' style="color:var(--accent);"' : ' style="color:var(--warn);"';
+  const compCls = s.compliance >= 85 ? 'good' : 'warning';
   return `
     <div class="timeline-row-editorial" data-drawer="drawer-${s.num}">
       <div class="timeline-date-block">${s.date}<div class="timeline-date-sub">${s.time}</div></div>
@@ -61,7 +61,7 @@ function rowMarkup(s) {
       </div>
       <div class="timeline-val-block">$${s.buyIns.toFixed(2)}</div>
       <div class="timeline-val-block ${bbCls}">${bbStr}</div>
-      <div class="timeline-val-block"${compStyle}>${s.compliance.toFixed(1)}%</div>
+      <div class="timeline-val-block ${compCls}">${s.compliance.toFixed(1)}%</div>
     </div>`;
 }
 
@@ -79,23 +79,23 @@ function deltaPill(s, prev) {
 function drawerMarkup(s, prev) {
   // Nemesis framing: positive nemesisLoss = hero profited from them; negative = they took chips.
   const lost = s.nemesisLoss < 0;
-  const amtColor = lost ? 'var(--loss)' : 'var(--accent-2)';
+  const amtClass = lost ? 'sessions-opp-amt-loss' : 'sessions-opp-amt-win';
   const amtStr = `${s.nemesisLoss > 0 ? '+' : ''}${s.nemesisLoss.toFixed(0)}bb`;
   const nemesisLine = lost
-    ? `Took <span style="color:${amtColor}; font-weight:700;">${amtStr}</span> off you this session.`
-    : `You profited <span style="color:${amtColor}; font-weight:700;">${amtStr}</span> against this player.`;
+    ? `Took <span class="${amtClass}">${amtStr}</span> off you this session.`
+    : `You profited <span class="${amtClass}">${amtStr}</span> against this player.`;
 
-  const insightColor = s.compliance >= 85 ? 'var(--accent)' : 'var(--loss)';
+  const insightClass = s.compliance >= 85 ? 'sessions-drawer-insight-header-good' : 'sessions-drawer-insight-header-warn';
   const insightHead = s.compliance >= 85 ? 'Good discipline.' : 'Low compliance.';
 
   return `
     <div class="editorial-expand-panel" id="drawer-${s.num}">
-      <div style="padding: 0 24px;">${deltaPill(s, prev)}</div>
+      <div class="sessions-delta-pill-wrap">${deltaPill(s, prev)}</div>
       <div class="expanded-card-grid">
         <div class="session-card">
           <h4>Session nemesis</h4>
-          <p class="mon-number" style="font-size:22px; margin:0;">${s.nemesis}</p>
-          <p style="font-size:11.5px; color:var(--fg-muted); margin:8px 0 0;">${nemesisLine}</p>
+          <p class="mon-number sessions-drawer-nemesis-val">${s.nemesis}</p>
+          <p class="sessions-drawer-nemesis-text">${nemesisLine}</p>
         </div>
         <div class="session-card">
           <h4>Consistency indices</h4>
@@ -105,13 +105,13 @@ function drawerMarkup(s, prev) {
         </div>
         <div class="session-card">
           <h4>Session intelligence</h4>
-          <p style="font-size:12px; line-height:1.5; color:var(--fg-muted); margin:0;">
-            <span style="color:${insightColor}; font-weight:700;">${insightHead}</span> ${s.insight}
+          <p class="sessions-drawer-insight-text">
+            <span class="${insightClass}">${insightHead}</span> ${s.insight}
           </p>
         </div>
         <div class="session-card chart-card">
           <h4>Cumulative bb progression</h4>
-          <div class="mini-chart-container" style="height: 100px; position: relative; margin-top: 10px;">
+          <div class="mini-chart-container sessions-drawer-mini-chart">
             <svg class="mini-trend-svg" id="mini-trend-${s.num}" width="100%" height="100%" viewBox="0 0 200 100" preserveAspectRatio="none">
               <defs>
                 <linearGradient id="mini-gradient-win-${s.num}" x1="0" y1="0" x2="0" y2="1">
@@ -367,8 +367,8 @@ function initExportModal() {
       while (currentLogIndex < logMessages.length && logMessages[currentLogIndex].pct <= progress) {
         const entry = logMessages[currentLogIndex];
         const logLine = document.createElement('div');
-        logLine.style.marginBottom = '4px';
-        logLine.innerHTML = `<span style="color:var(--accent-2); font-weight:700;">[INFO]</span> ${entry.msg}`;
+        logLine.className = 'sessions-log-line';
+        logLine.innerHTML = `<span class="sessions-log-info">[INFO]</span> ${entry.msg}`;
         logsWindow.appendChild(logLine);
         logsWindow.scrollTop = logsWindow.scrollHeight;
         statusText.innerText = entry.msg;

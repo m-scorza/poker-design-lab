@@ -1,60 +1,71 @@
 <section class="page" id="page-hands">
       
+      <!-- Hidden original selects to maintain JS compatibility -->
+      <div style="display: none;">
+        <select id="filter-position">
+          <option value="">All positions</option>
+          <option value="BTN">BTN</option>
+          <option value="SB">SB</option>
+          <option value="BB">BB</option>
+          <option value="UTG">UTG</option>
+        </select>
+        <select id="filter-compliance">
+          <option value="">All hands</option>
+          <option value="ok">Compliant</option>
+          <option value="dev">Deviations</option>
+        </select>
+        <select id="filter-scenario">
+          <option value="">All scenarios</option>
+          <option value="RFI">RFI</option>
+          <option value="VS_OPEN">Facing Raise</option>
+        </select>
+        <select id="filter-stack">
+          <option value="">All stacks</option>
+          <option value="short">&lt;17bb</option>
+          <option value="medium">17-40bb</option>
+          <option value="deep">40bb+</option>
+        </select>
+      </div>
+
       <!-- Filter Tool Strip -->
-      <div class="filter-bar">
-        <div class="filter-group">
-          <label>Position</label>
-          <select id="filter-position">
-            <option value="">All positions</option>
-            <option value="BTN">BTN</option>
-            <option value="SB">SB</option>
-            <option value="BB">BB</option>
-            <option value="UTG">UTG</option>
-          </select>
+      <div class="filter-bar" style="display: flex; gap: 12px; align-items: center;">
+        <div class="filter-group" style="flex: 1; max-width: 320px; margin-bottom: 0;">
+          <input type="text" id="filter-search" placeholder="Search cards... e.g. AA, KQs" class="hands-search-input-override" style="width: 100%; margin: 0;"/>
         </div>
-        <div class="filter-group">
-          <label>Compliance</label>
-          <select id="filter-compliance">
-            <option value="">All hands</option>
-            <option value="ok">Compliant</option>
-            <option value="dev">Deviations</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label>Scenario</label>
-          <select id="filter-scenario">
-            <option value="">All scenarios</option>
-            <option value="RFI">RFI</option>
-            <option value="VS_OPEN">Facing Raise</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label>Stack Depth</label>
-          <select id="filter-stack">
-            <option value="">All stacks</option>
-            <option value="short">&lt;17bb</option>
-            <option value="medium">17-40bb</option>
-            <option value="deep">40bb+</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label>Search card</label>
-          <input type="text" id="filter-search" placeholder="e.g. AA, KQs..." style="width:120px;"/>
-        </div>
-        <button class="btn-reset-db" id="btn-reset-db">Reset Database</button>
+        <button class="btn-filters" id="btn-open-filters" style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; padding: 10px 18px; border-radius: var(--r-sm); cursor: pointer; border: 1px solid var(--border-strong); background: rgba(255,255,255,0.03); color: var(--fg); transition: all 0.18s ease; display: flex; align-items: center; gap: 8px;">
+          <span>Filters</span>
+          <span id="filter-badge" style="display: none; background: var(--accent); color: #000; font-size: 9px; font-weight: 700; border-radius: 4px; padding: 1px 5px;">0</span>
+        </button>
+        <button class="btn-reset-db" id="btn-reset-db" style="margin-left: auto;">Reset Database</button>
       </div>
 
       <!-- Drag & Drop Hand History Parser Container -->
-      <div class="upload-zone" id="upload-zone" style="border: 2px dashed var(--border); border-radius: 12px; padding: 24px; text-align: center; background: rgba(0,0,0,0.1); transition: background 0.2s, border-color 0.2s; margin-bottom: 18px; cursor: pointer; position: relative; overflow: hidden;">
+      <div class="upload-zone hands-upload-zone" id="upload-zone">
         <div class="upload-idle-state" id="upload-idle">
-          <span style="font-size: 24px; color: var(--accent); display: block; margin-bottom: 8px;">⎋</span>
+          <span class="hands-upload-idle-icon">⎋</span>
           <span class="kick">Import hand history logs</span>
-          <p style="font-size: 11px; color: var(--fg-muted); margin: 6px 0 0;">Drag and drop PokerStars .txt files here, or click to browse</p>
+          <p class="hands-upload-idle-desc">Drag and drop PokerStars .txt files here, or click to browse</p>
         </div>
         
         <!-- Interactive Terminal Log Overlay inside Upload Zone -->
-        <div class="upload-active-state" id="upload-active" style="display: none; height: 100px; text-align: left; font-family: var(--mono); font-size: 10px; color: #a2b4b7; overflow-y: auto; line-height: 1.4; padding: 4px;">
-          <!-- Logging lines will write here -->
+        <div class="upload-active-state hands-upload-active-log" id="upload-active" style="display: none; padding: 20px 24px; text-align: left; background: var(--bg-card); border-radius: var(--r-md); border: 1px solid var(--border-strong);">
+          <div class="lc-top" style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px;">
+            <span class="lc-eye" style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent);">Importing · scorza23</span>
+            <span class="lc-pct" style="margin-left: auto; font-family: var(--mono); font-size: 32px; font-weight: 500; line-height: 1; color: var(--fg);"><span id="hands-upload-pct">0</span><span class="u" style="font-size: 14px; color: var(--fg-dim);">%</span></span>
+          </div>
+          <div class="bar" style="position: relative; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.05); overflow: hidden; margin-bottom: 12px;">
+            <div class="fill" id="hands-upload-fill" style="position: absolute; left: 0; top: 0; bottom: 0; width: 0%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); box-shadow: 0 0 14px rgba(0,240,255,0.5); transition: width 0.1s linear;"></div>
+          </div>
+          <div class="lc-status" id="hands-upload-status" style="display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px; color: var(--fg-muted); min-height: 18px;">
+            <span class="dot" style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); display: inline-block;"></span>
+            <span id="hands-upload-status-text">Initialising telemetry…</span>
+          </div>
+          <div class="lc-steps" id="hands-upload-steps" style="margin-top: 14px; display: grid; gap: 6px; font-family: var(--mono); font-size: 11px; color: var(--fg-dim);">
+            <div class="step" data-at="0" id="hands-upload-step-1" style="display: flex; align-items: center; gap: 8px; color: var(--fg-muted);"><span class="mk" style="width: 15px; height: 15px; border-radius: 4px; border: 1px solid var(--border-strong); display: grid; place-items: center; font-size: 9px; flex: none;">1</span>Read hand-history files</div>
+            <div class="step" data-at="28" id="hands-upload-step-2" style="display: flex; align-items: center; gap: 8px; color: var(--fg-muted);"><span class="mk" style="width: 15px; height: 15px; border-radius: 4px; border: 1px solid var(--border-strong); display: grid; place-items: center; font-size: 9px; flex: none;">2</span>Parse 1,204 hands</div>
+            <div class="step" data-at="55" id="hands-upload-step-3" style="display: flex; align-items: center; gap: 8px; color: var(--fg-muted);"><span class="mk" style="width: 15px; height: 15px; border-radius: 4px; border: 1px solid var(--border-strong); display: grid; place-items: center; font-size: 9px; flex: none;">3</span>Classify preflop scenarios</div>
+            <div class="step" data-at="78" id="hands-upload-step-4" style="display: flex; align-items: center; gap: 8px; color: var(--fg-muted);"><span class="mk" style="width: 15px; height: 15px; border-radius: 4px; border: 1px solid var(--border-strong); display: grid; place-items: center; font-size: 9px; flex: none;">4</span>Check range compliance</div>
+          </div>
         </div>
       </div>
 
@@ -72,7 +83,7 @@
               <th>Net PnL</th>
               <th>GTO Accuracy</th>
               <th>Compliance</th>
-              <th style="text-align:right;">Telemetry</th>
+              <th class="hands-th-right">Telemetry</th>
             </tr>
           </thead>
           <tbody id="hands-table-body">
@@ -83,17 +94,17 @@
 
       <!-- Replayer Modal Backdrop -->
       <div class="replay-modal-backdrop" id="replay-backdrop">
-        <div class="replay-modal" style="width: 580px;">
+        <div class="replay-modal hands-replayer-modal-override">
           <div class="replay-modal-header">
             <span class="kick accent" id="replay-title">Replaying Hand #12,854</span>
             <button class="replay-modal-close" id="btn-close-replay">&times;</button>
           </div>
           <!-- 3D Felt screen representation -->
-          <div class="mini-felt-arena" style="height: 310px;">
-            <div class="mini-felt-surface" style="width: 480px; height: 210px; border-radius: 105px;"></div>
+          <div class="mini-felt-arena">
+            <div class="mini-felt-surface"></div>
             
             <!-- Hero Hole Cards -->
-            <div class="mini-felt-cards" style="top: 220px; left: 50%; transform: translateX(-50%);">
+            <div class="mini-felt-cards hands-mini-felt-cards">
               <div class="poker-card-micro" id="card-1">
                 <span>A</span>
                 <span class="suit-symbol">♠</span>
@@ -105,36 +116,48 @@
             </div>
 
             <!-- Community Board Cards -->
-            <div class="board-cards-row" style="position: absolute; top: 120px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 60;">
-              <div class="poker-card-micro board-card" id="board-1" style="width: 40px; height: 58px; font-size: 11.5px; padding: 3px 5px; opacity: 0; display: none;"></div>
-              <div class="poker-card-micro board-card" id="board-2" style="width: 40px; height: 58px; font-size: 11.5px; padding: 3px 5px; opacity: 0; display: none;"></div>
-              <div class="poker-card-micro board-card" id="board-3" style="width: 40px; height: 58px; font-size: 11.5px; padding: 3px 5px; opacity: 0; display: none;"></div>
-              <div class="poker-card-micro board-card" id="board-4" style="width: 40px; height: 58px; font-size: 11.5px; padding: 3px 5px; opacity: 0; display: none;"></div>
-              <div class="poker-card-micro board-card" id="board-5" style="width: 40px; height: 58px; font-size: 11.5px; padding: 3px 5px; opacity: 0; display: none;"></div>
+            <div class="board-cards-row hands-board-cards-row">
+              <div class="poker-card-micro board-card hands-board-card-override" id="board-1"></div>
+              <div class="poker-card-micro board-card hands-board-card-override" id="board-2"></div>
+              <div class="poker-card-micro board-card hands-board-card-override" id="board-3"></div>
+              <div class="poker-card-micro board-card hands-board-card-override" id="board-4"></div>
+              <div class="poker-card-micro board-card hands-board-card-override" id="board-5"></div>
             </div>
 
             <!-- Pot display box -->
-            <div class="center-pot-box" style="position: absolute; top: 45px; left: 50%; transform: translateX(-50%); opacity: 0.85; text-align: center; z-index: 40;">
+            <div class="center-pot-box hands-center-pot-box-override">
               <span class="kick">Pot</span>
-              <div class="mon-number" id="replay-pot-size" style="font-size:20px; margin-top:2px;">1.5bb</div>
+              <div class="mon-number hands-pot-number" id="replay-pot-size">1.5bb</div>
+            </div>
+
+            <!-- GTO Equity Bar -->
+            <div class="replayer-equity-wrap" style="position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); width: 220px; text-align: center; z-index: 10;">
+              <div class="replayer-equity-labels" style="display: flex; justify-content: space-between; font-family: var(--mono); font-size: 8px; color: var(--fg-dim); margin-bottom: 2px; text-transform: uppercase;">
+                <span>Hero: <span id="replayer-hero-eq">64</span>%</span>
+                <span>Villain: <span id="replayer-villain-eq">36</span>%</span>
+              </div>
+              <div class="bar" id="replayer-equity-bar" style="display: flex; height: 8px; border-radius: 4px; overflow: hidden; border: 1px solid var(--border-strong); background: rgba(255,255,255,0.05);">
+                <div class="seg win" id="replayer-seg-win" style="background: var(--accent-2); width: 64%; transition: width 0.4s cubic-bezier(0.19,1,0.22,1);"></div>
+                <div class="seg lose" id="replayer-seg-lose" style="background: var(--loss); width: 36%; transition: width 0.4s cubic-bezier(0.19,1,0.22,1);"></div>
+              </div>
             </div>
           </div>
 
           <!-- Simulator Controls and Coach Insight -->
-          <div class="replayer-actions-strip" style="background: rgba(0,0,0,0.3); padding: 12px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
-            <div style="display: flex; gap: 8px; align-items: center;">
-              <button class="btn-replay" id="btn-replay-prev" style="padding: 4px 10px;">◀ Prev</button>
-              <span id="replay-street-label" style="font-family: var(--mono); font-size: 11px; text-transform: uppercase; color: var(--accent); font-weight: 700;">PREFLOP</span>
-              <button class="btn-replay" id="btn-replay-next" style="padding: 4px 10px;">Next Action ▶</button>
+          <div class="replayer-actions-strip hands-actions-strip">
+            <div class="hands-actions-left">
+              <button class="btn-replay" id="btn-replay-prev">◀ Prev</button>
+              <span id="replay-street-label" class="hands-street-label">PREFLOP</span>
+              <button class="btn-replay" id="btn-replay-next">Next Action ▶</button>
             </div>
-            <div style="font-size: 11px; color: var(--fg-muted); font-family: var(--mono);">
-              Street: <span id="replay-step-num" style="color: var(--fg); font-weight: 700;">1/4</span>
+            <div class="hands-step-wrap">
+              Street: <span id="replay-step-num" class="hands-step-num">1/4</span>
             </div>
           </div>
           
-          <div class="replayer-coach-box" style="padding: 14px 24px; border-bottom: 1px solid var(--border); background: rgba(0,240,255,0.02); display: flex; gap: 12px; align-items: center;">
-            <div style="font-size: 16px; color: var(--accent);">💡</div>
-            <p id="replay-coach-tip" style="font-size: 12px; line-height: 1.45; color: var(--fg-muted); margin: 0;">
+          <div class="replayer-coach-box hands-coach-box">
+            <div class="hands-coach-icon">💡</div>
+            <p id="replay-coach-tip" class="hands-coach-tip">
               Preflop: BTN opens to 2.2bb. Hand is a standard open. Raise is compliant with GTO ranges.
             </p>
           </div>
@@ -143,18 +166,72 @@
           <div class="replay-modal-stats">
             <div>
               <span class="kick">Position</span>
-              <div style="font-size:15px; font-weight:700; margin-top:2px;" id="replay-pos">BTN</div>
+              <div class="hands-stat-val" id="replay-pos">BTN</div>
             </div>
             <div>
               <span class="kick">GTO Action</span>
-              <div style="font-size:15px; font-weight:700; color:var(--accent); margin-top:2px;" id="replay-gto">RAISE</div>
+              <div class="hands-stat-val accent" id="replay-gto">RAISE</div>
             </div>
             <div>
               <span class="kick">Hand Profit</span>
-              <div style="font-size:15px; font-weight:700; color:var(--accent); margin-top:2px;" id="replay-profit">+8.5 bb</div>
+              <div class="hands-stat-val accent" id="replay-profit">+8.5 bb</div>
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Slide-in Drawer Scrim -->
+      <div class="scrim-drawer" id="filters-drawer-scrim">
+        <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="dr-filters-title">
+          <div class="dr-head">
+            <div>
+              <div class="eyebrow">Hand Database</div>
+              <h2 id="dr-filters-title">Telemetry Filters</h2>
+            </div>
+            <div class="x" id="btn-close-filters" data-close>✕</div>
+          </div>
+          <div class="dr-body">
+            <div class="field">
+              <label>Hero Position</label>
+              <div class="seg" id="drawer-pos-chips">
+                <span class="chip on" data-val="">All</span>
+                <span class="chip" data-val="BTN">BTN</span>
+                <span class="chip" data-val="SB">SB</span>
+                <span class="chip" data-val="BB">BB</span>
+                <span class="chip" data-val="UTG">UTG</span>
+              </div>
+            </div>
+            <div class="field">
+              <label>GTO Compliance</label>
+              <div class="seg" id="drawer-comp-chips">
+                <span class="chip on" data-val="">All</span>
+                <span class="chip" data-val="ok">Compliant</span>
+                <span class="chip" data-val="dev">Deviations</span>
+              </div>
+            </div>
+            <div class="field">
+              <label>Preflop Scenario</label>
+              <div class="seg" id="drawer-scen-chips">
+                <span class="chip on" data-val="">All</span>
+                <span class="chip" data-val="RFI">RFI</span>
+                <span class="chip" data-val="VS_OPEN">Facing Raise</span>
+              </div>
+            </div>
+            <div class="field">
+              <label>Stack Depth</label>
+              <div class="seg" id="drawer-stack-chips">
+                <span class="chip on" data-val="">All</span>
+                <span class="chip" data-val="short">&lt;17bb</span>
+                <span class="chip" data-val="medium">17-40bb</span>
+                <span class="chip" data-val="deep">40bb+</span>
+              </div>
+            </div>
+          </div>
+          <div class="dr-foot">
+            <button class="btn ghost" id="btn-reset-filters">Reset</button>
+            <button class="btn solid" id="btn-apply-filters">Apply Filters</button>
+          </div>
+        </aside>
       </div>
     
     </section>

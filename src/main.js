@@ -16,6 +16,7 @@ import './styles/villains.css';
 import './styles/arena.css';
 import './styles/theme-dock.css';
 import './styles/loader.css';
+import './styles/skeleton-shimmer.css';
 import './styles/glow-borders.css';
 import './styles/button-glows.css';
 import './styles/cursor-follower.css';
@@ -46,6 +47,10 @@ import { initCardTilt } from './modules/3d-tilt.js';
 import { initCursorFollower } from './modules/cursor-follower.js';
 import { initMagneticButtons } from './modules/magnetic-buttons.js';
 import { initCareer } from './modules/career.js';
+import { initTooltips } from './modules/tooltip.js';
+import { initCommandPalette } from './modules/command-palette.js';
+import './modules/toast.js';
+import './modules/modal.js';
 
 const PAGES = { overview, career, sessions, hands, leaks, ranges, villains, arena };
 
@@ -76,6 +81,8 @@ function boot() {
   initCursorFollower();
   initMagneticButtons();
   initCareer();
+  initTooltips();
+  initCommandPalette();
 }
 
 if (document.readyState === 'loading') {

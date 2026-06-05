@@ -34,7 +34,29 @@
   
   --fg: #f3f4f6;
   --fg-muted: #8892b0;
-  --fg-dim: #3a3f50;
+  --fg-dim: #5f667d;
+  
+  /* Grid Layout Modules */
+  --cell: 32px;
+  --cell-gap: 2px;
+  --matrix-size: calc(var(--cell) * 13 + var(--cell-gap) * 12 + 8px);
+  
+  /* Border & Radius Scales */
+  --r-xs: 3px;
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --bw: 1px;
+  
+  /* Pre-flop Action Fills (Damped) */
+  --fill-raise: color-mix(in oklch, var(--accent) 55%, var(--bg-2));
+  --fill-call: color-mix(in oklch, var(--accent-2) 32%, var(--bg-2));
+  --fill-fold: rgba(255, 255, 255, 0.05);
+  --fill-nodata: rgba(255, 255, 255, 0.02);
+  
+  /* Felt Arena Colors */
+  --felt: #151b26;
+  --felt-rail: #202633;
   
   /* Fonts — Broadsheet default (the Ledger voice). theme-dock.js overrides these
      three axes inline from the chosen pairing / custom mix; this block is the
@@ -42,6 +64,14 @@
   --display: 'Bricolage Grotesque', system-ui, sans-serif;
   --sans: 'Hanken Grotesk', system-ui, sans-serif;
   --mono: 'Space Mono', ui-monospace, monospace;
+  
+  /* Typography Scale */
+  --t-cap: 9px;
+  --t-sm: 11px;
+  --t-body: 13px;
+  --t-h3: 18px;
+  --t-h2: 24px;
+  --t-display: 34px;
   
   --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.5);
 }
@@ -71,6 +101,8 @@ body[data-color="ultraviolet"] {
   --c-chip-1: #6A3FD6;
   --c-chip-2: #9B51E0;
   --c-chip-3: #FF4B72;
+  --felt: #120e20;
+  --felt-rail: #1a142c;
 }
 
 /* --- COLOR THEME: LIME OLED --- (true black + acid lime + magenta deviation) */
@@ -83,7 +115,9 @@ body[data-color="lime"] {
   --loss: #F76CFE; --loss-soft: rgba(247, 108, 254, 0.10); --loss-line: rgba(247, 108, 254, 0.38);
   --warn: #FFC400; --warn-soft: rgba(255, 196, 0, 0.10); --warn-line: rgba(255, 196, 0, 0.38);
   --c-indigo: #8B7CFF; --c-chip-1: #8FE000; --c-chip-2: #C1FF12; --c-chip-3: #F76CFE;
-  --fg: #f4f7ec; --fg-muted: #9aa888; --fg-dim: #3a4030;
+  --fg: #f4f7ec; --fg-muted: #9aa888; --fg-dim: #5c634c;
+  --felt: #0a0e0a;
+  --felt-rail: #101610;
 }
 
 /* --- COLOR THEME: BROADSHEET --- (warm ink + parchment + editorial red) */
@@ -96,7 +130,9 @@ body[data-color="broadsheet"] {
   --loss: #C0463B; --loss-soft: rgba(192, 70, 59, 0.12); --loss-line: rgba(192, 70, 59, 0.40);
   --warn: #D99A2B; --warn-soft: rgba(217, 154, 43, 0.14); --warn-line: rgba(217, 154, 43, 0.42);
   --c-indigo: #9a8c6a; --c-chip-1: #C9A24B; --c-chip-2: #E8DCC8; --c-chip-3: #C0463B;
-  --fg: #f3ead9; --fg-muted: #b3a585; --fg-dim: #4a4234;
+  --fg: #f3ead9; --fg-muted: #b3a585; --fg-dim: #756855;
+  --felt: #201b14;
+  --felt-rail: #2c251c;
 }
 
 /* --- COLOR THEME: EMBER --- (warm amber on near-black) */
@@ -109,7 +145,9 @@ body[data-color="ember"] {
   --loss: #FF3B6B; --loss-soft: rgba(255, 59, 107, 0.10); --loss-line: rgba(255, 59, 107, 0.38);
   --warn: #FFD15E; --warn-soft: rgba(255, 209, 94, 0.12); --warn-line: rgba(255, 209, 94, 0.40);
   --c-indigo: #FF6B3C; --c-chip-1: #FFC15E; --c-chip-2: #FF8C3C; --c-chip-3: #FF3B6B;
-  --fg: #fdf1e7; --fg-muted: #b9a08c; --fg-dim: #473827;
+  --fg: #fdf1e7; --fg-muted: #b9a08c; --fg-dim: #7c6245;
+  --felt: #160f08;
+  --felt-rail: #24180e;
 }
 
 /* --- COLOR THEME: SAKURA --- (soft rose + gold) */
@@ -122,7 +160,9 @@ body[data-color="sakura"] {
   --loss: #E0537A; --loss-soft: rgba(224, 83, 122, 0.12); --loss-line: rgba(224, 83, 122, 0.40);
   --warn: #F2C14E; --warn-soft: rgba(242, 193, 78, 0.12); --warn-line: rgba(242, 193, 78, 0.40);
   --c-indigo: #C98BD6; --c-chip-1: #F2C14E; --c-chip-2: #FF8FB1; --c-chip-3: #E0537A;
-  --fg: #fdeef3; --fg-muted: #bfa0ad; --fg-dim: #4a3540;
+  --fg: #fdeef3; --fg-muted: #bfa0ad; --fg-dim: #825d70;
+  --felt: #1e1218;
+  --felt-rail: #2a1a22;
 }
 
 /* --- COLOR THEME: FOREST --- (deep green-black + emerald) */
@@ -135,7 +175,9 @@ body[data-color="forest"] {
   --loss: #FF6B6B; --loss-soft: rgba(255, 107, 107, 0.10); --loss-line: rgba(255, 107, 107, 0.38);
   --warn: #E6C200; --warn-soft: rgba(230, 194, 0, 0.10); --warn-line: rgba(230, 194, 0, 0.38);
   --c-indigo: #5BD6A8; --c-chip-1: #A6E22E; --c-chip-2: #3CDC96; --c-chip-3: #FF6B6B;
-  --fg: #e9f7ef; --fg-muted: #8aa899; --fg-dim: #2c4034;
+  --fg: #e9f7ef; --fg-muted: #8aa899; --fg-dim: #496a56;
+  --felt: #081810;
+  --felt-rail: #0e2418;
 }
 
 /* --- COLOR THEME: SYNTHWAVE --- (indigo night + hot magenta + cyan) */
@@ -148,7 +190,9 @@ body[data-color="synthwave"] {
   --loss: #FF4B72; --loss-soft: rgba(255, 75, 114, 0.12); --loss-line: rgba(255, 75, 114, 0.40);
   --warn: #FFC400; --warn-soft: rgba(255, 196, 0, 0.10); --warn-line: rgba(255, 196, 0, 0.38);
   --c-indigo: #7A5CFF; --c-chip-1: #00E5FF; --c-chip-2: #FF3CC8; --c-chip-3: #FF4B72;
-  --fg: #f3ecff; --fg-muted: #a294c9; --fg-dim: #3a3160;
+  --fg: #f3ecff; --fg-muted: #a294c9; --fg-dim: #6757a9;
+  --felt: #140d33;
+  --felt-rail: #1d124c;
 }
 
 /* --- COLOR THEME: MONO SLATE --- (desaturated steel, minimal accent) */
@@ -161,7 +205,9 @@ body[data-color="slate"] {
   --loss: #E06A6A; --loss-soft: rgba(224, 106, 106, 0.10); --loss-line: rgba(224, 106, 106, 0.36);
   --warn: #D9A441; --warn-soft: rgba(217, 164, 65, 0.10); --warn-line: rgba(217, 164, 65, 0.36);
   --c-indigo: #8C9CC9; --c-chip-1: #9FB8CE; --c-chip-2: #7CA3C9; --c-chip-3: #E06A6A;
-  --fg: #eef2f6; --fg-muted: #8b97a5; --fg-dim: #39414c;
+  --fg: #eef2f6; --fg-muted: #8b97a5; --fg-dim: #606e81;
+  --felt: #11151b;
+  --felt-rail: #19202a;
 }
 
 /* --- COLOR THEME: GOLD NOIR --- (black + champagne gold + crimson) */
@@ -174,7 +220,9 @@ body[data-color="gold"] {
   --loss: #D24B4B; --loss-soft: rgba(210, 75, 75, 0.12); --loss-line: rgba(210, 75, 75, 0.40);
   --warn: #E0B85C; --warn-soft: rgba(224, 184, 92, 0.12); --warn-line: rgba(224, 184, 92, 0.40);
   --c-indigo: #B89B6A; --c-chip-1: #EBD08A; --c-chip-2: #D4AF5F; --c-chip-3: #D24B4B;
-  --fg: #f7f0e2; --fg-muted: #b5a584; --fg-dim: #473e2b;
+  --fg: #f7f0e2; --fg-muted: #b5a584; --fg-dim: #7a6a4a;
+  --felt: #16120b;
+  --felt-rail: #221c10;
 }
 
 /* =========================================================
@@ -187,3 +235,10 @@ body[data-color="gold"] {
      · Broadsheet (default) — Bricolage Grotesque / Hanken Grotesk / Space Mono
      · Terminal            — Space Grotesk / Inter / JetBrains Mono
    ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

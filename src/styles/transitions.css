@@ -13,17 +13,15 @@
     opacity: 1;
   }
 
-  /* Card Primitives (Glassmorphism & Tilt) */
+  /* Card Primitives (Glassmorphism & Flat layout) */
   .card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: var(--r-lg);
     padding: 24px;
     position: relative;
     box-shadow: var(--shadow-card);
-    transition: background 0.3s, border-color 0.3s;
-    transform-style: preserve-3d;
-    perspective: 1000px;
+    transition: background var(--t-med) var(--ease), border-color var(--t-med) var(--ease);
   }
   .card:hover {
     border-color: var(--border-strong);

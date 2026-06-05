@@ -79,15 +79,15 @@ export function initHands() {
 
       tr.innerHTML = `
         <td class="card-pair">${suitsMarkup}</td>
-        <td style="font-family:var(--mono);">${h.pos}</td>
-        <td style="font-family:var(--mono); color:var(--fg-muted);">${h.scenario.replace('_', ' ')}</td>
-        <td style="font-family:var(--mono);">${h.stack}</td>
-        <td style="font-family:var(--mono); text-transform:uppercase; font-weight:700;">${h.action}</td>
-        <td style="font-family:var(--mono); color:var(--fg-muted);">${h.buyIn}</td>
-        <td style="font-family:var(--mono);" class="${h.net.includes('+') ? 'suit-c' : 'suit-h'}">${h.net}</td>
-        <td style="font-family:var(--mono);" class="${accClass}">${h.gtoAccuracy}</td>
+        <td class="hands-td-mono">${h.pos}</td>
+        <td class="hands-td-mono-muted">${h.scenario.replace('_', ' ')}</td>
+        <td class="hands-td-mono">${h.stack}</td>
+        <td class="hands-td-mono-uppercase-bold">${h.action}</td>
+        <td class="hands-td-mono-muted">${h.buyIn}</td>
+        <td class="hands-td-mono ${h.net.includes('+') ? 'suit-c' : 'suit-h'}">${h.net}</td>
+        <td class="hands-td-mono ${accClass}">${h.gtoAccuracy}</td>
         <td><span class="compliance-badge ${h.compliant ? 'ok' : 'dev'}">${h.compliant ? 'ok' : 'deviation'}</span></td>
-        <td style="text-align:right;"><button class="btn-replay" data-id="${h.id}">Replay</button></td>
+        <td class="hands-td-right"><button class="btn-replay" data-id="${h.id}">Replay</button></td>
       `;
       handsTableBody.appendChild(tr);
     });
@@ -146,29 +146,38 @@ export function initHands() {
   function updateReplayerStep() {
     if (!replayerHand) return;
     
+    const isWin = !replayerHand.net.includes('-');
     const steps = [
       {
         street: 'PREFLOP',
         pot: '1.5bb',
         showBoard: 0,
+        heroEq: 64,
+        villainEq: 36,
         coach: `Preflop Action: Hero is in ${replayerHand.pos}. Facing standard open setup. Action: ${replayerHand.action.toUpperCase()} (${replayerHand.compliant ? 'GTO Compliant' : 'Deviation Detected'}).`
       },
       {
         street: 'FLOP',
         pot: (Math.abs(parseFloat(replayerHand.net)) * 0.35 + 1.5).toFixed(1) + 'bb',
         showBoard: 3,
+        heroEq: isWin ? 55 : 45,
+        villainEq: isWin ? 45 : 55,
         coach: `Flop comes [${boardCards[0].val}${boardCards[0].suit} ${boardCards[1].val}${boardCards[1].suit} ${boardCards[2].val}${boardCards[2].suit}]. Hero checks, villain bets, hero calls. GTO sizing compliance is 94%.`
       },
       {
         street: 'TURN',
         pot: (Math.abs(parseFloat(replayerHand.net)) * 0.7 + 1.5).toFixed(1) + 'bb',
         showBoard: 4,
+        heroEq: isWin ? 82 : 25,
+        villainEq: isWin ? 18 : 75,
         coach: `Turn is [${boardCards[3].val}${boardCards[3].suit}]. Board textures favor hero's range. Hero leads out with standard sizing.`
       },
       {
         street: 'RIVER',
         pot: Math.abs(parseFloat(replayerHand.net)).toFixed(1) + 'bb (Final)',
         showBoard: 5,
+        heroEq: isWin ? 100 : 0,
+        villainEq: isWin ? 0 : 100,
         coach: `River is [${boardCards[4].val}${boardCards[4].suit}]. Final showdown net won/lost: ${replayerHand.net}. Accuracy rating: ${replayerHand.gtoAccuracy}.`
       }
     ];
@@ -180,6 +189,20 @@ export function initHands() {
     document.getElementById('replay-pot-size').innerText = current.pot;
     document.getElementById('replay-step-num').innerText = `${currentStep + 1}/4`;
     document.getElementById('replay-coach-tip').innerText = current.coach;
+
+    // Update Equity Bar
+    const heroEqVal = document.getElementById('replayer-hero-eq');
+    const villainEqVal = document.getElementById('replayer-villain-eq');
+    const segWin = document.getElementById('replayer-seg-win');
+    const segLose = document.getElementById('replayer-seg-lose');
+
+    if (heroEqVal) heroEqVal.textContent = current.heroEq;
+    if (villainEqVal) villainEqVal.textContent = current.villainEq;
+
+    if (segWin && segLose) {
+      gsap.to(segWin, { width: current.heroEq + '%', duration: 0.4, ease: "power2.out" });
+      gsap.to(segLose, { width: current.villainEq + '%', duration: 0.4, ease: "power2.out" });
+    }
 
     // Toggle Board Cards visibility
     for (let i = 1; i <= 5; i++) {
@@ -230,19 +253,16 @@ export function initHands() {
   if (uploadZone) {
     uploadZone.addEventListener('dragover', (e) => {
       e.preventDefault();
-      uploadZone.style.background = 'rgba(0, 240, 255, 0.05)';
-      uploadZone.style.borderColor = 'var(--accent)';
+      uploadZone.classList.add('dragover');
     });
 
     uploadZone.addEventListener('dragleave', () => {
-      uploadZone.style.background = 'rgba(0,0,0,0.1)';
-      uploadZone.style.borderColor = 'var(--border)';
+      uploadZone.classList.remove('dragover');
     });
 
     uploadZone.addEventListener('drop', (e) => {
       e.preventDefault();
-      uploadZone.style.background = 'rgba(0,0,0,0.1)';
-      uploadZone.style.borderColor = 'var(--border)';
+      uploadZone.classList.remove('dragover');
       simulateParsing('pokerstars_hand_history.txt');
     });
 
@@ -254,27 +274,114 @@ export function initHands() {
   function simulateParsing(filename) {
     uploadIdle.style.display = 'none';
     uploadActive.style.display = 'block';
-    uploadActive.innerHTML = '';
 
-    const lines = [
-      `Reading hand history file: ${filename}...`,
-      'Detecting site format... Matches [PokerStars] hand template.',
-      'Checking file encoding: UTF-8 BOM detected and cleared.',
-      'Parsing Hand #12901 - SB vs BTN open steal check...',
-      'Parsing Hand #12902 - BTN RFI standard raise...',
-      'Parsing Hand #12903 - UTG facing big 3bet fold check...',
-      'Mapping ordered seats: 6 active players detected.',
-      'Comparing parsed decisions against GTO Solver range dictionaries...',
-      'Compliance rates calculated. Inserting 3 new hands to local ledger...',
-      'Database updated successfully! Table re-rendering.'
+    const pctEl = document.getElementById('hands-upload-pct');
+    const fillEl = document.getElementById('hands-upload-fill');
+    const statusTextEl = document.getElementById('hands-upload-status-text');
+    const statusEl = document.getElementById('hands-upload-status');
+    const steps = [
+      document.getElementById('hands-upload-step-1'),
+      document.getElementById('hands-upload-step-2'),
+      document.getElementById('hands-upload-step-3'),
+      document.getElementById('hands-upload-step-4'),
     ];
 
-    let currentLine = 0;
-    const interval = setInterval(() => {
-      if (currentLine >= lines.length) {
-        clearInterval(interval);
+    const STATUS_MAP = [
+      [0, 'Reading hand history files…'],
+      [28, 'Parsing hands database…'],
+      [55, 'Classifying preflop scenarios…'],
+      [78, 'Checking range compliance…'],
+      [95, 'Finalizing import…'],
+      [100, 'Done — report ready.'],
+    ];
+
+    if (statusEl) statusEl.classList.remove('done');
+    steps.forEach((s) => {
+      if (s) {
+        s.classList.remove('active', 'ok');
+        s.style.color = 'var(--fg-dim)';
+        const mk = s.querySelector('.mk');
+        if (mk) {
+          mk.textContent = steps.indexOf(s) + 1;
+          mk.style.borderColor = 'var(--border-strong)';
+          mk.style.background = 'transparent';
+          mk.style.color = 'var(--fg-dim)';
+        }
+      }
+    });
+
+    let p = 0;
+    const start = performance.now();
+    const DUR = 3000; // 3 seconds cinematic feel
+    let rafId = null;
+
+    function tick(now) {
+      const elapsed = now - start;
+      const t = Math.min(1, elapsed / DUR);
+      
+      // decelerate ease-out
+      p = Math.round((1 - Math.pow(1 - t, 2.2)) * 100);
+      
+      if (pctEl) pctEl.textContent = p;
+      if (fillEl) fillEl.style.width = p + '%';
+
+      // Status text
+      let label = STATUS_MAP[0][1];
+      for (const [at, txt] of STATUS_MAP) {
+        if (p >= at) label = txt;
+      }
+      if (statusTextEl) statusTextEl.textContent = label;
+
+      // Update steps list
+      steps.forEach((s, idx) => {
+        if (!s) return;
+        const at = +s.dataset.at;
+        const isOk = p > at + 18;
+        const isActive = p >= at && p <= at + 18;
         
-        // Push 3 mock hands
+        s.classList.toggle('ok', isOk);
+        s.classList.toggle('active', isActive);
+        
+        const mk = s.querySelector('.mk');
+        if (isOk) {
+          s.style.color = 'var(--fg-muted)';
+          if (mk) {
+            mk.textContent = '✓';
+            mk.style.background = 'rgba(94,201,143,0.14)';
+            mk.style.borderColor = 'var(--accent-2)';
+            mk.style.color = 'var(--accent-2)';
+          }
+        } else if (isActive) {
+          s.style.color = 'var(--fg)';
+          if (mk) {
+            mk.style.borderColor = 'var(--accent)';
+            mk.style.color = 'var(--accent)';
+          }
+        } else {
+          s.style.color = 'var(--fg-dim)';
+        }
+      });
+
+      if (t < 1) {
+        rafId = requestAnimationFrame(tick);
+      } else {
+        // Complete!
+        if (statusEl) statusEl.classList.add('done');
+        steps.forEach((s) => {
+          if (!s) return;
+          s.classList.add('ok');
+          s.classList.remove('active');
+          s.style.color = 'var(--fg-muted)';
+          const mk = s.querySelector('.mk');
+          if (mk) {
+            mk.textContent = '✓';
+            mk.style.background = 'rgba(94,201,143,0.14)';
+            mk.style.borderColor = 'var(--accent-2)';
+            mk.style.color = 'var(--accent-2)';
+          }
+        });
+
+        // Insert new hands
         const mockNewHands = [
           {
             id: '12901',
@@ -317,32 +424,41 @@ export function initHands() {
           }
         ];
 
-        // Insert new hands at the beginning of the list
         state.hands = [...mockNewHands, ...state.hands];
         state.notify(); // Re-render table
+
+        if (window.spawnToast) {
+          window.spawnToast('success', 'Import Complete', `Successfully imported ${filename}. Added 3 new hands to analyzer.`);
+        }
 
         setTimeout(() => {
           uploadActive.style.display = 'none';
           uploadIdle.style.display = 'block';
         }, 1500);
-
-        return;
       }
+    }
 
-      const logLine = document.createElement('div');
-      logLine.style.marginBottom = '2px';
-      logLine.innerHTML = `<span style="color:var(--accent); font-weight:700;">&gt;</span> ${lines[currentLine]}`;
-      uploadActive.appendChild(logLine);
-      uploadActive.scrollTop = uploadActive.scrollHeight;
-      currentLine++;
-    }, 200);
+    rafId = requestAnimationFrame(tick);
   }
 
   // Database Reset Logic
   if (btnResetDb) {
     btnResetDb.addEventListener('click', () => {
-      state.hands = [...originalHandsList];
-      state.notify();
+      window.showModal({
+        eyebrow: 'Danger Zone',
+        title: 'Reset hands database?',
+        body: 'This will wipe all custom imported hand histories and restore the original seed hand list. This action cannot be undone.',
+        confirmText: 'Reset Database',
+        cancelText: 'Keep Hands',
+        isDanger: true,
+        onConfirm: () => {
+          state.hands = [...originalHandsList];
+          state.notify();
+          if (window.spawnToast) {
+            window.spawnToast('success', 'Database Reset', 'Wiped custom imports. Restored initial seed list.');
+          }
+        }
+      });
     });
   }
 
@@ -357,6 +473,115 @@ export function initHands() {
     if (filterStack) filterStack.addEventListener('change', renderHandsTable);
     filterSearch.addEventListener('input', renderHandsTable);
   }
+
+  // Slide-in Drawer Logic
+  const filtersScrim = document.getElementById('filters-drawer-scrim');
+  const btnOpenFilters = document.getElementById('btn-open-filters');
+  const btnCloseFilters = document.getElementById('btn-close-filters');
+  const btnResetFilters = document.getElementById('btn-reset-filters');
+  const btnApplyFilters = document.getElementById('btn-apply-filters');
+
+  if (btnOpenFilters && filtersScrim) {
+    btnOpenFilters.addEventListener('click', () => {
+      filtersScrim.classList.add('open');
+    });
+  }
+
+  if (btnCloseFilters && filtersScrim) {
+    btnCloseFilters.addEventListener('click', () => {
+      filtersScrim.classList.remove('open');
+    });
+  }
+
+  if (filtersScrim) {
+    filtersScrim.addEventListener('mousedown', (e) => {
+      if (e.target === filtersScrim) {
+        filtersScrim.classList.remove('open');
+      }
+    });
+  }
+
+  const chipGroups = [
+    { containerId: 'drawer-pos-chips', selectId: 'filter-position' },
+    { containerId: 'drawer-comp-chips', selectId: 'filter-compliance' },
+    { containerId: 'drawer-scen-chips', selectId: 'filter-scenario' },
+    { containerId: 'drawer-stack-chips', selectId: 'filter-stack' }
+  ];
+
+  chipGroups.forEach(({ containerId, selectId }) => {
+    const container = document.getElementById(containerId);
+    const selectEl = document.getElementById(selectId);
+    if (!container || !selectEl) return;
+
+    const chips = container.querySelectorAll('.chip');
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => c.classList.remove('on'));
+        chip.classList.add('on');
+        selectEl.value = chip.dataset.val;
+        selectEl.dispatchEvent(new Event('change'));
+        updateFilterBadge();
+      });
+    });
+  });
+
+  if (btnApplyFilters && filtersScrim) {
+    btnApplyFilters.addEventListener('click', () => {
+      filtersScrim.classList.remove('open');
+    });
+  }
+
+  if (btnResetFilters) {
+    btnResetFilters.addEventListener('click', () => {
+      chipGroups.forEach(({ containerId, selectId }) => {
+        const container = document.getElementById(containerId);
+        const selectEl = document.getElementById(selectId);
+        if (container && selectEl) {
+          const chips = container.querySelectorAll('.chip');
+          chips.forEach(c => {
+            if (c.dataset.val === '') {
+              c.classList.add('on');
+            } else {
+              c.classList.remove('on');
+            }
+          });
+          selectEl.value = '';
+          selectEl.dispatchEvent(new Event('change'));
+        }
+      });
+      if (filterSearch) {
+        filterSearch.value = '';
+        filterSearch.dispatchEvent(new Event('input'));
+      }
+      updateFilterBadge();
+    });
+  }
+
+  function updateFilterBadge() {
+    let activeCount = 0;
+    chipGroups.forEach(({ selectId }) => {
+      const selectEl = document.getElementById(selectId);
+      if (selectEl && selectEl.value !== '') {
+        activeCount++;
+      }
+    });
+    const badge = document.getElementById('filter-badge');
+    if (badge) {
+      if (activeCount > 0) {
+        badge.innerText = activeCount;
+        badge.style.display = 'inline-block';
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+  }
+
+  const escHandler = (e) => {
+    if (e.key === 'Escape' && filtersScrim && filtersScrim.classList.contains('open')) {
+      filtersScrim.classList.remove('open');
+    }
+  };
+  document.addEventListener('keydown', escHandler);
 
   if (btnCloseReplay) {
     btnCloseReplay.addEventListener('click', () => {

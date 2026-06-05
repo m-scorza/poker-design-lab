@@ -21,7 +21,7 @@
   .logo .glyph {
     font-family: var(--display);
     font-weight: 800;
-    font-size: 13px;
+    font-size: var(--t-body);
     letter-spacing: 0.02em;
     background: var(--accent);
     color: var(--bg);
@@ -43,7 +43,7 @@
   }
   .logo .sub {
     font-family: var(--mono);
-    font-size: 10.5px;
+    font-size: var(--t-sm);
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--fg-muted);
@@ -56,7 +56,7 @@
   }
   .mast-nav a {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: var(--t-sm);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--fg-muted);
@@ -83,7 +83,7 @@
     flex-wrap: wrap;
     gap: 0;
     font-family: var(--mono);
-    font-size: 10.5px;
+    font-size: var(--t-sm);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--fg-muted);
@@ -103,7 +103,7 @@
   }
   .dateline .live::before {
     content: '● ';
-    font-size: 8px;
+    font-size: var(--t-cap);
     vertical-align: 2px;
   }
 

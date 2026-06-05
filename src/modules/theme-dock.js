@@ -41,8 +41,9 @@ export const FACES = {
 // Curated pairings — the front door. `why` is shown on the card.
 // (A third, serif-free pairing slot is open — see note above.)
 export const PAIRINGS = [
-  { id: 'broadsheet', name: 'Broadsheet', display: 'bricolage',    body: 'hanken', mono: 'spacemono', why: 'Newspaper authority — the Ledger voice.' },
-  { id: 'terminal',   name: 'Terminal',   display: 'spacegrotesk', body: 'inter',  mono: 'jetbrains', why: 'Clean, neutral — a precise instrument.' },
+  { id: 'geometric', name: 'Geometric', display: 'bricolage',    body: 'hanken', mono: 'spacemono', why: 'Bricolage Grotesque display & Space Mono data alignment.' },
+  { id: 'editorial', name: 'Editorial', display: 'spacegrotesk', body: 'hanken', mono: 'spacemono', why: 'Space Grotesk editorial styling & Space Mono character.' },
+  { id: 'sans',      name: 'Sans',      display: 'inter',        body: 'inter',  mono: 'jetbrains', why: 'Neutral Inter interface & JetBrains Mono developer font.' },
 ];
 
 const AXES = ['display', 'body', 'mono'];
@@ -91,7 +92,7 @@ export function initThemeDock() {
   }
   const toggleChips = toggle ? toggle.querySelectorAll('.dock-toggle-chips i') : [];
 
-  const applyColor = (id) => {
+  const applyColor = (id, triggerToast = false) => {
     const p = PALETTES.find((x) => x.id === id) || PALETTES[0];
     document.body.setAttribute('data-color', p.id);
     state.gridColor = p.grid;
@@ -100,6 +101,10 @@ export function initThemeDock() {
       b.classList.toggle('active', b.dataset.id === p.id));
     // mirror the active palette on the collapsed toggle button
     toggleChips.forEach((el, i) => { el.style.background = p.swatch[i] || p.swatch[0]; });
+
+    if (triggerToast && window.spawnToast) {
+      window.spawnToast('info', 'Theme Switched', `Palette updated to ${p.name}`);
+    }
   };
 
   // --- typography: 3-axis state ---
@@ -109,7 +114,7 @@ export function initThemeDock() {
   const matchingPairing = () =>
     PAIRINGS.find((p) => p.display === axes.display && p.body === axes.body && p.mono === axes.mono);
 
-  const apply = () => {
+  const apply = (triggerToast = false) => {
     AXES.forEach((ax) => document.body.style.setProperty(VAR[ax], FACES[axes[ax]].stack));
     const pair = matchingPairing();
     document.body.setAttribute('data-font', pair ? pair.id : 'custom');
@@ -122,15 +127,20 @@ export function initThemeDock() {
       c.classList.toggle('active', !!pair && c.dataset.id === pair.id));
     axesWrap.querySelectorAll('.dock-face').forEach((c) =>
       c.classList.toggle('active', axes[c.dataset.axis] === c.dataset.face));
+
+    if (triggerToast && window.spawnToast) {
+      const pName = pair ? pair.name : 'Custom';
+      window.spawnToast('info', 'Typography Swapped', `Active pairing is now: ${pName}`);
+    }
   };
 
   const setPairing = (id) => {
     const p = PAIRINGS.find((x) => x.id === id);
     if (!p) return;
     axes = { display: p.display, body: p.body, mono: p.mono };
-    apply();
+    apply(true);
   };
-  const setAxis = (axis, faceId) => { axes[axis] = faceId; apply(); };
+  const setAxis = (axis, faceId) => { axes[axis] = faceId; apply(true); };
 
   // --- render color swatches ---
   PALETTES.forEach((p) => {
@@ -143,7 +153,7 @@ export function initThemeDock() {
     btn.innerHTML =
       `<span class="sw-chips">${p.swatch.map((c) => `<i style="background:${c}"></i>`).join('')}</span>` +
       `<span class="sw-name">${p.name}</span>`;
-    btn.addEventListener('click', () => applyColor(p.id));
+    btn.addEventListener('click', () => applyColor(p.id, true));
     colorWrap.appendChild(btn);
   });
 

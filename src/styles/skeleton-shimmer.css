@@ -1,0 +1,75 @@
+/* =========================================================
+   SKELETON SHIMMER TRANSITION PLACEHOLDERS
+   ========================================================= */
+
+.sk {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: var(--r-xs);
+}
+
+.sk::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.sk.circle {
+  border-radius: 50%;
+}
+
+.sk.line {
+  height: 11px;
+  margin-bottom: 9px;
+}
+
+.sk.w90 { width: 90%; }
+.sk.w80 { width: 80%; }
+.sk.w70 { width: 70%; }
+.sk.w60 { width: 60%; }
+.sk.w50 { width: 50%; }
+.sk.w40 { width: 40%; }
+.sk.w30 { width: 30%; }
+
+.skeleton-shimmer-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  z-index: 100;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.skeleton-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.skeleton-stat-tile {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 16px;
+  border-radius: var(--r-md);
+}
+
+.skeleton-trow {
+  display: grid;
+  grid-template-columns: 80px 1fr 100px 100px 100px;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}

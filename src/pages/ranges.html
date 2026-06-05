@@ -1,15 +1,15 @@
 <section class="page" id="page-ranges">
 
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
-        <h2 class="kick accent" style="margin:0;">Range lab · theory vs. reality</h2>
-        <div style="display:flex; gap: 8px; flex-wrap: wrap;">
+      <div class="ranges-header-row">
+        <h2 class="kick accent">Range lab · theory vs. reality</h2>
+        <div class="ranges-header-toggles">
           <!-- Scenario toggle -->
-          <div class="ranges-tab-menu" id="ranges-scenario-selector" style="margin: 0;">
+          <div class="ranges-tab-menu" id="ranges-scenario-selector">
             <button class="ranges-tab-btn active" data-scenario="rfi">RFI open</button>
             <button class="ranges-tab-btn" data-scenario="pushfold">Push/Fold (10bb)</button>
           </div>
           <!-- View mode toggle -->
-          <div class="ranges-tab-menu" id="ranges-mode-selector" style="margin: 0;">
+          <div class="ranges-tab-menu" id="ranges-mode-selector">
             <button class="ranges-tab-btn active" data-mode="oracle">Oracle (GTO)</button>
             <button class="ranges-tab-btn" data-mode="mirror">Mirror</button>
             <button class="ranges-tab-btn" data-mode="edit">Edit</button>
@@ -29,7 +29,7 @@
             <span class="rg-matrix-spot" id="ranges-spot-label">BTN OPEN · 100bb</span>
           </div>
 
-          <div class="matrix-grid-box rg-grid" id="ranges-matrix-grid" style="max-width: 460px; margin: 0 auto;">
+          <div class="matrix-grid-box rg-grid" id="ranges-matrix-grid">
             <!-- 13×13 grid generated programmatically -->
           </div>
 
@@ -37,12 +37,12 @@
             <div class="ranges-swatch-info" id="ranges-legend">
               <!-- Legend swatches injected by JS (depend on view mode) -->
             </div>
-            <div style="display: flex; align-items: center; gap: 14px;">
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <input type="checkbox" id="toggle-deviations" checked style="cursor: pointer; width: 14px; height: 14px; accent-color: var(--accent);"/>
-                <label for="toggle-deviations" style="font-family: var(--mono); font-size: 10px; text-transform: uppercase; cursor: pointer; color: var(--fg-muted);">Mark deviations</label>
+            <div class="ranges-footer-controls">
+              <div class="ranges-toggle-deviations-wrap">
+                <input type="checkbox" id="toggle-deviations" checked/>
+                <label for="toggle-deviations">Mark deviations</label>
               </div>
-              <span class="kick" id="ranges-combos-lbl" style="font-size: 11px;">169 combos</span>
+              <span class="kick" id="ranges-combos-lbl">169 combos</span>
             </div>
           </div>
         </div>
@@ -71,7 +71,7 @@
           <!-- Solver delta validation -->
           <div class="card solver-delta-card">
             <span class="kick accent">Δ validation vs. solver</span>
-            <div style="margin-top:14px; display: flex; flex-direction: column; gap: 14px;" id="ranges-validation-stack">
+            <div class="ranges-validation-stack-box" id="ranges-validation-stack">
               <div id="validation-UTG" class="rg-val-row">
                 <div class="rg-val-top"><span class="pos-lbl">UTG opens</span><span class="delta-lbl val-delta">+0.0% OK</span></div>
                 <div class="rg-val-track"><span class="val-progress"></span></div>
