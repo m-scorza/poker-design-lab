@@ -56,3 +56,4 @@ A glass-morphism HUD widget floats in the bottom-right corner, letting you toggl
 ## 4. Technical Validation
 *   **HTML Structure:** Ran a syntax validator and verified that all HTML tags are balanced and clean (exit code 0).
 *   **Offline CDN Fallbacks:** Defensive fallback blocks map GSAP actions to native CSS styles if the browser is offline.
+*   **CSS Styling Engine & Token Standardization:** Standardized all 19 stylesheet modules to drive coordinates, margins, padding, gaps, border-radii, and font sizes off standardized design system variables (`var(--s-2xs)` to `var(--s-5xl)` and `var(--t-cap)` to `var(--t-display)`). Removed legacy inline style overrides on `hands.html` filter toolbars and `career.html` stakes tables, realigning sub-9px text to central variables.
