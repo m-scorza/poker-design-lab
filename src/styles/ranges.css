@@ -218,7 +218,7 @@
   }
   .rg-val-top { display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: var(--t-sm); margin-bottom: var(--s-2xs); }
   .rg-val-top .pos-lbl { font-weight: 700; color: var(--fg); }
-  .rg-val-track { height: 6px; background: rgba(255,255,255,0.03); border-radius: 3px; overflow: hidden; display: flex; }
+  .rg-val-track { height: 6px; background: rgba(255,255,255,0.03); border-radius: var(--r-xs); overflow: hidden; display: flex; }
   .rg-val-track .val-progress { height: 100%; background: var(--accent-2); transition: width 0.4s ease; }
   .rg-val-foot { display: flex; justify-content: space-between; font-family: var(--mono); font-size: var(--t-cap); color: var(--fg-muted); margin-top: 2px; }
   .delta-lbl.ok   { color: var(--accent-2); }
