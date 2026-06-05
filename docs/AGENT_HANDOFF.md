@@ -1,5 +1,18 @@
 # Agent Handoff Log — Poker Design Lab
 
+## 2026-06-05 — Design Audit Loop (Iteration 29): Career Arc Spacing Alignments
+
+- Owner / agent:          Antigravity (Autonomous Loop)
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/styles/*.css`
+- Files touched:
+  - `src/styles/career.css` - Standardized margins, paddings, and gaps inside Career workspace (KPI grid cards, SVG arc container/labels, lifetime scorecard metrics/footers, achievement timeline feed items, milestones rail marker trackers, header row alignment stacks, stakes grid boxes, and session calendar hours heatmaps) using system Spacing Scale tokens.
+- Summary:
+  - Harmonized the Career progression workspace layout spacing to align with the standard 4px-based grid rhythm.
+  - Verified Vite compile and bundler output with zero warnings or errors.
+- Verification:
+  - Production build (`npm run build`) completed successfully in 4.12s.
+
 ## 2026-06-05 — Design Audit Loop (Iteration 28): Desk Spacing Scale Alignment
 
 - Owner / agent:          Antigravity (Autonomous Loop)

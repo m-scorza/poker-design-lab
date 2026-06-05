@@ -3,19 +3,19 @@
   .career-top-kpis {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 24px;
+    gap: var(--s-md);
+    margin-bottom: var(--s-xl);
   }
   .chart-card {
-    padding: 30px;
-    margin-bottom: 24px;
+    padding: var(--s-2xl);
+    margin-bottom: var(--s-xl);
   }
   .arc-chart-container {
     height: 250px;
     border-top: 1px solid var(--border-strong);
     border-bottom: 1px solid var(--border);
     position: relative;
-    margin-top: 18px;
+    margin-top: var(--s-lg);
   }
   .arc-chart-container svg {
     width: 100%; height: 100%;
@@ -38,7 +38,7 @@
     display: none;
     background: var(--bg-card);
     border: 1px solid var(--border-strong);
-    padding: 8px 12px;
+    padding: var(--s-xs) var(--s-sm);
     border-radius: var(--r-sm);
     font-family: var(--mono);
     font-size: var(--t-sm);
@@ -54,20 +54,20 @@
   .career-bottom-grid {
     display: grid;
     grid-template-columns: 1.4fr 1fr;
-    gap: 24px;
+    gap: var(--s-xl);
   }
   
   /* Timeline Achievement list */
   .timeline-feed {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: var(--s-sm);
   }
   .timeline-item {
     display: grid;
     grid-template-columns: 100px 1fr auto;
     align-items: center;
-    padding: 14px 18px;
+    padding: var(--s-md) var(--s-lg);
     border: 1px solid var(--border);
     background: rgba(255,255,255,0.005);
     border-radius: var(--r-md);
@@ -95,9 +95,9 @@
   }
 
   /* ===== Lifetime Scorecard (faithful to React LifetimeScorecard) ===== */
-  .scorecard-card { padding: 26px 28px; margin-bottom: 24px; }
+  .scorecard-card { padding: var(--s-xl) var(--s-2xl); margin-bottom: var(--s-xl); }
   .scorecard-head {
-    display: flex; align-items: center; gap: 8px; margin-bottom: 22px;
+    display: flex; align-items: center; gap: var(--s-xs); margin-bottom: var(--s-lg);
   }
   .scorecard-head .sc-dot {
     width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
@@ -108,9 +108,9 @@
     letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg);
   }
   .scorecard-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-xl);
   }
-  .sc-metric { display: flex; flex-direction: column; gap: 6px; }
+  .sc-metric { display: flex; flex-direction: column; gap: var(--s-xs); }
   .sc-metric .sc-k {
     font-family: var(--mono); font-size: var(--t-cap); font-weight: 700;
     letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-dim);
@@ -124,58 +124,58 @@
   .sc-metric .sc-v.neg { color: var(--loss); }
   .sc-metric .sc-v.warn { color: var(--warn); }
   .scorecard-foot {
-    margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--border);
-    display: flex; gap: 36px;
+    margin-top: var(--s-lg); padding-top: var(--s-lg); border-top: 1px solid var(--border);
+    display: flex; gap: var(--s-2xl);
   }
-  .scorecard-foot .sc-k { margin-bottom: 4px; }
+  .scorecard-foot .sc-k { margin-bottom: var(--s-2xs); }
   .scorecard-foot .sc-sv {
     font-family: var(--mono); font-size: var(--t-body); font-weight: 600; color: var(--fg);
   }
 
   /* ===== Career Arc hero (ported from career-arc brick, tokenized) ===== */
-  .arc-hero { padding: 26px 28px; position: relative; overflow: hidden; margin-bottom: 24px; }
+  .arc-hero { padding: var(--s-xl) var(--s-2xl); position: relative; overflow: hidden; margin-bottom: var(--s-xl); }
   .arc-hero::after {
     content: ''; position: absolute; right: -100px; top: -60px;
     width: 340px; height: 340px;
     background: radial-gradient(circle, var(--accent-soft) 0%, transparent 65%);
     pointer-events: none;
   }
-  .arc-top { display: flex; align-items: flex-start; gap: 32px; margin-bottom: 20px; position: relative; flex-wrap: wrap; }
+  .arc-top { display: flex; align-items: flex-start; gap: var(--s-2xl); margin-bottom: var(--s-lg); position: relative; flex-wrap: wrap; }
   .arc-eyebrow {
     font-family: var(--mono); font-size: var(--t-sm); color: var(--fg-muted);
-    letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 10px;
-    display: flex; align-items: center; gap: 10px;
+    letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: var(--s-xs);
+    display: flex; align-items: center; gap: var(--s-xs);
   }
   .arc-eyebrow .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 0 3px var(--accent-soft); }
   .arc-money { font-family: var(--mono); font-size: 46px; color: var(--c-chip-1, var(--accent)); font-weight: 500; letter-spacing: -0.02em; line-height: 1; }
   .arc-money .cents { font-size: var(--t-h2); opacity: 0.6; }
-  .arc-money-meta { font-family: var(--mono); font-size: var(--t-sm); color: var(--fg-muted); margin-top: 10px; }
+  .arc-money-meta { font-family: var(--mono); font-size: var(--t-sm); color: var(--fg-muted); margin-top: var(--s-xs); }
   .arc-money-meta b { color: var(--fg); font-weight: 500; }
   .arc-money-meta b.pos { color: var(--accent); }
   .arc-seg { margin-left: auto; display: inline-flex; gap: 2px; padding: 2px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--r-sm); }
-  .arc-seg button { background: none; border: 0; color: var(--fg-muted); font: 500 11px var(--mono); padding: 6px 12px; border-radius: var(--r-sm); cursor: pointer; letter-spacing: 0.03em; transition: background 0.2s, color 0.2s; }
+  .arc-seg button { background: none; border: 0; color: var(--fg-muted); font: 500 11px var(--mono); padding: var(--s-2xs) var(--s-sm); border-radius: var(--r-sm); cursor: pointer; letter-spacing: 0.03em; transition: background 0.2s, color 0.2s; }
   .arc-seg button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
   .arc-wrap { position: relative; height: 280px; }
   .arc-wrap svg { width: 100%; height: 100%; display: block; }
-  .arc-y-labels { position: absolute; left: 0; top: 6px; bottom: 30px; font-family: var(--mono); font-size: var(--t-sm); color: var(--fg-dim); display: flex; flex-direction: column; justify-content: space-between; padding-right: 8px; }
-  .arc-x-labels { display: flex; justify-content: space-between; padding-left: 38px; padding-top: 8px; font-family: var(--mono); font-size: var(--t-sm); color: var(--fg-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .arc-y-labels { position: absolute; left: 0; top: 6px; bottom: 30px; font-family: var(--mono); font-size: var(--t-sm); color: var(--fg-dim); display: flex; flex-direction: column; justify-content: space-between; padding-right: var(--s-xs); }
+  .arc-x-labels { display: flex; justify-content: space-between; padding-left: var(--s-3xl); padding-top: var(--s-xs); font-family: var(--mono); font-size: var(--t-sm); color: var(--fg-dim); letter-spacing: 0.06em; text-transform: uppercase; }
   .arc-tip {
     display: none; position: absolute; background: var(--bg-card);
-    border: 1px solid var(--border-strong); padding: 8px 12px; border-radius: var(--r-sm);
+    border: 1px solid var(--border-strong); padding: var(--s-xs) var(--s-sm); border-radius: var(--r-sm);
     font-family: var(--mono); font-size: var(--t-sm); pointer-events: none; z-index: 100; color: var(--fg);
     box-shadow: 0 4px 15px rgba(0,0,0,0.5); white-space: nowrap;
   }
 
   /* ===== Milestone Rail ===== */
-  .milestones { padding: 22px 26px; margin-bottom: 24px; }
-  .milestone-h { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+  .milestones { padding: var(--s-lg) var(--s-xl); margin-bottom: var(--s-xl); }
+  .milestone-h { display: flex; align-items: center; gap: var(--s-sm); margin-bottom: var(--s-lg); }
   .milestone-h .eye { font-family: var(--mono); font-size: var(--t-sm); color: var(--accent); letter-spacing: 0.16em; text-transform: uppercase; }
   .milestone-h .sub { font-family: var(--mono); font-size: var(--t-sm); color: var(--fg-muted); }
-  .milestone-track { position: relative; padding: 18px 0 10px; }
+  .milestone-track { position: relative; padding: var(--s-lg) 0 var(--s-xs); }
   .milestone-line { position: absolute; left: 0; right: 0; top: 30px; height: 1px; background: var(--border); }
   .milestone-line span { position: absolute; left: 0; height: 1px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: var(--r-xs); width: 0; transition: width 1.1s cubic-bezier(0.22,1,0.36,1); }
-  .milestone-items { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; position: relative; }
-  .milestone-item { display: flex; flex-direction: column; align-items: center; gap: 6px; position: relative; padding-top: 30px; text-align: center; }
+  .milestone-items { display: grid; grid-template-columns: repeat(6, 1fr); gap: var(--s-md); position: relative; }
+  .milestone-item { display: flex; flex-direction: column; align-items: center; gap: var(--s-xs); position: relative; padding-top: var(--s-2xl); text-align: center; }
   .milestone-item .marker { position: absolute; top: 22px; left: 50%; transform: translate(-50%, -50%); width: 17px; height: 17px; border-radius: 50%; background: var(--bg-card); border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; z-index: 2; }
   .milestone-item .marker.money { border-color: var(--accent-2); }
   .milestone-item .marker .inner { width: 5px; height: 5px; background: var(--accent); border-radius: 50%; }
@@ -205,11 +205,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
+    margin-bottom: var(--s-xl);
     border-bottom: 1px solid var(--border);
-    padding-bottom: 16px;
+    padding-bottom: var(--s-md);
     flex-wrap: wrap;
-    gap: 12px;
+    gap: var(--s-sm);
   }
   .career-header-title {
     font-family: var(--display);
@@ -218,12 +218,12 @@
     margin: 0;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--s-xs);
   }
   .career-header-subtitle {
     font-size: var(--t-sm);
     color: var(--fg-muted);
-    margin: 4px 0 0;
+    margin: var(--s-2xs) 0 0;
   }
   .career-tab-menu-override {
     margin: 0;
@@ -232,11 +232,11 @@
     color: var(--accent);
   }
   .career-arc-svg {
-    padding-left: 38px;
+    padding-left: var(--s-3xl);
     overflow: visible;
   }
   .career-abi-evolution-card {
-    margin-top: 24px;
+    margin-top: var(--s-xl);
   }
   .career-abi-container {
     position: relative;
@@ -246,7 +246,7 @@
     position: absolute;
     background: var(--bg-card);
     border: 1px solid var(--border-strong);
-    padding: 8px 12px;
+    padding: var(--s-xs) var(--s-sm);
     border-radius: var(--r-sm);
     font-family: var(--mono);
     font-size: var(--t-sm);
@@ -262,24 +262,24 @@
   .career-abi-labels {
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
+    margin-top: var(--s-xs);
     font-family: var(--mono);
     font-size: var(--t-cap);
     color: var(--fg-muted);
   }
   .career-section-header {
-    margin-bottom: 14px;
+    margin-bottom: var(--s-md);
   }
   .career-right-column-stack {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: var(--s-xl);
   }
   .career-dist-list {
     display: flex;
     flex-direction: column;
-    gap: 9px;
-    margin-top: 14px;
+    gap: var(--s-xs);
+    margin-top: var(--s-sm);
   }
   .career-dist-row {
     display: grid;
@@ -296,7 +296,7 @@
     background: var(--bg-input);
     border-radius: var(--r-xs);
     overflow: hidden;
-    margin: 0 8px;
+    margin: 0 var(--s-xs);
   }
   .career-dist-fill {
     display: block;
@@ -314,19 +314,19 @@
   .career-dist-val.accent-2 { color: var(--accent-2); }
   
   .career-stakes-card {
-    padding: 20px;
+    padding: var(--s-lg);
   }
   .career-stakes-grid {
-    margin-top: 14px;
+    margin-top: var(--s-sm);
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: var(--s-sm);
   }
   .career-stakes-box {
     background: rgba(0,0,0,0.25);
     border: 1px solid var(--border);
     border-radius: var(--r-sm);
-    padding: 10px;
+    padding: var(--s-xs);
   }
   .career-stakes-kick {
     font-size: var(--t-cap);
@@ -356,7 +356,7 @@
     background: rgba(0,0,0,0.25);
     border: 1px solid var(--border);
     border-radius: var(--r-sm);
-    padding: 10px;
+    padding: var(--s-xs);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -372,7 +372,7 @@
     display: inline-block;
   }
   .career-heatmap-card {
-    padding: 20px;
+    padding: var(--s-lg);
     position: relative;
   }
   .career-heatmap-tooltip {
@@ -380,7 +380,7 @@
     position: absolute;
     background: rgba(11, 13, 18, 0.95);
     border: 1px solid var(--border-strong);
-    padding: 8px 12px;
+    padding: var(--s-xs) var(--s-sm);
     border-radius: var(--r-sm);
     font-family: var(--mono);
     font-size: var(--t-sm);
@@ -388,10 +388,10 @@
     pointer-events: none;
   }
   .career-heatmap-container {
-    margin-top: 14px;
+    margin-top: var(--s-sm);
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: var(--s-2xs);
   }
   .career-heatmap-hours {
     display: grid;
@@ -425,14 +425,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 10px;
+    margin-top: var(--s-xs);
     font-family: var(--mono);
     font-size: var(--t-cap);
     color: var(--fg-muted);
   }
   .career-heatmap-legend {
     display: flex;
-    gap: 4px;
+    gap: var(--s-2xs);
     align-items: center;
   }
   .career-legend-dot {
@@ -452,7 +452,7 @@
     overflow: hidden;
   }
   .career-card-header {
-    padding: 16px 24px;
+    padding: var(--s-md) var(--s-xl);
     border-bottom: 1px solid var(--border);
     background: rgba(0, 0, 0, 0.15);
     display: flex;
@@ -475,31 +475,31 @@
     background: rgba(255, 255, 255, 0.01);
   }
   .career-th {
-    padding: 14px 24px;
+    padding: var(--s-md) var(--s-xl);
     font-weight: 600;
   }
   .career-th-center {
-    padding: 14px 24px;
+    padding: var(--s-md) var(--s-xl);
     font-weight: 600;
     text-align: center;
   }
   .career-th-right {
-    padding: 14px 24px;
+    padding: var(--s-md) var(--s-xl);
     font-weight: 600;
     text-align: right;
   }
   .career-td-sans {
-    padding: 16px 24px;
+    padding: var(--s-md) var(--s-xl);
     font-family: var(--sans);
     font-weight: 600;
     font-size: var(--t-body);
   }
   .career-td-center {
-    padding: 16px 24px;
+    padding: var(--s-md) var(--s-xl);
     text-align: center;
   }
   .career-td-right {
-    padding: 16px 24px;
+    padding: var(--s-md) var(--s-xl);
     text-align: right;
   }
   .career-tr-clickable {
@@ -517,10 +517,10 @@
     padding: 0;
   }
   .career-details-container {
-    padding: 20px 24px;
+    padding: var(--s-lg) var(--s-xl);
     display: grid;
     grid-template-columns: repeat(4, 1fr) 2fr;
-    gap: 14px;
+    gap: var(--s-md);
     align-items: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.03);
   }
@@ -528,7 +528,7 @@
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--border);
     border-radius: var(--r-sm);
-    padding: 10px;
+    padding: var(--s-xs);
     text-align: center;
   }
   .career-details-kick {
@@ -548,7 +548,7 @@
   .career-details-val.loss { color: var(--loss); }
 
   .career-details-insight {
-    padding-left: 10px;
+    padding-left: var(--s-xs);
   }
   .career-details-insight-title {
     font-size: var(--t-cap);
@@ -562,7 +562,7 @@
     font-size: var(--t-sm);
     line-height: 1.45;
     color: var(--fg-muted);
-    margin: 4px 0 0 0;
+    margin: var(--s-2xs) 0 0 0;
     font-family: var(--sans);
     font-weight: 400;
   }
@@ -570,7 +570,7 @@
   .career-double-card-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 24px;
+    gap: var(--s-xl);
   }
   .career-predators-card {
     padding: 0;
@@ -578,7 +578,7 @@
     border-color: var(--loss-line);
   }
   .career-predators-header {
-    padding: 16px 20px;
+    padding: var(--s-md) var(--s-lg);
     border-bottom: 1px solid var(--loss-line);
     background: var(--loss-soft);
     display: flex;
@@ -587,16 +587,16 @@
     color: var(--loss);
   }
   .career-predators-list {
-    padding: 20px;
+    padding: var(--s-lg);
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--s-xs);
   }
   .career-predators-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 14px;
+    padding: var(--s-xs) var(--s-md);
     background: rgba(255, 255, 255, 0.01);
     border: 1px solid var(--border);
     border-radius: var(--r-sm);
@@ -604,7 +604,7 @@
   .career-predators-name-box {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--s-xs);
   }
   .career-predators-rank {
     font-family: var(--mono);
@@ -642,7 +642,7 @@
     border-color: var(--accent-line);
   }
   .career-prey-header {
-    padding: 16px 20px;
+    padding: var(--s-md) var(--s-lg);
     border-bottom: 1px solid var(--accent-line);
     background: var(--accent-soft);
     display: flex;
@@ -656,22 +656,22 @@
     overflow: hidden;
   }
   .career-overlap-grid {
-    padding: 20px;
+    padding: var(--s-lg);
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 14px;
+    gap: var(--s-md);
   }
   .career-overlap-item {
     background: rgba(255,255,255,0.005);
     border: 1px solid var(--border);
     border-radius: var(--r-md);
-    padding: 14px 18px;
+    padding: var(--s-md) var(--s-lg);
   }
   .career-overlap-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: var(--s-xs);
   }
   .career-overlap-meta {
     display: flex;
