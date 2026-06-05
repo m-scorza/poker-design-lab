@@ -1,5 +1,18 @@
 # Agent Handoff Log — Poker Design Lab
 
+## 2026-06-05 — Design Audit Loop (Iteration 19): Career Tab Geometry & Typography
+
+- Owner / agent:          Antigravity (Autonomous Loop)
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/styles/*.css`
+- Files touched:
+  - `src/styles/career.css` - Standardized milestone track spans and heatmaps to use design system border-radius tokens (`var(--r-xs)`). Mapped all remaining hardcoded micro-typography sizes (e.g. `9.5px`, `10.5px`, `11px`, `13.5px`, `24px` headings, tooltips, and scorecard values) to standard tokens (`var(--t-cap)`, `var(--t-sm)`, `var(--t-body)`, `var(--t-h2)`).
+- Summary:
+  - Quantized visual elements (milestones, heatmap blocks) and scorecard values on the Career tab to align with the core typography and border scales.
+  - Verified Vite compile and bundler output with zero warnings or errors.
+- Verification:
+  - Production build (`npm run build`) completed successfully in 4.31s.
+
 ## 2026-06-05 — Design Audit Loop (Iteration 18): Typography Standardization
 
 - Owner / agent:          Antigravity (Autonomous Loop)
