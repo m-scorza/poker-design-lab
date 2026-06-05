@@ -28,15 +28,15 @@
       </div>
 
       <!-- Filter Tool Strip -->
-      <div class="filter-bar" style="display: flex; gap: 12px; align-items: center;">
-        <div class="filter-group" style="flex: 1; max-width: 320px; margin-bottom: 0;">
-          <input type="text" id="filter-search" placeholder="Search cards... e.g. AA, KQs" class="hands-search-input-override" style="width: 100%; margin: 0;"/>
+      <div class="hands-filter-strip">
+        <div class="hands-search-group">
+          <input type="text" id="filter-search" placeholder="Search cards... e.g. AA, KQs" class="hands-search-input-override"/>
         </div>
-        <button class="btn-filters" id="btn-open-filters" style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; padding: 10px 18px; border-radius: var(--r-sm); cursor: pointer; border: 1px solid var(--border-strong); background: rgba(255,255,255,0.03); color: var(--fg); transition: all 0.18s ease; display: flex; align-items: center; gap: 8px;">
+        <button class="btn-filters" id="btn-open-filters">
           <span>Filters</span>
-          <span id="filter-badge" style="display: none; background: var(--accent); color: #000; font-size: 9px; font-weight: 700; border-radius: 4px; padding: 1px 5px;">0</span>
+          <span class="filter-badge" id="filter-badge">0</span>
         </button>
-        <button class="btn-reset-db" id="btn-reset-db" style="margin-left: auto;">Reset Database</button>
+        <button class="btn-reset-db" id="btn-reset-db">Reset Database</button>
       </div>
 
       <!-- Drag & Drop Hand History Parser Container -->

@@ -213,8 +213,49 @@
   }
 
   /* Extracted classes for hands.html, hands.js */
+  .hands-filter-strip {
+    display: flex;
+    gap: var(--s-sm);
+    align-items: center;
+    margin-bottom: var(--s-lg);
+  }
+  .hands-search-group {
+    flex: 1;
+    max-width: 320px;
+    margin-bottom: 0;
+  }
   .hands-search-input-override {
-    width: 120px;
+    width: 100%;
+    margin: 0;
+  }
+  .btn-filters {
+    font-family: var(--mono);
+    font-size: var(--t-sm);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: var(--s-xs) var(--s-md);
+    border-radius: var(--r-sm);
+    cursor: pointer;
+    border: 1px solid var(--border-strong);
+    background: rgba(255,255,255,0.03);
+    color: var(--fg);
+    transition: all 0.18s ease;
+    display: flex;
+    align-items: center;
+    gap: var(--s-xs);
+  }
+  .btn-filters:hover {
+    border-color: var(--accent);
+    background: rgba(255,255,255,0.08);
+  }
+  .filter-badge {
+    display: none;
+    background: var(--accent);
+    color: #000;
+    font-size: var(--t-cap);
+    font-weight: 700;
+    border-radius: 4px;
+    padding: 1px var(--s-2xs);
   }
 
   .hands-upload-zone {
