@@ -49,10 +49,10 @@ export function initTransitions() {
               
               if (targetTab === 'overview' || targetTab === 'career') {
                 skeletonOverlay.innerHTML = `
-                  <div class="sk line w30" style="height: 20px; margin-bottom: 20px;"></div>
+                  <div class="sk line w30" style="height: var(--s-lg); margin-bottom: var(--s-lg);"></div>
                   <div class="skeleton-stat-grid">
-                    <div class="skeleton-stat-tile"><div class="sk line w50"></div><div class="sk line w70" style="height:24px"></div></div>
-                    <div class="skeleton-stat-tile"><div class="sk line w40"></div><div class="sk line w60" style="height:24px"></div></div>
+                    <div class="skeleton-stat-tile"><div class="sk line w50"></div><div class="sk line w70" style="height: var(--s-xl)"></div></div>
+                    <div class="skeleton-stat-tile"><div class="sk line w40"></div><div class="sk line w60" style="height: var(--s-xl)"></div></div>
                     <div class="skeleton-stat-tile"><div class="sk line w60"></div><div class="sk line w50"></div></div>
                     <div class="skeleton-stat-tile"><div class="sk line w30"></div><div class="sk line w80"></div></div>
                   </div>
@@ -60,7 +60,7 @@ export function initTransitions() {
                 `;
               } else if (['hands', 'sessions', 'leaks', 'villains'].includes(targetTab)) {
                 skeletonOverlay.innerHTML = `
-                  <div class="sk line w40" style="height: 20px; margin-bottom: 20px;"></div>
+                  <div class="sk line w40" style="height: var(--s-lg); margin-bottom: var(--s-lg);"></div>
                   <div class="skeleton-trow"><div class="sk line w50" style="margin:0"></div><div class="sk line w70" style="margin:0"></div><div class="sk line w30" style="margin:0"></div><div class="sk line w40" style="margin:0"></div></div>
                   <div class="skeleton-trow"><div class="sk line w60" style="margin:0"></div><div class="sk line w90" style="margin:0"></div><div class="sk line w50" style="margin:0"></div><div class="sk line w30" style="margin:0"></div></div>
                   <div class="skeleton-trow"><div class="sk line w40" style="margin:0"></div><div class="sk line w50" style="margin:0"></div><div class="sk line w40" style="margin:0"></div><div class="sk line w60" style="margin:0"></div></div>
@@ -68,7 +68,7 @@ export function initTransitions() {
                 `;
               } else {
                 skeletonOverlay.innerHTML = `
-                  <div class="sk line w50" style="height: 24px; margin-bottom: 24px;"></div>
+                  <div class="sk line w50" style="height: var(--s-xl); margin-bottom: var(--s-xl);"></div>
                   <div class="sk line w90"></div>
                   <div class="sk line w80"></div>
                   <div class="sk line w70"></div>
