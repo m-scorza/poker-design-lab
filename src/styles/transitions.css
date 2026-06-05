@@ -18,7 +18,7 @@
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: var(--r-lg);
-    padding: 24px;
+    padding: var(--s-xl);
     position: relative;
     box-shadow: var(--shadow-card);
     transition: background var(--t-med) var(--ease), border-color var(--t-med) var(--ease);
