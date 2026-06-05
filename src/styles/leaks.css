@@ -5,12 +5,12 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin-bottom: 24px;
+    margin-bottom: var(--s-xl);
   }
   .inc-grid {
     display: grid;
     grid-template-columns: 1.25fr 1fr;
-    gap: 36px;
+    gap: var(--s-3xl);
     align-items: center;
   }
   .inc-headline-text {
@@ -31,7 +31,7 @@
     font-size: var(--t-h3);
     line-height: 1.45;
     color: var(--fg-muted);
-    margin-top: 18px;
+    margin-top: var(--s-lg);
     text-wrap: pretty;
   }
   .inc-desc b { color: var(--fg); }
@@ -39,10 +39,10 @@
   .inc-stats-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
-    margin-top: 24px;
+    gap: var(--s-md);
+    margin-top: var(--s-xl);
     border-top: 1px solid var(--border);
-    padding-top: 16px;
+    padding-top: var(--s-md);
   }
   .inc-stat-item .l {
     font-family: var(--mono);
@@ -54,7 +54,7 @@
     font-family: var(--display);
     font-weight: 700;
     font-size: var(--t-h2);
-    margin-top: 4px;
+    margin-top: var(--s-2xs);
   }
   .inc-stat-item .v.loss { color: var(--loss); }
   .inc-stat-item .v.accent { color: var(--accent); }
@@ -67,7 +67,7 @@
   .matrix-grid-cell-label {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 8px;
+    margin-bottom: var(--s-xs);
     font-family: var(--mono);
     font-size: var(--t-sm);
     color: var(--fg-muted);
@@ -84,7 +84,7 @@
     aspect-ratio: 1;
     background: rgba(0,0,0,0.2);
     border: 1px solid var(--border);
-    padding: 4px;
+    padding: var(--s-2xs);
     border-radius: var(--r-md);
   }
   .matrix-cell-node {
@@ -117,8 +117,8 @@
   .leak-index-cols {
     display: grid;
     grid-template-columns: 34px 1fr 120px 100px 100px;
-    gap: 16px;
-    padding: 10px 18px;
+    gap: var(--s-md);
+    padding: var(--s-xs) var(--s-lg);
     border-top: 1px solid var(--border-strong);
     border-bottom: 1px solid var(--border);
     font-family: var(--mono);
@@ -130,9 +130,9 @@
   .leak-index-row {
     display: grid;
     grid-template-columns: 34px 1fr 120px 100px 100px;
-    gap: 16px;
+    gap: var(--s-md);
     align-items: center;
-    padding: 14px 18px;
+    padding: var(--s-md) var(--s-lg);
     border-bottom: 1px solid var(--border);
     cursor: pointer;
     position: relative;
@@ -204,10 +204,10 @@
   }
 
   /* ---- Leak × Position severity heatmap (folded from leak-heatmap brick) ---- */
-  .hm-h { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+  .hm-h { display: flex; align-items: center; gap: var(--s-sm); margin-bottom: var(--s-md); flex-wrap: wrap; }
   .hm-h .hm-sub { font-family: var(--mono); font-size: var(--t-sm); color: var(--fg-muted); }
-  .hm-legend { margin-left: auto; display: flex; gap: 14px; align-items: center; font-family: var(--mono); font-size: var(--t-sm); color: var(--fg-muted); }
-  .hm-legend .swatch { display: inline-flex; gap: 5px; align-items: center; }
+  .hm-legend { margin-left: auto; display: flex; gap: var(--s-md); align-items: center; font-family: var(--mono); font-size: var(--t-sm); color: var(--fg-muted); }
+  .hm-legend .swatch { display: inline-flex; gap: var(--s-2xs); align-items: center; }
   .hm-legend .sw { width: 12px; height: 12px; border-radius: var(--r-xs); }
   .hm-legend .sw.crit { background: var(--loss); box-shadow: 0 0 8px var(--loss-line); }
   .hm-legend .sw.high { background: color-mix(in srgb, var(--warn) 65%, transparent); }
@@ -219,7 +219,7 @@
     grid-template-columns: 168px repeat(6, 1fr);
     gap: 3px;
   }
-  .hm-grid > div { padding: 9px 10px; font-family: var(--mono); font-size: var(--t-sm); }
+  .hm-grid > div { padding: var(--s-xs) var(--s-xs); font-family: var(--mono); font-size: var(--t-sm); }
   .hm-corner { background: transparent; }
   .hm-col-h { color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.10em; text-align: center; }
   .hm-row-h { color: var(--fg); text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -239,39 +239,39 @@
   .hm-cell .v { display: block; font-size: var(--t-cap); opacity: 0.85; margin-top: 2px; letter-spacing: 0.04em; }
 
   .hm-caption {
-    margin-top: 18px; padding: 14px 16px; border-radius: var(--r-md);
+    margin-top: var(--s-lg); padding: var(--s-md) var(--s-md); border-radius: var(--r-md);
     background: var(--accent-soft); border: 1px solid var(--accent-line);
     font-family: var(--mono); font-size: var(--t-sm); color: var(--fg-muted); min-height: 44px;
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; gap: var(--s-xs);
   }
   .hm-caption .pin { color: var(--accent); }
   .hm-caption b { color: var(--fg); font-weight: 600; }
   .hm-caption .amt { color: var(--loss); margin-left: auto; }
 
   /* ---- Monitored leak gauges (folded from leak-card-gauge brick) ---- */
-  .leak-gauge-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .leak-gauge-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-md); }
   .lg-card {
     background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r-lg);
-    padding: 20px 22px; position: relative; overflow: hidden;
-    display: flex; flex-direction: column; gap: 14px;
+    padding: var(--s-lg) var(--s-xl); position: relative; overflow: hidden;
+    display: flex; flex-direction: column; gap: var(--s-md);
   }
   .lg-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--sev); }
   .lg-card.high { --sev: var(--loss); }
   .lg-card.med  { --sev: var(--warn); }
   .lg-card.low  { --sev: var(--accent); }
 
-  .lg-top { display: flex; align-items: flex-start; gap: 12px; }
+  .lg-top { display: flex; align-items: flex-start; gap: var(--s-sm); }
   .lg-name { font-family: var(--display); font-weight: 600; font-size: var(--t-body); letter-spacing: -0.01em; }
   .lg-scen { font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-muted); margin-top: 3px; }
   .lg-sev-pill {
     margin-left: auto; font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.12em; text-transform: uppercase;
-    padding: 3px 8px; border-radius: var(--r-sm); color: var(--sev);
+    padding: var(--s-2xs) var(--s-xs); border-radius: var(--r-sm); color: var(--sev);
     background: color-mix(in srgb, var(--sev) 10%, transparent);
     border: 1px solid color-mix(in srgb, var(--sev) 28%, transparent); white-space: nowrap;
   }
 
-  .lg-gauge { display: flex; flex-direction: column; gap: 7px; }
-  .lg-vals { display: flex; align-items: baseline; gap: 8px; font-family: var(--mono); }
+  .lg-gauge { display: flex; flex-direction: column; gap: var(--s-xs); }
+  .lg-vals { display: flex; align-items: baseline; gap: var(--s-xs); font-family: var(--mono); }
   .lg-cur { font-size: var(--t-display); font-weight: 500; font-variant-numeric: tabular-nums; color: var(--sev); line-height: 1; }
   .lg-tgt { font-size: var(--t-sm); color: var(--fg-dim); margin-left: auto; }
   .lg-track { position: relative; height: 7px; border-radius: var(--r-sm); background: rgba(255,255,255,0.05); overflow: visible; }
@@ -279,10 +279,10 @@
   .lg-mark { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--fg); opacity: 0.55; border-radius: var(--r-xs); }
   .lg-mark::after { content: 'target'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.05em; color: var(--fg-dim); }
 
-  .lg-foot { display: flex; align-items: center; gap: 12px; margin-top: 2px; }
+  .lg-foot { display: flex; align-items: center; gap: var(--s-sm); margin-top: 2px; }
   .lg-cost { font-family: var(--mono); font-size: var(--t-sm); color: var(--fg-muted); }
   .lg-cost b { color: var(--loss); font-weight: 600; }
-  .lg-trend { font-family: var(--mono); font-size: var(--t-sm); padding: 2px 7px; border-radius: var(--r-sm); }
+  .lg-trend { font-family: var(--mono); font-size: var(--t-sm); padding: 2px var(--s-xs); border-radius: var(--r-sm); }
   .lg-trend.up { color: var(--accent); background: var(--accent-soft); border: 1px solid var(--accent-line); }
   .lg-trend.down { color: var(--loss); background: var(--loss-soft); border: 1px solid var(--loss-line); }
   .lg-spark { margin-left: auto; width: 86px; height: 28px; display: block; }
@@ -290,14 +290,14 @@
   /* Extracted classes for leaks.html and leaks.js */
   .leaks-title-row {
     display: flex;
-    gap: 12px;
+    gap: var(--s-sm);
     align-items: center;
-    margin-bottom: 14px;
+    margin-bottom: var(--s-md);
   }
   .leaks-range-container {
-    margin-top: 18px;
+    margin-top: var(--s-lg);
     border-top: 1px solid var(--border);
-    padding-top: 16px;
+    padding-top: var(--s-md);
   }
   .leaks-range-gto-label {
     display: flex;
@@ -305,7 +305,7 @@
     font-family: var(--mono);
     font-size: var(--t-cap);
     color: var(--fg-muted);
-    margin-bottom: 6px;
+    margin-bottom: var(--s-xs);
   }
   .leaks-accent-bold {
     color: var(--accent);
@@ -325,20 +325,20 @@
     font-family: var(--mono);
     font-size: var(--t-cap);
     color: var(--fg-muted);
-    margin-top: 4px;
+    margin-top: var(--s-2xs);
   }
   .leaks-loss-bold {
     color: var(--loss);
     font-weight: 700;
   }
   .leaks-info-card {
-    margin-bottom: 24px;
-    padding: 22px 24px;
+    margin-bottom: var(--s-xl);
+    padding: var(--s-lg) var(--s-xl);
   }
   .leaks-ledger-card {
     padding: 0;
     overflow: hidden;
-    margin-bottom: 24px;
+    margin-bottom: var(--s-xl);
   }
   .leaks-text-right {
     text-align: right;
@@ -357,11 +357,11 @@
   .leaks-drawer-inner {
     display: grid;
     grid-template-columns: 1.1fr 1fr;
-    gap: 24px;
-    padding: 24px;
+    gap: var(--s-xl);
+    padding: var(--s-xl);
   }
   .leaks-drawer-kick-title {
-    margin-bottom: 10px;
+    margin-bottom: var(--s-xs);
     display: block;
   }
   .leaks-histogram-container {
@@ -375,13 +375,13 @@
     text-align: right;
   }
   .leaks-coach-card-override {
-    padding: 24px;
+    padding: var(--s-xl);
   }
   .leaks-coach-header {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 14px;
+    gap: var(--s-xs);
+    margin-bottom: var(--s-md);
   }
   .leaks-coach-eyebrow {
     font-size: var(--t-body);
@@ -391,26 +391,26 @@
   .leaks-coach-title {
     font-family: var(--display);
     font-size: var(--t-h3);
-    margin: 0 0 10px;
+    margin: 0 0 var(--s-xs);
     font-weight: 700;
   }
   .leaks-coach-plan {
     font-size: var(--t-body);
     line-height: 1.6;
     color: var(--fg-muted);
-    margin: 0 0 16px;
+    margin: 0 0 var(--s-md);
   }
   .leaks-coach-checklist-wrap {
     border-top: 1px solid var(--border);
-    padding-top: 14px;
+    padding-top: var(--s-md);
   }
   .leaks-coach-checklist {
     font-family: var(--mono);
     font-size: var(--t-sm);
     line-height: 1.8;
     color: var(--fg);
-    margin: 8px 0 0;
-    padding-left: 20px;
+    margin: var(--s-xs) 0 0;
+    padding-left: var(--s-lg);
   }
   .leaks-empty-table-cell {
     text-align: center;
@@ -424,10 +424,10 @@
     display: grid;
     grid-template-columns: 125px repeat(8, 1fr);
     gap: 3px;
-    margin-top: 12px;
+    margin-top: var(--s-sm);
   }
   .pos-hm-grid > div {
-    padding: 8px 6px;
+    padding: var(--s-xs) var(--s-2xs);
     font-family: var(--mono);
     font-size: var(--t-cap);
     text-align: center;
@@ -455,18 +455,18 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 8px;
+    gap: var(--s-xs);
     width: 100%;
   }
   .pos-hm-metric-tabs {
     display: flex;
-    gap: 6px;
-    margin-bottom: 8px;
+    gap: var(--s-2xs);
+    margin-bottom: var(--s-xs);
   }
   .pos-hm-mtab {
     font-family: var(--mono);
     font-size: var(--t-sm);
-    padding: 5px 10px;
+    padding: var(--s-2xs) var(--s-xs);
     border-radius: var(--r-sm);
     cursor: pointer;
     color: var(--fg-muted);
@@ -488,7 +488,7 @@
     align-items: baseline;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: var(--s-xs);
     width: 100%;
   }
   .pos-hm-metric-title {
@@ -504,12 +504,12 @@
   }
   .pos-hm-legend {
     display: flex;
-    gap: 10px;
+    gap: var(--s-xs);
     align-items: center;
     font-family: var(--mono);
     font-size: var(--t-cap);
     color: var(--fg-dim);
-    margin-top: 4px;
+    margin-top: var(--s-2xs);
   }
   .pos-hm-ramp {
     display: inline-flex;
@@ -522,8 +522,8 @@
     flex: 1;
   }
   .pos-hm-caption-box {
-    margin-top: 12px;
-    padding: 10px 12px;
+    margin-top: var(--s-sm);
+    padding: var(--s-xs) var(--s-sm);
     border-radius: var(--r-sm);
     background: var(--accent-soft);
     border: 1px solid var(--accent-line);
@@ -533,7 +533,7 @@
     min-height: 40px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--s-xs);
   }
 
   /* Target Range Bar static rules */

@@ -1,5 +1,18 @@
 # Agent Handoff Log — Poker Design Lab
 
+## 2026-06-05 — Design Audit Loop (Iteration 33): Leak Ledger Spacing Alignments
+
+- Owner / agent:          Antigravity (Autonomous Loop)
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/styles/*.css`
+- Files touched:
+  - `src/styles/leaks.css` - Standardized margins, paddings, and gaps inside Leaks workspace (incident swap container grid, preflop range matrices, leak index list rows, severity/cost badge labels, position heatmap headers/grids, monitored gauges, range track limits, and coach planning overlays) using system Spacing Scale tokens.
+- Summary:
+  - Harmonized the Leaks prioritized list and pos stats heatmap layout spacing to align with the standard 4px-based grid rhythm.
+  - Verified Vite compile and bundler output with zero warnings or errors.
+- Verification:
+  - Production build (`npm run build`) completed successfully in 4.38s.
+
 ## 2026-06-05 — Design Audit Loop (Iteration 32): Sessions Calendar Spacing Alignments
 
 - Owner / agent:          Antigravity (Autonomous Loop)
