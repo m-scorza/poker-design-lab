@@ -1,5 +1,18 @@
 # Agent Handoff Log — Poker Design Lab
 
+## 2026-06-05 — Design Audit Loop (Iteration 38): Tooltip & Command Palette Spacing Token Alignment
+
+- Owner / agent:          Antigravity (Autonomous Loop)
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/styles/layout.css`
+- Files touched:
+  - `src/styles/layout.css` - Standardized margins, paddings, and gaps inside global layouts, tooltips (`.tip`), popovers (`.popover`), search boxes, lists, groups, items, and footers in the Command Palette (`.palette`) using system Spacing Scale tokens.
+- Summary:
+  - Harmonized layout details of search tools and popovers to align with central variables.
+  - Verified Vite compile and bundler output with zero warnings or errors.
+- Verification:
+  - Production build (`npm run build`) completed successfully in 4.29s.
+
 ## 2026-06-05 — Design Audit Loop (Iteration 37): Card Padding Spacing Scale Alignment
 
 - Owner / agent:          Antigravity (Autonomous Loop)
