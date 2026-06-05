@@ -1,5 +1,18 @@
 # Agent Handoff Log — Poker Design Lab
 
+## 2026-06-05 — Design Audit Loop (Iteration 24): Leaks View Typography
+
+- Owner / agent:          Antigravity (Autonomous Loop)
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/styles/*.css`
+- Files touched:
+  - `src/styles/leaks.css` - Standardized raw font-sizes on leak headline descriptions, stat card values, leak list names, cost labels, positional stats heatmap tab triggers, metric target indicators, and legends to use core Obsidian variables (`var(--t-cap)`, `var(--t-sm)`, `var(--t-body)`, `var(--t-h3)`, `var(--t-h2)`, `var(--t-display)`).
+- Summary:
+  - Brought all text elements, tab menus, and target bounds on the Monitored Leaks page into the central theme typography scale.
+  - Verified Vite compile and bundler output with zero warnings or errors.
+- Verification:
+  - Production build (`npm run build`) completed successfully in 3.73s.
+
 ## 2026-06-05 — Design Audit Loop (Iteration 23): Ranges & Masthead Standardization
 
 - Owner / agent:          Antigravity (Autonomous Loop)
