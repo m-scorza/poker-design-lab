@@ -1,5 +1,19 @@
 # Agent Handoff Log — Poker Design Lab
 
+## 2026-06-05 — Design Audit Loop (Iteration 22): Theme Dock & Ticker Typography
+
+- Owner / agent:          Antigravity (Autonomous Loop)
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/styles/*.css`
+- Files touched:
+  - `src/styles/theme-dock.css` - Standardized raw font-sizes on dock headers, labels, palette name text, curated font pairings, advanced toggles, and axis buttons to match system tokens (`var(--t-cap)`, `var(--t-sm)`, `var(--t-body)`, `var(--t-h3)`).
+  - `src/styles/ticker.css` - Mapped raw text sizes on horizontal ticker tape items and live wire badges to `var(--t-sm)`.
+- Summary:
+  - Harmonized typography across custom theme controls and continuous ticker tapes to prevent micro-layout shift when fonts are toggled.
+  - Verified Vite compile and bundler output with zero warnings or errors.
+- Verification:
+  - Production build (`npm run build`) completed successfully in 4.07s.
+
 ## 2026-06-05 — Design Audit Loop (Iteration 21): Layout & Sessions Typography
 
 - Owner / agent:          Antigravity (Autonomous Loop)
