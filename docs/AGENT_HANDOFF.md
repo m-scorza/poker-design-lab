@@ -1,5 +1,20 @@
 # Agent Handoff Log — Poker Design Lab
 
+## 2026-06-05 — Design Audit Loop (Iteration 18): Typography Standardization
+
+- Owner / agent:          Antigravity (Autonomous Loop)
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/styles/*.css`
+- Files touched:
+  - `src/styles/hands.css` - Increased `.replayer-equity-labels` font-size from `8px` to `var(--t-cap)` (9px) to improve legibility on small card names.
+  - `src/styles/desk.css` - Increased `.alert-expand` font-size from `8.5px` to `var(--t-cap)` (9px) to improve readability.
+  - `src/styles/theme-dock.css` - Standardized `.dock-axis-label` font-size from `8.5px` to `var(--t-cap)` (9px) to ensure no sub-9px labels exist in the theme settings panel.
+- Summary:
+  - Eliminated all microscopic, hardcoded sub-9px font sizes in CSS layouts, unifying all UI labels onto the typography system's caption baseline (`var(--t-cap)`).
+  - Verified Vite compile and bundler output with zero warnings or errors.
+- Verification:
+  - Production build (`npm run build`) completed successfully in 4.19s.
+
 ## 2026-06-05 — Design Audit Loop (Iteration 17): Theme Dock Radius Standardization
 
 - Owner / agent:          Antigravity (Autonomous Loop)
