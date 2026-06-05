@@ -1,5 +1,18 @@
 # Agent Handoff Log — Poker Design Lab
 
+## 2026-06-05 — Design Audit Loop (Iteration 25): Dashboard / Desk Typography
+
+- Owner / agent:          Antigravity (Autonomous Loop)
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/styles/*.css`
+- Files touched:
+  - `src/styles/desk.css` - Standardized raw font-sizes on page headers, scope selectors, stat triggers, telemetry details, concentrated HUD center values, verdict readiness indicators, volume number cards, bankroll progressions, tooltip bubbles, and alert logs to map to core system text tokens (`var(--t-cap)`, `var(--t-sm)`, `var(--t-body)`, `var(--t-h3)`, `var(--t-h2)`, `var(--t-display)`).
+- Summary:
+  - Harmonized typography across dashboard metrics, concentric HUD displays, SVG charts, and alert logs on the main Desk workspace.
+  - Verified Vite compile and bundler output with zero warnings or errors.
+- Verification:
+  - Production build (`npm run build`) completed successfully in 4.00s.
+
 ## 2026-06-05 — Design Audit Loop (Iteration 24): Leaks View Typography
 
 - Owner / agent:          Antigravity (Autonomous Loop)
