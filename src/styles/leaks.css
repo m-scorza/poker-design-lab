@@ -28,7 +28,7 @@
   }
   .inc-desc {
     font-family: var(--sans);
-    font-size: 17px;
+    font-size: var(--t-h3);
     line-height: 1.45;
     color: var(--fg-muted);
     margin-top: 18px;
@@ -53,7 +53,7 @@
   .inc-stat-item .v {
     font-family: var(--display);
     font-weight: 700;
-    font-size: 24px;
+    font-size: var(--t-h2);
     margin-top: 4px;
   }
   .inc-stat-item .v.loss { color: var(--loss); }
@@ -162,7 +162,7 @@
   .leak-name {
     font-family: var(--display);
     font-weight: 700;
-    font-size: 16px;
+    font-size: var(--t-h3);
   }
   .leak-sev-badge {
     font-family: var(--mono);
@@ -191,7 +191,7 @@
     font-family: var(--mono);
     font-weight: 700;
     color: var(--loss);
-    font-size: 14px;
+    font-size: var(--t-body);
   }
 
   .leak-drawer-panel {
@@ -261,7 +261,7 @@
   .lg-card.low  { --sev: var(--accent); }
 
   .lg-top { display: flex; align-items: flex-start; gap: 12px; }
-  .lg-name { font-family: var(--display); font-weight: 600; font-size: 16px; letter-spacing: -0.01em; }
+  .lg-name { font-family: var(--display); font-weight: 600; font-size: var(--t-body); letter-spacing: -0.01em; }
   .lg-scen { font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-muted); margin-top: 3px; }
   .lg-sev-pill {
     margin-left: auto; font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.12em; text-transform: uppercase;
@@ -272,7 +272,7 @@
 
   .lg-gauge { display: flex; flex-direction: column; gap: 7px; }
   .lg-vals { display: flex; align-items: baseline; gap: 8px; font-family: var(--mono); }
-  .lg-cur { font-size: 26px; font-weight: 500; font-variant-numeric: tabular-nums; color: var(--sev); line-height: 1; }
+  .lg-cur { font-size: var(--t-display); font-weight: 500; font-variant-numeric: tabular-nums; color: var(--sev); line-height: 1; }
   .lg-tgt { font-size: var(--t-sm); color: var(--fg-dim); margin-left: auto; }
   .lg-track { position: relative; height: 7px; border-radius: var(--r-sm); background: rgba(255,255,255,0.05); overflow: visible; }
   .lg-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: var(--r-sm); background: var(--sev); width: 0; transition: width 0.9s cubic-bezier(0.22,1,0.36,1); }
@@ -465,7 +465,7 @@
   }
   .pos-hm-mtab {
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: var(--t-sm);
     padding: 5px 10px;
     border-radius: var(--r-sm);
     cursor: pointer;
@@ -492,14 +492,14 @@
     width: 100%;
   }
   .pos-hm-metric-title {
-    font-size: 12px;
+    font-size: var(--t-sm);
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
   }
   .pos-hm-metric-target {
     font-family: var(--mono);
-    font-size: 10px;
+    font-size: var(--t-cap);
     color: var(--fg-dim);
   }
   .pos-hm-legend {
@@ -507,7 +507,7 @@
     gap: 10px;
     align-items: center;
     font-family: var(--mono);
-    font-size: 9px;
+    font-size: var(--t-cap);
     color: var(--fg-dim);
     margin-top: 4px;
   }
