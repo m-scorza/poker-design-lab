@@ -1,5 +1,18 @@
 # Agent Handoff Log — Poker Design Lab
 
+## 2026-06-05 — Design Audit Loop (Iteration 26): Hands View Geometry & Typography
+
+- Owner / agent:          Antigravity (Autonomous Loop)
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/styles/*.css`
+- Files touched:
+  - `src/styles/hands.css` - Standardized raw font-sizes on hands table card-pairs, replayer modal close controls, micro card representations, replayer stats, action strip labels, step numbers, replayer HUD values, replayer felt indicators, upload percentages, progress bar statuses, and checklist checkmarks to use system text tokens (`var(--t-cap)`, `var(--t-sm)`, `var(--t-body)`, `var(--t-h3)`, `var(--t-h2)`, `var(--t-display)`). Standardized upload progress outer and inner bounds to use `var(--r-xs)`.
+- Summary:
+  - Synchronized typography on hands replayers, drag-and-drop file uploaders, and incident logs.
+  - Verified Vite compile and bundler output with zero warnings or errors.
+- Verification:
+  - Production build (`npm run build`) completed successfully in 4.12s.
+
 ## 2026-06-05 — Design Audit Loop (Iteration 25): Dashboard / Desk Typography
 
 - Owner / agent:          Antigravity (Autonomous Loop)
