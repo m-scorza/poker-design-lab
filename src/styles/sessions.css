@@ -102,7 +102,7 @@
   .delta-pill {
     display: inline-flex;
     align-items: center;
-    gap: 3px;
+    gap: var(--r-xs);
     margin-top: var(--s-2xs);
     padding: 1px var(--s-xs);
     border-radius: 999px;

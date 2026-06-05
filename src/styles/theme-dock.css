@@ -38,7 +38,7 @@
   display: grid;
   grid-template-columns: repeat(2, 9px);
   grid-template-rows: repeat(2, 9px);
-  gap: 2px;
+  gap: var(--cell-gap);
   transform: rotate(0deg);
 }
 .dock-toggle-chips i {
@@ -145,14 +145,14 @@
   background: var(--bg-2); border: 1px solid var(--border); color: var(--fg);
 }
 .dock-pairing.active .dp-spec { color: var(--accent); border-color: var(--accent-line); }
-.dp-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.dp-meta { display: flex; flex-direction: column; gap: var(--cell-gap); min-width: 0; }
 .dp-name { font-family: var(--mono); font-size: var(--t-sm); letter-spacing: 0.04em; color: var(--fg); }
 .dp-why { font-family: var(--sans); font-size: var(--t-cap); line-height: 1.3; color: var(--fg-muted); }
 
 /* --- advanced disclosure --- */
 .dock-advanced-toggle {
   margin-top: var(--s-xs); width: 100%; text-align: left;
-  background: none; border: none; cursor: pointer; padding: 4px 2px;
+  background: none; border: none; cursor: pointer; padding: var(--s-2xs) var(--cell-gap);
   font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.1em; text-transform: uppercase;
   color: var(--fg-muted); transition: color 0.16s ease;
 }
@@ -161,11 +161,11 @@
 .dock-advanced-toggle:hover { color: var(--accent); }
 
 .dock-axes { margin-top: var(--s-xs); display: flex; flex-direction: column; gap: var(--s-xs); }
-.dock-axis-row { display: flex; flex-direction: column; gap: 5px; }
+.dock-axis-row { display: flex; flex-direction: column; gap: var(--r-sm); }
 .dock-axis-label { font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-dim); }
-.dock-axis-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.dock-axis-chips { display: flex; flex-wrap: wrap; gap: var(--r-sm); }
 .dock-face {
-  padding: 5px var(--s-xs); border-radius: var(--r-sm);
+  padding: var(--r-sm) var(--s-xs); border-radius: var(--r-sm);
   background: var(--bg-input); border: 1px solid var(--border); color: var(--fg-muted);
   font-size: var(--t-sm); cursor: pointer;
   transition: border-color 0.16s ease, color 0.16s ease, transform 0.16s ease;

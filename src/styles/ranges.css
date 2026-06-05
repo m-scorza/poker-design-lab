@@ -2,10 +2,10 @@
      ========================================================= */
   .ranges-tab-menu {
     display: flex;
-    gap: 3px;
+    gap: var(--r-xs);
     background: var(--bg-card);
     border: 1px solid var(--border);
-    padding: 3px;
+    padding: var(--r-xs);
     border-radius: var(--r-md);
     margin: 0;
   }
@@ -79,7 +79,7 @@
     overflow: hidden;
     align-items: flex-start;
     justify-content: flex-start;
-    padding: 2px 3px;
+    padding: var(--cell-gap) var(--r-xs);
     font-size: var(--t-cap);
   }
   #ranges-matrix-grid .rg-label {
@@ -157,7 +157,7 @@
 
   .rg-i-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--s-lg); }
   .rg-i-hand { font-family: var(--mono); font-weight: 800; font-size: var(--t-display); margin: 0; color: var(--fg); letter-spacing: -0.02em; }
-  .rg-i-spot { font-family: var(--mono); font-size: var(--t-cap); text-transform: uppercase; letter-spacing: 0.14em; color: var(--fg-dim); margin: 2px 0 0; }
+  .rg-i-spot { font-family: var(--mono); font-size: var(--t-cap); text-transform: uppercase; letter-spacing: 0.14em; color: var(--fg-dim); margin: var(--cell-gap) 0 0; }
   .rg-i-pill {
     font-family: var(--mono); font-size: var(--t-cap); font-weight: 700; text-transform: uppercase;
     padding: var(--s-2xs) var(--s-sm); border-radius: 999px; white-space: nowrap;

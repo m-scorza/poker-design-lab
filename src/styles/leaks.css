@@ -170,7 +170,7 @@
     text-transform: uppercase;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--r-sm);
   }
   .leak-sev-badge::before {
     content: ''; width: 6px; height: 6px; border-radius: 50%;
@@ -217,7 +217,7 @@
   .hm-grid {
     display: grid;
     grid-template-columns: 168px repeat(6, 1fr);
-    gap: 3px;
+    gap: var(--r-xs);
   }
   .hm-grid > div { padding: var(--s-xs) var(--s-xs); font-family: var(--mono); font-size: var(--t-sm); }
   .hm-corner { background: transparent; }
@@ -279,10 +279,10 @@
   .lg-mark { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--fg); opacity: 0.55; border-radius: var(--r-xs); }
   .lg-mark::after { content: 'target'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.05em; color: var(--fg-dim); }
 
-  .lg-foot { display: flex; align-items: center; gap: var(--s-sm); margin-top: 2px; }
+  .lg-foot { display: flex; align-items: center; gap: var(--s-sm); margin-top: var(--cell-gap); }
   .lg-cost { font-family: var(--mono); font-size: var(--t-sm); color: var(--fg-muted); }
   .lg-cost b { color: var(--loss); font-weight: 600; }
-  .lg-trend { font-family: var(--mono); font-size: var(--t-sm); padding: 2px var(--s-xs); border-radius: var(--r-sm); }
+  .lg-trend { font-family: var(--mono); font-size: var(--t-sm); padding: var(--cell-gap) var(--s-xs); border-radius: var(--r-sm); }
   .lg-trend.up { color: var(--accent); background: var(--accent-soft); border: 1px solid var(--accent-line); }
   .lg-trend.down { color: var(--loss); background: var(--loss-soft); border: 1px solid var(--loss-line); }
   .lg-spark { margin-left: auto; width: 86px; height: 28px; display: block; }
@@ -423,7 +423,7 @@
   .pos-hm-grid {
     display: grid;
     grid-template-columns: 125px repeat(8, 1fr);
-    gap: 3px;
+    gap: var(--r-xs);
     margin-top: var(--s-sm);
   }
   .pos-hm-grid > div {

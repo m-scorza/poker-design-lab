@@ -1,5 +1,26 @@
 # Agent Handoff Log — Poker Design Lab
 
+## 2026-06-05 — Design Audit Loop (Iteration 44): Brand Neutralization & Layout Spacing Cleanup
+
+- Owner / agent:          Antigravity (Autonomous Loop)
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/elements/*`, `src/styles/*`
+- Files touched:
+  - `src/elements/parallax-depth.html` - Renamed eyebrow text from "Reg Life" to "Tournament Lab".
+  - `src/elements/villain-badge.html` - Renamed profile subtitle from "reg life baseline" to "baseline strategy".
+  - `src/styles/arena.css` - Standardized dealer card padding to use system tokens (`var(--r-sm) var(--s-xs)`).
+  - `src/styles/career.css` - Mapped hardcoded margin, padding, gap, and typography sizes to system tokens (`var(--s-2xs)`, `var(--cell-gap)`, `var(--t-h2)`, and `var(--r-sm)`).
+  - `src/styles/leaks.css` - Mapped hardcoded gap, padding, and margin sizes to system tokens (`var(--r-sm)`, `var(--r-xs)`, and `var(--cell-gap)`).
+  - `src/styles/ranges.css` - Mapped hardcoded margins, paddings, and gaps to system tokens (`var(--r-xs)` and `var(--cell-gap)`).
+  - `src/styles/sessions.css` - Mapped hardcoded delta pill gap to system tokens (`var(--r-xs)`).
+  - `src/styles/theme-dock.css` - Mapped hardcoded gap and padding sizes to system tokens (`var(--cell-gap)`, `var(--s-2xs)`, and `var(--r-sm)`).
+- Summary:
+  - Neutralized residual brand overrides in showroom elements to conform to the local/generic posture.
+  - Substantially eliminated remaining hardcoded pixel styling declarations, mapping them directly to design tokens.
+  - Verified Vite compile and bundler output with zero warnings or errors.
+- Verification:
+  - Production build (`npm run build`) completed successfully in 4.96s.
+
 ## 2026-06-05 — Design Audit Loop (Iteration 43): Radius & Padding Token Standardization
 
 - Owner / agent:          Antigravity (Autonomous Loop)

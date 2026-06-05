@@ -114,7 +114,7 @@
   .sc-metric .sc-k {
     font-family: var(--mono); font-size: var(--t-cap); font-weight: 700;
     letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-dim);
-    display: flex; align-items: center; gap: 5px;
+    display: flex; align-items: center; gap: var(--s-2xs);
   }
   .sc-metric .sc-v {
     font-family: var(--mono); font-size: var(--t-h2); font-weight: 700;
@@ -152,7 +152,7 @@
   .arc-money-meta { font-family: var(--mono); font-size: var(--t-sm); color: var(--fg-muted); margin-top: var(--s-xs); }
   .arc-money-meta b { color: var(--fg); font-weight: 500; }
   .arc-money-meta b.pos { color: var(--accent); }
-  .arc-seg { margin-left: auto; display: inline-flex; gap: 2px; padding: 2px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--r-sm); }
+  .arc-seg { margin-left: auto; display: inline-flex; gap: var(--cell-gap); padding: var(--cell-gap); background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--r-sm); }
   .arc-seg button { background: none; border: 0; color: var(--fg-muted); font: 500 11px var(--mono); padding: var(--s-2xs) var(--s-sm); border-radius: var(--r-sm); cursor: pointer; letter-spacing: 0.03em; transition: background 0.2s, color 0.2s; }
   .arc-seg button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
   .arc-wrap { position: relative; height: 280px; }
@@ -213,7 +213,7 @@
   }
   .career-header-title {
     font-family: var(--display);
-    font-size: 26px;
+    font-size: var(--t-h2);
     font-weight: 800;
     margin: 0;
     display: flex;
@@ -367,7 +367,7 @@
     color: var(--accent);
     background: var(--accent-soft);
     border: 1px solid var(--accent-line);
-    padding: 2px 6px;
+    padding: var(--cell-gap) var(--r-sm);
     border-radius: var(--r-xs);
     display: inline-block;
   }
@@ -396,17 +396,17 @@
   .career-heatmap-hours {
     display: grid;
     grid-template-columns: 24px repeat(24, 1fr);
-    gap: 2px;
+    gap: var(--cell-gap);
     text-align: center;
     font-family: var(--mono);
     font-size: var(--t-cap);
     color: var(--fg-muted);
-    margin-bottom: 2px;
+    margin-bottom: var(--cell-gap);
   }
   .career-heatmap-row {
     display: grid;
     grid-template-columns: 24px repeat(24, 1fr);
-    gap: 2px;
+    gap: var(--cell-gap);
     align-items: center;
   }
   .career-heatmap-label {
