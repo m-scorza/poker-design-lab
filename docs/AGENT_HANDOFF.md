@@ -4,23 +4,26 @@
 
 - Owner / agent:          Antigravity (Autonomous Loop)
 - Branch:                 main (Downloads workspace)
-- Scope:                  `src/elements/*`, `src/modules/*`, `src/pages/*`, `elements.html`
+- Scope:                  `src/elements/*`, `src/modules/*`, `src/pages/*`, `src/styles/*`, `elements.html`
 - Files touched:
   - `src/elements/button-fx.html` - Changed commercial 'Upgrade Pro' button to 'Run Full Check' to neutralize billing/funnel copy.
   - `src/elements/command-palette.html` - Renamed dossier reference hints and labels to profiles/profile.
   - `src/elements/modal-glass.html` - Changed unsaved notes discard prompt from 'dossier edits' to 'profile edits'.
   - `src/elements/skeleton-shimmer.html` - Renamed 'dossier card' and 'Villain dossier' comments and labels to profiles/profile.
-  - `src/elements/tilt.html` - Changed mock card text from 'Dossier Card' to 'Profile Card'.
+  - `src/elements/tilt.html` - Changed mock card text from 'Dossier Card' to 'Profile Card' and renamed `.opponent-dossier-card` to `.opponent-profile-card`.
   - `src/elements/villain-badge.html` - Renamed 'Archetype dossier cards' description and replaced action link 'dossier →' with 'profile →'.
-  - `src/modules/villains.js` - Updated note fields and tag select labels to use profile instead of dossier.
+  - `src/modules/3d-tilt.js` - Updated card selectors from `opponent-dossier-card` to `opponent-profile-card`.
+  - `src/modules/villains.js` - Updated note fields and tag select labels to use profile instead of dossier, renamed styling classes to `opp-profile-*` and updated inline comments.
+  - `src/styles/glow-borders.css` - Renamed border-glow selector `.opponent-dossier-card` to `.opponent-profile-card`.
+  - `src/styles/villains.css` - Renamed `.opponent-dossier-card` and `.opp-dossier-*` classes to `.opponent-profile-card` and `.opp-profile-*` equivalents and updated comments.
   - `src/pages/career.html` - Changed sub-header descriptor to 'opponent profile'.
   - `src/pages/villains.html` - Renamed main view sub-header and empty state prompt from dossier to profile.
   - `elements.html` - Renamed catalog descriptions for shimmer and villain badges to refer to profile concepts.
 - Summary:
-  - Systematically neutralized all remaining commercial CTAs and dossier terms in user-facing elements, aligning the app with a local-only generic posture.
+  - Systematically neutralized all remaining commercial CTAs and dossier terms in user-facing elements and stylesheet classes, aligning the app with a local-only generic posture.
   - Verified Vite compile and bundler output with zero warnings or errors.
 - Verification:
-  - Production build (`npm run build`) completed successfully in 2.31s.
+  - Production build (`npm run build`) completed successfully in 2.07s.
 
 ## 2026-06-05 — Design Audit Loop (Iteration 44): Brand Neutralization & Layout Spacing Cleanup
 
