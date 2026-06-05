@@ -3,7 +3,7 @@
   .timeline-row-editorial {
     display: grid;
     grid-template-columns: 110px 1fr 100px 100px 100px;
-    padding: 18px 24px;
+    padding: var(--s-lg) var(--s-xl);
     border-bottom: 1px solid var(--border);
     cursor: pointer;
     transition: background 0.15s ease;
@@ -32,7 +32,7 @@
   .timeline-title-block .editorial-desc {
     font-size: var(--t-sm);
     color: var(--fg-muted);
-    margin-top: 4px;
+    margin-top: var(--s-2xs);
   }
   .timeline-val-block {
     font-family: var(--mono);
@@ -54,17 +54,17 @@
   .expanded-card-grid {
     display: grid;
     grid-template-columns: 1.1fr 1fr 1.2fr 1.5fr;
-    gap: 20px;
-    padding: 24px;
+    gap: var(--s-lg);
+    padding: var(--s-xl);
   }
   .session-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    padding: 16px 20px;
+    padding: var(--s-md) var(--s-lg);
     border-radius: var(--r-md);
   }
   .session-card h4 {
-    margin: 0 0 14px;
+    margin: 0 0 var(--s-md);
     font-family: var(--mono);
     font-size: var(--t-cap);
     letter-spacing: 0.15em;
@@ -73,7 +73,7 @@
   
   /* Progress stats bars inside sessions */
   .session-bar-row {
-    margin-bottom: 12px;
+    margin-bottom: var(--s-sm);
   }
   .session-bar-lbl {
     display: flex;
@@ -82,7 +82,7 @@
     font-size: var(--t-cap);
     text-transform: uppercase;
     color: var(--fg-muted);
-    margin-bottom: 5px;
+    margin-bottom: var(--s-2xs);
   }
   .session-bar-track {
     height: 4px;
@@ -103,8 +103,8 @@
     display: inline-flex;
     align-items: center;
     gap: 3px;
-    margin-top: 4px;
-    padding: 1px 6px;
+    margin-top: var(--s-2xs);
+    padding: 1px var(--s-xs);
     border-radius: 999px;
     font-family: var(--mono);
     font-size: var(--t-cap);
@@ -130,20 +130,20 @@
 
   /* ===== Session Calendar Heatmap (ported from calendar-heatmap brick, tokenized) ===== */
   .cal-h {
-    display: flex; align-items: center; gap: 14px; margin-bottom: 16px; flex-wrap: wrap;
+    display: flex; align-items: center; gap: var(--s-sm); margin-bottom: var(--s-md); flex-wrap: wrap;
   }
   .cal-h .note { font-family: var(--mono); font-size: var(--t-sm); color: var(--fg-dim); }
   .cal-h .legend {
-    margin-left: auto; display: flex; gap: 12px; align-items: center;
+    margin-left: auto; display: flex; gap: var(--s-sm); align-items: center;
     font-family: var(--mono); font-size: var(--t-sm); color: var(--fg-dim);
   }
-  .cal-h .legend .sw { display: inline-flex; align-items: center; gap: 4px; }
+  .cal-h .legend .sw { display: inline-flex; align-items: center; gap: var(--s-2xs); }
   .cal-h .legend .sw i { width: 10px; height: 10px; border-radius: var(--r-xs); display: inline-block; }
 
-  .cal-grid { display: grid; grid-template-columns: 32px repeat(35, 1fr); gap: 4px; }
+  .cal-grid { display: grid; grid-template-columns: 32px repeat(35, 1fr); gap: var(--s-2xs); }
   .cal-day-label {
     font-family: var(--mono); font-size: var(--t-cap); color: var(--fg-dim);
-    display: flex; align-items: center; padding-right: 6px; height: 18px;
+    display: flex; align-items: center; padding-right: var(--s-2xs); height: 18px;
   }
   .cal-cell {
     aspect-ratio: 1; border-radius: var(--r-xs);
@@ -163,7 +163,7 @@
   .cal-cell.loss3 { background: color-mix(in srgb, var(--loss) 70%, transparent); }
   .cal-cell.flat { background: color-mix(in srgb, var(--fg) 12%, transparent); }
   .cal-month-row {
-    display: grid; grid-template-columns: 32px repeat(35, 1fr); gap: 4px; margin-top: 10px;
+    display: grid; grid-template-columns: 32px repeat(35, 1fr); gap: var(--s-2xs); margin-top: var(--s-xs);
     font-family: var(--mono); font-size: var(--t-cap); color: var(--fg-dim);
   }
   .cal-month-row span { grid-column: span 5; text-transform: uppercase; letter-spacing: 0.08em; }
@@ -171,7 +171,7 @@
   .cal-tip {
     position: fixed; pointer-events: none; z-index: 50;
     background: var(--bg-card); border: 1px solid var(--border-strong);
-    border-radius: var(--r-sm); padding: 8px 12px; font-family: var(--mono); font-size: var(--t-sm);
+    border-radius: var(--r-sm); padding: var(--s-xs) var(--s-sm); font-family: var(--mono); font-size: var(--t-sm);
     color: var(--fg); white-space: nowrap; opacity: 0; transform: translateY(4px);
     transition: opacity 0.1s ease, transform 0.1s ease; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(8px);
@@ -182,8 +182,8 @@
   .cal-tip .net.neg { color: var(--loss); }
   /* Extracted Sessions Page Classes */
   .sessions-calendar-card {
-    margin-bottom: 24px;
-    padding: 20px 24px;
+    margin-bottom: var(--s-xl);
+    padding: var(--s-lg) var(--s-xl);
   }
   .sessions-legend-dot-loss1 { background: color-mix(in srgb, var(--loss) 70%, transparent); }
   .sessions-legend-dot-loss2 { background: color-mix(in srgb, var(--loss) 20%, transparent); }
@@ -199,16 +199,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 24px;
+    padding: var(--s-md) var(--s-xl);
     border-bottom: 1px solid var(--border);
     background: rgba(0,0,0,0.15);
   }
   .sessions-export-actions {
     display: flex;
-    gap: 8px;
+    gap: var(--s-xs);
   }
   .sessions-export-btn {
-    padding: 4px 10px;
+    padding: var(--s-2xs) var(--s-sm);
     font-size: var(--t-sm);
     font-family: var(--mono);
     cursor: pointer;
@@ -240,13 +240,13 @@
     width: 90%;
   }
   .sessions-export-body {
-    padding: 24px;
+    padding: var(--s-xl);
   }
   .sessions-export-progress-container {
-    margin-bottom: 20px;
+    margin-bottom: var(--s-lg);
   }
   .sessions-bar-lbl-override {
-    margin-bottom: 8px;
+    margin-bottom: var(--s-xs);
   }
   .sessions-export-status-text {
     font-family: var(--mono);
@@ -267,18 +267,18 @@
     background: rgba(0,0,0,0.5);
     border: 1px solid var(--border);
     border-radius: var(--r-sm);
-    padding: 10px;
+    padding: var(--s-xs);
     font-family: var(--mono);
     font-size: var(--t-cap);
     color: var(--fg-muted);
     overflow-y: auto;
     line-height: 1.5;
-    margin-bottom: 20px;
+    margin-bottom: var(--s-lg);
   }
   .sessions-export-success-box {
     display: none;
     text-align: center;
-    margin-top: 10px;
+    margin-top: var(--s-xs);
   }
   .sessions-export-success-checkmark {
     width: 48px;
@@ -288,7 +288,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 10px;
+    margin: 0 auto var(--s-xs);
     color: var(--accent);
     font-size: var(--t-h2);
   }
@@ -298,14 +298,14 @@
     margin: 0;
   }
   .sessions-download-btn {
-    margin-top: 15px;
+    margin-top: var(--s-md);
     width: 100%;
     border: 1px solid var(--accent);
     background: var(--accent-soft);
     color: var(--accent);
     font-family: var(--mono);
     font-size: var(--t-sm);
-    padding: 8px;
+    padding: var(--s-xs);
     cursor: pointer;
     text-transform: uppercase;
   }
@@ -315,14 +315,14 @@
   .timeline-val-block.warning { color: var(--warn); }
   .sessions-opp-amt-loss { color: var(--loss); font-weight: 700; }
   .sessions-opp-amt-win { color: var(--accent-2); font-weight: 700; }
-  .sessions-delta-pill-wrap { padding: 0 24px; }
+  .sessions-delta-pill-wrap { padding: 0 var(--s-xl); }
   .sessions-drawer-nemesis-val { font-family: var(--mono); font-size: var(--t-h2); margin: 0; color: var(--fg); }
-  .sessions-drawer-nemesis-text { font-size: var(--t-sm); color: var(--fg-muted); margin: 8px 0 0; }
+  .sessions-drawer-nemesis-text { font-size: var(--t-sm); color: var(--fg-muted); margin: var(--s-xs) 0 0; }
   .sessions-drawer-insight-text { font-size: var(--t-sm); line-height: 1.5; color: var(--fg-muted); margin: 0; }
   .sessions-drawer-insight-header-good { color: var(--accent); font-weight: 700; }
   .sessions-drawer-insight-header-warn { color: var(--warn); font-weight: 700; }
-  .sessions-drawer-mini-chart { height: 100px; position: relative; margin-top: 10px; }
+  .sessions-drawer-mini-chart { height: 100px; position: relative; margin-top: var(--s-xs); }
   .sessions-log-info { color: var(--accent-2); font-weight: 700; }
-  .sessions-log-line { margin-bottom: 4px; }
+  .sessions-log-line { margin-bottom: var(--s-2xs); }
 
   /* =========================================================*/
