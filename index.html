@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=1480, initial-scale=1" />
-<title>Editorial Obsidian Sandbox — Poker Analyzer</title>
+<title>Tournament Lab — Private Analysis</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -20,7 +20,7 @@
   <!-- ===================== MIDWAM LOADER ===================== -->
   <div class="loader" id="loader">
     <div class="loader-inner">
-      <div class="loader-eye"><span>Poker Analyzer</span><span>Local Edition <b>·</b> scorza23</span></div>
+      <div class="loader-eye"><span>Tournament Lab</span><span>Local Edition <b>·</b> scorza23</span></div>
       <div class="loader-pct" id="loader-pct">00</div>
       <div class="loader-bar"><span id="loader-fill"></span></div>
       <div class="loader-status" id="loader-status">Initialising telemetry</div>
@@ -33,19 +33,28 @@
     <header class="masthead">
       <div class="mast-top">
         <div class="logo">
-          <span class="glyph">PA</span>
-          <h1 id="logo-title">THE LEDGER</h1>
-          <span class="sub">Poker Analyzer</span>
+          <span class="glyph">TL</span>
+          <h1 id="logo-title">TOURNAMENT LAB</h1>
+          <span class="sub">Private Analysis</span>
         </div>
         <nav class="mast-nav">
-          <a class="on" data-tab="overview">Desk</a>
-          <a data-tab="career">Career</a>
-          <a data-tab="sessions">Sessions</a>
-          <a data-tab="hands">Hands</a>
-          <a data-tab="leaks">Leaks</a>
-          <a data-tab="ranges">Ranges</a>
-          <a data-tab="villains">Villains</a>
-          <a data-tab="arena">Arena</a>
+          <div class="nav-group">
+            <span class="nav-group-label">Review</span>
+            <a class="on" data-tab="overview">Desk</a>
+            <a data-tab="hands">Hands</a>
+            <a data-tab="leaks">Leaks</a>
+          </div>
+          <div class="nav-group">
+            <span class="nav-group-label">Reports</span>
+            <a data-tab="career">Career</a>
+            <a data-tab="sessions">Sessions</a>
+            <a data-tab="ranges">Ranges</a>
+          </div>
+          <div class="nav-group">
+            <span class="nav-group-label">Practice</span>
+            <a data-tab="arena">Drills</a>
+            <a data-tab="villains">Players</a>
+          </div>
         </nav>
       </div>
       <div class="dateline">

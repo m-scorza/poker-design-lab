@@ -383,7 +383,7 @@ function initExportModal() {
   if (btnDownloadFile) {
     btnDownloadFile.addEventListener('click', () => {
       const filename = `poker_ledger_export_${new Date().toISOString().slice(0, 10)}.${currentExportType.toLowerCase()}`;
-      const dummyContent = `Poker Analyzer Export File\nType: ${currentExportType}\nDate: ${new Date().toLocaleString()}\n`;
+      const dummyContent = `Tournament Lab Export File\nType: ${currentExportType}\nDate: ${new Date().toLocaleString()}\n`;
       const blob = new Blob([dummyContent], { type: 'text/plain' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);

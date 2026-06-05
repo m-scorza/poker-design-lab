@@ -8,8 +8,8 @@ const COMMANDS = [
   { group: 'Navigation', ico: '☰', name: 'Go to Hands', action: () => navigateToTab('hands'), hint: 'replayer list' },
   { group: 'Navigation', ico: '⚠', name: 'Go to Leaks', action: () => navigateToTab('leaks'), hint: 'flaws' },
   { group: 'Navigation', ico: '▦', name: 'Go to Ranges', action: () => navigateToTab('ranges'), hint: 'preflop grid' },
-  { group: 'Navigation', ico: '☲', name: 'Go to Villains', action: () => navigateToTab('villains'), hint: 'opponents' },
-  { group: 'Navigation', ico: '♠', name: 'Go to Arena', action: () => navigateToTab('arena'), hint: 'felt practice' },
+  { group: 'Navigation', ico: '☲', name: 'Go to Players', action: () => navigateToTab('villains'), hint: 'opponents' },
+  { group: 'Navigation', ico: '♠', name: 'Go to Drills', action: () => navigateToTab('arena'), hint: 'felt practice' },
   { group: 'Actions', ico: '↻', name: 'Reset Hands Database', action: () => resetDatabase(), hint: 'restore seed hands' },
   { group: 'Actions', ico: '✦', name: 'Fix BTN Open Range Leak', action: () => applyGtoFix(), hint: 'prune wide button opens' },
 ];

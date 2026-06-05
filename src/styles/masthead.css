@@ -52,7 +52,26 @@
  
   .mast-nav {
     display: flex;
+    gap: var(--s-sm);
+    align-items: center;
+  }
+  .nav-group {
+    display: flex;
+    align-items: center;
     gap: var(--s-2xs);
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid var(--border);
+    padding: var(--s-2xs) var(--s-xs);
+    border-radius: var(--r-md);
+  }
+  .nav-group-label {
+    font-family: var(--mono);
+    font-size: var(--t-cap);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    margin-right: var(--s-2xs);
+    user-select: none;
   }
   .mast-nav a {
     font-family: var(--mono);
@@ -60,7 +79,7 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--fg-muted);
-    padding: var(--s-xs) var(--s-sm);
+    padding: var(--s-2xs) var(--s-xs);
     border-radius: var(--r-sm);
     transition: color .14s, background .14s;
     cursor: pointer;

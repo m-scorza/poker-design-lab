@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "Design/prototyping lab for the Poker Analyzer redesign (standalone, not yet wired to the main app).",
+  "description": "Design/prototyping lab for the Tournament Lab redesign (standalone, not yet wired to the main app).",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
