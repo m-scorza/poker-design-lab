@@ -400,4 +400,138 @@
     font-weight: 700;
   }
 
+  /* Hands Upload Panel Telemetry Styling */
+  .hands-upload-active-log {
+    display: none;
+    padding: 20px 24px;
+    text-align: left;
+    background: var(--bg-card);
+    border-radius: var(--r-md);
+    border: 1px solid var(--border-strong);
+  }
+  .hands-upload-lc-top {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .hands-upload-lc-eye {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .hands-upload-lc-pct {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--fg);
+  }
+  .hands-upload-lc-pct .u {
+    font-size: 14px;
+    color: var(--fg-dim);
+  }
+  .hands-upload-progress-bar-outer {
+    position: relative;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .hands-upload-progress-bar-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    box-shadow: 0 0 14px rgba(0, 240, 255, 0.5);
+    transition: width 0.1s linear;
+  }
+  .hands-upload-lc-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-muted);
+    min-height: 18px;
+  }
+  .hands-upload-lc-status .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    display: inline-block;
+  }
+  .hands-upload-lc-steps {
+    margin-top: 14px;
+    display: grid;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-dim);
+  }
+  .hands-upload-lc-steps .step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--fg-muted);
+  }
+  .hands-upload-lc-steps .step .mk {
+    width: 15px;
+    height: 15px;
+    border-radius: 4px;
+    border: 1px solid var(--border-strong);
+    display: grid;
+    place-items: center;
+    font-size: 9px;
+    flex: none;
+  }
+
+  /* Hands Replayer Equity UI styling */
+  .replayer-equity-wrap {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 220px;
+    text-align: center;
+    z-index: 10;
+  }
+  .replayer-equity-labels {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 8px;
+    color: var(--fg-dim);
+    margin-bottom: 2px;
+    text-transform: uppercase;
+  }
+  .replayer-equity-bar-outer {
+    display: flex;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border-strong);
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .replayer-equity-bar-fill-win {
+    background: var(--accent-2);
+    width: 64%;
+    transition: width 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .replayer-equity-bar-fill-lose {
+    background: var(--loss);
+    width: 36%;
+    transition: width 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
   /* =========================================================*/
+

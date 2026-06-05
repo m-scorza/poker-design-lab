@@ -48,23 +48,23 @@
         </div>
         
         <!-- Interactive Terminal Log Overlay inside Upload Zone -->
-        <div class="upload-active-state hands-upload-active-log" id="upload-active" style="display: none; padding: 20px 24px; text-align: left; background: var(--bg-card); border-radius: var(--r-md); border: 1px solid var(--border-strong);">
-          <div class="lc-top" style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px;">
-            <span class="lc-eye" style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent);">Importing · scorza23</span>
-            <span class="lc-pct" style="margin-left: auto; font-family: var(--mono); font-size: 32px; font-weight: 500; line-height: 1; color: var(--fg);"><span id="hands-upload-pct">0</span><span class="u" style="font-size: 14px; color: var(--fg-dim);">%</span></span>
+        <div class="upload-active-state hands-upload-active-log" id="upload-active" style="display: none;">
+          <div class="hands-upload-lc-top">
+            <span class="hands-upload-lc-eye">Importing · scorza23</span>
+            <span class="hands-upload-lc-pct"><span id="hands-upload-pct">0</span><span class="u">%</span></span>
           </div>
-          <div class="bar" style="position: relative; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.05); overflow: hidden; margin-bottom: 12px;">
-            <div class="fill" id="hands-upload-fill" style="position: absolute; left: 0; top: 0; bottom: 0; width: 0%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); box-shadow: 0 0 14px rgba(0,240,255,0.5); transition: width 0.1s linear;"></div>
+          <div class="hands-upload-progress-bar-outer">
+            <div class="fill hands-upload-progress-bar-fill" id="hands-upload-fill"></div>
           </div>
-          <div class="lc-status" id="hands-upload-status" style="display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px; color: var(--fg-muted); min-height: 18px;">
-            <span class="dot" style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); display: inline-block;"></span>
+          <div class="hands-upload-lc-status" id="hands-upload-status">
+            <span class="dot"></span>
             <span id="hands-upload-status-text">Initialising telemetry…</span>
           </div>
-          <div class="lc-steps" id="hands-upload-steps" style="margin-top: 14px; display: grid; gap: 6px; font-family: var(--mono); font-size: 11px; color: var(--fg-dim);">
-            <div class="step" data-at="0" id="hands-upload-step-1" style="display: flex; align-items: center; gap: 8px; color: var(--fg-muted);"><span class="mk" style="width: 15px; height: 15px; border-radius: 4px; border: 1px solid var(--border-strong); display: grid; place-items: center; font-size: 9px; flex: none;">1</span>Read hand-history files</div>
-            <div class="step" data-at="28" id="hands-upload-step-2" style="display: flex; align-items: center; gap: 8px; color: var(--fg-muted);"><span class="mk" style="width: 15px; height: 15px; border-radius: 4px; border: 1px solid var(--border-strong); display: grid; place-items: center; font-size: 9px; flex: none;">2</span>Parse 1,204 hands</div>
-            <div class="step" data-at="55" id="hands-upload-step-3" style="display: flex; align-items: center; gap: 8px; color: var(--fg-muted);"><span class="mk" style="width: 15px; height: 15px; border-radius: 4px; border: 1px solid var(--border-strong); display: grid; place-items: center; font-size: 9px; flex: none;">3</span>Classify preflop scenarios</div>
-            <div class="step" data-at="78" id="hands-upload-step-4" style="display: flex; align-items: center; gap: 8px; color: var(--fg-muted);"><span class="mk" style="width: 15px; height: 15px; border-radius: 4px; border: 1px solid var(--border-strong); display: grid; place-items: center; font-size: 9px; flex: none;">4</span>Check range compliance</div>
+          <div class="hands-upload-lc-steps" id="hands-upload-steps">
+            <div class="step" data-at="0" id="hands-upload-step-1"><span class="mk">1</span>Read hand-history files</div>
+            <div class="step" data-at="28" id="hands-upload-step-2"><span class="mk">2</span>Parse 1,204 hands</div>
+            <div class="step" data-at="55" id="hands-upload-step-3"><span class="mk">3</span>Classify preflop scenarios</div>
+            <div class="step" data-at="78" id="hands-upload-step-4"><span class="mk">4</span>Check range compliance</div>
           </div>
         </div>
       </div>
@@ -131,14 +131,14 @@
             </div>
 
             <!-- GTO Equity Bar -->
-            <div class="replayer-equity-wrap" style="position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); width: 220px; text-align: center; z-index: 10;">
-              <div class="replayer-equity-labels" style="display: flex; justify-content: space-between; font-family: var(--mono); font-size: 8px; color: var(--fg-dim); margin-bottom: 2px; text-transform: uppercase;">
+            <div class="replayer-equity-wrap">
+              <div class="replayer-equity-labels">
                 <span>Hero: <span id="replayer-hero-eq">64</span>%</span>
                 <span>Villain: <span id="replayer-villain-eq">36</span>%</span>
               </div>
-              <div class="bar" id="replayer-equity-bar" style="display: flex; height: 8px; border-radius: 4px; overflow: hidden; border: 1px solid var(--border-strong); background: rgba(255,255,255,0.05);">
-                <div class="seg win" id="replayer-seg-win" style="background: var(--accent-2); width: 64%; transition: width 0.4s cubic-bezier(0.19,1,0.22,1);"></div>
-                <div class="seg lose" id="replayer-seg-lose" style="background: var(--loss); width: 36%; transition: width 0.4s cubic-bezier(0.19,1,0.22,1);"></div>
+              <div class="replayer-equity-bar-outer" id="replayer-equity-bar">
+                <div class="seg win replayer-equity-bar-fill-win" id="replayer-seg-win" style="width: 64%;"></div>
+                <div class="seg lose replayer-equity-bar-fill-lose" id="replayer-seg-lose" style="width: 36%;"></div>
               </div>
             </div>
           </div>
