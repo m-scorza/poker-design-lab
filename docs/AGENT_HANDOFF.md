@@ -1,5 +1,19 @@
 # Agent Handoff Log — Poker Design Lab
 
+## 2026-06-05 — Design Audit Loop (Iteration 15): Hands Page Inline Style Cleanup
+
+- Owner / agent:          Antigravity (Autonomous Loop)
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/styles/*.css`, `src/pages/*.html`
+- Files touched:
+  - `src/styles/hands.css` - Created CSS classes for hands upload panel (`.hands-upload-active-log`, `.hands-upload-lc-top`, `.hands-upload-lc-eye`, `.hands-upload-lc-pct`, `.hands-upload-progress-bar-outer`, `.hands-upload-progress-bar-fill`, `.hands-upload-lc-status`, `.hands-upload-lc-steps`) and hands replayer equity displays (`.replayer-equity-wrap`, `.replayer-equity-labels`, `.replayer-equity-bar-outer`, `.replayer-equity-bar-fill-win`, `.replayer-equity-bar-fill-lose`).
+  - `src/pages/hands.html` - Extracted all inline styles from both the log terminal card and the replayer modal equity bars, mapping them to the new CSS classes.
+- Summary:
+  - Cleaned up inline styles from `hands.html` for both the drag-and-drop log terminal and the replayer equity display modules.
+  - Verified Vite compile and bundler output with zero warnings or errors.
+- Verification:
+  - Production build (`npm run build`) completed successfully in 4.07s.
+
 ## 2026-06-05 — Design Audit Loop (Iteration 14): Contrast & Inline Style Cleanup
 
 - Owner / agent:          Antigravity (Autonomous Loop)
