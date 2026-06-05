@@ -1,5 +1,33 @@
 # Agent Handoff Log — Poker Design Lab
 
+## 2026-06-05 — Design Audit Loop (Iteration 36): Career Stakes Inline Style Cleanups
+
+- Owner / agent:          Antigravity (Autonomous Loop)
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/pages/career.html`, `src/styles/career.css`
+- Files touched:
+  - `src/pages/career.html` - Removed all inline styled inspect badges in the Stakes & Formats tables, converting them to the clean `.career-inspect-badge` class.
+  - `src/styles/career.css` - Defined `.career-inspect-badge` class with standard `var(--t-cap)` (9px) caption font sizing, eliminating a sub-9px text violation (8px) and aligning spacing variables.
+- Summary:
+  - Cleaned up inline styling overlays on Career profile stakes inspection rows.
+  - Verified Vite compile and bundler output with zero warnings or errors.
+- Verification:
+  - Production build (`npm run build`) completed successfully in 3.97s.
+
+## 2026-06-05 — Design Audit Loop (Iteration 35): Hands Toolbar Inline Style Cleanups
+
+- Owner / agent:          Antigravity (Autonomous Loop)
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/pages/hands.html`, `src/styles/hands.css`
+- Files touched:
+  - `src/pages/hands.html` - Extracted all inline styles from the filter tool strip container, search inputs, filters toggle button, and active filter count badge.
+  - `src/styles/hands.css` - Defined `.hands-filter-strip`, `.hands-search-group`, `.btn-filters`, and `.filter-badge` classes mapping padding, gaps, border-radii, and fonts directly to central variables.
+- Summary:
+  - Removed remaining inline styles on the main preflop hand database toolbar.
+  - Verified Vite compile and bundler output with zero warnings or errors.
+- Verification:
+  - Production build (`npm run build`) completed successfully in 3.63s.
+
 ## 2026-06-05 — Design Audit Loop (Iteration 34): Styling Standardization Completed
 
 - Owner / agent:          Antigravity (Autonomous Loop)
