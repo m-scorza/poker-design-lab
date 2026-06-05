@@ -1,5 +1,21 @@
 # Agent Handoff Log — Poker Design Lab
 
+## 2026-06-05 — Design Audit Loop (Iteration 14): Contrast & Inline Style Cleanup
+
+- Owner / agent:          Antigravity (Autonomous Loop)
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/styles/*.css`, `src/pages/*.html`
+- Files touched:
+  - `src/styles/ranges.css` - Increased the opacity of range grid `.rg-nodata` cells from `0.28` to `0.55` to improve legibility and contrast ratios.
+  - `src/styles/leaks.css` - Created CSS classes `.pos-hm-header`, `.pos-hm-metric-tabs`, `.pos-hm-mtab`, `.pos-hm-meta-row`, `.pos-hm-metric-title`, `.pos-hm-metric-target`, `.pos-hm-legend`, `.pos-hm-ramp`, and `.pos-hm-caption-box`. Created static rules for `#leak-range-band` and `#leak-range-marker`.
+  - `src/pages/leaks.html` - Removed all inline layout/color styles from the Positional Stats Heatmap and target range track, mapping them to the new CSS classes.
+- Summary:
+  - Cleaned up inline styles from `leaks.html` for the Monitored Leaks target bar and seat heatmap widgets.
+  - Resolved contrast ratio issue for inactive/no-data matrix cells on the Ranges tab.
+  - Verified Vite compile and bundler output with zero warnings or errors.
+- Verification:
+  - Production build (`npm run build`) completed successfully in 4.65s.
+
 ## 2026-06-05 — Visual & Interactive Component Integration (Heatmap, Drawer & Stagger Transitions)
 
 - Owner / agent:          Antigravity
