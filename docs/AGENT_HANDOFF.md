@@ -1,5 +1,19 @@
 # Agent Handoff Log — Poker Design Lab
 
+## 2026-06-05 — Design Audit Loop (Iteration 21): Layout & Sessions Typography
+
+- Owner / agent:          Antigravity (Autonomous Loop)
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/styles/*.css`
+- Files touched:
+  - `src/styles/layout.css` - Standardized raw font-sizes on global eyebrows (`.kick`), toast labels, close buttons, modal dialogues, tooltip popovers, command search inputs, item hints, list tags, and slide-in drawers to use Obsidian text tokens (`var(--t-cap)`, `var(--t-sm)`, `var(--t-body)`, `var(--t-h3)`).
+  - `src/styles/sessions.css` - Mapped hardcoded nemesis text sizes inside the expanding session insights drawer to `var(--t-h2)`.
+- Summary:
+  - Brought all generic global layout frameworks, notifications, keyboards, tooltips, dialogs, drawers, and volume timeline pages into alignment with the typography scale.
+  - Verified Vite compile and bundler output with zero warnings or errors.
+- Verification:
+  - Production build (`npm run build`) completed successfully in 4.19s.
+
 ## 2026-06-05 — Design Audit Loop (Iteration 20): Arena View Typography
 
 - Owner / agent:          Antigravity (Autonomous Loop)
