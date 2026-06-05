@@ -3,7 +3,7 @@
   .arena-grid {
     display: grid;
     grid-template-columns: 1fr 240px;
-    gap: 24px;
+    gap: var(--s-xl);
     height: 520px;
   }
   .hologram-viewport {
@@ -14,7 +14,7 @@
     overflow: hidden;
     display: flex; flex-direction: column;
     justify-content: space-between;
-    padding: 20px;
+    padding: var(--s-lg);
   }
   
   /* Flat top-down felt surface */
@@ -39,7 +39,7 @@
     background: var(--bg-card);
     border: var(--bw) solid var(--border);
     color: var(--fg);
-    padding: 8px 14px;
+    padding: var(--s-xs) var(--s-md);
     border-radius: var(--r-md);
     font-family: var(--mono);
     font-size: var(--t-sm);
@@ -120,10 +120,10 @@
   .trainer-actions-wrap {
     display: flex;
     justify-content: center;
-    gap: 14px;
+    gap: var(--s-sm);
     z-index: 50;
     position: relative;
-    padding-bottom: 12px;
+    padding-bottom: var(--s-sm);
   }
   .btn-trainer-act {
     background: var(--bg-card);
@@ -133,7 +133,7 @@
     font-size: var(--t-sm);
     font-weight: 700;
     text-transform: uppercase;
-    padding: 12px 28px;
+    padding: var(--s-sm) var(--s-2xl);
     border-radius: var(--r-sm);
     cursor: pointer;
     transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
@@ -154,7 +154,7 @@
     z-index: 100;
     background: rgba(8, 10, 15, 0.9);
     border: 1px solid var(--border-strong);
-    padding: 16px 28px;
+    padding: var(--s-md) var(--s-2xl);
     border-radius: var(--r-lg);
     text-align: center;
     box-shadow: 0 15px 45px rgba(0,0,0,0.8);
@@ -166,7 +166,7 @@
   }
   .trainer-feedback-overlay.correct { border-color: var(--accent); }
   .trainer-feedback-overlay.incorrect { border-color: var(--loss); }
-  .trainer-feedback-overlay h4 { margin: 0 0 6px; font-size: var(--t-body); }
+  .trainer-feedback-overlay h4 { margin: 0 0 var(--s-xs); font-size: var(--t-body); }
   .trainer-feedback-overlay p { margin: 0; font-size: var(--t-sm); color: var(--fg-muted); }
 
   /* =========================================================
@@ -174,17 +174,17 @@
      ========================================================= */
   .theme-dock {
     position: fixed;
-    right: 24px; bottom: 24px;
+    right: var(--s-xl); bottom: var(--s-xl);
     background: rgba(8, 10, 15, 0.82);
     backdrop-filter: blur(16px);
     border: var(--bw) solid var(--border-strong);
     border-radius: var(--r-md);
-    padding: 12px 16px;
+    padding: var(--s-sm) var(--s-md);
     z-index: 9999;
     box-shadow: 0 10px 40px rgba(0,0,0,0.6);
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--s-xs);
     width: 210px;
     transition: border-color var(--t-med) var(--ease), box-shadow var(--t-med) var(--ease);
   }
@@ -195,13 +195,13 @@
     text-transform: uppercase;
     color: var(--fg-muted);
     border-bottom: 1px solid var(--border);
-    padding-bottom: 6px;
+    padding-bottom: var(--s-xs);
   }
   .dock-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 6px;
+    gap: var(--s-xs);
     font-family: var(--mono);
     font-size: var(--t-cap);
   }
@@ -209,7 +209,7 @@
     background: rgba(255,255,255,0.02);
     border: 1px solid var(--border);
     color: var(--fg-muted);
-    padding: 4px 8px;
+    padding: var(--s-2xs) var(--s-xs);
     border-radius: var(--r-sm);
     font-size: var(--t-cap);
     font-family: var(--mono);
@@ -239,15 +239,15 @@
   .loader-inner { width: min(440px, 80vw); }
   .loader-eye {
     font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.25em; text-transform: uppercase;
-    color: var(--fg-muted); display: flex; justify-content: space-between; margin-bottom: 12px;
+    color: var(--fg-muted); display: flex; justify-content: space-between; margin-bottom: var(--s-sm);
   }
   .loader-eye b { color: var(--accent); }
   .loader-pct {
     font-family: var(--display); font-weight: 800; font-size: 96px; letter-spacing: -0.05em; line-height: 0.86; color: var(--fg);
   }
-  .loader-bar { margin-top: 18px; height: 2px; background: rgba(255,255,255,0.04); position: relative; overflow: hidden; }
+  .loader-bar { margin-top: var(--s-lg); height: 2px; background: rgba(255,255,255,0.04); position: relative; overflow: hidden; }
   .loader-bar span { position: absolute; inset: 0 auto 0 0; width: 0%; background: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
-  .loader-status { font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.15em; text-transform: uppercase; color: var(--fg-muted); margin-top: 12px; }
+  .loader-status { font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.15em; text-transform: uppercase; color: var(--fg-muted); margin-top: var(--s-sm); }
 
   /* Extracted Layout Classes */
   .arena-status-banner {
@@ -262,7 +262,7 @@
   .arena-hole-cards {
     position: absolute;
     display: flex;
-    gap: 8px;
+    gap: var(--s-xs);
     z-index: 60;
     top: 110px;
     left: 50%;
@@ -272,11 +272,11 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 20px;
+    padding: var(--s-lg);
   }
   .arena-telemetry-card h3 {
     font-family: var(--display);
-    margin: 8px 0 4px;
+    margin: var(--s-xs) 0 var(--s-2xs);
     font-size: var(--t-h3);
     font-weight: 700;
   }
@@ -287,14 +287,14 @@
     margin: 0;
   }
   .arena-telemetry-streaks {
-    margin-top: 14px;
+    margin-top: var(--s-sm);
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    gap: var(--s-xs);
   }
   .arena-streak-box {
     background: rgba(0,0,0,0.15);
-    padding: 8px;
+    padding: var(--s-xs);
     border: var(--bw) solid var(--border);
     border-radius: var(--r-sm);
     text-align: center;
@@ -315,24 +315,24 @@
     color: var(--accent);
   }
   .arena-timer-selector-wrap {
-    margin-top: 14px;
+    margin-top: var(--s-sm);
   }
   .arena-timer-selector-wrap .kick {
     font-size: var(--t-cap);
   }
   #arena-speed-selector {
     display: flex;
-    gap: 4px;
-    margin-top: 6px;
+    gap: var(--s-2xs);
+    margin-top: var(--s-xs);
   }
   #arena-speed-selector .dock-btn {
     font-size: var(--t-cap);
-    padding: 2px 6px;
+    padding: var(--s-2xs) var(--s-xs);
   }
   .arena-drill-status-wrap {
     border-top: var(--bw) solid var(--border);
-    padding-top: 12px;
-    margin-top: 12px;
+    padding-top: var(--s-sm);
+    margin-top: var(--s-sm);
   }
   .arena-drill-status-header {
     display: flex;
@@ -348,7 +348,7 @@
   .arena-drill-spot-info {
     font-family: var(--mono);
     font-size: var(--t-sm);
-    margin-top: 6px;
+    margin-top: var(--s-xs);
     line-height: 1.5;
   }
   .arena-drill-spot-info b {
@@ -360,14 +360,14 @@
   }
   .arena-history-log-wrap {
     border-top: var(--bw) solid var(--border);
-    padding-top: 12px;
-    margin-top: 12px;
+    padding-top: var(--s-sm);
+    margin-top: var(--s-sm);
   }
   #arena-history-log {
-    margin-top: 6px;
+    margin-top: var(--s-xs);
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: var(--s-2xs);
   }
   #arena-history-log div {
     font-family: var(--mono);
