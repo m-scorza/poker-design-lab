@@ -21,7 +21,7 @@
   justify-content: center;
   width: 48px;
   height: 48px;
-  border-radius: 14px;
+  border-radius: var(--r-lg);
   background: var(--bg-card);
   border: 1px solid var(--border-strong);
   backdrop-filter: blur(12px);
@@ -45,7 +45,7 @@
   display: block;
   width: 9px;
   height: 9px;
-  border-radius: 3px;
+  border-radius: var(--r-xs);
   background: var(--accent);
 }
 .dock-toggle-chips i:nth-child(3) { grid-column: span 2; width: 20px; }
@@ -54,7 +54,7 @@
 .dock-panel {
   width: 248px;
   padding: 16px;
-  border-radius: 16px;
+  border-radius: var(--r-lg);
   background: var(--bg-card);
   border: 1px solid var(--border-strong);
   box-shadow: var(--shadow-card);
@@ -105,7 +105,7 @@
   flex-direction: column;
   gap: 6px;
   padding: 7px;
-  border-radius: 10px;
+  border-radius: var(--r-md);
   background: var(--bg-input);
   border: 1px solid var(--border);
   cursor: pointer;
@@ -117,7 +117,7 @@
 .sw-chips {
   display: flex;
   height: 16px;
-  border-radius: 5px;
+  border-radius: var(--r-sm);
   overflow: hidden;
   border: 1px solid var(--border);
 }
@@ -133,14 +133,14 @@
 .dock-pairings { display: flex; flex-direction: column; gap: 7px; }
 .dock-pairing {
   display: flex; align-items: center; gap: 11px; text-align: left;
-  padding: 9px 10px; border-radius: 10px;
+  padding: 9px 10px; border-radius: var(--r-md);
   background: var(--bg-input); border: 1px solid var(--border); cursor: pointer;
   transition: border-color 0.16s ease, transform 0.16s ease;
 }
 .dock-pairing:hover { transform: translateY(-1px); border-color: var(--border-strong); }
 .dock-pairing.active { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent-line) inset; }
 .dp-spec {
-  flex: none; width: 34px; height: 34px; border-radius: 8px;
+  flex: none; width: 34px; height: 34px; border-radius: var(--r-sm);
   display: grid; place-items: center; font-size: 18px; line-height: 1;
   background: var(--bg-2); border: 1px solid var(--border); color: var(--fg);
 }
@@ -165,7 +165,7 @@
 .dock-axis-label { font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-dim); }
 .dock-axis-chips { display: flex; flex-wrap: wrap; gap: 5px; }
 .dock-face {
-  padding: 5px 9px; border-radius: 7px;
+  padding: 5px 9px; border-radius: var(--r-sm);
   background: var(--bg-input); border: 1px solid var(--border); color: var(--fg-muted);
   font-size: 11px; cursor: pointer;
   transition: border-color 0.16s ease, color 0.16s ease, transform 0.16s ease;
