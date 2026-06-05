@@ -10,7 +10,7 @@ function onMouseMove(e) {
   const xc = rect.width / 2;
   const yc = rect.height / 2;
 
-  const divisor = card.classList.contains('opponent-dossier-card') ? 250 : 180;
+  const divisor = card.classList.contains('opponent-profile-card') ? 250 : 180;
 
   const angleX = (yc - y) / divisor;
   const angleY = (x - xc) / divisor;
@@ -34,7 +34,7 @@ function onMouseLeave(e) {
 }
 
 export function initCardTilt() {
-  const cards = document.querySelectorAll('.card, .opponent-dossier-card');
+  const cards = document.querySelectorAll('.card, .opponent-profile-card');
   cards.forEach(card => {
     card.removeEventListener('mousemove', onMouseMove);
     card.removeEventListener('mouseleave', onMouseLeave);

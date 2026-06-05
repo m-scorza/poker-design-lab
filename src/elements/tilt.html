@@ -45,7 +45,7 @@
   .card { width: 260px; height: 180px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; align-items: start; box-shadow: var(--shadow-card); transform-style: preserve-3d; }
   .card-h { font-family: var(--mono); font-size: 10px; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.1em; transform: translateZ(30px); }
   .card-val { font-size: 32px; font-weight: 700; transform: translateZ(40px); }
-  .opponent-dossier-card { width: 260px; height: 180px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 24px; transform-style: preserve-3d; }
+  .opponent-profile-card { width: 260px; height: 180px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 24px; transform-style: preserve-3d; }
   
   </style>
 </head>
@@ -60,7 +60,7 @@
       <div class="card-h">Overview Card</div>
       <div class="card-val">+$824.50</div>
     </div>
-    <div class="opponent-dossier-card">
+    <div class="opponent-profile-card">
       <div style="font-family: var(--mono); font-size: 10px; color: var(--fg-muted); transform: translateZ(15px);">Profile Card</div>
       <div style="font-size: 20px; font-weight: 700; margin-top: 20px; transform: translateZ(25px);">Villain Info</div>
     </div>
@@ -70,7 +70,7 @@
   <script type="module">
   import gsap from 'gsap';
     
-  const cards = document.querySelectorAll('.card, .opponent-dossier-card');
+  const cards = document.querySelectorAll('.card, .opponent-profile-card');
   cards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
@@ -78,7 +78,7 @@
       const y = e.clientY - rect.top;
       const xc = rect.width / 2;
       const yc = rect.height / 2;
-      const divisor = card.classList.contains('opponent-dossier-card') ? 250 : 180;
+      const divisor = card.classList.contains('opponent-profile-card') ? 250 : 180;
       const angleX = (yc - y) / divisor;
       const angleY = (x - xc) / divisor;
       gsap.to(card, { rotationX: angleX, rotationY: angleY, ease: "power2.out", duration: 0.3 });

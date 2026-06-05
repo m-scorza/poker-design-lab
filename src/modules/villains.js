@@ -1,4 +1,4 @@
-// Villains dossier grid generator + exploit detail panel
+// Villains profile grid generator + exploit detail panel
 // Folds in the villain-badge brick (tinted archetype avatars + telemetry)
 // and a predator/prey "Nemesis" framing modelled on the real Nemesis block.
 import { state } from '../state.js';
@@ -75,7 +75,7 @@ export function initVillains() {
     filtered.forEach(v => {
       const card = document.createElement('div');
       const isActive = v.name === selectedVillainName;
-      card.className = `opponent-dossier-card ${isActive ? 'active' : ''}`;
+      card.className = `opponent-profile-card ${isActive ? 'active' : ''}`;
 
       const threat = classifyThreat(v);
       const gapBad = v.gap >= 15;
@@ -85,11 +85,11 @@ export function initVillains() {
       ).join('') : '';
 
       card.innerHTML = `
-        <div class="opp-dossier-header">
+        <div class="opp-profile-header">
           <div class="opp-avatar ${avatarClass(v)}">${initials(v.name)}</div>
           <div class="opp-head-meta">
-            <span class="opp-dossier-name">${v.name}</span>
-            <span class="opp-dossier-sub">${archDescriptor(v)} · ${v.hands} hands</span>
+            <span class="opp-profile-name">${v.name}</span>
+            <span class="opp-profile-sub">${archDescriptor(v)} · ${v.hands} hands</span>
           </div>
           <span class="opp-threat ${threat}">${THREAT_LABEL[threat]}</span>
         </div>

@@ -1,4 +1,4 @@
-/*     PAGE 7: VILLAINS (Opponent dossiers · predator vs. prey)
+/*     PAGE 7: VILLAINS (Opponent profiles · predator vs. prey)
      ========================================================= */
   .opponent-search-bar {
     display: flex;
@@ -43,7 +43,7 @@
     grid-template-columns: repeat(2, 1fr);
     gap: var(--s-md);
   }
-  .opponent-dossier-card {
+  .opponent-profile-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: var(--r-lg);
@@ -52,17 +52,17 @@
     cursor: pointer;
     transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
   }
-  .opponent-dossier-card:hover {
+  .opponent-profile-card:hover {
     border-color: var(--accent-line);
     transform: translateY(-2px);
   }
-  .opponent-dossier-card.active {
+  .opponent-profile-card.active {
     border-color: var(--accent);
     box-shadow: 0 0 10px var(--accent-line);
   }
 
   /* Header: tinted archetype avatar + name + descriptor (folded from villain-badge brick) */
-  .opp-dossier-header {
+  .opp-profile-header {
     display: flex;
     align-items: center;
     gap: var(--s-sm);
@@ -84,20 +84,20 @@
   .opp-avatar.av-fish { background: color-mix(in srgb, var(--warn) 12%, transparent);     border: 1px solid var(--warn-line);   color: var(--warn); }
   .opp-avatar.av-nit  { background: color-mix(in srgb, var(--accent-2) 10%, transparent); border: 1px solid var(--accent-line); color: var(--accent-2); }
   .opp-head-meta { display: flex; flex-direction: column; min-width: 0; flex: 1; }
-  .opp-dossier-name {
+  .opp-profile-name {
     font-family: var(--display);
     font-weight: 700;
     font-size: var(--t-h3);
     color: var(--fg);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  .opp-dossier-sub {
+  .opp-profile-sub {
     font-family: var(--mono);
     font-size: var(--t-cap);
     color: var(--fg-muted);
     margin-top: var(--s-2xs);
   }
-  .opp-dossier-hands {
+  .opp-profile-hands {
     font-family: var(--mono);
     font-size: var(--t-cap);
     color: var(--fg-muted);
@@ -166,7 +166,7 @@
   .opp-stat-cell .v.bad { color: var(--loss); }
   .opp-stat-cell .l { font-size: var(--t-cap); color: var(--fg-muted); }
 
-  /* Villain hover dossier exploit cards */
+  /* Villain hover profile exploit cards */
   .exploit-overlay-card {
     position: absolute;
     inset: 0;
@@ -184,7 +184,7 @@
     border: 1px solid var(--accent);
     box-shadow: 0 8px 30px rgba(0,0,0,0.8);
   }
-  .opponent-dossier-card:hover .exploit-overlay-card {
+  .opponent-profile-card:hover .exploit-overlay-card {
     opacity: 1;
     pointer-events: all;
     transform: scale(1);
