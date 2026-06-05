@@ -197,7 +197,7 @@ export function initVillains() {
       <!-- Notes field -->
       <div style="margin-bottom: 18px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-          <span class="kick" style="font-size: 9px;">Strategic dossier notes</span>
+          <span class="kick" style="font-size: 9px;">Strategic profile notes</span>
           <span id="note-save-status" style="font-family: var(--mono); font-size: 9px; color: var(--accent); opacity: 0; transition: opacity 0.2s;">Saved</span>
         </div>
         <textarea id="villain-note-input" class="villain-note-input" placeholder="Note patterns, tells, sizing rules, bluff angles..."></textarea>
@@ -205,7 +205,7 @@ export function initVillains() {
 
       <!-- Tag picker -->
       <div>
-        <span class="kick" style="margin-bottom: 6px; display: block; font-size: 9px;">Dossier tags</span>
+        <span class="kick" style="margin-bottom: 6px; display: block; font-size: 9px;">Profile tags</span>
         <div class="tag-bubble-list" id="villain-tag-list">
           ${tagsHtml}
           ${customTagsHtml}

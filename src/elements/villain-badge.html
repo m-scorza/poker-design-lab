@@ -74,7 +74,7 @@
   <a href="../../elements.html" class="back-link">← Showcase Catalog</a>
   <div class="container">
     <h1>Villain Profile Badges</h1>
-    <p class="sub">Archetype dossier cards: tinted avatar, exploit tag, and the core read (VPIP / PFR / 3-bet). Click to mark active.</p>
+    <p class="sub">Archetype profile cards: tinted avatar, exploit tag, and the core read (VPIP / PFR / 3-bet). Click to mark active.</p>
 
     <div class="profiles-grid" id="grid">
       <div class="prof active">
@@ -100,7 +100,7 @@
           <div class="prof-stat"><div class="l">PFR</div><div class="v pos">18.9</div></div>
           <div class="prof-stat"><div class="l">3-Bet</div><div class="v">8.1</div></div>
         </div>
-        <div class="prof-foot"><span class="prof-tag solid">solid</span><span class="prof-action">dossier →</span></div>
+        <div class="prof-foot"><span class="prof-tag solid">solid</span><span class="prof-action">profile →</span></div>
       </div>
 
       <div class="prof">
@@ -113,7 +113,7 @@
           <div class="prof-stat"><div class="l">PFR</div><div class="v">12.2</div></div>
           <div class="prof-stat"><div class="l">3-Bet</div><div class="v neg">3.4</div></div>
         </div>
-        <div class="prof-foot"><span class="prof-tag spewy">station</span><span class="prof-action">dossier →</span></div>
+        <div class="prof-foot"><span class="prof-tag spewy">station</span><span class="prof-action">profile →</span></div>
       </div>
 
       <div class="prof">
@@ -126,7 +126,7 @@
           <div class="prof-stat"><div class="l">PFR</div><div class="v">11.4</div></div>
           <div class="prof-stat"><div class="l">3-Bet</div><div class="v neg">2.1</div></div>
         </div>
-        <div class="prof-foot"><span class="prof-tag nit">nit</span><span class="prof-action">dossier →</span></div>
+        <div class="prof-foot"><span class="prof-tag nit">nit</span><span class="prof-action">profile →</span></div>
       </div>
 
       <div class="prof">
@@ -139,7 +139,7 @@
           <div class="prof-stat"><div class="l">PFR</div><div class="v warn">28.5</div></div>
           <div class="prof-stat"><div class="l">3-Bet</div><div class="v warn">13.7</div></div>
         </div>
-        <div class="prof-foot"><span class="prof-tag lag">lag</span><span class="prof-action">dossier →</span></div>
+        <div class="prof-foot"><span class="prof-tag lag">lag</span><span class="prof-action">profile →</span></div>
       </div>
 
       <div class="prof">
@@ -152,7 +152,7 @@
           <div class="prof-stat"><div class="l">PFR</div><div class="v pos">17.6</div></div>
           <div class="prof-stat"><div class="l">3-Bet</div><div class="v">9.0</div></div>
         </div>
-        <div class="prof-foot"><span class="prof-tag solid">tag</span><span class="prof-action">dossier →</span></div>
+        <div class="prof-foot"><span class="prof-tag solid">tag</span><span class="prof-action">profile →</span></div>
       </div>
     </div>
   </div>
@@ -166,7 +166,7 @@
         grid.querySelectorAll('.prof').forEach((p) => {
           p.classList.remove('active');
           const a = p.querySelector('.prof-action');
-          if (a && a.textContent.includes('active')) a.textContent = 'dossier →';
+          if (a && a.textContent.includes('active')) a.textContent = 'profile →';
         });
         card.classList.add('active');
         const a = card.querySelector('.prof-action');
