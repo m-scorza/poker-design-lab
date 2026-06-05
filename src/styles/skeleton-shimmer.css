@@ -29,8 +29,8 @@
 }
 
 .sk.line {
-  height: 11px;
-  margin-bottom: 9px;
+  height: var(--t-sm);
+  margin-bottom: var(--s-xs);
 }
 
 .sk.w90 { width: 90%; }
@@ -46,30 +46,30 @@
   inset: 0;
   background: var(--bg);
   z-index: 100;
-  padding: 24px;
+  padding: var(--s-xl);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--s-md);
 }
 
 .skeleton-stat-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: var(--s-md);
+  margin-bottom: var(--s-xl);
 }
 
 .skeleton-stat-tile {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  padding: 16px;
+  padding: var(--s-md);
   border-radius: var(--r-md);
 }
 
 .skeleton-trow {
   display: grid;
   grid-template-columns: 80px 1fr 100px 100px 100px;
-  gap: 16px;
-  padding: 16px 0;
+  gap: var(--s-md);
+  padding: var(--s-md) 0;
   border-bottom: 1px solid var(--border);
 }
