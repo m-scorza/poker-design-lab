@@ -316,7 +316,7 @@
   .sessions-opp-amt-loss { color: var(--loss); font-weight: 700; }
   .sessions-opp-amt-win { color: var(--accent-2); font-weight: 700; }
   .sessions-delta-pill-wrap { padding: 0 24px; }
-  .sessions-drawer-nemesis-val { font-family: var(--mono); font-size: 22px; margin: 0; color: var(--fg); }
+  .sessions-drawer-nemesis-val { font-family: var(--mono); font-size: var(--t-h2); margin: 0; color: var(--fg); }
   .sessions-drawer-nemesis-text { font-size: var(--t-sm); color: var(--fg-muted); margin: 8px 0 0; }
   .sessions-drawer-insight-text { font-size: var(--t-sm); line-height: 1.5; color: var(--fg-muted); margin: 0; }
   .sessions-drawer-insight-header-good { color: var(--accent); font-weight: 700; }
