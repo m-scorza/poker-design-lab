@@ -1,5 +1,19 @@
 # Agent Handoff Log — Poker Design Lab
 
+## 2026-06-05 — Design Audit Loop (Iteration 27): Unified Grid Spacing Scale
+
+- Owner / agent:          Antigravity (Autonomous Loop)
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/styles/*.css`
+- Files touched:
+  - `src/styles/theme-system.css` - Defined a standard 4px-based visual spacing scale (`var(--s-2xs)` to `var(--s-5xl)`).
+  - `src/styles/layout.css` - Mapped all hardcoded layout spacing variables (paddings, margins, gaps) for sheet container, modal glass scrims, dialogs, headers, body sections, Seg/segment containers, chips, and footers to Spacing Scale tokens.
+- Summary:
+  - Introduced unified layout grid alignment metrics to bring layout rhythm under design-token control.
+  - Verified Vite compile and bundler output with zero warnings or errors.
+- Verification:
+  - Production build (`npm run build`) completed successfully in 4.76s.
+
 ## 2026-06-05 — Design Audit Loop (Iteration 26): Hands View Geometry & Typography
 
 - Owner / agent:          Antigravity (Autonomous Loop)
