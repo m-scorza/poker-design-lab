@@ -21,9 +21,9 @@
               </div>
               <div class="leaks-range-track">
                 <!-- Target band -->
-                <div id="leak-range-band" style="position: absolute; left: 48%; width: 4%; height: 100%; background: var(--accent); opacity: 0.3;"></div>
+                <div id="leak-range-band" style="left: 48%; width: 4%;"></div>
                 <!-- User value marker -->
-                <div id="leak-range-marker" style="position: absolute; left: 58%; width: 8px; height: 100%; background: var(--loss); border-radius: 4px; box-shadow: 0 0 8px var(--loss);"></div>
+                <div id="leak-range-marker" style="left: 58%;"></div>
               </div>
               <div class="leaks-range-labels-row">
                 <span>0%</span>
@@ -82,29 +82,29 @@
 
       <!-- Positional Stats Heatmap Card -->
       <div class="card leaks-info-card" id="leaks-position-heatmap-card">
-        <div class="hm-h" style="display: flex; flex-direction: column; align-items: stretch; gap: 8px; width: 100%;">
-          <div class="metric-tabs" id="leaks-heatmap-metric-tabs" style="display: flex; gap: 6px; margin-bottom: 8px;">
-            <button class="mtab on" data-m="vpip" style="font-family: var(--mono); font-size: 10px; padding: 5px 10px; border-radius: 6px; cursor: pointer; color: var(--fg-muted); background: rgba(255,255,255,0.03); border: 1px solid var(--border);">VPIP</button>
-            <button class="mtab" data-m="pfr" style="font-family: var(--mono); font-size: 10px; padding: 5px 10px; border-radius: 6px; cursor: pointer; color: var(--fg-muted); background: rgba(255,255,255,0.03); border: 1px solid var(--border);">PFR</button>
-            <button class="mtab" data-m="threebet" style="font-family: var(--mono); font-size: 10px; padding: 5px 10px; border-radius: 6px; cursor: pointer; color: var(--fg-muted); background: rgba(255,255,255,0.03); border: 1px solid var(--border);">3-bet</button>
-            <button class="mtab" data-m="fold" style="font-family: var(--mono); font-size: 10px; padding: 5px 10px; border-radius: 6px; cursor: pointer; color: var(--fg-muted); background: rgba(255,255,255,0.03); border: 1px solid var(--border);">Fold to Steal</button>
+        <div class="pos-hm-header">
+          <div class="pos-hm-metric-tabs" id="leaks-heatmap-metric-tabs">
+            <button class="mtab pos-hm-mtab on" data-m="vpip">VPIP</button>
+            <button class="mtab pos-hm-mtab" data-m="pfr">PFR</button>
+            <button class="mtab pos-hm-mtab" data-m="threebet">3-bet</button>
+            <button class="mtab pos-hm-mtab" data-m="fold">Fold to Steal</button>
           </div>
-          <div style="display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; width: 100%;">
-            <span class="kick accent" id="leaks-heatmap-metric-name" style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;">VPIP · by position</span>
-            <span class="hm-sub" id="leaks-heatmap-metric-target" style="font-family: var(--mono); font-size: 10px; color: var(--fg-dim);">target band 18–30%</span>
+          <div class="pos-hm-meta-row">
+            <span class="kick accent pos-hm-metric-title" id="leaks-heatmap-metric-name">VPIP · by position</span>
+            <span class="pos-hm-metric-target" id="leaks-heatmap-metric-target">target band 18–30%</span>
           </div>
-          <div class="legend" style="display: flex; gap: 10px; align-items: center; font-family: var(--mono); font-size: 9px; color: var(--fg-dim); margin-top: 4px;">
+          <div class="pos-hm-legend">
             <span>off target</span>
-            <span class="ramp" style="display: inline-flex; height: 8px; width: 80px; border-radius: 2px; overflow: hidden;">
-              <i style="background:#ef7c74; flex: 1;"></i>
-              <i style="background:#e8c468; flex: 1;"></i>
-              <i style="background:#5ec98f; flex: 1;"></i>
+            <span class="pos-hm-ramp">
+              <i style="background:#ef7c74;"></i>
+              <i style="background:#e8c468;"></i>
+              <i style="background:#5ec98f;"></i>
             </span>
             <span>on target</span>
           </div>
         </div>
         <div class="pos-hm-grid" id="leaks-heatmap-grid"></div>
-        <div class="hm-caption" id="leaks-heatmap-caption" style="margin-top: 12px; padding: 10px 12px; border-radius: var(--r-sm); background: var(--accent-soft); border: 1px solid var(--accent-line); font-family: var(--mono); font-size: var(--t-sm); color: var(--fg-muted); min-height: 40px; display: flex; align-items: center; gap: 8px;">
+        <div class="pos-hm-caption-box" id="leaks-heatmap-caption">
           <span class="pin">◇</span>
           <span>Hover a cell to read the seat's frequency and how it sits against the target.</span>
         </div>

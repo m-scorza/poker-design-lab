@@ -94,7 +94,7 @@
   /* Mirror cell states */
   #ranges-matrix-grid .matrix-cell-node.rg-ok-cell { outline: var(--bw) solid var(--accent-line); outline-offset: -1px; }
   #ranges-matrix-grid .matrix-cell-node.rg-dev-cell { outline: var(--bw) solid var(--loss); outline-offset: -1px; color: var(--fg); font-weight: 700; }
-  #ranges-matrix-grid .matrix-cell-node.rg-nodata { opacity: 0.28; color: var(--fg-dim); }
+  #ranges-matrix-grid .matrix-cell-node.rg-nodata { opacity: 0.55; color: var(--fg-dim); }
   #ranges-matrix-grid .matrix-cell-node.rg-selected { outline: calc(2 * var(--bw)) solid var(--fg); outline-offset: -1px; z-index: 9; transform: scale(1.08); }
   #ranges-matrix-grid .matrix-cell-node.rg-cell-has-call .rg-label {
     text-decoration: underline;

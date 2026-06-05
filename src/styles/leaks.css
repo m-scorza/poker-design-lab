@@ -450,3 +450,108 @@
   .pos-hm-cell.empty { cursor: default; pointer-events: none; background: rgba(255,255,255,0.02) !important; color: var(--fg-dim) !important; }
   .pos-hm-cell.empty:hover { transform: none; box-shadow: none; }
 
+  /* Heatmap Controls & Legend */
+  .pos-hm-header {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    width: 100%;
+  }
+  .pos-hm-metric-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .pos-hm-mtab {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--fg-muted);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+  }
+  .pos-hm-mtab:hover {
+    background: rgba(255,255,255,0.06);
+    color: var(--fg);
+  }
+  .pos-hm-mtab.on {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-color: var(--accent-line);
+  }
+  .pos-hm-meta-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+  }
+  .pos-hm-metric-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .pos-hm-metric-target {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-dim);
+  }
+  .pos-hm-legend {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--fg-dim);
+    margin-top: 4px;
+  }
+  .pos-hm-ramp {
+    display: inline-flex;
+    height: 8px;
+    width: 80px;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .pos-hm-ramp i {
+    flex: 1;
+  }
+  .pos-hm-caption-box {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: var(--r-sm);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-line);
+    font-family: var(--mono);
+    font-size: var(--t-sm);
+    color: var(--fg-muted);
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Target Range Bar static rules */
+  #leak-range-band {
+    position: absolute;
+    height: 100%;
+    background: var(--accent);
+    opacity: 0.3;
+  }
+  #leak-range-marker {
+    position: absolute;
+    width: 8px;
+    height: 100%;
+    background: var(--loss);
+    border-radius: 4px;
+    box-shadow: 0 0 8px var(--loss);
+    transform: translateX(-4px); /* center alignment helper */
+  }
+
+
+
