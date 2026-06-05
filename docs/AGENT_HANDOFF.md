@@ -1,5 +1,18 @@
 # Agent Handoff Log — Poker Design Lab
 
+## 2026-06-05 — Design Audit Loop (Iteration 17): Theme Dock Radius Standardization
+
+- Owner / agent:          Antigravity (Autonomous Loop)
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/styles/*.css`
+- Files touched:
+  - `src/styles/theme-dock.css` - Standardized all 8 hardcoded `border-radius` instances in the Floating Theme Dock (collapsed toggle button, panel container, swatches, active indicator boxes, font pairing item chips, etc.) using design system variables (`var(--r-xs)`, `var(--r-sm)`, `var(--r-md)`, `var(--r-lg)`).
+- Summary:
+  - Finished the radius standardization audit across the Floating Theme Controls Dock.
+  - Verified Vite compile and bundler output with zero warnings or errors.
+- Verification:
+  - Production build (`npm run build`) completed successfully in 4.95s.
+
 ## 2026-06-05 — Design Audit Loop (Iteration 16): Radius Standardization (Ranges & Leaks)
 
 - Owner / agent:          Antigravity (Autonomous Loop)
