@@ -13,7 +13,7 @@
   }
   .desk-title {
     font-family: var(--display);
-    font-size: 26px;
+    font-size: var(--t-h2);
     font-weight: 800;
     margin: 0;
     display: flex;
@@ -23,7 +23,7 @@
   }
   .pnl-badge {
     font-family: var(--mono);
-    font-size: 14px;
+    font-size: var(--t-body);
     font-weight: 700;
     padding: 2px 10px;
     border-radius: 99px;
@@ -32,7 +32,7 @@
     color: var(--accent);
   }
   .desk-subtitle {
-    font-size: 12px;
+    font-size: var(--t-sm);
     color: var(--fg-muted);
     margin: 4px 0 0;
     max-width: 60ch;
@@ -109,7 +109,7 @@
   .mon-verdict {
     font-family: var(--display);
     font-weight: 600;
-    font-size: 26px;
+    font-size: var(--t-h2);
     line-height: 1.15;
     letter-spacing: -0.02em;
     color: var(--fg);
@@ -167,7 +167,7 @@
   }
   .hud-center-val {
     font-family: var(--display);
-    font-size: 28px;
+    font-size: var(--t-display);
     font-weight: 900;
     color: var(--fg);
     margin-top: 2px;
@@ -202,14 +202,14 @@
   }
   .stat-trigger .st-l {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: var(--t-sm);
     text-transform: uppercase;
     color: var(--fg);
   }
   .stat-trigger .st-value {
     font-family: var(--mono);
     font-weight: 700;
-    font-size: 15px;
+    font-size: var(--t-body);
     color: var(--fg-muted);
   }
   .stat-trigger.active .st-value {
@@ -229,19 +229,19 @@
   }
   .verdict-readiness {
     font-family: var(--display);
-    font-size: 34px;
+    font-size: var(--t-display);
     font-weight: 900;
     line-height: 1;
     color: var(--accent);
   }
   .verdict-readiness small {
-    font-size: 14px;
+    font-size: var(--t-body);
     font-weight: 600;
     color: var(--fg-muted);
   }
   .verdict-reco {
     font-family: var(--display);
-    font-size: 24px;
+    font-size: var(--t-h2);
     font-weight: 800;
     letter-spacing: -0.02em;
     line-height: 1.05;
@@ -360,7 +360,7 @@
   }
   .st-v {
     font-family: var(--mono);
-    font-size: 18px;
+    font-size: var(--t-h3);
     font-weight: 700;
     margin: 4px 0;
     color: var(--fg);
@@ -383,10 +383,10 @@
     align-items: center;
   }
   .volume-number {
-    font-size: 38px !important;
+    font-size: var(--t-display) !important;
     margin-top: 8px;
   }
-  .volume-number .cents { font-size: 20px; }
+  .volume-number .cents { font-size: var(--t-h3); }
   .volume-winrate {
     margin-top: 8px;
     color: var(--accent);
@@ -523,7 +523,7 @@
   }
   .chart-card-title {
     font-family: var(--display);
-    font-size: 20px;
+    font-size: var(--t-h3);
     font-weight: 700;
     margin: 4px 0 0;
   }
@@ -546,7 +546,7 @@
     padding: 8px 12px;
     border-radius: var(--r-sm);
     font-family: var(--mono);
-    font-size: 10.5px;
+    font-size: var(--t-sm);
     z-index: 100;
     pointer-events: none;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
@@ -556,7 +556,7 @@
     justify-content: space-between;
     margin-top: 10px;
     font-family: var(--mono);
-    font-size: 9px;
+    font-size: var(--t-cap);
     color: var(--fg-muted);
   }
 
@@ -581,12 +581,12 @@
   .leak-kpi-cell.loss { border-left-color: var(--loss); }
   .leak-kpi-val {
     font-family: var(--mono);
-    font-size: 20px;
+    font-size: var(--t-h3);
     font-weight: 700;
     margin-top: 4px;
   }
   .leak-kpi-val.loss { color: var(--loss); }
-  .leak-kpi-sub { font-size: 9.5px; }
+  .leak-kpi-sub { font-size: var(--t-cap); }
   .leak-kpi-sub.accent { color: var(--accent); }
 
   /* Stack depth bands */
@@ -601,12 +601,12 @@
     grid-template-columns: 78px 1fr 50px;
     gap: 12px;
     align-items: center;
-    font-size: 12px;
+    font-size: var(--t-sm);
     font-family: var(--mono);
   }
   .stack-band-lbl {
     color: var(--fg-muted);
-    font-size: 11px;
+    font-size: var(--t-sm);
   }
   .stack-band-bar-outer {
     height: 6px;
@@ -630,7 +630,7 @@
 
   /* Blocker simulator */
   .blocker-intro {
-    font-size: 11px;
+    font-size: var(--t-sm);
     color: var(--fg-muted);
     margin: 12px 0;
     line-height: 1.45;
@@ -642,7 +642,7 @@
   }
   .blocker-label {
     font-family: var(--mono);
-    font-size: 9px;
+    font-size: var(--t-cap);
     text-transform: uppercase;
     color: var(--fg-muted);
     display: block;
@@ -654,7 +654,7 @@
     border: 1px solid var(--border-strong);
     color: var(--fg);
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: var(--t-sm);
     padding: 6px 10px;
     border-radius: var(--r-sm);
     outline: none;
@@ -673,7 +673,7 @@
   .blocker-res-k { font-size: var(--t-cap); }
   .blocker-res-v {
     font-family: var(--mono);
-    font-size: 16px;
+    font-size: var(--t-body);
     font-weight: 700;
     margin-top: 2px;
   }
@@ -686,7 +686,7 @@
     margin-top: 4px;
   }
   .blocker-rating-desc {
-    font-size: 11px;
+    font-size: var(--t-sm);
     line-height: 1.45;
     color: var(--fg-muted);
     margin-top: 4px;
@@ -705,7 +705,7 @@
   }
   .heatmap-title {
     font-family: var(--display);
-    font-size: 18px;
+    font-size: var(--t-h3);
     margin: 4px 0 0;
     font-weight: 700;
   }
@@ -780,7 +780,7 @@
   .inspect-k { font-size: var(--t-cap); }
   .inspect-v {
     font-family: var(--mono);
-    font-size: 15px;
+    font-size: var(--t-body);
     font-weight: 700;
     color: var(--fg);
   }
@@ -791,7 +791,7 @@
     margin-top: 10px;
   }
   .inspect-insight p {
-    font-size: 11px;
+    font-size: var(--t-sm);
     color: var(--fg-muted);
     margin: 4px 0 0;
     line-height: 1.45;
@@ -809,7 +809,7 @@
     padding: 14px;
     font-family: var(--mono);
     color: var(--fg-muted);
-    font-size: 11px;
+    font-size: var(--t-sm);
   }
   .alert-row {
     border: 1px solid var(--border);
@@ -845,7 +845,7 @@
   .sev-loss .alert-dot { background: var(--loss); }
   .alert-title {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: var(--t-sm);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.02em;
@@ -858,7 +858,7 @@
   .alert-body {
     display: none;
     padding: 12px 16px 16px 30px;
-    font-size: 11.5px;
+    font-size: var(--t-sm);
     color: var(--fg-muted);
     line-height: 1.5;
     border-top: 1px solid var(--border);
