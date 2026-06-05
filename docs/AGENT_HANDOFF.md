@@ -1,5 +1,20 @@
 # Agent Handoff Log — Poker Design Lab
 
+## 2026-06-05 — Design Audit Loop (Iteration 43): Radius & Padding Token Standardization
+
+- Owner / agent:          Antigravity (Autonomous Loop)
+- Branch:                 main (Downloads workspace)
+- Scope:                  `src/styles/hands.css`, `src/styles/layout.css`, `src/styles/ranges.css`
+- Files touched:
+  - `src/styles/hands.css` - Mapped hardcoded border-radii in filters badge, checkboxes step containers, and replayer outer equity bar to the system token (`var(--r-xs)`). Mapped raw padding in the upload logs box to `var(--s-2xs)`.
+  - `src/styles/layout.css` - Mapped hardcoded border-radius in toast stack indicator icons to `var(--r-sm)`.
+  - `src/styles/ranges.css` - Mapped hardcoded border-radius in solver validation progress tracker track backings to `var(--r-xs)`.
+- Summary:
+  - Harmonized remaining micro-geometry parameters to prevent layout offset shifts.
+  - Verified Vite compile and bundler output with zero warnings or errors.
+- Verification:
+  - Production build (`npm run build`) completed successfully in 5.13s.
+
 ## 2026-06-05 — Design Audit Loop (Iteration 42): Micro-typography & Layout Gap Standardization
 
 - Owner / agent:          Antigravity (Autonomous Loop)
