@@ -162,7 +162,7 @@
 
 .dock-axes { margin-top: 8px; display: flex; flex-direction: column; gap: 10px; }
 .dock-axis-row { display: flex; flex-direction: column; gap: 5px; }
-.dock-axis-label { font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-dim); }
+.dock-axis-label { font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-dim); }
 .dock-axis-chips { display: flex; flex-wrap: wrap; gap: 5px; }
 .dock-face {
   padding: 5px 9px; border-radius: var(--r-sm);

@@ -851,7 +851,7 @@
     letter-spacing: 0.02em;
   }
   .alert-expand {
-    font-size: 8.5px;
+    font-size: var(--t-cap);
     color: var(--warn);
   }
   .sev-loss .alert-expand { color: var(--loss); }
