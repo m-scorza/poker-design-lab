@@ -61,6 +61,7 @@ export default defineConfig(({ command }) => ({
         'src/elements/position-stats-heatmap': resolve(__dirname, 'src/elements/position-stats-heatmap.html'),
         'src/elements/equity-bar': resolve(__dirname, 'src/elements/equity-bar.html'),
         'src/elements/variance-graph': resolve(__dirname, 'src/elements/variance-graph.html'),
+        'src/elements/felt-3d': resolve(__dirname, 'src/elements/felt-3d.html'),
       },
     },
   },
