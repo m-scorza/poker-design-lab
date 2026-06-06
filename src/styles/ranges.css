@@ -137,7 +137,7 @@
   /* Master-detail insight pane */
   .rg-insight-card {
     padding: var(--s-lg);
-    min-height: 320px;
+    min-height: 20rem;
     display: flex;
     flex-direction: column;
     background: rgba(13, 17, 25, 0.4);
@@ -148,19 +148,19 @@
     text-align: center; gap: var(--s-xs); color: var(--fg-dim);
   }
   .rg-insight-empty-icon {
-    width: 64px; height: 64px; border-radius: 50%;
+    width: var(--s-5xl); height: var(--s-5xl); border-radius: 50%;
     background: rgba(255,255,255,0.04); display: flex; align-items: center; justify-content: center;
     color: var(--fg-dim); margin-bottom: var(--s-xs);
   }
   .rg-insight-empty-title { font-family: var(--display); font-weight: 700; font-size: var(--t-h3); color: var(--fg); margin: 0; }
-  .rg-insight-empty-sub { font-size: var(--t-sm); color: var(--fg-muted); margin: 0; max-width: 220px; line-height: 1.5; }
+  .rg-insight-empty-sub { font-size: var(--t-sm); color: var(--fg-muted); margin: 0; max-width: 13.75rem; line-height: 1.5; }
 
   .rg-i-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--s-lg); }
   .rg-i-hand { font-family: var(--mono); font-weight: 800; font-size: var(--t-display); margin: 0; color: var(--fg); letter-spacing: -0.02em; }
   .rg-i-spot { font-family: var(--mono); font-size: var(--t-cap); text-transform: uppercase; letter-spacing: 0.14em; color: var(--fg-dim); margin: var(--cell-gap) 0 0; }
   .rg-i-pill {
     font-family: var(--mono); font-size: var(--t-cap); font-weight: 700; text-transform: uppercase;
-    padding: var(--s-2xs) var(--s-sm); border-radius: 999px; white-space: nowrap;
+    padding: var(--s-2xs) var(--s-sm); border-radius: 99rem; white-space: nowrap;
   }
   .rg-i-pill.ok   { background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent-line); }
   .rg-i-pill.mix  { background: var(--warn-soft); color: var(--warn); border: 1px solid var(--warn-line); }
@@ -175,7 +175,7 @@
   .rg-i-stat .v.dim { color: var(--fg-dim); }
   .rg-i-sec { font-family: var(--mono); font-size: var(--t-cap); text-transform: uppercase; letter-spacing: 0.12em; display: flex; align-items: center; gap: var(--s-xs); margin: 0 0 var(--s-xs); }
   .rg-i-sec.bad { color: var(--loss); }
-  .rg-i-sec .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .rg-i-sec .dot { width: var(--s-xs); height: var(--s-xs); border-radius: 50%; background: currentColor; }
   .rg-i-dev { padding: var(--s-sm) var(--s-md); border-radius: var(--r-lg); background: var(--loss-soft); border: 1px solid var(--loss-line); }
   .rg-i-dev-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--s-xs); }
   .rg-i-dev-type { font-family: var(--mono); font-size: var(--t-cap); font-weight: 700; color: var(--loss); }
@@ -195,7 +195,7 @@
 
   /* Floating per-cell tooltip */
   .rg-tip {
-    position: fixed; z-index: 9000; pointer-events: none; opacity: 0; transform: translateY(4px);
+    position: fixed; z-index: 9000; pointer-events: none; opacity: 0; transform: translateY(var(--s-2xs));
     background: var(--bg-card); border: 1px solid var(--border-strong); border-radius: var(--r-md);
     padding: var(--s-xs) var(--s-sm); font-family: var(--mono); font-size: var(--t-sm); color: var(--fg);
     white-space: nowrap; box-shadow: var(--shadow-card); transition: opacity 0.1s ease, transform 0.1s ease;
@@ -218,7 +218,7 @@
   }
   .rg-val-top { display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: var(--t-sm); margin-bottom: var(--s-2xs); }
   .rg-val-top .pos-lbl { font-weight: 700; color: var(--fg); }
-  .rg-val-track { height: 6px; background: rgba(255,255,255,0.03); border-radius: var(--r-xs); overflow: hidden; display: flex; }
+  .rg-val-track { height: calc(var(--s-2xs) * 1.5); background: rgba(255,255,255,0.03); border-radius: var(--r-xs); overflow: hidden; display: flex; }
   .rg-val-track .val-progress { height: 100%; background: var(--accent-2); transition: width 0.4s ease; }
   .rg-val-foot { display: flex; justify-content: space-between; font-family: var(--mono); font-size: var(--t-cap); color: var(--fg-muted); margin-top: 2px; }
   .delta-lbl.ok   { color: var(--accent-2); }
@@ -267,8 +267,8 @@
   }
   #toggle-deviations {
     cursor: pointer;
-    width: 14px;
-    height: 14px;
+    width: 0.875rem;
+    height: 0.875rem;
     accent-color: var(--accent);
   }
   label[for="toggle-deviations"] {
