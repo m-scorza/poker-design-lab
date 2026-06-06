@@ -39,13 +39,19 @@
   }
   .scope-select {
     flex-shrink: 0;
-    background: rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, 0.45);
     border: 1px solid var(--border);
     border-radius: var(--r-sm);
     padding: var(--s-xs) var(--s-sm);
     display: flex;
     align-items: center;
     gap: var(--s-xs);
+    backdrop-filter: blur(8px);
+    transition: all 0.25s ease;
+  }
+  .scope-select:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 12px var(--accent-glow);
   }
   .scope-select-lbl {
     font-size: var(--t-cap);
@@ -190,15 +196,17 @@
     border-radius: var(--r-sm);
     background: rgba(255, 255, 255, 0.005);
     cursor: pointer;
-    transition: background 0.2s, border-color 0.2s;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .stat-trigger:hover {
     background: rgba(255, 255, 255, 0.02);
     border-color: var(--border-strong);
+    transform: translateY(-1px);
   }
   .stat-trigger.active {
     background: var(--accent-soft);
     border-color: var(--accent-line);
+    box-shadow: 0 0 12px var(--accent-glow);
   }
   .stat-trigger .st-l {
     font-family: var(--mono);
@@ -351,6 +359,12 @@
     border-left: 2px solid var(--border-strong);
     background: rgba(0, 0, 0, 0.12);
     border-radius: var(--r-md);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .stat-tile:hover {
+    background: rgba(255, 255, 255, 0.02);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
   }
   .stat-tile.accent { border-left-color: var(--accent); }
   .stat-tile.accent-2 { border-left-color: var(--accent-2); }
@@ -541,15 +555,17 @@
   .chart-tooltip {
     display: none;
     position: absolute;
-    background: var(--bg-2);
+    background: var(--bg-card);
     border: 1px solid var(--border-strong);
     padding: var(--s-xs) var(--s-sm);
-    border-radius: var(--r-sm);
+    border-radius: var(--r-md);
     font-family: var(--mono);
     font-size: var(--t-sm);
     z-index: 100;
     pointer-events: none;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
   .chart-footer {
     display: flex;

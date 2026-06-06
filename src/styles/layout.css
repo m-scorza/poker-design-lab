@@ -44,6 +44,14 @@ html, body {
 }
 
 /* Background deep glow orbs */
+@keyframes orb-float-1 {
+  0%, 100% { transform: translate(0px, 0px) scale(1); }
+  50% { transform: translate(50px, -30px) scale(1.06); }
+}
+@keyframes orb-float-2 {
+  0%, 100% { transform: translate(0px, 0px) scale(1); }
+  50% { transform: translate(-40px, 40px) scale(0.95); }
+}
 .glow-orb {
   position: fixed;
   width: 800px; height: 800px;
@@ -51,17 +59,19 @@ html, body {
   pointer-events: none;
   z-index: 0;
   filter: blur(95px);
-  opacity: 0.5;
+  opacity: 0.55;
   transition: background 0.6s ease;
-  will-change: background;
+  will-change: background, transform;
 }
 .orb-1 {
   top: -300px; left: -250px;
   background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+  animation: orb-float-1 22s ease-in-out infinite alternate;
 }
 .orb-2 {
   bottom: -300px; right: -250px;
   background: radial-gradient(circle, var(--loss-soft) 0%, transparent 70%);
+  animation: orb-float-2 26s ease-in-out infinite alternate;
 }
 
 .sheet {

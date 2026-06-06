@@ -21,11 +21,14 @@
     padding: var(--s-xl);
     position: relative;
     box-shadow: var(--shadow-card);
-    transition: background var(--t-med) var(--ease), border-color var(--t-med) var(--ease);
+    transition: background var(--t-med) var(--ease), border-color var(--t-med) var(--ease), transform var(--t-med) var(--ease), box-shadow var(--t-med) var(--ease);
+    will-change: transform, box-shadow;
   }
   .card:hover {
     border-color: var(--border-strong);
     background: var(--bg-card-hover);
+    transform: translateY(-2px) scale(1.005);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 15px var(--accent-soft);
   }
 
   /* =========================================================*/
