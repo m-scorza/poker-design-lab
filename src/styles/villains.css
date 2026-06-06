@@ -15,7 +15,7 @@
     font-family: var(--mono);
     font-size: var(--t-body);
     padding: var(--s-xs) var(--s-md);
-    width: 280px;
+    width: 17.5rem;
     outline: none;
   }
   .opponent-search-bar input:focus { border-color: var(--accent); }
@@ -58,7 +58,7 @@
   }
   .opponent-profile-card.active {
     border-color: var(--accent);
-    box-shadow: 0 0 10px var(--accent-line);
+    box-shadow: 0 0 calc(var(--s-2xs) * 2.5) var(--accent-line);
   }
 
   /* Header: tinted archetype avatar + name + descriptor (folded from villain-badge brick) */
@@ -71,7 +71,7 @@
     margin-bottom: var(--s-sm);
   }
   .opp-avatar {
-    width: 44px; height: 44px;
+    width: calc(var(--s-4xl) - var(--s-2xs)); height: calc(var(--s-4xl) - var(--s-2xs));
     border-radius: var(--r-md);
     display: flex; align-items: center; justify-content: center;
     font-family: var(--mono);
@@ -111,7 +111,7 @@
     text-transform: uppercase;
     letter-spacing: 0.08em;
     padding: var(--s-2xs) var(--s-xs);
-    border-radius: 999px;
+    border-radius: 99rem;
     white-space: nowrap;
     flex-shrink: 0;
   }
@@ -258,7 +258,7 @@
   .villain-threat-strip.neutral .vt-label { color: var(--fg-muted); }
 
   .villain-note-input {
-    width: 100%; height: 75px;
+    width: 100%; height: 4.6875rem;
     background: var(--bg-input);
     border: 1px solid var(--border);
     border-radius: var(--r-sm);

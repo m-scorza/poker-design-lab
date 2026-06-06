@@ -92,7 +92,7 @@
     color: var(--fg);
     background: var(--accent-soft);
     border: 1px solid var(--accent-line);
-    box-shadow: 0 0 12px var(--accent-glow);
+    box-shadow: 0 0 calc(var(--s-2xs) * 3) var(--accent-glow);
   }
 
   .dateline {

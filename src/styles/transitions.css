@@ -28,7 +28,7 @@
     border-color: var(--border-strong);
     background: var(--bg-card-hover);
     transform: translateY(-2px) scale(1.005);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 15px var(--accent-soft);
+    box-shadow: 0 var(--s-md) var(--s-3xl) rgba(0, 0, 0, 0.6), 0 0 0.9375rem var(--accent-soft);
   }
 
   /* =========================================================*/
