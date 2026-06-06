@@ -491,7 +491,7 @@
     width: 0%;
     border-radius: var(--r-xs);
     background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    box-shadow: 0 0 0.875rem rgba(0, 240, 255, 0.5);
+    box-shadow: 0 0 var(--s-sm) var(--accent-glow);
     transition: width 0.1s linear;
   }
   .hands-upload-lc-status {

@@ -26,7 +26,7 @@
     font-size: var(--t-body);
     font-weight: 700;
     padding: var(--s-2xs) var(--s-sm);
-    border-radius: 99px;
+    border-radius: 99rem;
     background: var(--accent-soft);
     border: 1px solid var(--accent-line);
     color: var(--accent);
@@ -46,12 +46,12 @@
     display: flex;
     align-items: center;
     gap: var(--s-xs);
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(0.5rem);
     transition: all 0.25s ease;
   }
   .scope-select:focus-within {
     border-color: var(--accent);
-    box-shadow: 0 0 12px var(--accent-glow);
+    box-shadow: 0 0 var(--s-sm) var(--accent-glow);
   }
   .scope-select-lbl {
     font-size: var(--t-cap);
@@ -97,12 +97,12 @@
   .mon-number {
     font-family: var(--display);
     font-weight: 800;
-    font-size: clamp(66px, 7vw, 110px);
+    font-size: clamp(4.125rem, 7vw, 6.875rem);
     line-height: 0.85;
     letter-spacing: -0.05em;
     color: var(--fg);
-    margin: var(--s-sm) 0 0 -3px;
-    text-shadow: 0 0 44px var(--accent-glow);
+    margin: var(--s-sm) 0 0 -0.1875rem;
+    text-shadow: 0 0 2.75rem var(--accent-glow);
   }
   .mon-number .cents {
     color: var(--accent-2);
@@ -139,11 +139,11 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    height: 200px;
+    height: 12.5rem;
   }
   .hud-circle-wrap {
     position: relative;
-    width: 200px; height: 200px;
+    width: 12.5rem; height: 12.5rem;
     display: flex; align-items: center; justify-content: center;
   }
   .hud-circle-wrap svg {
@@ -154,11 +154,11 @@
   }
   .circle-glow {
     position: absolute;
-    width: 90px; height: 90px;
+    width: 5.625rem; height: 5.625rem;
     background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
     border-radius: 50%;
     z-index: 1;
-    filter: blur(12px);
+    filter: blur(var(--s-sm));
   }
   .hud-center-label {
     z-index: 2;
@@ -206,7 +206,7 @@
   .stat-trigger.active {
     background: var(--accent-soft);
     border-color: var(--accent-line);
-    box-shadow: 0 0 12px var(--accent-glow);
+    box-shadow: 0 0 var(--s-sm) var(--accent-glow);
   }
   .stat-trigger .st-l {
     font-family: var(--mono);
@@ -425,7 +425,7 @@
   }
   .headline-title {
     font-family: var(--display);
-    font-size: clamp(26px, 3vw, 38px);
+    font-size: clamp(1.625rem, 3vw, 2.375rem);
     font-weight: 800;
     letter-spacing: -0.025em;
     line-height: 1.02;
@@ -519,7 +519,7 @@
   .headline-legend i.mix { background: var(--warn-soft); border: 1px solid var(--warn); }
   .headline-legend i.dev { background: var(--loss-soft); border: 1px solid var(--loss); }
   #overview-headline-grid {
-    --cell: 24px;
+    --cell: var(--s-xl);
   }
   .matrix-cell-node.dev-range {
     background: var(--loss-soft);
@@ -543,7 +543,7 @@
   }
   .chart-wrapper {
     position: relative;
-    height: 180px;
+    height: 11.25rem;
     margin-top: var(--s-md);
   }
   .chart-svg {
@@ -564,8 +564,8 @@
     z-index: 100;
     pointer-events: none;
     box-shadow: var(--shadow-card);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(var(--s-sm));
+    -webkit-backdrop-filter: blur(var(--s-sm));
   }
   .chart-footer {
     display: flex;
@@ -614,7 +614,7 @@
   }
   .stack-band-row {
     display: grid;
-    grid-template-columns: 78px 1fr 50px;
+    grid-template-columns: 4.875rem 1fr 3.125rem;
     gap: var(--s-sm);
     align-items: center;
     font-size: var(--t-sm);
@@ -625,7 +625,7 @@
     font-size: var(--t-sm);
   }
   .stack-band-bar-outer {
-    height: 6px;
+    height: calc(var(--s-2xs) * 1.5);
     background: rgba(255, 255, 255, 0.02);
     border-radius: var(--r-xs);
     overflow: hidden;
@@ -732,21 +732,21 @@
     align-items: center;
   }
   .felt-ring {
-    height: 180px;
+    height: 11.25rem;
     position: relative;
     background: rgba(0, 0, 0, 0.15);
     border: 1px solid var(--border);
-    border-radius: 100px;
+    border-radius: 99rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0 0 1.875rem rgba(0, 0, 0, 0.3);
   }
   .felt-table {
-    width: 160px;
+    width: 10rem;
     background: rgba(255, 255, 255, 0.01);
-    border: 4px solid var(--border-strong);
-    border-radius: 35px;
+    border: var(--s-2xs) solid var(--border-strong);
+    border-radius: 2.1875rem;
     box-shadow: var(--shadow-card);
     display: flex;
     align-items: center;

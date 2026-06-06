@@ -4,8 +4,8 @@
 
 .cursor-follower {
   position: fixed;
-  width: 20px;
-  height: 20px;
+  width: var(--s-lg);
+  height: var(--s-lg);
   background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
   border: var(--bw) solid var(--accent-line);
   border-radius: 50%;

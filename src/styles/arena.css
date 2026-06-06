@@ -2,9 +2,9 @@
      ========================================================= */
   .arena-grid {
     display: grid;
-    grid-template-columns: 1fr 240px;
+    grid-template-columns: 1fr 15rem;
     gap: var(--s-xl);
-    height: 520px;
+    height: 32.5rem;
   }
   .hologram-viewport {
     background: rgba(0,0,0,0.4);
@@ -26,9 +26,9 @@
   }
   .hologram-felt-3d {
     position: absolute;
-    width: 620px; height: 260px;
-    border-radius: 130px;
-    border: 6px solid var(--felt-rail);
+    width: 38.75rem; height: 16.25rem;
+    border-radius: 8.125rem;
+    border: calc(var(--s-2xs) * 1.5) solid var(--felt-rail);
     background: var(--felt);
     box-shadow: var(--shadow-card);
   }
@@ -89,8 +89,8 @@
   /* Floating simulated chip packet */
   .sim-chip {
     position: absolute;
-    width: 12px; height: 12px;
-    background: radial-gradient(circle, #fff 15%, var(--accent) 55%, transparent 75%);
+    width: var(--s-sm); height: var(--s-sm);
+    background: radial-gradient(circle, rgba(255, 255, 255, 1) 15%, var(--accent) 55%, transparent 75%);
     border-radius: 50%;
     z-index: 60;
     pointer-events: none;
@@ -99,7 +99,7 @@
   /* Dealing cards animation shapes */
   .hologram-deal-card {
     position: absolute;
-    width: 48px; height: 68px;
+    width: 3rem; height: 4.25rem;
     background: var(--bg-2);
     border: var(--bw) solid var(--border-strong);
     border-radius: var(--r-sm);
@@ -141,7 +141,7 @@
   .btn-trainer-act:hover {
     border-color: var(--accent);
     background: rgba(255,255,255,0.03);
-    box-shadow: 0 0 15px var(--accent-glow);
+    box-shadow: 0 0 0.9375rem var(--accent-glow);
   }
   
   /* Trainer feedback overlay bubble */
@@ -176,7 +176,7 @@
     position: fixed;
     right: var(--s-xl); bottom: var(--s-xl);
     background: rgba(8, 10, 15, 0.82);
-    backdrop-filter: blur(16px);
+    backdrop-filter: blur(1rem);
     border: var(--bw) solid var(--border-strong);
     border-radius: var(--r-md);
     padding: var(--s-sm) var(--s-md);
@@ -185,7 +185,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--s-xs);
-    width: 210px;
+    width: 13.125rem;
     transition: border-color var(--t-med) var(--ease), box-shadow var(--t-med) var(--ease);
   }
   .dock-header {
@@ -218,7 +218,7 @@
     transition: background 0.2s, color 0.2s, border-color 0.2s;
   }
   .dock-btn:hover {
-    color: #fff;
+    color: rgba(255, 255, 255, 1);
     border-color: var(--border-strong);
   }
   .dock-btn.active {
@@ -231,22 +231,22 @@
   .loader {
     position: fixed; inset: 0;
     z-index: 200000;
-    background: #010103;
+    background: var(--bg);
     display: flex; align-items: center; justify-content: center;
     transition: opacity .8s cubic-bezier(.4,0,.1,1), visibility .8s;
   }
   .loader.done { opacity: 0; visibility: hidden; }
-  .loader-inner { width: min(440px, 80vw); }
+  .loader-inner { width: min(27.5rem, 80vw); }
   .loader-eye {
     font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.25em; text-transform: uppercase;
     color: var(--fg-muted); display: flex; justify-content: space-between; margin-bottom: var(--s-sm);
   }
   .loader-eye b { color: var(--accent); }
   .loader-pct {
-    font-family: var(--display); font-weight: 800; font-size: 96px; letter-spacing: -0.05em; line-height: 0.86; color: var(--fg);
+    font-family: var(--display); font-weight: 800; font-size: 6rem; letter-spacing: -0.05em; line-height: 0.86; color: var(--fg);
   }
   .loader-bar { margin-top: var(--s-lg); height: 2px; background: rgba(255,255,255,0.04); position: relative; overflow: hidden; }
-  .loader-bar span { position: absolute; inset: 0 auto 0 0; width: 0%; background: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+  .loader-bar span { position: absolute; inset: 0 auto 0 0; width: 0%; background: var(--accent); box-shadow: 0 0 0.625rem var(--accent-glow); }
   .loader-status { font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.15em; text-transform: uppercase; color: var(--fg-muted); margin-top: var(--s-sm); }
 
   /* Extracted Layout Classes */
@@ -264,7 +264,7 @@
     display: flex;
     gap: var(--s-xs);
     z-index: 60;
-    top: 110px;
+    top: 6.875rem;
     left: 50%;
     transform: translateX(-50%);
   }
@@ -356,7 +356,7 @@
   }
   #trainer-current-hand {
     font-size: var(--t-body);
-    color: #fff;
+    color: rgba(255, 255, 255, 1);
   }
   .arena-history-log-wrap {
     border-top: var(--bw) solid var(--border);
