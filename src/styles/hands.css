@@ -135,17 +135,17 @@
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.85);
     z-index: 10000;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(0.5rem);
     display: none;
     align-items: center; justify-content: center;
   }
   .replay-modal {
     background: var(--bg-card);
     border: 1px solid var(--border-strong);
-    width: 680px;
+    width: 42.5rem;
     border-radius: var(--r-lg);
     overflow: hidden;
-    box-shadow: 0 20px 80px rgba(0,0,0,0.8);
+    box-shadow: 0 var(--s-lg) 5rem rgba(0,0,0,0.8);
     position: relative;
   }
   .replay-modal-header {
@@ -163,7 +163,7 @@
   .replay-modal-close:hover { color: var(--fg); }
   
   .mini-felt-arena {
-    height: 310px;
+    height: 19.375rem;
     background: var(--bg);
     position: relative;
     overflow: hidden;
@@ -171,11 +171,11 @@
   }
   .mini-felt-surface {
     position: absolute;
-    width: 480px; height: 210px;
-    border-radius: 105px;
-    border: 6px solid var(--felt-rail);
+    width: 30rem; height: 13.125rem;
+    border-radius: 6.5625rem;
+    border: calc(var(--s-2xs) * 1.5) solid var(--felt-rail);
     background: var(--felt);
-    box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
+    box-shadow: inset 0 0 var(--s-3xl) rgba(0,0,0,0.6);
   }
   .mini-felt-cards {
     position: absolute;
@@ -186,7 +186,7 @@
   
   /* Mini dealing cards */
   .poker-card-micro {
-    width: 45px; height: 65px;
+    width: 2.8125rem; height: 4.0625rem;
     background: var(--bg-card);
     border: 1px solid var(--border-strong);
     border-radius: var(--r-xs);
@@ -197,7 +197,7 @@
     font-family: var(--sans);
     font-weight: 700;
     font-size: var(--t-body);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    box-shadow: 0 var(--s-2xs) calc(var(--s-2xs) * 2.5) rgba(0,0,0,0.3);
     opacity: 0;
     transform: scale(0) rotate(90deg);
   }
@@ -221,7 +221,7 @@
   }
   .hands-search-group {
     flex: 1;
-    max-width: 320px;
+    max-width: 20rem;
     margin-bottom: 0;
   }
   .hands-search-input-override {
@@ -251,7 +251,7 @@
   .filter-badge {
     display: none;
     background: var(--accent);
-    color: #000;
+    color: var(--bg);
     font-size: var(--t-cap);
     font-weight: 700;
     border-radius: var(--r-xs);
@@ -294,7 +294,7 @@
 
   .hands-upload-active-log {
     display: none;
-    height: 100px;
+    height: 6.25rem;
     text-align: left;
     font-family: var(--mono);
     font-size: var(--t-sm);
@@ -309,18 +309,18 @@
   }
 
   .hands-replayer-modal-override {
-    width: 580px;
+    width: 36.25rem;
   }
 
   .hands-mini-felt-cards {
-    top: 220px;
+    top: 13.75rem;
     left: 50%;
     transform: translateX(-50%);
   }
 
   .hands-board-cards-row {
     position: absolute;
-    top: 120px;
+    top: 7.5rem;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -329,8 +329,8 @@
   }
 
   .hands-board-card-override {
-    width: 40px;
-    height: 58px;
+    width: var(--s-3xl);
+    height: 3.625rem;
     font-size: var(--t-sm);
     padding: var(--s-2xs) var(--s-2xs);
     opacity: 0;
@@ -339,7 +339,7 @@
 
   .hands-center-pot-box-override {
     position: absolute;
-    top: 45px;
+    top: 2.8125rem;
     left: 50%;
     transform: translateX(-50%);
     opacity: 0.85;
@@ -477,7 +477,7 @@
   }
   .hands-upload-progress-bar-outer {
     position: relative;
-    height: 6px;
+    height: calc(var(--s-2xs) * 1.5);
     border-radius: var(--r-xs);
     background: rgba(255, 255, 255, 0.05);
     overflow: hidden;
@@ -491,7 +491,7 @@
     width: 0%;
     border-radius: var(--r-xs);
     background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    box-shadow: 0 0 14px rgba(0, 240, 255, 0.5);
+    box-shadow: 0 0 0.875rem rgba(0, 240, 255, 0.5);
     transition: width 0.1s linear;
   }
   .hands-upload-lc-status {
@@ -501,14 +501,14 @@
     font-family: var(--mono);
     font-size: var(--t-sm);
     color: var(--fg-muted);
-    min-height: 18px;
+    min-height: 1.125rem;
   }
   .hands-upload-lc-status .dot {
-    width: 6px;
-    height: 6px;
+    width: calc(var(--s-2xs) * 1.5);
+    height: calc(var(--s-2xs) * 1.5);
     border-radius: 50%;
     background: var(--accent);
-    box-shadow: 0 0 8px var(--accent);
+    box-shadow: 0 0 var(--s-xs) var(--accent);
     display: inline-block;
   }
   .hands-upload-lc-steps {
@@ -526,8 +526,8 @@
     color: var(--fg-muted);
   }
   .hands-upload-lc-steps .step .mk {
-    width: 15px;
-    height: 15px;
+    width: 0.9375rem;
+    height: 0.9375rem;
     border-radius: var(--r-xs);
     border: 1px solid var(--border-strong);
     display: grid;
@@ -539,10 +539,10 @@
   /* Hands Replayer Equity UI styling */
   .replayer-equity-wrap {
     position: absolute;
-    bottom: 12px;
+    bottom: var(--s-sm);
     left: 50%;
     transform: translateX(-50%);
-    width: 220px;
+    width: 13.75rem;
     text-align: center;
     z-index: 10;
   }
@@ -557,7 +557,7 @@
   }
   .replayer-equity-bar-outer {
     display: flex;
-    height: 8px;
+    height: var(--s-xs);
     border-radius: var(--r-xs);
     overflow: hidden;
     border: 1px solid var(--border-strong);
