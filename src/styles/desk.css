@@ -510,8 +510,8 @@
     gap: var(--s-2xs);
   }
   .headline-legend i {
-    width: 9px;
-    height: 9px;
+    width: var(--s-xs);
+    height: var(--s-xs);
     border-radius: var(--r-xs);
     display: inline-block;
   }
@@ -852,8 +852,8 @@
   }
   .alert-dot {
     display: inline-block;
-    width: 6px;
-    height: 6px;
+    width: calc(var(--s-2xs) * 1.5);
+    height: calc(var(--s-2xs) * 1.5);
     border-radius: 50%;
     background: var(--warn);
   }

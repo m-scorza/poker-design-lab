@@ -123,7 +123,7 @@
   }
   .ranges-swatch-info span { display: inline-flex; align-items: center; gap: var(--s-xs); }
   .ranges-swatch-info i {
-    display: inline-block; width: 10px; height: 10px;
+    display: inline-block; width: var(--s-xs); height: var(--s-xs);
     border-radius: var(--r-xs);
   }
   .ranges-swatch-info i.sw-open  { background: var(--accent-soft); border: 1px solid var(--accent); }

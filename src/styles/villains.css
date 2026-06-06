@@ -33,7 +33,7 @@
     flex-wrap: wrap;
   }
   .villains-threat-legend span { display: inline-flex; align-items: center; gap: var(--s-xs); }
-  .villains-threat-legend i { width: 9px; height: 9px; border-radius: var(--r-xs); display: inline-block; }
+  .villains-threat-legend i { width: var(--s-xs); height: var(--s-xs); border-radius: var(--r-xs); display: inline-block; }
   .villains-threat-legend i.t-pred { background: var(--loss); }
   .villains-threat-legend i.t-prey { background: var(--accent); }
   .villains-threat-legend i.t-neutral { background: var(--fg-dim); }

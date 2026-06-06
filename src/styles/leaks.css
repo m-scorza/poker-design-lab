@@ -312,7 +312,7 @@
     font-weight: 700;
   }
   .leaks-range-track {
-    height: 8px;
+    height: var(--s-xs);
     background: rgba(255,255,255,0.03);
     border-radius: var(--r-xs);
     position: relative;
@@ -439,7 +439,7 @@
   .pos-hm-col-h { color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
   .pos-hm-row-h { color: var(--fg); text-align: left; white-space: nowrap; justify-content: flex-start !important; }
   .pos-hm-cell {
-    border-radius: var(--r-xs); cursor: pointer; color: #04141a; font-weight: 600; min-height: 34px;
+    border-radius: var(--r-xs); cursor: pointer; color: var(--bg); font-weight: 600; min-height: 34px;
     display: grid; place-items: center;
     transition: transform 0.15s cubic-bezier(0.19,1,0.22,1), box-shadow 0.15s ease;
   }
@@ -513,7 +513,7 @@
   }
   .pos-hm-ramp {
     display: inline-flex;
-    height: 8px;
+    height: var(--s-xs);
     width: 80px;
     border-radius: var(--r-xs);
     overflow: hidden;
@@ -545,12 +545,12 @@
   }
   #leak-range-marker {
     position: absolute;
-    width: 8px;
+    width: var(--s-xs);
     height: 100%;
     background: var(--loss);
     border-radius: var(--r-sm);
-    box-shadow: 0 0 8px var(--loss);
-    transform: translateX(-4px); /* center alignment helper */
+    box-shadow: var(--shadow-card);
+    transform: translateX(calc(-1 * var(--s-2xs))); /* center alignment helper */
   }
 
 
