@@ -228,7 +228,7 @@
     cursor: pointer; transition: transform 0.2s cubic-bezier(0.19,1,0.22,1), box-shadow 0.2s ease, background 0.2s ease;
     border-radius: var(--r-xs); min-height: 38px;
   }
-  .hm-cell:hover { transform: scale(1.09); z-index: 10; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.55); }
+  .hm-cell:hover { transform: scale(1.09); z-index: 10; position: relative; box-shadow: var(--shadow-card); }
   .hm-cell.crit { background: var(--loss); color: var(--bg); font-weight: 600; box-shadow: 0 0 10px var(--loss-line); }
   .hm-cell.high { background: color-mix(in srgb, var(--warn) 60%, transparent); color: var(--fg); }
   .hm-cell.med  { background: color-mix(in srgb, var(--accent-2) 55%, transparent); color: var(--fg); }
@@ -262,7 +262,7 @@
 
   .lg-top { display: flex; align-items: flex-start; gap: var(--s-sm); }
   .lg-name { font-family: var(--display); font-weight: 600; font-size: var(--t-body); letter-spacing: -0.01em; }
-  .lg-scen { font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-muted); margin-top: 3px; }
+  .lg-scen { font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-muted); margin-top: calc(var(--s-2xs) / 2); }
   .lg-sev-pill {
     margin-left: auto; font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.12em; text-transform: uppercase;
     padding: var(--s-2xs) var(--s-xs); border-radius: var(--r-sm); color: var(--sev);
@@ -274,7 +274,7 @@
   .lg-vals { display: flex; align-items: baseline; gap: var(--s-xs); font-family: var(--mono); }
   .lg-cur { font-size: var(--t-display); font-weight: 500; font-variant-numeric: tabular-nums; color: var(--sev); line-height: 1; }
   .lg-tgt { font-size: var(--t-sm); color: var(--fg-dim); margin-left: auto; }
-  .lg-track { position: relative; height: 7px; border-radius: var(--r-sm); background: rgba(255,255,255,0.05); overflow: visible; }
+  .lg-track { position: relative; height: var(--s-2xs); border-radius: var(--r-sm); background: rgba(255,255,255,0.05); overflow: visible; }
   .lg-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: var(--r-sm); background: var(--sev); width: 0; transition: width 0.9s cubic-bezier(0.22,1,0.36,1); }
   .lg-mark { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--fg); opacity: 0.55; border-radius: var(--r-xs); }
   .lg-mark::after { content: 'target'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: var(--t-cap); letter-spacing: 0.05em; color: var(--fg-dim); }
@@ -444,7 +444,7 @@
     transition: transform 0.15s cubic-bezier(0.19,1,0.22,1), box-shadow 0.15s ease;
   }
   .pos-hm-cell:hover {
-    transform: scale(1.12); z-index: 5; position: relative; box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    transform: scale(1.12); z-index: 5; position: relative; box-shadow: var(--shadow-card);
   }
   .pos-hm-cell.sel { outline: 2px solid var(--fg); outline-offset: 1px; }
   .pos-hm-cell.empty { cursor: default; pointer-events: none; background: rgba(255,255,255,0.02) !important; color: var(--fg-dim) !important; }

@@ -364,7 +364,7 @@
   .stat-tile:hover {
     background: rgba(255, 255, 255, 0.02);
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+    box-shadow: var(--shadow-card);
   }
   .stat-tile.accent { border-left-color: var(--accent); }
   .stat-tile.accent-2 { border-left-color: var(--accent-2); }
@@ -563,7 +563,7 @@
     font-size: var(--t-sm);
     z-index: 100;
     pointer-events: none;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65);
+    box-shadow: var(--shadow-card);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
@@ -744,11 +744,10 @@
   }
   .felt-table {
     width: 160px;
-    height: 70px;
     background: rgba(255, 255, 255, 0.01);
     border: 4px solid var(--border-strong);
     border-radius: 35px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    box-shadow: var(--shadow-card);
     display: flex;
     align-items: center;
     justify-content: center;

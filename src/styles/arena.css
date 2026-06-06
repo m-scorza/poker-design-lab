@@ -30,7 +30,7 @@
     border-radius: 130px;
     border: 6px solid var(--felt-rail);
     background: var(--felt);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    box-shadow: var(--shadow-card);
   }
   
   /* Seats overlay */
@@ -46,7 +46,7 @@
     text-align: center;
     cursor: pointer;
     transition: border-color 0.2s, background 0.2s, transform 0.2s;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+    box-shadow: var(--shadow-card);
     z-index: 10;
   }
   .hologram-seat:hover {
@@ -58,7 +58,7 @@
     background: var(--accent-soft);
   }
   .hologram-seat .name { font-weight: 700; display: block; }
-  .hologram-seat .chips { font-size: var(--t-cap); color: var(--fg-muted); display: block; margin-top: 2px; }
+  .hologram-seat .chips { font-size: var(--t-cap); color: var(--fg-muted); display: block; margin-top: calc(var(--s-2xs) / 2); }
   
   /* Precise absolute coordinates for seats */
   .seat-1 { top: 15%; left: 15%; }
@@ -110,7 +110,7 @@
     padding: var(--r-sm) var(--s-xs);
     display: flex; flex-direction: column;
     justify-content: space-between;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    box-shadow: var(--shadow-card);
     z-index: 40;
     pointer-events: none;
   }
@@ -157,7 +157,7 @@
     padding: var(--s-md) var(--s-2xl);
     border-radius: var(--r-lg);
     text-align: center;
-    box-shadow: 0 15px 45px rgba(0,0,0,0.8);
+    box-shadow: var(--shadow-card);
     transition: opacity 0.3s, transform 0.3s;
   }
   .trainer-feedback-overlay.active {
@@ -181,7 +181,7 @@
     border-radius: var(--r-md);
     padding: var(--s-sm) var(--s-md);
     z-index: 9999;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    box-shadow: var(--shadow-card);
     display: flex;
     flex-direction: column;
     gap: var(--s-xs);
@@ -306,7 +306,7 @@
     font-family: var(--mono);
     font-weight: 700;
     font-size: var(--t-body);
-    margin-top: 2px;
+    margin-top: calc(var(--s-2xs) / 2);
   }
   #arena-streak-val {
     color: var(--accent-2);

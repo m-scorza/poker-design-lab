@@ -44,7 +44,7 @@
     font-size: var(--t-sm);
     z-index: 100;
     pointer-events: none;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    box-shadow: var(--shadow-card);
   }
   .chart-tooltip b {
     color: var(--accent);
@@ -163,7 +163,7 @@
     display: none; position: absolute; background: var(--bg-card);
     border: 1px solid var(--border-strong); padding: var(--s-xs) var(--s-sm); border-radius: var(--r-sm);
     font-family: var(--mono); font-size: var(--t-sm); pointer-events: none; z-index: 100; color: var(--fg);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5); white-space: nowrap;
+    box-shadow: var(--shadow-card); white-space: nowrap;
   }
 
   /* ===== Milestone Rail ===== */
@@ -252,7 +252,7 @@
     font-size: var(--t-sm);
     z-index: 100;
     pointer-events: none;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    box-shadow: var(--shadow-card);
   }
   .career-abi-svg {
     overflow: visible;
@@ -540,7 +540,7 @@
     font-size: var(--t-body);
     font-weight: 700;
     color: var(--fg);
-    margin-top: 4px;
+    margin-top: var(--s-2xs);
   }
   .career-details-val.accent { color: var(--accent); }
   .career-details-val.accent-2 { color: var(--accent-2); }

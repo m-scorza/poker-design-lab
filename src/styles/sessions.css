@@ -22,7 +22,7 @@
     font-size: var(--t-cap);
     color: var(--fg-muted);
     font-weight: 400;
-    margin-top: 3px;
+    margin-top: calc(var(--s-2xs) * 3 / 4);
   }
   .timeline-title-block .editorial-title {
     font-family: var(--display);
@@ -173,7 +173,7 @@
     background: var(--bg-card); border: 1px solid var(--border-strong);
     border-radius: var(--r-sm); padding: var(--s-xs) var(--s-sm); font-family: var(--mono); font-size: var(--t-sm);
     color: var(--fg); white-space: nowrap; opacity: 0; transform: translateY(4px);
-    transition: opacity 0.1s ease, transform 0.1s ease; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    transition: opacity 0.1s ease, transform 0.1s ease; box-shadow: var(--shadow-card);
     backdrop-filter: blur(8px);
   }
   .cal-tip.show { opacity: 1; transform: translateY(0); }

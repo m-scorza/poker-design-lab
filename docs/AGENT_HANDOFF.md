@@ -1,5 +1,26 @@
 # Agent Handoff Log — Poker Design Lab
 
+## 2026-06-06 — Styling Optimization & Token Standardization Loop (Iteration 47)
+
+- Owner / agent:          Antigravity (Autonomous Loop)
+- Branch:                 design-lab/styling-revolution
+- Scope:                  `src/styles/*.css`
+- Files touched:
+  - `src/styles/arena.css` - Standardized layout box-shadows on seats and deal cards to use `var(--shadow-card)`, and micro-margins to use `calc(var(--s-2xs) / 2)`.
+  - `src/styles/career.css` - Standardized KPI tooltip and career arc tooltips box-shadows to use `var(--shadow-card)`, and micro-margin values to use `var(--s-2xs)`.
+  - `src/styles/desk.css` - Standardized stat-tile and felt-table box-shadows to `var(--shadow-card)`.
+  - `src/styles/leaks.css` - Standardized positional stats heatmap and severity gauge track box-shadows, heights, and margins to system design tokens.
+  - `src/styles/ranges.css` - Standardized floating cell tooltips box-shadows to `var(--shadow-card)`.
+  - `src/styles/sessions.css` - Standardized volume row layout gaps, calendar tooltip box-shadows, and progress bar heights.
+  - `src/styles/ticker.css` - Standardized continuous pulse glow animation box-shadow to use spacing token `var(--s-xs)`.
+  - `src/styles/villains.css` - Standardized exploit advice overlays box-shadows to `var(--shadow-card)`.
+- Summary:
+  - Scanned the entire workspace styling directory for hardcoded values.
+  - Converted dozens of hardcoded box-shadows, micro-margins, and heights to system design tokens.
+  - Verified Vite compile and production bundle output.
+- Verification:
+  - Production build (`npm run build`) completed successfully in 7.36s with zero compilation errors.
+
 ## 2026-06-06 — Visual Overhaul & Styling Revolution (Iteration 46)
 
 - Owner / agent:          Antigravity
