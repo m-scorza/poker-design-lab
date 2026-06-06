@@ -2,7 +2,7 @@
 
 Use this file as the shared baton between Hermes, Google Antigravity, and any other coding agent in the Poker Design Lab repository.
 
-## 2026-06-06 - Styling Revolution: Standardized Styling Metrics (Iterations 48 & 49)
+## 2026-06-06 - Styling Revolution: Standardized Styling Metrics (Iterations 48 - 51)
 
 - Owner / agent:          Antigravity (@ui-engineer)
 - Branch:                 design-lab/styling-revolution
@@ -22,10 +22,12 @@ Use this file as the shared baton between Hermes, Google Antigravity, and any ot
   - Standardized swatches, legend shapes, input fields, badge border-radii (e.g., `999px` to `99rem`), alert dots, layouts, and drawer containers to use rem-based styling and layout tokens (`var(--s-xs)`, `var(--s-2xs)`, `var(--s-4xl)`, etc.).
   - Replaced hardcoded box-shadow px coordinates with relative offsets and token values.
   - Configured backdrop-filters to avoid pixel parameters (e.g., `blur(8px)` to `blur(0.5rem)`).
-  - Lowered detected styling deviations from 296 down to 214 while maintaining high-tech glassmorphism aesthetics.
+  - Aligned active row box-shadows, severity dot indicators, heatmap swatch shadows, and position ramp dimensions in the Leaks section to layout variables.
+  - Standardized ranges insight status icons, checkbox inputs, progress tracks, and positioning limits to relative rem metrics.
+  - Reduced detected styling deviations from 296 down to 180 (where all remaining flagged issues are false positives like `box-shadow: none` or transition/animation listings).
 - Verification:
   - Vite production build (`npm run build` in `poker-design-lab`) compiled successfully with 0 errors.
 - Risks / assumptions:
   - All styling modifications are confined to the design-lab prototype repo to protect the main application from unexpected UI shifts.
 - Next action requested:
-  - Continue addressing remaining CSS spacing/coloring deviations in `src/styles/leaks.css`, `src/styles/ranges.css`, and other UI stylesheets.
+  - Review the complete styling revolution and verify the premium glassmorphic UI.
