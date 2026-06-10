@@ -1,0 +1,22 @@
+---
+source_file: "archive/lab/src/modules/radar.js"
+type: "code"
+community: "Loader & Radar Blocker Logic"
+location: "L804"
+tags:
+  - graphify/code
+  - graphify/EXTRACTED
+  - community/Loader__Radar_Blocker_Logic
+---
+
+# renderHeadline()
+> **Source:** [archive/lab/src/modules/radar.js](file:///C:/Users/MICRO/Downloads/poker%202%20try%20%284%29/archive/lab/src/modules/radar.js)
+
+
+## Connections
+- [[buildHeadlineGrid()]] - `calls` [EXTRACTED]
+- [[radar.js]] - `contains` [EXTRACTED]
+- [[renderOverview()]] - `calls` [EXTRACTED]
+- [[setText()]] - `calls` [EXTRACTED]
+
+#graphify/code #graphify/EXTRACTED #community/Loader__Radar_Blocker_Logic

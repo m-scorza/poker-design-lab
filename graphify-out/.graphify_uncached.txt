@@ -1,0 +1,210 @@
+C:\Users\MICRO\Downloads\poker 2 try (4)\.claude\launch.json
+C:\Users\MICRO\Downloads\poker 2 try (4)\.claude\settings.local.json
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\package.json
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\data\arena-drills.json
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\data\hands.json
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\data\ticker.json
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\data\villains.json
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\i18n\pt-BR.json
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\main.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\modules\3d-tilt.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\modules\arena.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\modules\background.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\modules\career.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\modules\command-palette.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\modules\cursor-follower.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\modules\hands.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\modules\leaks.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\modules\loader.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\modules\magnetic-buttons.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\modules\modal.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\modules\radar.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\modules\ranges.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\modules\scramble.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\modules\sessions.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\modules\theme-dock.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\modules\toast.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\modules\tooltip.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\modules\transitions.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\modules\villains.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\state.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\vercel.json
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\vite.config.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\legacy_dashboards\shader-bg.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\sandboxes\build.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\vendor\gsap.min.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\design-system\reference\desk-engine.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\design-system\reference\rt.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\design-system\reference\sketches\candidates.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\design-system\reference\sketches\desk-engine.js
+C:\Users\MICRO\Downloads\poker 2 try (4)\.github\workflows\deploy.yml
+C:\Users\MICRO\Downloads\poker 2 try (4)\README.md
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\broadsheet\Dashboard - Broadsheet.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\direction-lab\0-slop.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\direction-lab\1-instrument.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\direction-lab\2-ledger.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\direction-lab\3-synthesis.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\direction-lab\START-HERE.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab-docs\CURATION.md
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab-docs\DESIGN_HANDOFF.md
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab-docs\DESIGN_REVIEW_AND_PROPOSAL.md
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab-docs\ELEMENT_INVENTORY.md
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab-docs\TYPOGRAPHY.md
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab-docs\audits\Audit Notes.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab-docs\audits\Decisions Ledger.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab-docs\audits\Sketches & Directions.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab-docs\audits\Source of Truth-print.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab-docs\audits\Source of Truth.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab-docs\audits\research_notes.md
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab-docs\audits\tech_analysis.md
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab-docs\design_session_history.md
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab-docs\implementation_plan.md
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab-docs\lessons_learned.md
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab-docs\task.md
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab-docs\walkthrough.md
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\elements.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\index.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\abi-evolution.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\aurora-bg.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\background.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\blocker-simulator.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\blueprint-theme.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\border-glow.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\button-fx.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\button-glow.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\calendar-heatmap.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\card-render.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\career-arc.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\char-reveal.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\cli-panel.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\command-palette.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\cursor-trail.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\cyber-btn.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\drawer-slide.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\equity-bar.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\felt-3d.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\follower.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\hand-replay-felt.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\leak-card-gauge.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\leak-heatmap.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\magnetic-button.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\modal-glass.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\odometer-statcard.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\parallax-depth.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\position-stats-heatmap.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\progress-cinematic.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\radar-hud.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\range-grid-action.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\replayer.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\scramble.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\scroll-reveal.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\shader-bg.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\skeleton-shimmer.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\spinners.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\split-flap.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\spotlight-card.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\sticky-stack.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\tilt.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\toast-stack.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\tooltip-popover.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\tournament-lab-shell.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\trendline-morph.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\type-switcher.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\variance-graph.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\verdict-card.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\elements\villain-badge.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\pages\arena.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\pages\career.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\pages\hands.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\pages\leaks.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\pages\overview.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\pages\ranges.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\pages\sessions.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\lab\src\pages\villains.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\legacy_dashboards\Dashboard Directions v2.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\legacy_dashboards\Dashboard Directions.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\legacy_dashboards\Dashboard v3.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\legacy_dashboards\Dashboard v4 - bundle source.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\legacy_dashboards\Dashboard v4 - standalone.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\legacy_dashboards\Dashboard v4.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\legacy_dashboards\Dashboard v5.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\legacy_dashboards\Dashboard v6.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\legacy_dashboards\Dashboard v7.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\legacy_dashboards\Dashboard v8.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\legacy_dashboards\Tournament Lab - System.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\legacy_dashboards\design_sandbox.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\00_source_of_truth_poker_dashboard (2).md
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\CLAUDE_DESIGN_CONTEXT_PACK.md
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\PROFESSIONAL_REDESIGN_BRIEF.md
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\sandboxes\design_sandbox.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\sandboxes\design_sandbox_v2.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\sandboxes\design_sandbox_v3.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\sandboxes\design_sandbox_v4.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\sketches\Arena.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\sketches\Career.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\sketches\Demo.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\sketches\Hands.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\sketches\Leaks.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\sketches\Ranges.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\sketches\Sessions.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\sketches\Villains.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\design-system\DECISIONS.md
+C:\Users\MICRO\Downloads\poker 2 try (4)\design-system\DESIGN.md
+C:\Users\MICRO\Downloads\poker 2 try (4)\design-system\README.md
+C:\Users\MICRO\Downloads\poker 2 try (4)\design-system\index.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\design-system\reference\Command Desk R.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\design-system\reference\sketches\Capital Flow.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\design-system\reference\sketches\Command Desk.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\design-system\reference\sketches\Monument upgrade.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\design-system\reference\sketches\Pool Threat Map.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\design-system\reference\sketches\Readiness gauge.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\design-system\reference\sketches\Stack Depth Profile.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\design-system\reference\sketches\Verdict Console.html
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\screenshots\arena-after.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\screenshots\arena-table.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\screenshots\dash-after.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\screenshots\felt-v2.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\screenshots\hands-after1.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\screenshots\hands-after2.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\screenshots\hands-after3.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\screenshots\hands-after4.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\screenshots\hands-before.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\screenshots\hands-modal.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\screenshots\leaks-after.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\screenshots\minicards-v2.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\screenshots\ranges-after.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\screenshots\v6-hero.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\screenshots\v6-hero2.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\screenshots\v6-hero3.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\screenshots\v7-hero.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\screenshots\v7-hero2.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\FireShot Capture 060 - Poker Analyzer HUD_ - [automatic-space-fishstick-pjw9r5p7xw5f696x-5173.app.github.dev].png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\FireShot Capture 061 - Poker Analyzer HUD_ - [automatic-space-fishstick-pjw9r5p7xw5f696x-5173.app.github.dev].png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\FireShot Capture 062 - Poker Analyzer HUD_ - [automatic-space-fishstick-pjw9r5p7xw5f696x-5173.app.github.dev].png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\draw-1bab694d-d41a-4527-88b5-32f02e4c8b0a.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\draw-2ab5354a-7088-4b86-ab71-6ec79c7e2d79.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\draw-362f49d3-e3e0-47b0-afcf-21466c1f0f23.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\draw-4126834b-fe3d-4615-a1ea-9793c208fde7.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778680805240-0.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778680880719-0.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778680900866-0.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778681041892-0.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778681067029-0.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778681082366-0.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778681100021-0.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778681117831-0.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778681142716-0.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778681157471-0.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778681185646-0.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778681212681-0.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778681228413-0.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778681253095-0.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778681266674-0.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778681300248-0.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778681312903-0.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778681336656-0.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778681433786-0.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778681454281-0.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778681472223-0.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778681485784-0.png
+C:\Users\MICRO\Downloads\poker 2 try (4)\archive\reference\uploads\pasted-1778681497814-0.png

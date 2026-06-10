@@ -1,0 +1,21 @@
+---
+source_file: "archive/lab/src/modules/magnetic-buttons.js"
+type: "code"
+community: "3D Card Tilt / Cursor Effects"
+location: "L9"
+tags:
+  - graphify/code
+  - graphify/EXTRACTED
+  - community/3D_Card_Tilt_/_Cursor_Effects
+---
+
+# initMagneticButtons()
+> **Source:** [archive/lab/src/modules/magnetic-buttons.js](file:///C:/Users/MICRO/Downloads/poker%202%20try%20%284%29/archive/lab/src/modules/magnetic-buttons.js)
+
+
+## Connections
+- [[boot()]] - `calls` [EXTRACTED]
+- [[magnetic-buttons.js]] - `contains` [EXTRACTED]
+- [[main.js]] - `imports` [EXTRACTED]
+
+#graphify/code #graphify/EXTRACTED #community/3D_Card_Tilt_/_Cursor_Effects
