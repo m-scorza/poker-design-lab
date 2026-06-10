@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Direction Lab — pick the voice</title>
+<style>
+  :root { --bg:#101010; --fg:#eaeaea; --fg2:#999; --rule:#262626; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:ui-sans-serif,system-ui,sans-serif; background:var(--bg); color:var(--fg); padding:56px 24px; }
+  .wrap { max-width:860px; margin:0 auto; }
+  h1 { font-size:22px; font-weight:700; letter-spacing:-.01em; }
+  .sub { color:var(--fg2); font-size:14px; margin:10px 0 36px; line-height:1.6; max-width:64ch; }
+  a.card { display:block; text-decoration:none; color:inherit; border:1px solid var(--rule); border-radius:8px; padding:20px 22px; margin-bottom:12px; transition:border-color .15s; }
+  a.card:hover { border-color:#555; }
+  .row { display:flex; align-items:baseline; gap:12px; }
+  .n { font-family:ui-monospace,monospace; color:var(--fg2); font-size:12px; }
+  .t { font-size:16px; font-weight:600; }
+  .tag { margin-left:auto; font-family:ui-monospace,monospace; font-size:10px; text-transform:uppercase; letter-spacing:.1em; color:var(--fg2); }
+  p.d { color:var(--fg2); font-size:13.5px; line-height:1.55; margin-top:8px; }
+  .how { border-top:1px solid var(--rule); margin-top:36px; padding-top:24px; }
+  .how h2 { font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--fg2); margin-bottom:14px; }
+  .how p { font-size:14px; line-height:1.7; color:#bbb; max-width:68ch; margin-bottom:10px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Direction Lab — same dashboard, four voices</h1>
+  <p class="sub">Identical content and data in every file (your real product's Dashboard: lifetime result,
+  preflop profile, leaks, sessions, verdict). Only the design language changes. Open each one full-screen,
+  give it ten seconds, note your gut reaction before your analysis kicks in.</p>
+
+  <a class="card" href="0-slop.html">
+    <div class="row"><span class="n">00</span><span class="t">The Slop Baseline</span><span class="tag">the refusal</span></div>
+    <p class="d">Deliberately generic AI-SaaS: Inter, violet gradients, rounded glowing cards, "AI Insights ✨".
+    Competent and anonymous. This is what no-decisions looks like — included so you can see what we're refusing.</p>
+  </a>
+
+  <a class="card" href="1-instrument.html">
+    <div class="row"><span class="n">01</span><span class="t">Pure Instrument</span><span class="tag">linear / vercel</span></div>
+    <p class="d">Flat, dense, monochrome. 1px borders, tiny uppercase labels, tabular numbers, zero motion,
+    color only where it means something. The 4-hour-session screen. Question: does it feel like craft, or like nothing?</p>
+  </a>
+
+  <a class="card" href="2-ledger.html">
+    <div class="row"><span class="n">02</span><span class="t">The Ledger</span><span class="tag">editorial, static</span></div>
+    <p class="d">Same quiet structure, but editorial type does the talking: Bricolage display, mono kickers,
+    one monumental number, hairline rules instead of boxes. No cards, no glow, no motion. The lab's best idea, sobered up.</p>
+  </a>
+
+  <a class="card" href="3-synthesis.html">
+    <div class="row"><span class="n">03</span><span class="t">The Synthesis</span><span class="tag">ledger + motion budget</span></div>
+    <p class="d">The Ledger plus exactly five motion moments: load choreography, the monument counts up, the arc
+    draws itself, hover micro-interactions, a button that means it. Reload the page to replay. Question: does the
+    motion add conviction, or do you tire of it by the third reload?</p>
+  </a>
+
+  <div class="how">
+    <h2>How to judge</h2>
+    <p>1 — Reload each a few times. The third impression matters more than the first; animation charms once but you'll see it daily.</p>
+    <p>2 — Imagine it after a losing session. Which one are you comfortable getting bad news from?</p>
+    <p>3 — You're allowed to mix: e.g. "01's density with 02's type" or "03 but half the motion." The pick doesn't need a name, it needs your words.</p>
+    <p>4 — Whatever you decide gets written into DECISIONS.md as the founding choice the real design system is built on.</p>
+  </div>
+</div>
+</body>
+</html>

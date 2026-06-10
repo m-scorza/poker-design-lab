@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Variant 2 — Editorial Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0d0c0a; --ink:#ece9e2; --ink-2:#a39e93; --ink-3:#6b675e;
+    --rule:#2a2823; --rule-soft:#1c1b17;
+    --win:#7dc97f; --loss:#e0685e; --warn:#d9a440;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Hanken Grotesk',sans-serif; background:var(--bg); color:var(--ink); font-size:14px; -webkit-font-smoothing:antialiased; }
+  .display { font-family:'Bricolage Grotesque',sans-serif; }
+  .mono { font-family:'Space Mono',monospace; }
+  .num { font-variant-numeric:tabular-nums; }
+  .wrap { max-width:1180px; margin:0 auto; padding:0 32px; }
+
+  /* masthead */
+  .masthead { border-bottom:1px solid var(--ink); }
+  .masthead-top { display:flex; align-items:baseline; justify-content:space-between; padding:20px 0 14px; }
+  .masthead h1 { font-family:'Bricolage Grotesque',sans-serif; font-size:28px; font-weight:800; letter-spacing:-.03em; }
+  .masthead h1 span { color:var(--ink-3); font-weight:400; }
+  .dateline { font-family:'Space Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.18em; color:var(--ink-2); }
+  .masthead-nav { display:flex; gap:2px; border-top:1px solid var(--rule); }
+  .masthead-nav a {
+    font-family:'Space Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.14em;
+    color:var(--ink-3); text-decoration:none; padding:11px 16px 12px;
+  }
+  .masthead-nav a:hover { color:var(--ink); }
+  .masthead-nav a.active { color:var(--ink); box-shadow:inset 0 2px 0 var(--ink); }
+  .masthead-nav .import {
+    margin-left:auto; color:var(--bg); background:var(--ink); align-self:center;
+    padding:7px 14px; cursor:pointer;
+  }
+
+  .kicker { font-family:'Space Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.2em; color:var(--ink-2); }
+
+  /* hero */
+  .hero { display:grid; grid-template-columns:7fr 5fr; gap:48px; padding:44px 0 36px; border-bottom:1px solid var(--rule); }
+  .monument {
+    font-family:'Bricolage Grotesque',sans-serif; font-weight:800;
+    font-size:clamp(80px, 10.5vw, 132px); line-height:.92; letter-spacing:-.045em;
+    font-variant-numeric:tabular-nums; color:var(--win);
+  }
+  .monument sup { font-size:.32em; font-weight:600; letter-spacing:-.02em; vertical-align:.9em; margin-right:.06em; }
+  .standfirst { font-size:16px; font-style:italic; color:var(--ink-2); line-height:1.55; margin-top:18px; max-width:46ch; }
+  .standfirst b { font-family:'Space Mono',monospace; font-style:normal; font-size:13px; color:var(--ink); font-weight:700; }
+
+  .hero-stats { display:grid; grid-template-columns:1fr 1fr; align-content:start; }
+  .hero-stat { padding:14px 0 16px; border-bottom:1px solid var(--rule-soft); }
+  .hero-stat:nth-child(odd) { padding-right:28px; border-right:1px solid var(--rule-soft); }
+  .hero-stat:nth-child(even) { padding-left:28px; }
+  .hero-stat:nth-last-child(-n+2) { border-bottom:none; }
+  .hero-stat .v { font-family:'Bricolage Grotesque',sans-serif; font-size:30px; font-weight:700; letter-spacing:-.02em; margin-top:8px; font-variant-numeric:tabular-nums; }
+  .hero-stat .d { font-size:12px; color:var(--ink-3); margin-top:3px; }
+  .hero-stat .d .up { color:var(--win); } .hero-stat .d .down { color:var(--loss); }
+
+  /* sections */
+  section { padding:32px 0; border-bottom:1px solid var(--rule); }
+  .sec-head { display:flex; align-items:baseline; gap:16px; margin-bottom:22px; }
+  .sec-head h2 { font-family:'Bricolage Grotesque',sans-serif; font-size:21px; font-weight:700; letter-spacing:-.02em; }
+  .sec-head .meta { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); margin-left:auto; }
+
+  .two-col { display:grid; grid-template-columns:7fr 5fr; gap:48px; }
+  .chart svg { width:100%; height:220px; display:block; }
+
+  /* hud list (editorial style) */
+  .hud-line { display:flex; align-items:baseline; gap:14px; padding:12px 0; border-bottom:1px solid var(--rule-soft); }
+  .hud-line:last-child { border-bottom:none; }
+  .hud-line .name { font-family:'Space Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.14em; color:var(--ink-2); width:88px; }
+  .hud-line .val { font-family:'Bricolage Grotesque',sans-serif; font-size:22px; font-weight:700; font-variant-numeric:tabular-nums; width:72px; }
+  .hud-line .range { flex:1; font-size:12.5px; color:var(--ink-3); }
+  .hud-line .flag { font-family:'Space Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.1em; }
+  .flag.ok { color:var(--win); } .flag.off { color:var(--warn); }
+
+  /* leaks as numbered editorial entries */
+  .leak { display:grid; grid-template-columns:48px 1fr auto; gap:20px; padding:18px 0; border-bottom:1px solid var(--rule-soft); align-items:baseline; }
+  .leak:last-child { border-bottom:none; }
+  .leak .idx { font-family:'Bricolage Grotesque',sans-serif; font-size:28px; font-weight:800; color:var(--ink-3); letter-spacing:-.03em; }
+  .leak h3 { font-family:'Bricolage Grotesque',sans-serif; font-size:17px; font-weight:700; letter-spacing:-.01em; }
+  .leak p { font-size:13px; color:var(--ink-2); margin-top:4px; }
+  .leak p .sev-high { color:var(--loss); } .leak p .sev-med { color:var(--warn); }
+  .leak .cost { font-family:'Space Mono',monospace; font-size:15px; font-weight:700; color:var(--loss); font-variant-numeric:tabular-nums; }
+
+  /* sessions table, ledger style */
+  table { width:100%; border-collapse:collapse; }
+  th { font-family:'Space Mono',monospace; font-size:9.5px; text-transform:uppercase; letter-spacing:.16em; color:var(--ink-3); font-weight:400; text-align:left; padding:0 12px 12px 0; border-bottom:1px solid var(--ink); }
+  td { padding:13px 12px 13px 0; border-bottom:1px solid var(--rule-soft); font-size:13.5px; color:var(--ink-2); font-variant-numeric:tabular-nums; }
+  td.date { font-family:'Space Mono',monospace; font-size:12px; color:var(--ink); }
+  td.result { font-family:'Bricolage Grotesque',sans-serif; font-size:17px; font-weight:700; }
+  .result.win { color:var(--win); } .result.loss { color:var(--loss); }
+  .right { text-align:right; padding-right:0; }
+  tr:hover td { color:var(--ink); }
+
+  footer { padding:28px 0 56px; }
+  .verdict-line { display:flex; align-items:baseline; gap:18px; }
+  .verdict-line .grade { font-family:'Bricolage Grotesque',sans-serif; font-size:44px; font-weight:800; letter-spacing:-.03em; }
+  .verdict-line p { font-size:15px; font-style:italic; color:var(--ink-2); max-width:60ch; }
+</style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="wrap">
+      <div class="masthead-top">
+        <h1>The Ledger <span>/ Poker Analyzer</span></h1>
+        <div class="dateline num">Vol. 1 · scorza23 · PokerStars MTT · Tue Jun 9 2026 · 1,247 entries</div>
+      </div>
+      <nav class="masthead-nav">
+        <a class="active" href="#">Desk</a><a href="#">Hands</a><a href="#">Sessions</a>
+        <a href="#">Leaks</a><a href="#">Ranges</a><a href="#">Villains</a>
+        <span class="import mono" style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;">Import hands</span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="hero">
+      <div>
+        <div class="kicker">Lifetime result — all stakes, all time</div>
+        <div class="monument num"><sup>$</sup>24,310</div>
+        <p class="standfirst">Across <b>1,247</b> tournaments at an average buy-in of <b>$11.20</b>, the bankroll
+        compounds at <b>18.4%</b> return — solid preflop discipline, with the rivers quietly taxing the result.</p>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="kicker">ROI</div><div class="v num">18.4%</div><div class="d num"><span class="up">↑ 2.1</span> last 30d</div></div>
+        <div class="hero-stat"><div class="kicker">ITM</div><div class="v num">21.3%</div><div class="d num"><span class="down">↓ 0.8</span> last 30d</div></div>
+        <div class="hero-stat"><div class="kicker">Tournaments</div><div class="v num">1,247</div><div class="d num">266 cashes</div></div>
+        <div class="hero-stat"><div class="kicker">Avg buy-in</div><div class="v num">$11.20</div><div class="d">micro–low</div></div>
+      </div>
+    </div>
+
+    <section>
+      <div class="two-col">
+        <div>
+          <div class="sec-head"><h2>The Arc</h2><span class="meta num">cumulative profit</span></div>
+          <div class="chart">
+            <svg viewBox="0 0 600 220" preserveAspectRatio="none">
+              <line x1="0" y1="210" x2="600" y2="210" stroke="#2a2823" stroke-width="1"/>
+              <path d="M0,210 L31,199 L63,202 L94,188 L126,192 L157,178 L189,162 L220,168 L252,147 L284,128 L315,135 L347,105 L378,83 L410,91 L441,61 L473,37 L504,48 L536,17 L567,5 L599,0"
+                fill="none" stroke="#ece9e2" stroke-width="1.75"/>
+              <circle cx="599" cy="0" r="3.5" fill="#7dc97f"/>
+              <text x="540" y="14" font-family="Space Mono" font-size="10" fill="#7dc97f" letter-spacing="1">NOW</text>
+            </svg>
+          </div>
+        </div>
+        <div>
+          <div class="sec-head"><h2>Preflop Profile</h2><span class="meta">vs target</span></div>
+          <div class="hud-line"><span class="name">VPIP</span><span class="val num">23.1</span><span class="range num">target 22–26</span><span class="flag ok">on target</span></div>
+          <div class="hud-line"><span class="name">PFR</span><span class="val num">18.2</span><span class="range num">target 16–20</span><span class="flag ok">on target</span></div>
+          <div class="hud-line"><span class="name">3-Bet</span><span class="val num">7.4</span><span class="range num">target 6–9</span><span class="flag ok">on target</span></div>
+          <div class="hud-line"><span class="name">BTN RFI</span><span class="val num">38</span><span class="range num">target 28–32</span><span class="flag off">too wide</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="two-col">
+        <div>
+          <div class="sec-head"><h2>The Leak Report</h2><span class="meta num">est. cost, all time</span></div>
+          <div class="leak">
+            <div class="idx num">01</div>
+            <div><h3>Button opens running wide</h3><p><span class="sev-high">High</span> · opening 38% of buttons against a 30% target — the single most expensive habit in the database.</p></div>
+            <div class="cost num">−$1,840</div>
+          </div>
+          <div class="leak">
+            <div class="idx num">02</div>
+            <div><h3>Flatting 3-bets out of position</h3><p><span class="sev-med">Medium</span> · calling 14% vs an 8% target; most of these spots play themselves to a loss.</p></div>
+            <div class="cost num">−$920</div>
+          </div>
+          <div class="leak">
+            <div class="idx num">03</div>
+            <div><h3>Overfolding rivers to pot-size bets</h3><p><span class="sev-med">Medium</span> · folding 71% vs 62% target — bluff-catchers are being surrendered.</p></div>
+            <div class="cost num">−$610</div>
+          </div>
+        </div>
+        <div>
+          <div class="sec-head"><h2>Session Record</h2><span class="meta">last five</span></div>
+          <table>
+            <thead><tr><th>Date</th><th>Games</th><th>Duration</th><th class="right">GTO</th><th class="right">Result</th></tr></thead>
+            <tbody>
+              <tr><td class="date">JUN 07</td><td>14 MTTs</td><td>6h 12m</td><td class="right">87%</td><td class="result win right">+$642</td></tr>
+              <tr><td class="date">JUN 05</td><td>9 MTTs</td><td>3h 45m</td><td class="right">82%</td><td class="result loss right">−$210</td></tr>
+              <tr><td class="date">JUN 03</td><td>11 MTTs</td><td>5h 02m</td><td class="right">91%</td><td class="result win right">+$1,204</td></tr>
+              <tr><td class="date">JUN 01</td><td>16 MTTs</td><td>7h 18m</td><td class="right">79%</td><td class="result loss right">−$388</td></tr>
+              <tr><td class="date">MAY 30</td><td>8 MTTs</td><td>3h 21m</td><td class="right">85%</td><td class="result win right">+$95</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="kicker" style="margin-bottom:10px;">The 30-second verdict</div>
+      <div class="verdict-line">
+        <span class="grade">B+</span>
+        <p>A disciplined preflop game funding a small river tax. Close the button leak and the
+        grade — and roughly $1,800 — comes back.</p>
+      </div>
+    </footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Poker Analyzer — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  /* ============ TOKENS (mirror of tokens.css) ============ */
+  :root {
+    --ink: #0a0a0c; --ink-2: #111114; --ink-3: #16161a; --input: #131316;
+    --hairline: rgba(255,255,255,0.07); --hairline-strong: rgba(255,255,255,0.16);
+    --fg: #f2f2f4; --fg-muted: #8b8d94; --fg-dim: #56585f;
+    --accent: #C9CDD6; --accent-soft: rgba(201,205,214,0.07); --accent-line: rgba(201,205,214,0.34);
+    --money: #34D98C; --money-soft: rgba(52,217,140,0.10); --money-line: rgba(52,217,140,0.40);
+    --loss: #FF5468; --loss-soft: rgba(255,84,104,0.10); --loss-line: rgba(255,84,104,0.40);
+    --warn: #A5697B; --warn-soft: rgba(165,105,123,0.08); --warn-line: rgba(165,105,123,0.30);
+    --sig: #9B6CFF; --sig-soft: rgba(155,108,255,0.10); --sig-glow: rgba(155,108,255,0.30); --sig-line: rgba(155,108,255,0.46);
+    --felt: #121215; --felt-rail: #1c1c21;
+    --display: 'Bricolage Grotesque', system-ui, sans-serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --r-xs: 3px; --r-sm: 6px; --r-md: 8px; --r-lg: 10px;
+    --shadow-float: 0 10px 36px rgba(0,0,0,0.45);
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+  body {
+    background: var(--ink); color: var(--fg); font-family: var(--sans); font-size: 14px;
+    line-height: 1.55; cursor: default;
+  }
+  ::selection { background: var(--sig-glow); color: var(--fg); }
+
+  /* dots background (the decided one) */
+  .dots {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.035) 1px, transparent 1.5px);
+    background-size: 28px 28px;
+    mask-image: radial-gradient(ellipse 95% 80% at 50% 0%, #000 25%, transparent 100%);
+  }
+  /* the halo, live */
+  .halo {
+    position: fixed; top: 0; left: 0; width: 10px; height: 10px; border-radius: 50%;
+    border: 1px solid var(--sig-line); background: var(--sig-soft);
+    pointer-events: none; z-index: 9000; transform: translate(-50%,-50%);
+    opacity: 0; transition: opacity .25s;
+  }
+
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 64px 32px 96px; position: relative; z-index: 1; }
+
+  .kick {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--fg-muted); display: block;
+  }
+  .kick.sig { color: var(--sig); }
+  h1 { font-family: var(--display); font-weight: 800; font-size: 44px; letter-spacing: -0.04em; line-height: 1; margin: 10px 0 14px; }
+  .lede { color: var(--fg-muted); max-width: 70ch; }
+  .lede b { color: var(--fg); font-weight: 600; }
+  .meta { font-family: var(--mono); font-size: 11px; color: var(--fg-dim); margin-top: 18px; }
+
+  section { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--hairline); }
+  h2 { font-family: var(--display); font-weight: 700; font-size: 22px; letter-spacing: -0.02em; margin: 6px 0 4px; }
+  .rule-note { color: var(--fg-muted); font-size: 13px; max-width: 72ch; margin-bottom: 22px; }
+  .rule-note em { color: var(--fg); font-style: normal; font-weight: 600; }
+
+  /* swatches */
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .swatch { background: var(--ink-2); border-radius: var(--r-md); overflow: hidden; }
+  .swatch .chip { height: 52px; }
+  .swatch .info { padding: 9px 11px; }
+  .swatch .nm { font-family: var(--mono); font-size: 11px; font-weight: 700; }
+  .swatch .hx { font-family: var(--mono); font-size: 10px; color: var(--fg-dim); }
+  .swatch .role { font-size: 11px; color: var(--fg-muted); margin-top: 3px; line-height: 1.4; }
+
+  /* two lists */
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .dolist { background: var(--ink-2); border-radius: var(--r-md); padding: 16px 18px; }
+  .dolist .t { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 10px; }
+  .dolist.ok .t { color: var(--money); }
+  .dolist.no .t { color: var(--loss); }
+  .dolist li { margin-left: 16px; font-size: 13px; color: var(--fg-muted); padding: 2px 0; }
+
+  /* type specimens */
+  .monument { font-family: var(--display); font-weight: 800; font-size: clamp(56px, 8vw, 96px); line-height: 0.85; letter-spacing: -0.05em; }
+  .monument .cents { font-size: 0.5em; color: var(--money); }
+  .monument .sign { color: var(--fg-muted); }
+  .spec-row { display: flex; align-items: baseline; gap: 18px; padding: 12px 0; border-top: 1px solid var(--hairline); }
+  .spec-row:first-of-type { border-top: 0; }
+  .spec-row .lbl { font-family: var(--mono); font-size: 10px; color: var(--fg-dim); width: 200px; flex: none; letter-spacing: 0.08em; text-transform: uppercase; }
+  .nums { font-family: var(--mono); font-size: 14px; }
+
+  /* surfaces demo */
+  .surf-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .compartment { background: var(--ink-2); border-radius: var(--r-md); padding: 16px; }
+  .compartment.hov:hover { background: var(--ink-3); }
+  .compartment .inner-rule { border-top: 1px solid var(--hairline); margin-top: 12px; padding-top: 12px; font-size: 12px; color: var(--fg-muted); }
+  .jewel {
+    background: linear-gradient(160deg, var(--sig-soft) 0%, rgba(52,217,140,0.05) 55%, transparent 100%);
+    border: 1px solid var(--hairline-strong); border-radius: var(--r-md); padding: 16px;
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 0 28px rgba(52,217,140,0.11), inset 0 1px 0 rgba(255,255,255,0.06);
+    position: relative; overflow: hidden;
+  }
+  .jewel::after { content: ''; position: absolute; top: -40%; right: -30%; width: 80%; height: 80%;
+    background: radial-gradient(circle, rgba(52,217,140,0.13) 0%, transparent 70%); pointer-events: none; }
+  .jewel .big { font-family: var(--display); font-weight: 800; font-size: 22px; letter-spacing: -0.02em; color: var(--money); text-shadow: 0 0 20px rgba(52,217,140,0.40); }
+
+  /* matrix demo */
+  .mxrow { display: grid; grid-template-columns: repeat(8, 56px); gap: 3px; }
+  .mc {
+    aspect-ratio: 1; border-radius: 3px; display: grid; place-items: center;
+    font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--fg-dim);
+    border: 1px solid transparent;
+  }
+  .mc.open { background: color-mix(in srgb, #C9CDD6 26%, #111114); border-color: var(--accent-line); color: var(--fg); }
+  .mc.mix { background: linear-gradient(135deg, color-mix(in srgb, #C9CDD6 26%, #111114) 0% 50%, rgba(255,255,255,0.02) 50% 100%); border: 1px dashed var(--accent-line); color: var(--fg-muted); }
+  .mc.dev { background: var(--loss-soft); border-color: var(--loss); color: var(--loss); animation: devpulse 2.4s ease-in-out infinite; }
+  @keyframes devpulse { 0%,100% { box-shadow: 0 0 0 0 var(--loss-line); } 50% { box-shadow: 0 0 0 3px transparent; } }
+  .mc.fold { background: rgba(255,255,255,0.015); }
+  .mxleg { display: flex; gap: 18px; margin-top: 12px; font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-muted); }
+
+  /* controls */
+  .ctl-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .btn {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--fg); background: var(--input); border: 1px solid var(--hairline-strong);
+    padding: 8px 16px; border-radius: var(--r-sm); cursor: pointer; transition: all .16s;
+  }
+  .btn:hover { border-color: var(--hairline-strong); background: var(--ink-3); }
+  .btn.primary { background: var(--fg); color: var(--ink); border-color: var(--fg); }
+  .btn.primary:hover { filter: brightness(0.92); }
+  .btn .arrow { color: var(--sig); }
+  .tabs { display: flex; gap: 2px; background: var(--input); border: 1px solid var(--hairline); border-radius: var(--r-sm); padding: 2px; }
+  .tabs button { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-muted); background: transparent; border: 0; padding: 5px 12px; border-radius: var(--r-xs); cursor: pointer; }
+  .tabs button.on { color: var(--fg); box-shadow: inset 0 -2px 0 var(--sig); }
+  .navdemo { display: flex; flex-direction: column; gap: 2px; width: 190px; }
+  .navdemo a { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-muted); padding: 7px 12px; border-radius: var(--r-sm); cursor: pointer; }
+  .navdemo a.on { color: var(--fg); background: rgba(255,255,255,0.045); box-shadow: inset 2px 0 0 var(--sig); }
+  .chipset { display: flex; gap: 10px; flex-wrap: wrap; }
+  .schip { font-family: var(--mono); font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 99px; }
+  .schip.money { background: var(--money-soft); border: 1px solid var(--money-line); color: var(--money); }
+  .schip.loss { background: var(--loss-soft); border: 1px solid var(--loss-line); color: var(--loss); }
+  .schip.warn { background: var(--warn-soft); border: 1px solid var(--warn-line); color: var(--warn); }
+  .pulse-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--sig); animation: wp 2s ease-out infinite; display: inline-block; margin-right: 8px; }
+  @keyframes wp { 0% { box-shadow: 0 0 0 0 var(--sig-glow); } 70% { box-shadow: 0 0 0 8px rgba(0,0,0,0); } 100% { box-shadow: 0 0 0 0 rgba(0,0,0,0); } }
+
+  /* motion demo */
+  .reveal { opacity: 0; transform: translateY(12px); animation: rise .6s cubic-bezier(.2,.7,.2,1) forwards; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  .d1 { animation-delay: .05s; } .d2 { animation-delay: .15s; } .d3 { animation-delay: .25s; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { animation: none; opacity: 1; transform: none; }
+    .mc.dev, .pulse-dot { animation: none; }
+  }
+
+  footer { margin-top: 64px; padding-top: 22px; border-top: 1px solid var(--hairline); font-family: var(--mono); font-size: 11px; color: var(--fg-dim); line-height: 2; }
+  footer b { color: var(--fg-muted); font-weight: 400; }
+</style>
+</head>
+<body>
+<div class="dots"></div>
+<div class="halo" id="halo"></div>
+
+<div class="wrap">
+
+  <header class="reveal d1">
+    <span class="kick sig">Poker Analyzer · Design System · v1</span>
+    <h1>The instrument.</h1>
+    <p class="lede">A precision instrument for poker study. Quiet near-black chassis, silver type, structure drawn
+    with hairlines and tone shifts instead of boxes and glow. <b>Color is meaning</b>: green is money won, red is
+    money lost, amber is caution, and violet is <b>you</b> — your cursor, your focus, your position in the app.
+    One jewel per screen may shine. The poker objects themselves are the visual signature.</p>
+    <p class="meta">Ratified 2026-06-09 · scorza23 · contracts: DECISIONS.md · DESIGN.md · tokens.css · pixel ref: Command Desk R.html</p>
+  </header>
+
+  <!-- COLOR -->
+  <section class="reveal d2">
+    <span class="kick">01 · Foundations</span>
+    <h2>Color</h2>
+    <p class="rule-note">One palette. Semantics are deliberately more saturated than the chassis — they pop
+    <em>because</em> everything else stays quiet. Soft (≈10% fill) and line (≈40% stroke) variants exist for every
+    semantic hue; never hand-roll alphas.</p>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="chip" style="background:#0a0a0c;border-bottom:1px solid var(--hairline)"></div><div class="info"><div class="nm">ink</div><div class="hx">#0A0A0C</div><div class="role">app canvas</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#111114"></div><div class="info"><div class="nm">ink-2</div><div class="hx">#111114</div><div class="role">compartment tone</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#16161a"></div><div class="info"><div class="nm">ink-3</div><div class="hx">#16161A</div><div class="role">hover tone</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#C9CDD6"></div><div class="info"><div class="nm">accent</div><div class="hx">#C9CDD6</div><div class="role">silver · interactive at rest</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#34D98C"></div><div class="info"><div class="nm">money</div><div class="hx">#34D98C</div><div class="role">positive — ALWAYS green</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#FF5468"></div><div class="info"><div class="nm">loss</div><div class="hx">#FF5468</div><div class="role">negative · critical leaks</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#A5697B"></div><div class="info"><div class="nm">warn</div><div class="hx">#A5697B</div><div class="role">loss a full stop down · severity is intensity, not hue</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#9B6CFF"></div><div class="info"><div class="nm">sig</div><div class="hx">#9B6CFF</div><div class="role">the signature — see 02</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#121215;border-bottom:1px solid var(--hairline)"></div><div class="info"><div class="nm">felt</div><div class="hx">#121215</div><div class="role">poker surfaces · rail #1C1C21</div></div></div>
+      <div class="swatch"><div class="chip" style="background:linear-gradient(90deg,#f2f2f4 0 25%,#FF5468 25% 50%,#5AA2FF 50% 75%,#34D98C 75%)"></div><div class="info"><div class="nm">deck</div><div class="hx">♠ ♥ ♦ ♣</div><div class="role">4-color deck system</div></div></div>
+    </div>
+  </section>
+
+  <!-- SIGNATURE -->
+  <section class="reveal d3">
+    <span class="kick">02 · Identity</span>
+    <h2>The violet signature</h2>
+    <p class="rule-note">Violet marks <em>user presence and wayfinding</em> — where you are, where you act. It never
+    decorates. The cursor halo on this very page is live: 10px, the identity element, with a behavioral roadmap
+    (magnetic, expands over data, snaps to matrix cells).</p>
+    <div class="cols">
+      <div class="dolist ok"><div class="t">Violet lives here</div>
+        <ul><li>cursor halo · text selection (try selecting this)</li><li>focus rings</li><li><span class="pulse-dot"></span>live pulse</li><li>active nav tick · active tab underline</li><li>breadcrumb current · CTA arrows · loader</li></ul>
+      </div>
+      <div class="dolist no"><div class="t">Violet never touches</div>
+        <ul><li>surfaces, panels, borders at rest</li><li>chart lines, data values, the 13×13 matrix</li><li>body text, icons, decoration of any kind</li><li>gradients (the slop signature)</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- TYPE -->
+  <section>
+    <span class="kick">03 · Foundations</span>
+    <h2>Typography — hybrid voice</h2>
+    <p class="rule-note"><em>Bricolage Grotesque</em> for display (the voice), <em>Inter</em> for body (invisible),
+    <em>JetBrains Mono</em> for every numeral, kicker and data cell. Treatment carries the identity: huge
+    display-to-label contrast, tight display tracking, uppercase mono kickers, tabular numerals everywhere.</p>
+    <div class="monument"><span class="sign">+</span>$24,310<span class="cents">.85</span></div>
+    <div style="margin-top:26px">
+      <div class="spec-row"><span class="lbl">display · Bricolage 800</span><span style="font-family:var(--display);font-weight:800;font-size:28px;letter-spacing:-0.03em">Command Desk — the 30-second answer</span></div>
+      <div class="spec-row"><span class="lbl">body · Inter 400 · 14px</span><span>Your stake-readiness verdict, the one leak costing you the most, read straight from 10,716 imported hands.</span></div>
+      <div class="spec-row"><span class="lbl">kicker · JetBrains 10px</span><span class="kick" style="display:inline">Lifetime net profit · 250 tournaments</span></div>
+      <div class="spec-row"><span class="lbl">data · tabular nums</span><span class="nums">VPIP 21.8 · PFR 17.2 · 3B 8.4 · +8.24bb/100 · 10,716</span></div>
+    </div>
+  </section>
+
+  <!-- SURFACES -->
+  <section>
+    <span class="kick">04 · Structure</span>
+    <h2>Surfaces — tone shifts, hairlines, one jewel</h2>
+    <p class="rule-note">Compartments are tone shifts with <em>no borders, no glass, no glow</em>. Internal structure
+    is 1px hairlines. Exactly <em>one jewel per screen</em> may keep glass + glow — on the Desk it's lifetime profit,
+    glowing green because it's money.</p>
+    <div class="surf-grid">
+      <div class="compartment hov"><span class="kick">Compartment</span><div style="margin-top:6px;font-weight:600">Tone shift, radius 8px</div><div class="inner-rule">Internal hairline rule — not a box.</div></div>
+      <div class="compartment"><span class="kick">Hover tone</span><div style="margin-top:6px;font-weight:600">ink-2 → ink-3</div><div class="inner-rule">No shadow lift. No glow. Ever.</div></div>
+      <div class="jewel"><span class="kick">The jewel · budget = 1</span><div class="big" style="margin-top:6px">+$388.85</div><div style="font-size:11px;color:var(--fg-muted);font-family:var(--mono);margin-top:4px">+141.4% ROI · 250 tourneys</div></div>
+    </div>
+  </section>
+
+  <!-- MATRIX -->
+  <section>
+    <span class="kick">05 · Poker surfaces</span>
+    <h2>Range matrix — frequency, drawn literally</h2>
+    <p class="rule-note">Yellow purged (warn belongs to alerts). Violet refused (see 02). <em>Mixed is a frequency,
+    not a category</em> — the same action color at half fill, dashed border. In-range vs fold reads at a glance.</p>
+    <div class="mxrow">
+      <div class="mc open">AA</div><div class="mc open">AKs</div><div class="mc mix">A6o</div>
+      <div class="mc fold">A5o</div><div class="mc dev">K7s</div><div class="mc dev">Q5s</div>
+      <div class="mc mix">T8o</div><div class="mc fold">72o</div>
+    </div>
+    <div class="mxleg">
+      <span><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:color-mix(in srgb,#C9CDD6 26%,#111114);border:1px solid var(--accent-line);vertical-align:-1px"></span> in range</span>
+      <span><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:linear-gradient(135deg,color-mix(in srgb,#C9CDD6 26%,#111114) 0% 50%,rgba(255,255,255,0.02) 50% 100%);border:1px dashed var(--accent-line);vertical-align:-1px"></span> mixed (half fill)</span>
+      <span><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--loss-soft);border:1px solid var(--loss);vertical-align:-1px"></span> leaking</span>
+      <span><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:rgba(255,255,255,0.015);border:1px solid var(--hairline);vertical-align:-1px"></span> fold</span>
+    </div>
+  </section>
+
+  <!-- CONTROLS -->
+  <section>
+    <span class="kick">06 · Components</span>
+    <h2>Controls &amp; semantics</h2>
+    <p class="rule-note">Primary action is white-on-ink (no colored buttons). The arrow glyph carries the signature.
+    Active states are marked by violet ticks, not color floods. Semantic chips use soft + line pairs.</p>
+    <div class="ctl-row" style="margin-bottom:18px">
+      <button class="btn">Secondary</button>
+      <button class="btn primary">Import hands <span class="arrow" style="color:inherit">→</span></button>
+      <button class="btn">Review in range lab <span class="arrow">→</span></button>
+      <div class="tabs"><button class="on">Lifetime</button><button>30d</button><button>7d</button></div>
+    </div>
+    <div class="ctl-row">
+      <div class="navdemo"><a class="on">Dashboard</a><a>Hands</a><a>Leaks</a></div>
+      <div class="chipset" style="flex-direction:column;align-items:flex-start;gap:8px">
+        <span class="schip money">+$642 · won</span>
+        <span class="schip loss">−28bb/100 · leak</span>
+        <span class="schip warn">REVIEW · off-tune</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOTION -->
+  <section>
+    <span class="kick">07 · Motion</span>
+    <h2>Five moments, all functional</h2>
+    <p class="rule-note">Engine: <em>Motion</em> (already in the repo) + plain CSS for micro. GSAP bricks are translated
+    on port. Budget per screen: entry stagger (this page used it) · hero count-up (<span class="nums" id="countDemo">0</span> —
+    live) · chart draw-in · hover micro · one looping pulse. Everything respects <span class="nums">prefers-reduced-motion</span>.</p>
+  </section>
+
+  <footer>
+    <b>files</b> · DECISIONS.md (what was decided and what was rejected) · DESIGN.md (the contract) ·
+    tokens.css (Tailwind 4 @theme) · Command Desk R.html (pixel reference)<br/>
+    <b>destination</b> · poker repo → docs/design/ + src/styles/tokens.css · built in Claude Code ·
+    the lab (poker 2 try 4) is archive — quarry, don't extend
+  </footer>
+</div>
+
+<script>
+  // live halo (the identity element, spec'd in 02)
+  const halo = document.getElementById('halo');
+  let hx = 0, hy = 0, tx = 0, ty = 0, shown = false;
+  addEventListener('mousemove', e => {
+    tx = e.clientX; ty = e.clientY;
+    if (!shown) { halo.style.opacity = 1; shown = true; }
+  });
+  (function follow() {
+    hx += (tx - hx) * 0.22; hy += (ty - hy) * 0.22;
+    halo.style.transform = 'translate(' + (hx - 5) + 'px,' + (hy - 5) + 'px)';
+    requestAnimationFrame(follow);
+  })();
+
+  // count-up demo
+  const el = document.getElementById('countDemo');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) { el.textContent = '24,310'; }
+  else {
+    let s; const dur = 1400;
+    const ease = t => 1 - Math.pow(1 - t, 4);
+    requestAnimationFrame(function f(ts) {
+      if (!s) s = ts;
+      const t = Math.min((ts - s) / dur, 1);
+      el.textContent = Math.round(24310 * ease(t)).toLocaleString('en-US');
+      if (t < 1) requestAnimationFrame(f);
+    });
+  }
+</script>
+</body>
+</html>

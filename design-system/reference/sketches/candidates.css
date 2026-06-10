@@ -1,0 +1,208 @@
+/* =========================================================
+   PALETTE CANDIDATES — direction decision overlay
+   3 candidates × dark/light. Two-attribute selectors so they
+   always win over theme.css's body[data-color] palettes.
+   Keys: 1/2/3 candidate · L light/dark · O orbs · F halo
+   Shared decisions baked in (from tokens.css philosophy):
+   - money-positive is ALWAYS green (--accent-2 family)
+   - no gradients as decoration; accent is one hue, committed
+   ========================================================= */
+
+/* ============ CANDIDATE 1 — ULTRAVIOLET, OWNED ============
+   Violet as ENVIRONMENT (surfaces, borders, atmosphere),
+   not as gradient paint. One violet accent doing real work.
+   The de-slopped version of the one you keep coming back to. */
+body[data-cand="violet"][data-mode="dark"] {
+  --bg: #08060f; --bg-2: #0f0b1d;
+  --bg-card: rgba(21, 16, 40, 0.66); --bg-card-hover: rgba(30, 23, 56, 0.78);
+  --bg-input: #151028;
+  --border: rgba(155, 120, 255, 0.13); --border-strong: rgba(155, 120, 255, 0.30);
+  --accent: #9B6CFF; --accent-2: #2FE6A0;
+  --accent-soft: rgba(155, 108, 255, 0.10); --accent-glow: rgba(155, 108, 255, 0.30);
+  --accent-line: rgba(155, 108, 255, 0.44);
+  --loss: #FF5C7A; --loss-soft: rgba(255, 92, 122, 0.10); --loss-line: rgba(255, 92, 122, 0.40);
+  --warn: #F2B33D; --warn-soft: rgba(242, 179, 61, 0.12); --warn-line: rgba(242, 179, 61, 0.40);
+  --c-chip-1: #6A3FD6; --c-chip-2: #2FE6A0; --c-chip-3: #FF5C7A;
+  --fg: #f1edfc; --fg-muted: #9489b8; --fg-dim: #5e5582;
+  --felt: #130e24; --felt-rail: #1d1635;
+  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+body[data-cand="violet"][data-mode="light"] {
+  --bg: #f6f4fb; --bg-2: #edeaf7;
+  --bg-card: rgba(255, 255, 255, 0.80); --bg-card-hover: rgba(255, 255, 255, 0.95);
+  --bg-input: #ffffff;
+  --border: rgba(60, 35, 130, 0.10); --border-strong: rgba(60, 35, 130, 0.24);
+  --accent: #6A3FD6; --accent-2: #0C9F6E;
+  --accent-soft: rgba(106, 63, 214, 0.07); --accent-glow: rgba(106, 63, 214, 0.16);
+  --accent-line: rgba(106, 63, 214, 0.38);
+  --loss: #D4395E; --loss-soft: rgba(212, 57, 94, 0.08); --loss-line: rgba(212, 57, 94, 0.34);
+  --warn: #A87410; --warn-soft: rgba(168, 116, 16, 0.10); --warn-line: rgba(168, 116, 16, 0.34);
+  --c-chip-1: #6A3FD6; --c-chip-2: #0C9F6E; --c-chip-3: #D4395E;
+  --fg: #201738; --fg-muted: #6a6190; --fg-dim: #a39cc2;
+  --felt: #e8e3f5; --felt-rail: #d9d1ec;
+  --shadow-card: 0 8px 28px rgba(50, 25, 110, 0.10);
+}
+
+/* ============ CANDIDATE 2 — INK MONO ============
+   The sober one. Neutral near-black, white type, SILVER as the
+   interactive accent. Chromatic color is reserved exclusively
+   for meaning: money green, loss coral, warn gold (v7's softened
+   semantics). Identity comes from type + density, not hue. */
+body[data-cand="ink"][data-mode="dark"] {
+  --bg: #0a0a0c; --bg-2: #111114;
+  --bg-card: rgba(22, 22, 26, 0.66); --bg-card-hover: rgba(30, 30, 36, 0.78);
+  --bg-input: #131316;
+  --border: rgba(255, 255, 255, 0.07); --border-strong: rgba(255, 255, 255, 0.16);
+  --accent: #C9CDD6; --accent-2: #6DBF8D;
+  --accent-soft: rgba(201, 205, 214, 0.07); --accent-glow: rgba(201, 205, 214, 0.18);
+  --accent-line: rgba(201, 205, 214, 0.34);
+  --loss: #E8807A; --loss-soft: rgba(232, 128, 122, 0.09); --loss-line: rgba(232, 128, 122, 0.36);
+  --warn: #D9A85A; --warn-soft: rgba(217, 168, 90, 0.10); --warn-line: rgba(217, 168, 90, 0.36);
+  --c-chip-1: #C9CDD6; --c-chip-2: #6DBF8D; --c-chip-3: #E8807A;
+  --fg: #f2f2f4; --fg-muted: #8b8d94; --fg-dim: #56585f;
+  --felt: #121215; --felt-rail: #1c1c21;
+  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+body[data-cand="ink"][data-mode="light"] {
+  --bg: #f7f7f8; --bg-2: #ededef;
+  --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(255, 255, 255, 0.98);
+  --bg-input: #ffffff;
+  --border: rgba(20, 20, 30, 0.09); --border-strong: rgba(20, 20, 30, 0.22);
+  --accent: #3A3D45; --accent-2: #2E8C5A;
+  --accent-soft: rgba(58, 61, 69, 0.06); --accent-glow: rgba(58, 61, 69, 0.13);
+  --accent-line: rgba(58, 61, 69, 0.32);
+  --loss: #C25650; --loss-soft: rgba(194, 86, 80, 0.08); --loss-line: rgba(194, 86, 80, 0.32);
+  --warn: #9A7B2E; --warn-soft: rgba(154, 123, 46, 0.10); --warn-line: rgba(154, 123, 46, 0.32);
+  --c-chip-1: #3A3D45; --c-chip-2: #2E8C5A; --c-chip-3: #C25650;
+  --fg: #17181c; --fg-muted: #66686f; --fg-dim: #9b9da3;
+  --felt: #ebebee; --felt-rail: #dcdce1;
+  --shadow-card: 0 8px 28px rgba(20, 20, 40, 0.08);
+}
+
+/* ============ CANDIDATE 4 — ABYSS ============
+   Deep dark blue. Navy-ink surfaces (not gray, not black),
+   restrained cobalt accent. Reads "instrument at night". */
+body[data-cand="abyss"][data-mode="dark"] {
+  --bg: #050813; --bg-2: #0a101f;
+  --bg-card: rgba(13, 20, 38, 0.66); --bg-card-hover: rgba(19, 28, 52, 0.78);
+  --bg-input: #0d1426;
+  --border: rgba(110, 155, 255, 0.11); --border-strong: rgba(110, 155, 255, 0.26);
+  --accent: #6E9BFF; --accent-2: #34D399;
+  --accent-soft: rgba(110, 155, 255, 0.09); --accent-glow: rgba(110, 155, 255, 0.26);
+  --accent-line: rgba(110, 155, 255, 0.40);
+  --loss: #FF5470; --loss-soft: rgba(255, 84, 112, 0.10); --loss-line: rgba(255, 84, 112, 0.38);
+  --warn: #F2B33D; --warn-soft: rgba(242, 179, 61, 0.11); --warn-line: rgba(242, 179, 61, 0.38);
+  --c-chip-1: #6E9BFF; --c-chip-2: #34D399; --c-chip-3: #FF5470;
+  --fg: #eef2fb; --fg-muted: #8492b3; --fg-dim: #535e7c;
+  --felt: #0c1226; --felt-rail: #161e38;
+  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.55);
+}
+body[data-cand="abyss"][data-mode="light"] {
+  --bg: #f3f6fb; --bg-2: #e8edf6;
+  --bg-card: rgba(255, 255, 255, 0.84); --bg-card-hover: rgba(255, 255, 255, 0.97);
+  --bg-input: #ffffff;
+  --border: rgba(25, 55, 120, 0.10); --border-strong: rgba(25, 55, 120, 0.24);
+  --accent: #2563C9; --accent-2: #0C9F6E;
+  --accent-soft: rgba(37, 99, 201, 0.07); --accent-glow: rgba(37, 99, 201, 0.15);
+  --accent-line: rgba(37, 99, 201, 0.36);
+  --loss: #C73B5C; --loss-soft: rgba(199, 59, 92, 0.08); --loss-line: rgba(199, 59, 92, 0.32);
+  --warn: #97720D; --warn-soft: rgba(151, 114, 13, 0.10); --warn-line: rgba(151, 114, 13, 0.32);
+  --c-chip-1: #2563C9; --c-chip-2: #0C9F6E; --c-chip-3: #C73B5C;
+  --fg: #131c2e; --fg-muted: #5b6880; --fg-dim: #93a0b6;
+  --felt: #e4eaf4; --felt-rail: #d3dcec;
+  --shadow-card: 0 8px 28px rgba(20, 50, 110, 0.10);
+}
+
+/* ============ CANDIDATE 3 — GLACIER, REFINED ============
+   Your original obsidian/cyan identity with the neon dialed
+   from #00F0FF to a calmer instrument cyan. Coldest, most
+   "precision tool" of the three. */
+body[data-cand="glacier"][data-mode="dark"] {
+  --bg: #05070a; --bg-2: #0a0f16;
+  --bg-card: rgba(13, 18, 27, 0.66); --bg-card-hover: rgba(20, 27, 40, 0.78);
+  --bg-input: #0e131c;
+  --border: rgba(255, 255, 255, 0.06); --border-strong: rgba(255, 255, 255, 0.15);
+  --accent: #3FD3E6; --accent-2: #34E29A;
+  --accent-soft: rgba(63, 211, 230, 0.08); --accent-glow: rgba(63, 211, 230, 0.26);
+  --accent-line: rgba(63, 211, 230, 0.38);
+  --loss: #FF4069; --loss-soft: rgba(255, 64, 105, 0.10); --loss-line: rgba(255, 64, 105, 0.38);
+  --warn: #F2B33D; --warn-soft: rgba(242, 179, 61, 0.12); --warn-line: rgba(242, 179, 61, 0.40);
+  --c-chip-1: #3FD3E6; --c-chip-2: #34E29A; --c-chip-3: #FF4069;
+  --fg: #f1f5f8; --fg-muted: #8794a3; --fg-dim: #576374;
+  --felt: #0e141d; --felt-rail: #19212d;
+  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+body[data-cand="glacier"][data-mode="light"] {
+  --bg: #f4f7f9; --bg-2: #e9eff3;
+  --bg-card: rgba(255, 255, 255, 0.82); --bg-card-hover: rgba(255, 255, 255, 0.96);
+  --bg-input: #ffffff;
+  --border: rgba(15, 60, 90, 0.10); --border-strong: rgba(15, 60, 90, 0.24);
+  --accent: #0B89A8; --accent-2: #0C9F6E;
+  --accent-soft: rgba(11, 137, 168, 0.07); --accent-glow: rgba(11, 137, 168, 0.15);
+  --accent-line: rgba(11, 137, 168, 0.36);
+  --loss: #CC3357; --loss-soft: rgba(204, 51, 87, 0.08); --loss-line: rgba(204, 51, 87, 0.34);
+  --warn: #9A7B0E; --warn-soft: rgba(154, 123, 14, 0.10); --warn-line: rgba(154, 123, 14, 0.34);
+  --c-chip-1: #0B89A8; --c-chip-2: #0C9F6E; --c-chip-3: #CC3357;
+  --fg: #13212d; --fg-muted: #5d6e7d; --fg-dim: #94a4b1;
+  --felt: #e4ecf1; --felt-rail: #d3dfe7;
+  --shadow-card: 0 8px 28px rgba(20, 60, 90, 0.10);
+}
+
+/* ============ LIGHT-MODE STRUCTURAL FIXES ============ */
+body[data-mode="light"] .bg-grid {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.032) 1px, transparent 1px);
+}
+body[data-mode="light"] .cursor-follower { mix-blend-mode: multiply; }
+body[data-mode="light"] .sidebar {
+  background: linear-gradient(180deg, var(--bg-2) 0%, rgba(255, 255, 255, 0.55) 100%);
+}
+body[data-mode="light"] .monument {
+  background: linear-gradient(155deg, var(--bg-2) 0%, rgba(255, 255, 255, 0.65) 100%);
+}
+body[data-mode="light"] .loader { background: var(--bg); }
+body[data-mode="light"] .glow-orb { filter: blur(110px); }
+
+/* ============ ORB DOSAGE (key O) ============ */
+body[data-orbs="low"]  .glow-orb { opacity: 0.26; }
+body[data-orbs="low"]  .orb-3   { opacity: 0.10; }
+body[data-orbs="high"] .glow-orb { opacity: 0.78; }
+body[data-orbs="high"] .orb-3   { opacity: 0.40; }
+
+/* ============ CURSOR HALO TOGGLE (key F) ============
+   Shrunk 26px → 14px: a precise pointer companion, not a bubble.
+   Future (reinterpretation phase): behavioral halo — magnetic
+   toward actionable elements, expands over data points, snaps
+   to matrix cells. Identity through interaction, not decoration. */
+body[data-follower="off"] .cursor-follower { display: none !important; }
+.cursor-follower { width: 14px; height: 14px; }
+
+/* ============ BACKGROUND STYLE (key B) ============
+   orbs  — current glow blobs
+   dots  — the points-grid: static dot matrix, masked like the
+           old line grid (animated point-mesh = reinterp option)
+   none  — flat surface, atmosphere from palette alone */
+body[data-bg="dots"] .glow-orb { display: none; }
+body[data-bg="dots"] .bg-grid {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.055) 1px, transparent 1.5px);
+  background-size: 26px 26px;
+  mask-image: radial-gradient(ellipse 95% 80% at 50% 0%, #000 25%, transparent 100%);
+}
+body[data-bg="dots"][data-mode="light"] .bg-grid {
+  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.075) 1px, transparent 1.5px);
+}
+body[data-bg="none"] .glow-orb, body[data-bg="none"] .bg-grid { display: none; }
+
+/* ============ DECISION HUD CHIP ============ */
+.cand-hud {
+  position: fixed; left: 14px; bottom: 14px; z-index: 9500;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+  color: var(--fg-muted); background: var(--bg-2);
+  border: 1px solid var(--border-strong); border-radius: 8px;
+  padding: 8px 12px; line-height: 1.7; user-select: none;
+  box-shadow: var(--shadow-card);
+}
+.cand-hud b { color: var(--fg); font-weight: 700; }
+.cand-hud .accent { color: var(--accent); }
+.cand-hud .keys { color: var(--fg-dim); display: block; }

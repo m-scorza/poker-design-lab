@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Command Desk R — Reinterpretation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="theme.css" />
+<link rel="stylesheet" href="desk.css" />
+<link rel="stylesheet" href="reinterpretation.css" />
+</head>
+<body data-shell="sidebar" data-motion="on">
+
+<!-- LOADER -->
+<div class="loader" id="loader">
+  <div class="lwrap">
+    <div class="lkick">Poker Analyzer</div>
+    <div class="lnum" id="loaderNum">00</div>
+    <div class="lbar"><i></i></div>
+    <div class="llabel">Reading your hand histories</div>
+  </div>
+</div>
+
+<!-- BACKGROUND -->
+<div class="bg-grid"></div>
+<div class="glow-orb orb-1"></div>
+<div class="glow-orb orb-2"></div>
+<div class="glow-orb orb-3"></div>
+<div class="cursor-follower" id="cursor"></div>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="side-logo">
+      <div class="glyph">PA</div>
+      <div><h1>Poker Analyzer</h1><span class="sub">Command Desk</span></div>
+    </div>
+    <div class="side-search" id="sideSearch">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      Search hands, leaks…<span class="kbd">⌘K</span>
+    </div>
+    <nav class="side-nav">
+      <div class="nav-sep">Review</div>
+      <a class="on"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboard</a>
+      <a><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="5" width="6" height="9" rx="1"/><rect x="14" y="5" width="6" height="9" rx="1"/></svg>Hands<span class="ct">10,716</span></a>
+      <a><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l9 16H3z"/><path d="M12 9v5M12 17h.01"/></svg>Leaks<span class="ct">8</span></a>
+      <div class="nav-sep">Reports</div>
+      <a><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 7v6h-6"/></svg>Career Arc</a>
+      <a><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v16"/></svg>Sessions<span class="ct">37</span></a>
+      <a><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>Ranges</a>
+      <div class="nav-sep">Practice</div>
+      <a><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>The Arena</a>
+      <a><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM4 21v-1a6 6 0 0112 0v1"/></svg>Villains<span class="ct">44</span></a>
+    </nav>
+    <div class="side-foot">
+      <span class="kick" style="font-size:var(--t-cap)">Lifetime profit</span>
+      <div class="sf-profit" style="font-family:var(--display);font-weight:800;font-size:20px;color:var(--accent-2);letter-spacing:-0.02em">+$388.85</div>
+      <div class="ustat">+141.4% ROI · 250 tourneys</div>
+      <div class="uid" style="margin-top:8px;border-top:1px solid var(--border);padding-top:10px">
+        <div class="ava">S</div><div><div class="uname">scorza23</div><div class="ustat">Grinder · B+</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- THE WIRE -->
+    <div class="wire reveal">
+      <div class="wire-badge"><span class="pulse"></span><span class="t">THE<b>WIRE</b></span></div>
+      <div class="wire-tape"><div class="wire-track" id="wireTrack"></div></div>
+    </div>
+
+    <!-- DESK HEADER -->
+    <div class="desk-head reveal">
+      <div>
+        <div class="crumb">Desk <span>›</span> <b>Overview</b> <span>›</span> scorza23</div>
+        <h1 class="desk-title">Command Desk <span class="pnl-badge">+$388.85</span></h1>
+        <p class="desk-sub">Your stake-readiness verdict, the one leak costing you the most, and the tournament trend — read straight from 10,716 imported hands.</p>
+      </div>
+      <div class="scope">
+        <span class="lbl">Scope</span>
+        <select id="scopeSelect">
+          <option value="all">Full database</option>
+          <option value="s37">Session #37 · 05/30</option>
+          <option value="s36">Session #36 · 05/28</option>
+          <option value="s35">Session #35 · 05/25</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- GRID -->
+    <div class="desk-grid">
+
+      <!-- MONUMENT -->
+      <section class="card monument reveal">
+        <div class="mon-curve" id="monCurve"></div>
+        <div class="mon-left">
+          <span class="kick accent">Lifetime net profit · 250 tournaments</span>
+          <div class="mon-num" id="monNum"><span class="sign">+</span>$<span id="monInt">0</span><span class="cents">.85</span></div>
+          <div class="mon-verdict">You're cash positive. <em>One button deviation</em> is the whole story.</div>
+        </div>
+        <div class="mon-substats">
+          <div class="substat up"><span class="kick">Tracked ROI</span><div class="v up" id="subRoi">+0%</div><span class="sub">vs 0% breakeven</span></div>
+          <div class="substat accent"><span class="kick">ITM rate</span><div class="v accent" id="subItm">0%</div><span class="sub">vs 16% field avg</span></div>
+          <div class="substat"><span class="kick">Best cash</span><div class="v">+$22.50</div><span class="sub">1st of 89 · Oct</span></div>
+          <div class="substat"><span class="kick">Max drawdown</span><div class="v">$18.40</div><span class="sub">recovered in 11</span></div>
+        </div>
+      </section>
+
+      <!-- VERDICT (right col top) -->
+      <section class="card verdict reveal lift">
+        <span class="kick accent">The 30-second answer</span>
+        <div class="verdict-top">
+          <div class="gauge">
+            <svg width="96" height="96"><circle class="g-bg" cx="48" cy="48" r="42"/><circle class="g-fg" id="gaugeFg" cx="48" cy="48" r="42"/></svg>
+            <div class="g-center"><div class="num" id="gaugeNum">0</div><div class="den">/100</div></div>
+          </div>
+          <div>
+            <div class="verdict-reco">Move up in stakes</div>
+            <div class="verdict-conf">Confidence: High · bankroll readiness</div>
+          </div>
+        </div>
+        <div class="verdict-metrics">
+          <div class="verdict-metric"><span class="kick">Tracked ROI</span><div class="vm accent">+141.4% ROI</div></div>
+          <div class="verdict-metric"><span class="kick">Profit</span><div class="vm">+$388.85 cumulative</div></div>
+        </div>
+        <div class="verdict-blocker">
+          <span class="kick loss">Main blocker</span>
+          <div class="vb-t">BTN open range too wide</div>
+          <p>The bottom of your button range costs −28bb/100 against active blinds.</p>
+        </div>
+        <button class="verdict-fix" id="hlCta"><span class="ft">Fold K7s, Q5s and T7s on the button</span><span class="fa">→</span></button>
+      </section>
+
+      <!-- RING HUD (left col, below monument) -->
+      <section class="card reveal lift">
+        <span class="kick accent">Pre-flop telemetry · click to inspect</span>
+        <div class="hud" style="margin-top:var(--s-md)">
+          <div class="hud-rings">
+            <svg id="hudSvg" width="168" height="168"></svg>
+            <div class="hud-center"><div class="lbl" id="hudLbl">VPIP</div><div class="val" id="hudVal">21.8%</div></div>
+          </div>
+          <div class="hud-stats" id="hudStats"></div>
+        </div>
+      </section>
+
+      <!-- CHIP VOLUME (right col) -->
+      <section class="card volume reveal lift">
+        <div>
+          <span class="kick">Volume &amp; chip performance</span>
+          <div class="vol-num"><span id="volNum">+0</span> <span class="u">chips</span></div>
+          <div class="vol-win">+8.24 bb/100 win rate · 10,716 hands</div>
+        </div>
+        <div class="chips" id="chips"></div>
+      </section>
+
+      <!-- HEADLINE INCIDENT -->
+      <section class="card headline reveal">
+        <div>
+          <span class="kick loss">Headline incident · the #1 leak</span>
+          <h2 class="hl-title">The button opened too wide.</h2>
+          <p class="hl-prose">Your button open sits at <em>58%</em> against the 48–52% GTO target. The bottom 8% of opens — hands like <em class="loss">K7s, Q5s and T7s</em> — bleed an average <em class="loss">−28bb/100</em> against reactive blinds. Cut those hands and the graph turns for good.</p>
+          <div class="hl-meta"><span class="cost">−28bb/100</span><span class="sep">·</span><span>58% open vs 48–52% target</span><span class="sep">·</span><span>1,842 hands · BTN</span></div>
+          <button class="hl-cta">Review hands in the range lab <span style="color:var(--accent)">→</span></button>
+        </div>
+        <div class="grid-wrap">
+          <div class="grid-head">
+            <span class="kick">13×13 · BTN RFI</span>
+            <div class="grid-legend"><span><i class="open"></i>In range</span><span><i class="mix"></i>Mixed</span><span><i class="dev"></i>Leaking</span></div>
+          </div>
+          <div class="matrix" id="matrix"></div>
+        </div>
+      </section>
+
+      <!-- BANKROLL CHART -->
+      <section class="card span-2 reveal lift">
+        <div class="chart-head">
+          <div><span class="kick accent">Bankroll progression</span><h3 class="card-title">Cumulative net P&amp;L</h3></div>
+          <div class="tab-menu" id="chartTabs">
+            <button class="on" data-chart="lifetime">Lifetime</button>
+            <button data-chart="30d">30d</button>
+            <button data-chart="7d">7d</button>
+          </div>
+        </div>
+        <div class="chart-wrap" id="chartWrap">
+          <div class="ch-tip" id="chTip"></div>
+          <svg viewBox="0 0 1140 200" preserveAspectRatio="none">
+            <defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--accent)" stop-opacity="0.2"/><stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/></linearGradient></defs>
+            <line class="ch-axis" x1="0" y1="50" x2="1140" y2="50"/>
+            <line class="ch-axis" x1="0" y1="100" x2="1140" y2="100"/>
+            <line class="ch-axis" x1="0" y1="150" x2="1140" y2="150"/>
+            <path id="chArea" class="ch-area" fill="url(#cg)" d=""/>
+            <path id="chEv" class="ch-ev" d=""/>
+            <path id="chLine" class="ch-line" d=""/>
+            <circle id="chDot" class="ch-dot" r="4" cx="0" cy="0"/>
+          </svg>
+        </div>
+        <div class="chart-foot" id="chartFoot"><span>First session</span><span class="mid">Running +4.2bb/100 above GTO EV</span><span>Now</span></div>
+      </section>
+
+      <!-- POSITIONAL HEATMAP -->
+      <section class="card span-2 reveal lift">
+        <div class="chart-head">
+          <div><span class="kick accent">6-max ring telemetry</span><h3 class="card-title">Positional profitability</h3></div>
+          <span class="kick">Click a seat to inspect</span>
+        </div>
+        <div class="pos-layout">
+          <div class="felt-ring" id="feltRing">
+            <div class="felt-inner"></div>
+            <div class="felt-lbl">Felt</div>
+            <button class="seat-btn s-btn" data-pos="BTN"></button>
+            <button class="seat-btn s-sb" data-pos="SB"></button>
+            <button class="seat-btn s-bb" data-pos="BB"></button>
+            <button class="seat-btn s-utg" data-pos="UTG"></button>
+            <button class="seat-btn s-hj" data-pos="HJ"></button>
+            <button class="seat-btn s-co" data-pos="CO"></button>
+          </div>
+          <div class="inspect">
+            <span class="kick accent" id="inspectTitle">BTN · seat telemetry</span>
+            <div class="inspect-grid">
+              <div><span class="kick">VPIP</span><div class="iv" id="inVpip">—</div></div>
+              <div><span class="kick">PFR</span><div class="iv" id="inPfr">—</div></div>
+              <div><span class="kick">bb/100 profit</span><div class="iv" id="inProfit">—</div></div>
+              <div><span class="kick">Hand volume</span><div class="iv" id="inVol">—</div></div>
+            </div>
+            <div class="inspect-insight"><span class="kick">Coach insight</span><p id="inInsight">—</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ALERT LOG -->
+      <section class="card span-2 reveal lift">
+        <span class="kick accent">Active alert log &amp; fixes</span>
+        <div class="alerts" id="alerts"></div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- DOCK -->
+<div class="dock" id="dock">
+  <div class="grp"><span class="glabel">Theme</span><div class="grp" id="dockThemes" style="gap:5px"></div></div>
+  <div class="divide"></div>
+  <button class="pill-btn on" id="motionToggle">Motion</button>
+  <div class="divide"></div>
+  <button class="pill-btn" data-open-cmdk>⌘K</button>
+</div>
+
+<!-- COMMAND PALETTE -->
+<div class="cmdk-scrim" id="cmdkScrim">
+  <div class="cmdk">
+    <input id="cmdkInput" placeholder="Search actions, stats, themes…" autocomplete="off" />
+    <div class="cmdk-list" id="cmdkList"></div>
+  </div>
+</div>
+
+<script src="desk-engine.js"></script>
+<script src="rt.js"></script>
+</body>
+</html>

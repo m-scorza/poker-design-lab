@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Variant 0 — Slop Baseline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:'Inter',sans-serif; background:#0f1117; color:#e2e4ea;
+    min-height:100vh;
+  }
+  .app { max-width:1240px; margin:0 auto; padding:0 24px; }
+
+  /* top nav */
+  .nav {
+    display:flex; align-items:center; gap:32px; padding:18px 0;
+    border-bottom:1px solid rgba(255,255,255,.07);
+  }
+  .logo {
+    display:flex; align-items:center; gap:10px; font-weight:800; font-size:17px;
+  }
+  .logo-mark {
+    width:32px; height:32px; border-radius:10px;
+    background:linear-gradient(135deg,#8b5cf6,#3b82f6);
+    display:flex; align-items:center; justify-content:center; font-size:15px;
+  }
+  .nav-links { display:flex; gap:6px; flex:1; }
+  .nav-links a {
+    color:#9ca3b4; text-decoration:none; font-size:14px; font-weight:500;
+    padding:8px 14px; border-radius:10px; transition:all .2s;
+  }
+  .nav-links a:hover { background:rgba(255,255,255,.06); color:#fff; }
+  .nav-links a.active {
+    background:linear-gradient(135deg,rgba(139,92,246,.18),rgba(59,130,246,.18));
+    color:#c4b5fd;
+  }
+  .avatar {
+    width:34px; height:34px; border-radius:50%;
+    background:linear-gradient(135deg,#f472b6,#8b5cf6);
+    display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:700;
+  }
+
+  .page-head { display:flex; align-items:center; justify-content:space-between; padding:32px 0 24px; }
+  h1 { font-size:26px; font-weight:700; }
+  .page-head p { color:#9ca3b4; font-size:14px; margin-top:4px; }
+  .btn-primary {
+    background:linear-gradient(135deg,#8b5cf6,#3b82f6);
+    border:none; color:#fff; font-weight:600; font-size:14px;
+    padding:11px 20px; border-radius:12px; cursor:pointer;
+    box-shadow:0 8px 24px rgba(139,92,246,.35); transition:transform .2s;
+    font-family:inherit;
+  }
+  .btn-primary:hover { transform:translateY(-1px); }
+
+  /* stat cards */
+  .stat-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+  .card {
+    background:#171a23; border:1px solid rgba(255,255,255,.06);
+    border-radius:18px; padding:22px;
+    box-shadow:0 4px 20px rgba(0,0,0,.25);
+  }
+  .stat-label { font-size:13px; color:#9ca3b4; font-weight:500; display:flex; justify-content:space-between; align-items:center; }
+  .stat-value { font-size:30px; font-weight:800; margin-top:10px; letter-spacing:-.02em; }
+  .stat-value.gradient {
+    background:linear-gradient(135deg,#a78bfa,#60a5fa);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .pill {
+    font-size:11px; font-weight:600; padding:3px 9px; border-radius:99px;
+  }
+  .pill.up { background:rgba(52,211,153,.15); color:#34d399; }
+  .pill.down { background:rgba(248,113,113,.15); color:#f87171; }
+  .stat-sub { font-size:12px; color:#6b7280; margin-top:6px; }
+
+  .main-grid { display:grid; grid-template-columns:2fr 1fr; gap:18px; margin-top:18px; }
+  .card h3 { font-size:15px; font-weight:600; margin-bottom:4px; }
+  .card .sub { font-size:13px; color:#9ca3b4; margin-bottom:18px; }
+
+  .chart-wrap { position:relative; }
+  .chart-wrap svg { width:100%; height:240px; display:block; }
+
+  /* AI insights */
+  .ai-card {
+    background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(59,130,246,.08));
+    border:1px solid rgba(139,92,246,.25);
+  }
+  .ai-item { display:flex; gap:12px; padding:12px 0; border-bottom:1px solid rgba(255,255,255,.05); }
+  .ai-item:last-child { border-bottom:none; }
+  .ai-icon {
+    width:32px; height:32px; flex-shrink:0; border-radius:10px;
+    background:rgba(139,92,246,.2); display:flex; align-items:center; justify-content:center; font-size:14px;
+  }
+  .ai-item b { font-size:13.5px; font-weight:600; display:block; }
+  .ai-item span { font-size:12.5px; color:#9ca3b4; line-height:1.5; }
+
+  /* hud row */
+  .hud-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:18px; }
+  .hud-bar-track { height:8px; border-radius:99px; background:rgba(255,255,255,.07); margin-top:14px; overflow:hidden; }
+  .hud-bar { height:100%; border-radius:99px; background:linear-gradient(90deg,#8b5cf6,#3b82f6); }
+  .hud-meta { display:flex; justify-content:space-between; font-size:11.5px; color:#6b7280; margin-top:8px; }
+
+  /* bottom */
+  .bottom-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:18px 0 48px; }
+  .leak-row { display:flex; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid rgba(255,255,255,.05); }
+  .leak-row:last-child { border-bottom:none; }
+  .leak-row .dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .dot.high { background:#f87171; box-shadow:0 0 12px rgba(248,113,113,.6); }
+  .dot.med { background:#fbbf24; box-shadow:0 0 12px rgba(251,191,36,.5); }
+  .leak-row b { font-size:13.5px; font-weight:600; display:block; }
+  .leak-row span { font-size:12px; color:#9ca3b4; }
+  .leak-cost { margin-left:auto; font-size:13px; font-weight:700; color:#f87171; white-space:nowrap; }
+
+  table { width:100%; border-collapse:collapse; }
+  th { text-align:left; font-size:11.5px; color:#6b7280; font-weight:600; padding:0 8px 10px; }
+  td { font-size:13px; padding:11px 8px; border-top:1px solid rgba(255,255,255,.05); }
+  td.win { color:#34d399; font-weight:600; }
+  td.loss { color:#f87171; font-weight:600; }
+  tr:hover td { background:rgba(255,255,255,.02); }
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="nav">
+    <div class="logo"><div class="logo-mark">♠</div> PokerLens</div>
+    <div class="nav-links">
+      <a class="active" href="#">Dashboard</a><a href="#">Hands</a><a href="#">Sessions</a>
+      <a href="#">Leaks</a><a href="#">Ranges</a><a href="#">Villains</a>
+    </div>
+    <div class="avatar">S</div>
+  </nav>
+
+  <div class="page-head">
+    <div>
+      <h1>Welcome back, scorza23 👋</h1>
+      <p>Here's what's happening with your game.</p>
+    </div>
+    <button class="btn-primary">+ Import Hands</button>
+  </div>
+
+  <div class="stat-grid">
+    <div class="card">
+      <div class="stat-label">Lifetime Profit <span class="pill up">↑ 12.4%</span></div>
+      <div class="stat-value gradient">$24,310</div>
+      <div class="stat-sub">vs. last 30 days</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">ROI <span class="pill up">↑ 2.1%</span></div>
+      <div class="stat-value">18.4%</div>
+      <div class="stat-sub">1,247 tournaments</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">ITM Rate <span class="pill down">↓ 0.8%</span></div>
+      <div class="stat-value">21.3%</div>
+      <div class="stat-sub">266 cashes</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Avg Buy-in</div>
+      <div class="stat-value">$11.20</div>
+      <div class="stat-sub">micro–low stakes</div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <div class="card">
+      <h3>Bankroll Growth</h3>
+      <div class="sub">Cumulative profit across all sessions</div>
+      <div class="chart-wrap">
+        <svg viewBox="0 0 600 240" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="fill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#8b5cf6" stop-opacity=".35"/>
+              <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#3b82f6"/>
+            </linearGradient>
+          </defs>
+          <path d="M0,228 L31,216 L63,220 L94,204 L126,209 L157,193 L189,176 L220,182 L252,160 L284,139 L315,147 L347,114 L378,90 L410,99 L441,66 L473,40 L504,52 L536,18 L567,4 L599,0 L599,240 L0,240 Z" fill="url(#fill)"/>
+          <path d="M0,228 L31,216 L63,220 L94,204 L126,209 L157,193 L189,176 L220,182 L252,160 L284,139 L315,147 L347,114 L378,90 L410,99 L441,66 L473,40 L504,52 L536,18 L567,4 L599,0" fill="none" stroke="url(#line)" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="card ai-card">
+      <h3>✨ AI Insights</h3>
+      <div class="sub">Personalized recommendations</div>
+      <div class="ai-item">
+        <div class="ai-icon">🎯</div>
+        <div><b>Tighten your button opens</b><span>You're opening 38% from the BTN — consider moving closer to 30% for better consistency.</span></div>
+      </div>
+      <div class="ai-item">
+        <div class="ai-icon">🌊</div>
+        <div><b>River play needs attention</b><span>You're folding 71% to river pot-bets. Try defending a wider range in spots with good blockers!</span></div>
+      </div>
+      <div class="ai-item">
+        <div class="ai-icon">🚀</div>
+        <div><b>Great preflop discipline</b><span>Your VPIP/PFR gap is healthy. Keep up the great work!</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hud-grid">
+    <div class="card">
+      <div class="stat-label">VPIP</div>
+      <div class="stat-value" style="font-size:24px;">23.1%</div>
+      <div class="hud-bar-track"><div class="hud-bar" style="width:62%"></div></div>
+      <div class="hud-meta"><span>Target 22–26</span><span>✓ on target</span></div>
+    </div>
+    <div class="card">
+      <div class="stat-label">PFR</div>
+      <div class="stat-value" style="font-size:24px;">18.2%</div>
+      <div class="hud-bar-track"><div class="hud-bar" style="width:55%"></div></div>
+      <div class="hud-meta"><span>Target 16–20</span><span>✓ on target</span></div>
+    </div>
+    <div class="card">
+      <div class="stat-label">3-Bet</div>
+      <div class="stat-value" style="font-size:24px;">7.4%</div>
+      <div class="hud-bar-track"><div class="hud-bar" style="width:48%"></div></div>
+      <div class="hud-meta"><span>Target 6–9</span><span>✓ on target</span></div>
+    </div>
+    <div class="card">
+      <div class="stat-label">C-Bet Flop</div>
+      <div class="stat-value" style="font-size:24px;">64%</div>
+      <div class="hud-bar-track"><div class="hud-bar" style="width:70%"></div></div>
+      <div class="hud-meta"><span>Target 55–70</span><span>✓ on target</span></div>
+    </div>
+  </div>
+
+  <div class="bottom-grid">
+    <div class="card">
+      <h3>Top Leaks 🔍</h3>
+      <div class="sub">Where you're losing the most EV</div>
+      <div class="leak-row">
+        <div class="dot high"></div>
+        <div><b>BTN RFI too wide</b><span>Opening 38% vs 30% target</span></div>
+        <div class="leak-cost">−$1,840</div>
+      </div>
+      <div class="leak-row">
+        <div class="dot med"></div>
+        <div><b>Flatting 3-bets OOP</b><span>Calling 14% vs 8% target</span></div>
+        <div class="leak-cost">−$920</div>
+      </div>
+      <div class="leak-row">
+        <div class="dot med"></div>
+        <div><b>River overfolds vs pot bets</b><span>Folding 71% vs 62% target</span></div>
+        <div class="leak-cost">−$610</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Recent Sessions</h3>
+      <div class="sub">Last 5 sessions</div>
+      <table>
+        <thead><tr><th>Date</th><th>Games</th><th>Duration</th><th>GTO</th><th style="text-align:right;">Result</th></tr></thead>
+        <tbody>
+          <tr><td>Jun 7</td><td>14 MTTs</td><td>6h 12m</td><td>87%</td><td class="win" style="text-align:right;">+$642</td></tr>
+          <tr><td>Jun 5</td><td>9 MTTs</td><td>3h 45m</td><td>82%</td><td class="loss" style="text-align:right;">−$210</td></tr>
+          <tr><td>Jun 3</td><td>11 MTTs</td><td>5h 02m</td><td>91%</td><td class="win" style="text-align:right;">+$1,204</td></tr>
+          <tr><td>Jun 1</td><td>16 MTTs</td><td>7h 18m</td><td>79%</td><td class="loss" style="text-align:right;">−$388</td></tr>
+          <tr><td>May 30</td><td>8 MTTs</td><td>3h 21m</td><td>85%</td><td class="win" style="text-align:right;">+$95</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>
